@@ -1,26 +1,49 @@
 <!DOCTYPE html>
-<!-- HTML defines the content and meaning of the page. CSS controls its appearance.
-     This declaration tells the browser to use modern HTML rendering. -->
+<!--
+  HTML defines the page's content and structure.
+  This declaration tells the browser to use modern HTML.
+-->
 <html lang="en">
 <head>
-  <!-- UTF-8 supports punctuation and symbols. The viewport makes mobile browsers
-       use the device width instead of shrinking a desktop-sized page. -->
+  <!-- Support punctuation, symbols, and other UTF-8 characters. -->
   <meta charset="UTF-8">
+
+  <!-- Match the page width to the device for responsive layouts. -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Mostafa Mosabbir's personal portfolio: building software, exploring cybersecurity, and documenting the process.">
-  <title>Mostafa Mosabbir | Personal Portfolio</title>
-  <!-- A relative path works both locally and under a hosted /mostafa-portfolio/ URL. -->
+
+  <!-- Describe the page for search engines and other services. -->
+  <meta
+    name="description"
+    content="Mostafa Mosabbir's personal portfolio, featuring IT operations, AI automation, software projects, and cybersecurity learning."
+  >
+
+  <!-- This title appears in the browser tab. -->
+  <title>Mostafa Mosabbir | IT &amp; AI Automation</title>
+
+  <!--
+    Load the stylesheet using a relative path.
+    Keep main.css inside the styles folder.
+  -->
   <link rel="stylesheet" href="styles/main.css">
 </head>
+
 <body>
-  <!-- Keyboard users can bypass the navigation. CSS reveals this link on focus. -->
+  <!--
+    Keyboard users can skip the navigation and jump to the main content.
+    The stylesheet reveals this link when it receives keyboard focus.
+  -->
   <a class="skip-link" href="#main">Skip to content</a>
 
+  <!-- HEADER: Name, monogram, and navigation links. -->
   <header class="site-header wrap">
-    <!-- The monogram is decorative; the adjacent name provides the link's label. -->
-    <a class="brand" href="#home"><span class="monogram" aria-hidden="true">MM</span> Mostafa Mosabbir</a>
+    <a class="brand" href="#home">
+      <!-- Hide the decorative initials from screen readers. -->
+      <span class="monogram" aria-hidden="true">MM</span>
+      Mostafa Mosabbir
+    </a>
+
     <nav aria-label="Main navigation">
-      <!-- Each #name matches a section id below. No JavaScript is needed. -->
+      <!-- Each link matches the id of a section below. -->
       <a href="#about">About</a>
       <a href="#projects">Projects</a>
       <a href="#cybersecurity">Cybersecurity</a>
@@ -28,66 +51,285 @@
     </nav>
   </header>
 
-  <!-- main marks the page's primary content. tabindex lets the skip link focus it. -->
+  <!--
+    MAIN: The primary content of the page.
+    tabindex="-1" allows the skip link to move focus here.
+  -->
   <main id="main" tabindex="-1">
-    <section class="hero wrap" id="home" aria-labelledby="hero-title">
+
+    <!-- INTRODUCTION: A short summary of my role and key skills. -->
+    <section
+      class="hero wrap"
+      id="home"
+      aria-labelledby="hero-title"
+    >
       <div class="hero-copy">
-        <p class="eyebrow"><span class="status-dot" aria-hidden="true"></span> A portfolio in progress</p>
-        <!-- Keep one h1: it describes the whole page. Other sections use h2. -->
-        <h1 id="hero-title">Building with purpose.<br><span>Learning in public.</span></h1>
-        <!-- YOUR TURN: replace this with an accurate introduction in your own voice.
-             Avoid adding job titles or credentials you have not earned. -->
-        <p class="intro">I'm Mostafa Mosabbir. I'm building a collection of software projects and cybersecurity work, with clear documentation of the decisions and lessons along the way.</p>
+        <p class="eyebrow">
+          <span class="status-dot" aria-hidden="true"></span>
+          A portfolio in progress
+        </p>
+
+        <!-- Use one h1 to describe the overall page. -->
+        <h1 id="hero-title">
+          Building with purpose.<br>
+          <span>Learning in public.</span>
+        </h1>
+
+        <!--
+          Keep the introduction brief.
+          The About section provides more background without repeating it.
+        -->
+        <p class="intro">
+          I'm Mostafa Mosabbir, an IT Manager at MetaSense, Inc.
+          My key skills include IT operations and AI automation,
+          alongside a growing focus on cybersecurity.
+        </p>
+
         <div class="actions">
-          <a class="button" href="#projects">Explore my work <span aria-hidden="true">↗</span></a>
-          <a class="text-link" href="https://github.com/MostafaMosabbir">Find me on GitHub <span aria-hidden="true">↗</span></a>
+          <!-- This link moves to the Projects section on this page. -->
+          <a class="button" href="#projects">
+            Explore my work
+            <span aria-hidden="true">↗</span>
+          </a>
+
+          <!-- This link opens my public GitHub profile. -->
+          <a
+            class="text-link"
+            href="https://github.com/MostafaMosabbir"
+          >
+            Find me on GitHub
+            <span aria-hidden="true">↗</span>
+          </a>
         </div>
       </div>
-      <!-- This panel describes the portfolio's direction; it does not claim
-           completed projects, certifications, or professional experience. -->
+
+      <!--
+        This supporting panel introduces the portfolio's focus areas.
+        It describes direction rather than claiming completed projects.
+      -->
       <aside class="focus-panel" aria-labelledby="focus-title">
         <p class="eyebrow" id="focus-title">On my workbench</p>
-        <div class="focus-row"><span class="number">01</span><div><h2>Build</h2><p>Turn an idea into something useful.</p></div></div>
-        <div class="focus-row"><span class="number">02</span><div><h2>Investigate</h2><p>Explore how systems work and how to protect them.</p></div></div>
-        <div class="focus-row"><span class="number">03</span><div><h2>Document</h2><p>Make the process as clear as the result.</p></div></div>
-        <p class="panel-note">Curiosity → practice → evidence</p>
+
+        <div class="focus-row">
+          <span class="number">01</span>
+          <div>
+            <h2>Build</h2>
+            <p>Turn practical problems into useful software.</p>
+          </div>
+        </div>
+
+        <div class="focus-row">
+          <span class="number">02</span>
+          <div>
+            <h2>Automate</h2>
+            <p>Explore AI workflows that reduce repetitive work.</p>
+          </div>
+        </div>
+
+        <div class="focus-row">
+          <span class="number">03</span>
+          <div>
+            <h2>Investigate</h2>
+            <p>Understand systems and learn how to protect them.</p>
+          </div>
+        </div>
+
+        <p class="panel-note">
+          Curiosity → practice → evidence
+        </p>
       </aside>
     </section>
 
-    <section class="section wrap about-grid" id="about" aria-labelledby="about-title">
-      <div><p class="eyebrow">01 / About</p><h2 id="about-title">The work.<br>And the thinking behind it.</h2></div>
-      <div class="section-copy"><p>This portfolio is a growing record of what I'm building and learning. Each project will explain the problem, my contribution, and what I would improve next.</p><p>My focus here is practical software and cybersecurity learning, supported by code, reproducible steps, and honest reflections.</p></div>
+    <!--
+      ABOUT: Explain my interests and approach.
+      The two div elements form columns on larger screens.
+    -->
+    <section
+      class="section wrap about-grid"
+      id="about"
+      aria-labelledby="about-title"
+    >
+      <!-- First column: section label and heading. -->
+      <div>
+        <p class="eyebrow">01 / About</p>
+        <h2 id="about-title">
+          The work.<br>
+          And the thinking behind it.
+        </h2>
+      </div>
+
+      <!-- Second column: background and portfolio purpose. -->
+      <div class="section-copy">
+        <p>
+          I'm interested in making technology more useful in everyday work:
+          simplifying processes, solving practical problems, and helping
+          systems run reliably. AI automation is a key part of that
+          interest, particularly its potential to reduce repetitive tasks
+          and improve workflows.
+        </p>
+
+        <p>
+          This portfolio documents how I put those interests into practice
+          through software projects, automation, and cybersecurity learning.
+          I share the reasoning behind my decisions, what I contributed,
+          and the lessons I take into the next project.
+        </p>
+      </div>
     </section>
 
-    <section class="section wrap" id="projects" aria-labelledby="projects-title">
-      <div class="section-heading"><div><p class="eyebrow">02 / Selected work</p><h2 id="projects-title">From idea to implementation.</h2></div><span class="small-label">Building the foundations</span></div>
-      <!-- This website is the first real project. Add another article only when
-           you have actual work and evidence; do not invent sample achievements. -->
+    <!--
+      PROJECTS: Feature real work with accurate descriptions.
+      Add more project cards when their code or evidence is ready.
+    -->
+    <section
+      class="section wrap"
+      id="projects"
+      aria-labelledby="projects-title"
+    >
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">02 / Selected work</p>
+          <h2 id="projects-title">From idea to implementation.</h2>
+        </div>
+
+        <span class="small-label">Building the foundations</span>
+      </div>
+
+      <!--
+        An article groups one complete project entry.
+        This website is the first project featured in the portfolio.
+      -->
       <article class="project-card">
-        <div class="project-art" aria-hidden="true"><span class="art-label">PERSONAL PORTFOLIO</span><span class="art-monogram">M<span>.</span></span><span class="art-caption">An evolving body of work / 001</span></div>
-        <div class="project-copy"><p class="eyebrow">Project 001 <span class="badge">In progress</span></p><h3>My corner of the web.</h3><p>A personal website built with HTML and CSS. The first version brings together my work, learning, and documentation in one place.</p>
-          <!-- A list groups related technologies. These are used in this project. -->
-          <ul class="tags" aria-label="Project technologies"><li>HTML</li><li>CSS</li><li>GitHub</li></ul>
-          <a class="text-link" href="https://github.com/MostafaMosabbir/mostafa-portfolio">Explore the source <span aria-hidden="true">↗</span></a>
+
+        <!--
+          Decorative artwork made with text and CSS.
+          Screen readers skip it because the project is described below.
+        -->
+        <div class="project-art" aria-hidden="true">
+          <span class="art-label">PERSONAL PORTFOLIO</span>
+          <span class="art-monogram">M<span>.</span></span>
+          <span class="art-caption">
+            An evolving body of work / 001
+          </span>
+        </div>
+
+        <div class="project-copy">
+          <p class="eyebrow">
+            Project 001
+            <span class="badge">In progress</span>
+          </p>
+
+          <h3>My corner of the web.</h3>
+
+          <p>
+            A personal website built with HTML and CSS. The first version
+            brings together my work, learning, and documentation in one
+            place.
+          </p>
+
+          <!-- List technologies actually used in this project. -->
+          <ul class="tags" aria-label="Project technologies">
+            <li>HTML</li>
+            <li>CSS</li>
+            <li>GitHub</li>
+          </ul>
+
+          <a
+            class="text-link"
+            href="https://github.com/MostafaMosabbir/mostafa-portfolio"
+          >
+            Explore the source
+            <span aria-hidden="true">↗</span>
+          </a>
         </div>
       </article>
     </section>
 
-    <!-- Security work has its own section. Academic capstone materials remain
-         outside this repository; they are not part of these project listings. -->
-    <section class="section wrap security-grid" id="cybersecurity" aria-labelledby="security-title">
-      <div><p class="eyebrow">03 / Cybersecurity</p><h2 id="security-title">Understand.<br>Investigate. Protect.</h2></div>
-      <div class="security-card"><span class="badge">Learning track</span><h3>A space for careful investigation.</h3><p>Future write-ups will cover authorized labs, defensive analysis, and the reasoning behind each finding.</p><p class="muted">The first lab is still to come. Published work will include its scope, evidence, and limitations.</p><a class="text-link" href="https://github.com/MostafaMosabbir/mostafa-portfolio/tree/main/cybersecurity">View the learning outline <span aria-hidden="true">↗</span></a></div>
+    <!--
+      CYBERSECURITY: Keep security learning distinct from general projects.
+      Rowan fishing capstone materials remain outside this portfolio.
+    -->
+    <section
+      class="section wrap security-grid"
+      id="cybersecurity"
+      aria-labelledby="security-title"
+    >
+      <div>
+        <p class="eyebrow">03 / Cybersecurity</p>
+        <h2 id="security-title">
+          Understand.<br>
+          Investigate. Protect.
+        </h2>
+      </div>
+
+      <div class="security-card">
+        <span class="badge">Learning track</span>
+
+        <h3>A space for careful investigation.</h3>
+
+        <p>
+          Future write-ups will cover authorized labs, defensive analysis,
+          and the reasoning behind each finding.
+        </p>
+
+        <!-- Clearly distinguish planned work from completed work. -->
+        <p class="muted">
+          The first lab is still to come. Published work will include its
+          scope, evidence, and limitations.
+        </p>
+
+        <a
+          class="text-link"
+          href="https://github.com/MostafaMosabbir/mostafa-portfolio/tree/main/cybersecurity"
+        >
+          View the learning outline
+          <span aria-hidden="true">↗</span>
+        </a>
+      </div>
     </section>
 
-    <section class="contact-section" id="contact" aria-labelledby="contact-title">
-      <div class="wrap contact-inner"><div><p class="eyebrow">04 / Contact</p><h2 id="contact-title">Follow what comes next.</h2><p>Explore my repositories and follow the progress on GitHub.</p></div>
-        <!-- GitHub is the only confirmed public contact. Add an email or resume
-             only after choosing information you want to publish. -->
-        <a class="button" href="https://github.com/MostafaMosabbir">Visit my GitHub <span aria-hidden="true">↗</span></a>
+    <!-- CONTACT: Link to my confirmed public professional profiles. -->
+    <section
+      class="contact-section"
+      id="contact"
+      aria-labelledby="contact-title"
+    >
+      <div class="wrap contact-inner">
+        <div>
+          <p class="eyebrow">04 / Contact</p>
+          <h2 id="contact-title">Let's connect.</h2>
+          <p>
+            Connect with me on LinkedIn or follow my projects on GitHub.
+          </p>
+        </div>
+
+        <!-- Reuse existing button and link styles for consistent design. -->
+        <div class="actions">
+          <a
+            class="button"
+            href="https://www.linkedin.com/in/mostafa-mosabbir-71154a18b/"
+          >
+            Connect on LinkedIn
+            <span aria-hidden="true">↗</span>
+          </a>
+
+          <a
+            class="text-link"
+            href="https://github.com/MostafaMosabbir"
+          >
+            Visit my GitHub
+            <span aria-hidden="true">↗</span>
+          </a>
+        </div>
       </div>
     </section>
   </main>
-  <footer class="wrap site-footer"><p>Mostafa Mosabbir</p><p>Built with curiosity. Documented with care.</p><a href="#home">Back to top ↑</a></footer>
+
+  <!-- FOOTER: Closing identity and a shortcut to the introduction. -->
+  <footer class="wrap site-footer">
+    <p>Mostafa Mosabbir</p>
+    <p>Built with curiosity. Documented with care.</p>
+    <a href="#home">Back to top ↑</a>
+  </footer>
 </body>
 </html>
