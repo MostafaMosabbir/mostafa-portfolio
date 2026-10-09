@@ -2,7 +2,7 @@
 
 A professional portfolio for presenting selected projects, technical skills, and cybersecurity learning through clear, verifiable evidence.
 
-**Status:** Starter structure; the website has not been built or deployed.  
+**Status:** First homepage implemented in HTML and CSS; not publicly deployed.  
 **Target:** Portfolio website and supporting GitHub projects ready by December 2026.
 
 ## Purpose
@@ -15,8 +15,13 @@ Help visitors understand what I build, how I approach problems, and where they c
 mostafa-portfolio/
 ├── README.md
 ├── .gitignore
+├── index.html
+├── styles/
+│   └── main.css
 ├── docs/
 │   ├── homepage-plan.md
+│   ├── homepage-walkthrough.md
+│   ├── learning-log.md
 │   ├── project-template.md
 │   ├── scope-and-separation.md
 │   ├── roadmap.md
@@ -39,25 +44,25 @@ See [scope and separation](docs/scope-and-separation.md) for placement rules.
 
 ## Website direction
 
-The first version will use a simple static homepage with About, Selected Projects, Cybersecurity, and Contact sections. The [homepage plan](docs/homepage-plan.md) defines content and acceptance criteria. No framework or hosting service is configured yet.
+The first version uses a simple static homepage with About, Selected Projects, Cybersecurity, and Contact sections. The [homepage plan](docs/homepage-plan.md) defines content and acceptance criteria. No framework or hosting service is configured yet.
 
 ## Working locally
 
-Clone this repository, open it in an editor, and start with the Markdown documents:
+Clone this repository, open it in an editor, and open index.html in your browser:
 
 ```bash
 git clone https://github.com/MostafaMosabbir/mostafa-portfolio.git
 cd mostafa-portfolio
 ```
 
-There are no dependencies, build commands, or tests in this documentation starter.
+No dependencies or build step are required. The HTML and CSS include explanatory comments. Start with the [hands-on homepage walkthrough](docs/homepage-walkthrough.md) and record your own work in the [learning log](docs/learning-log.md).
 
 ## Next steps
 
 1. Confirm the professional introduction and intended audience.
 2. Select two or three real projects and document them using the [case study template](docs/project-template.md).
 3. Add one documented cybersecurity lab with reproducible evidence.
-4. Build and review the homepage against the [homepage plan](docs/homepage-plan.md).
+4. Personalize and review the homepage against the [homepage plan](docs/homepage-plan.md).
 5. Publish the website and add its verified URL here.
 
 Follow the [roadmap](docs/roadmap.md) and [recreation guide](docs/recreate-starter.md).
@@ -67,3 +72,4 @@ Follow the [roadmap](docs/roadmap.md) and [recreation guide](docs/recreate-start
 [GitHub: MostafaMosabbir](https://github.com/MostafaMosabbir)
 
 Other contact details and a reviewed resume can be added when ready for public release.
+

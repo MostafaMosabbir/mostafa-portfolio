@@ -30,7 +30,7 @@ Start with plain HTML and CSS:
 - `assets/images/` for real screenshots.
 - JavaScript only if an interaction requires it.
 
-These website files are planned, not part of the current documentation starter. Select hosting after the page works locally. If using project-based hosting, verify paths under the repository subdirectory.
+The first version now includes index.html and styles/main.css, with explanatory source comments. Follow [the walkthrough](homepage-walkthrough.md) to personalize it. Select hosting after the page works locally. If using project-based hosting, verify paths under the repository subdirectory.
 
 ## Ready-to-publish criteria
 
@@ -42,3 +42,4 @@ These website files are planned, not part of the current documentation starter. 
 - Contact and resume details are approved for public display.
 - Rowan fishing capstone material is absent.
 - Every featured case study links to code or useful evidence.
+

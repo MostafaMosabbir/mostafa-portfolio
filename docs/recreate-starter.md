@@ -67,6 +67,7 @@ git status shows changes; git add selects the starter files; git diff --cached l
 
 ## 8. Build the homepage next
 
-Follow homepage-plan.md to add index.html and styles/main.css. Preview locally, add only real project content, and complete the publishing checklist before choosing and configuring hosting.
+The repository now includes index.html and styles/main.css. Follow homepage-walkthrough.md to understand and personalize them. Preview locally, add only real project content, and complete the publishing checklist before choosing and configuring hosting.
 
 The documentation starter itself is not a deployed website.
+
