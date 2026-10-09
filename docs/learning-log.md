@@ -1,21 +1,21 @@
-# Learning log
+## October 9, 2026 — First public website review
 
-Use this file to explain the work in your own words. Do not mark an exercise complete until you have done it.
+### What I completed
+- Personalized the introduction and About section.
+- Added AI automation as a key skill.
+- Added my LinkedIn contact link.
+- Published the homepage through GitHub Pages.
 
-## Initial scaffold — October 9, 2026
+### Public website checks
+- [ ] Introduction and About display correctly.
+- [ ] Section navigation works.
+- [ ] GitHub and LinkedIn links work.
+- [ ] Phone layout is readable without sideways scrolling.
+- [ ] Keyboard focus is visible when navigating with Tab.
 
-- **Provided with AI assistance:** HTML structure, CSS layout, explanatory comments, and a walkthrough.
-- **Current project status:** A first homepage exists; personalization, further projects, and public deployment remain.
-- **My next exercise:** Read the source comments and rewrite the introduction accurately.
+### What I learned
+Saving a file updates my local copy. A Git commit records a checkpoint,
+and pushing uploads it to GitHub. GitHub Pages then deploys the website.
 
-## Copy this entry for each learning session
-
-### Date and task
-
-- **What I changed:**
-- **Why I changed it:**
-- **How the relevant HTML or CSS works:**
-- **How I checked the result:**
-- **What I did independently / with assistance:**
-- **What I still need to understand:**
-- **Next small step:**
+### Next step
+Finish any unchecked review items, then define my first AI automation project.
