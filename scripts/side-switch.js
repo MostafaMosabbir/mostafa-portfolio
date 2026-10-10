@@ -78,25 +78,28 @@
     });
   }
 
-  // 3. Move the curtain and wait for the movement to finish.
-  async function sweep(from, to, duration) {
-    const animation = curtain.animate(
-      [
-        { transform: from },
-        { transform: to }
-      ],
-      {
-        duration: duration,
-        easing: "cubic-bezier(.65, 0, .35, 1)",
-        fill: "forwards"
-      }
-    );
-
+  // 3. The whole cape sweeps across the viewport while CSS flutters its
+  // fabric edge and folds. The center position fully covers the page.
+  // direction reverses travel when returning to the professional side.
+  async function sweep(entering, direction) {
+    const frames = entering ? [
+      { transform: "translateX(" + (-direction * 125) + "%) rotate(" + (-direction * 7) + "deg) skewY(-3deg)" },
+      { transform: "translateX(" + (-direction * 42) + "%) rotate(" + (direction * 3) + "deg) skewY(2deg)", offset: .65 },
+      { transform: "translateX(0) rotate(0deg) skewY(0deg)" }
+    ] : [
+      { transform: "translateX(0) rotate(0deg) skewY(0deg)" },
+      { transform: "translateX(" + (direction * 45) + "%) rotate(" + (-direction * 3) + "deg) skewY(-2deg)", offset: .45 },
+      { transform: "translateX(" + (direction * 125) + "%) rotate(" + (direction * 7) + "deg) skewY(3deg)" }
+    ];
+    const animation = curtain.animate(frames, {
+      duration: entering ? 760 : 900,
+      easing: "cubic-bezier(.42, 0, .25, 1)",
+      fill: "forwards"
+    });
     try {
       await animation.finished;
     } finally {
-      // Preserve the final position before removing the animation object.
-      curtain.style.transform = to;
+      curtain.style.transform = frames[frames.length - 1].transform;
       animation.cancel();
     }
   }
@@ -119,26 +122,14 @@
         // Switch immediately when animation is unwanted or unsupported.
         showSide(nextCreative);
       } else {
-        // Begin with the curtain completely outside the left of the screen.
-        curtain.style.transform = "translateX(-110%)";
+        // Scarlet fabric opens creative mode; emerald fabric returns home.
+        const direction = nextCreative ? 1 : -1;
+        curtain.dataset.destination = nextCreative ? "creative" : "professional";
+        curtain.style.transform = "translateX(" + (-direction * 125) + "%)";
         curtain.hidden = false;
-
-        // Cover the current view. Timing is measured in milliseconds.
-        await sweep(
-          "translateX(-110%)",
-          "translateX(0)",
-          520
-        );
-
-        // Change the content while the curtain covers the screen.
+        await sweep(true, direction);
         showSide(nextCreative);
-
-        // Move the curtain to the right to reveal the new view.
-        await sweep(
-          "translateX(0)",
-          "translateX(110%)",
-          650
-        );
+        await sweep(false, direction);
       }
     } catch (error) {
       // An animation failure should not prevent access to either side.

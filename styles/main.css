@@ -699,3 +699,150 @@ body[data-side="creative"] {
     display: none !important;
   }
 }
+/* 13. APPROVED MATRIX DESIGN
+   The restrained palette uses one emerald accent. System fonts keep the
+   site usable offline; monospace is limited to navigation and small labels.
+   Later rules override the earlier light design for easy comparison. */
+:root {
+  --paper: #091411;
+  --ink: #edf4f0;
+  --muted: #b0c0b8;
+  --accent: #79d9b0;
+  --line: #2a3c33;
+  --soft: #10231b;
+  --white: #071710;
+  --content-width: 1280px;
+}
+body { background: var(--paper); font-family: "Segoe UI", Arial, sans-serif; }
+h1, h2, h3 { font-weight: 500; letter-spacing: -.035em; }
+.eyebrow, .brand, nav a, .side-switch, .panel-note, .number, .tags, .art-label {
+  font-family: "Cascadia Code", Consolas, "Courier New", monospace;
+}
+.eyebrow { font-weight: 400; letter-spacing: .12em; color: var(--muted); }
+.site-header { padding-block: 22px; }
+.monogram { border: 1px solid var(--accent); border-radius: 2px; background: transparent; color: var(--accent); font-size: .8rem; width: 42px; height: 42px; }
+.brand { font-weight: 400; }
+.side-switch { border-color: #436b58; border-radius: 5px; font-weight: 400; }
+.button { background: var(--accent); color: #071710; font-weight: 600; }
+.button:hover { background: #9ce8c8; color: #071710; }
+.hero { position: relative; isolation: isolate; grid-template-columns: minmax(0,1.45fr) minmax(0,1fr); gap: clamp(32px,5vw,72px); padding-block: clamp(64px,8vw,104px); }
+.hero h1 { font-size: clamp(2.6rem,4.1vw,3.65rem); line-height: 1.16; font-weight: 500; }
+.hero-copy, .focus-panel { position: relative; z-index: 1; }
+.hero-copy { min-width: 0; }
+.intro { line-height: 1.8; font-size: 1.05rem; }
+.focus-panel { background: #0b1915f5; border: 1px solid var(--line); border-radius: 5px; box-shadow: none; padding: 26px; }
+.focus-row { border-color: var(--line); padding-block: 22px; }
+.focus-row h2 { font-family: "Cascadia Code", Consolas, monospace; font-size: 1.1rem; font-weight: 400; text-transform: uppercase; color: var(--accent); letter-spacing: .015em; }
+.focus-row p { font-size: .9rem; }
+.panel-note { border-color: var(--line); letter-spacing: 0; font-size: .75rem; }
+.motion-toggle { display: inline-block; margin-top: 15px; padding: 8px 0; min-height: 38px; border: 0; color: var(--muted); background: transparent; font: .72rem "Cascadia Code",Consolas,monospace; text-decoration: underline; text-underline-offset: 4px; cursor: pointer; }
+.motion-toggle:hover { color: var(--accent); }
+/* The canvas never intercepts clicks. A mask fades the code before it
+   reaches the reading area. Text and the opaque panel sit above it. */
+.matrix-rain { position: absolute; z-index: 0; top: 0; right: 0; width: 54%; height: 100%; opacity: .44; pointer-events: none; mask-image: linear-gradient(to right, transparent, #000 42%), linear-gradient(to bottom, #000 65%, transparent); mask-composite: intersect; }
+.section { padding-block: clamp(48px,6vw,76px); }
+.project-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 24px; }
+.project-card { display: flex; flex-direction: column; min-width: 0; border-radius: 5px; background: #0c1914; }
+.project-art { min-height: 180px; padding: 20px 24px; background: linear-gradient(120deg,#10261c,#0b1713); color: #8eb5a1; justify-content: flex-start; gap: 20px; }
+.terminal-bar { display: flex; gap: 6px; align-items: center; font: .65rem Consolas,monospace; color: #a2b8ac; }
+.terminal-bar i { width: 6px; height: 6px; border-radius: 50%; background: #5a8d72; }
+.terminal-bar span { margin-left: 8px; }
+.project-art pre { margin: 0; font: .78rem/1.65 Consolas,monospace; white-space: pre-wrap; overflow-wrap: anywhere; }
+.project-copy { width: 100%; padding: 26px; }
+.project-copy h3 { font-size: 1.45rem; }
+.project-copy .eyebrow { margin-bottom: 16px; font-size: .65rem; }
+.badge { border-color: #3b5a49; background: #102319; color: #a8ddbd; }
+.tags li { background: transparent; border: 1px solid var(--line); color: var(--muted); }
+.project-copy .project-availability { font-size: .78rem; color: var(--muted); }
+.contact-section { background: #0e2018; }
+.site-footer { font-size: .75rem; }
+/* Creative mode keeps its own expressive heading and slightly richer green. */
+body[data-side="creative"] { --paper: #081b14; --ink: #e8fff4; --muted: #b3cebf; --accent: #82e0b1; --line: #2c4b3a; --soft: #102e23; }
+/* Responsive foundations now; device-specific polish can follow later. */
+@media (max-width: 900px) {
+  .hero { grid-template-columns: minmax(0,1fr); }
+  .matrix-rain { width: 70%; opacity: .25; }
+  .hero-copy { padding: 16px; margin: -16px; background: #091411ef; }
+  .project-grid { grid-template-columns: minmax(0,1fr); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .matrix-rain { opacity: .18; }
+}
+
+/* 14. SCARLET CREATIVE SIDE
+   A bright red environment distinguishes creative work from emerald IT work.
+   White text and pale accents retain contrast on the deeper red surface. */
+body[data-side="creative"] {
+  --paper: #ae1029;
+  --ink: #fff9f5;
+  --muted: #ffe0e1;
+  --accent: #fff1e8;
+  --line: #ffffff55;
+  --soft: #89142a;
+  background: radial-gradient(ellipse at 78% 8%, #f13e50 0, transparent 60%),
+              linear-gradient(140deg, #bd1530, #98102a);
+}
+body[data-side="creative"] .side-switch { border-color: #ffffff88; }
+body[data-side="creative"] .creative-heading h1 span { color: #fff4ea; }
+body[data-side="creative"] .empty-gallery {
+  background: linear-gradient(145deg, #7b0b2255, #a90f2933);
+  border-color: #ffffff66;
+}
+body[data-side="creative"] .creative-note,
+body[data-side="creative"] .creative-intro,
+body[data-side="creative"] .eyebrow { color: var(--muted); }
+
+/* 15. FLOWING CAPE
+   Keep the original overlay ID so the HTML remains easy to update.
+   Gradient bands suggest folds; a changing silhouette suggests fabric.
+   No continuous animation runs after the overlay is hidden. */
+.burn-curtain {
+  inset: -35vh -40vw;
+  --fabric-dark: #780c20;
+  --fabric-mid: #c61936;
+  --fabric-light: #ff5866;
+  background: linear-gradient(110deg,
+    var(--fabric-dark) 0%, var(--fabric-mid) 18%,
+    var(--fabric-light) 27%, var(--fabric-mid) 35%,
+    var(--fabric-dark) 48%, var(--fabric-mid) 59%,
+    var(--fabric-light) 68%, var(--fabric-mid) 80%,
+    var(--fabric-dark) 100%);
+  transform-origin: 20% 10%;
+  animation: cape-edge 820ms ease-in-out infinite alternate;
+  will-change: transform, clip-path;
+}
+.burn-curtain[data-destination="professional"] {
+  --fabric-dark: #063024;
+  --fabric-mid: #08744e;
+  --fabric-light: #54c494;
+  transform-origin: 80% 10%;
+}
+/* Broad translucent bands shift across the cape like light on folds. */
+.burn-curtain::before {
+  inset: 0;
+  width: auto;
+  background: repeating-linear-gradient(105deg,
+    transparent 0 12%, #ffffff18 17%, #00000020 23%, transparent 30%);
+  animation: cape-folds 660ms ease-in-out infinite alternate;
+}
+.burn-curtain::after {
+  inset: 0;
+  width: auto;
+  clip-path: none;
+  filter: none;
+  background: linear-gradient(165deg, #ffffff12, transparent 40%, #00000035);
+}
+/* Both silhouettes retain a broad solid center. At the midpoint that
+   center covers the viewport completely, hiding the actual content swap. */
+@keyframes cape-edge {
+  from { clip-path: polygon(0 0, 94% 0, 100% 12%, 93% 27%, 99% 43%, 92% 61%, 98% 78%, 93% 100%, 3% 100%, 0 78%, 5% 57%, 1% 34%); }
+  to { clip-path: polygon(3% 0, 100% 0, 94% 12%, 100% 27%, 92% 43%, 99% 61%, 93% 78%, 100% 100%, 0 100%, 5% 78%, 0 57%, 5% 34%); }
+}
+@keyframes cape-folds {
+  from { transform: translateX(-3%) skewY(-2deg); opacity: .5; }
+  to { transform: translateX(3%) skewY(2deg); opacity: .95; }
+}
+/* Respect reduced motion for both fabric and the existing code rain. */
+@media (prefers-reduced-motion: reduce) {
+  .burn-curtain, .burn-curtain::before { animation: none; }
+}

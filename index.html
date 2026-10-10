@@ -19,6 +19,8 @@
 
   <!-- defer makes JavaScript wait until the HTML has been parsed. -->
   <script src="scripts/side-switch.js" defer></script>
+  <!-- Decorative animation is separate from the creative-side interaction. -->
+  <script src="scripts/matrix.js" defer></script>
 </head>
 
 <body>
@@ -58,7 +60,7 @@
   </header>
 
   <!--
-    Decorative curtain used during the emerald burning transition.
+    Decorative fabric curtain used during the fluttering cape transition.
     It is hidden from screen readers and never captures mouse clicks.
   -->
   <div
@@ -77,10 +79,13 @@
     <div id="professional-view">
 
       <section class="hero wrap" id="home" aria-labelledby="hero-title">
+        <!-- Canvas draws decorative code, not actual user or system data.
+             aria-hidden prevents screen readers reading meaningless symbols. -->
+        <canvas id="matrix-rain" class="matrix-rain" aria-hidden="true"></canvas>
         <div class="hero-copy">
           <p class="eyebrow">
             <span class="status-dot" aria-hidden="true"></span>
-            A portfolio in progress
+            IT operations / AI automation
           </p>
 
           <h1 id="hero-title">
@@ -136,8 +141,64 @@
             </div>
           </div>
 
-          <p class="panel-note">Curiosity → practice → evidence</p>
+          <p class="panel-note">&gt; Curiosity → practice → evidence</p>
+          <!-- A manual pause is available in addition to reduced-motion support. -->
+          <button id="matrix-toggle" class="motion-toggle" type="button"
+            aria-pressed="false" hidden>Pause background</button>
         </aside>
+      </section>
+
+      <section
+        class="section wrap"
+        id="projects"
+        aria-labelledby="projects-title"
+      >
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">01 / Selected work</p>
+            <h2 id="projects-title">From idea to implementation.</h2>
+          </div>
+          <p class="small-label">Building the foundations</p>
+        </div>
+
+        <!-- Real projects only. No demo link until the ticket app is published. -->
+        <div class="project-grid">
+          <article class="project-card">
+            <div class="project-art" aria-hidden="true">
+              <div class="terminal-bar"><i></i><i></i><i></i><span>portfolio / index.html</span></div>
+              <pre>&lt;main&gt;
+  &lt;h1&gt;Build with purpose.&lt;/h1&gt;
+  &lt;section class="projects"&gt;
+    &lt;!-- Keep learning. --&gt;
+  &lt;/section&gt;
+&lt;/main&gt;</pre>
+            </div>
+            <div class="project-copy">
+              <p class="eyebrow">Project 001 <span class="badge">In progress</span></p>
+              <h3>Personal portfolio</h3>
+              <p>A home for my work, learning, and creative exploration.</p>
+              <ul class="tags" aria-label="Portfolio technologies"><li>HTML</li><li>CSS</li><li>JavaScript</li></ul>
+              <a class="text-link" href="https://github.com/MostafaMosabbir/mostafa-portfolio">Explore the source ↗</a>
+            </div>
+          </article>
+          <article class="project-card">
+            <div class="project-art" aria-hidden="true">
+              <div class="terminal-bar"><i></i><i></i><i></i><span>assistant / workflow</span></div>
+              <pre>// Workflow illustration
+read(ticket);
+suggestCategory();
+explainMatches();
+// A person reviews the draft.</pre>
+            </div>
+            <div class="project-copy">
+              <p class="eyebrow">Project 002 <span class="badge">Working prototype</span></p>
+              <h3>IT Ticket Assistant</h3>
+              <p>Rule-based ticket classification and editable response drafts, with human review.</p>
+              <ul class="tags" aria-label="Assistant technologies"><li>JavaScript</li><li>Workflow automation</li></ul>
+              <p class="project-availability">Local prototype · Public demo coming later</p>
+            </div>
+          </article>
+        </div>
       </section>
 
       <!-- About explains my approach rather than repeating the introduction. -->
@@ -147,7 +208,7 @@
         aria-labelledby="about-title"
       >
         <div>
-          <p class="eyebrow">01 / About</p>
+          <p class="eyebrow">02 / About</p>
           <h2 id="about-title">
             The work.<br>
             And the thinking behind it.
@@ -173,58 +234,6 @@
         </div>
       </section>
 
-      <section
-        class="section wrap"
-        id="projects"
-        aria-labelledby="projects-title"
-      >
-        <div class="section-heading">
-          <div>
-            <p class="eyebrow">02 / Selected work</p>
-            <h2 id="projects-title">From idea to implementation.</h2>
-          </div>
-          <p class="small-label">Building the foundations</p>
-        </div>
-
-        <!-- Add additional articles here when real projects are ready. -->
-        <article class="project-card">
-          <div class="project-art" aria-hidden="true">
-            <span class="art-label">PERSONAL PORTFOLIO</span>
-            <span class="art-monogram">M<span>.</span></span>
-            <span class="art-caption">An evolving body of work / 001</span>
-          </div>
-
-          <div class="project-copy">
-            <p class="eyebrow">
-              Project 001
-              <span class="badge">In progress</span>
-            </p>
-
-            <h3>My corner of the web.</h3>
-
-            <p>
-              A personal website built with HTML, CSS, and JavaScript.
-              It brings together my work, learning, and documentation,
-              with a separate space for future creative projects.
-            </p>
-
-            <ul class="tags" aria-label="Project technologies">
-              <li>HTML</li>
-              <li>CSS</li>
-              <li>JavaScript</li>
-              <li>GitHub</li>
-            </ul>
-
-            <a
-              class="text-link"
-              href="https://github.com/MostafaMosabbir/mostafa-portfolio"
-            >
-              Explore the source <span aria-hidden="true">↗</span>
-            </a>
-          </div>
-        </article>
-      </section>
-
       <!--
         Cybersecurity remains separate from general portfolio projects.
         The Rowan fishing capstone stays outside this personal portfolio.
@@ -247,13 +256,21 @@
           <h3>A space for careful investigation.</h3>
 
           <p>
-            Future write-ups will cover authorized labs, defensive
-            analysis, and the reasoning behind each finding.
+            I'm building my cybersecurity skills through self-directed study
+            and hands-on labs on TryHackMe, developing my understanding
+            of systems, security concepts, and investigative thinking.
           </p>
 
           <p class="muted">
-            The first lab is still to come. Published work will include
-            its scope, evidence, and limitations.
+            Future portfolio write-ups will explain each lab's scope,
+            my approach, supporting evidence, and limitations.
+          </p>
+
+          <!-- My public learning profile provides context alongside future write-ups. -->
+          <p>
+            <a class="text-link" href="https://tryhackme.com/p/mostafamosabbir">
+              View my TryHackMe profile <span aria-hidden="true">↗</span>
+            </a>
           </p>
 
           <a
