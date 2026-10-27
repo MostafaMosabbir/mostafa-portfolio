@@ -1,0 +1,21 @@
+﻿dimension,value,ticket_count
+total,valid tickets,38
+categories,access permissions,2
+categories,account access,6
+categories,cloud storage,1
+categories,collaboration,1
+categories,email,5
+categories,hardware,6
+categories,network,8
+categories,printing,2
+categories,software,3
+categories,storage,2
+categories,windows services,2
+priorities,critical,1
+priorities,high,8
+priorities,low,9
+priorities,medium,20
+statuses,closed,2
+statuses,in progress,3
+statuses,new,4
+statuses,resolved,29
