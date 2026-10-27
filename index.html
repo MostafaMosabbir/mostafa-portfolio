@@ -330,6 +330,28 @@ Automated tests passed: 9</pre>
             </a>
           </div>
         </div>
+        <!-- GitHub Pages cannot send email itself. FormSubmit processes this
+             ordinary POST form and delivers it to my Gmail. The first live
+             submission requires me to confirm FormSubmit's activation email.
+             Keep its default CAPTCHA enabled; no email password belongs here. -->
+        <form class="wrap contact-form" action="https://formsubmit.co/mostafamosabbir@gmail.com" method="POST" aria-label="Contact Mostafa" aria-describedby="contact-delivery">
+          <input type="hidden" name="_subject" value="New message from mostafam.com">
+          <div class="contact-fields">
+            <label for="contact-name">Name
+              <input id="contact-name" name="name" type="text" autocomplete="name" maxlength="100" required>
+            </label>
+            <label for="contact-email">Email
+              <input id="contact-email" name="email" type="email" autocomplete="email" maxlength="254" required>
+            </label>
+          </div>
+          <label for="contact-message">Message
+            <textarea id="contact-message" name="message" rows="6" maxlength="5000" required></textarea>
+          </label>
+          <p class="muted" id="contact-delivery">Your name, email, and message are processed by <a href="https://formsubmit.co/privacy.pdf">FormSubmit</a> and emailed to me. Please don't include passwords or confidential information.</p>
+          <!-- Native form submission works without JavaScript. FormSubmit
+               handles CAPTCHA and confirmation; do not show success early. -->
+          <button class="button" type="submit">Send message</button>
+        </form>
       </section>
     </div>
 
