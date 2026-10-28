@@ -129,9 +129,7 @@
     const glow = ctx.createRadialGradient(mouse.x,mouse.y,0,mouse.x,mouse.y,GLOW_RADIUS);
     glow.addColorStop(0,`rgba(${color},${.085*fade})`);glow.addColorStop(1,`rgba(${color},0)`);
     ctx.fillStyle=glow;ctx.fillRect(mouse.x-GLOW_RADIUS,mouse.y-GLOW_RADIUS,GLOW_RADIUS*2,GLOW_RADIUS*2);
-    ctx.font='10px Consolas, monospace';ctx.fillStyle=`rgba(${color},${.32*fade})`;
-    ['01','<>'].forEach((symbol,i)=>ctx.fillText(symbol,mouse.x+14+i*17,mouse.y-16+Math.sin(i+phase)*4));
-    // Background solids respond directly; no separate cursor-following shapes.
+    // Background solids respond directly; no cursor-following symbols or shapes.
 
   }
   function frame(time) {
