@@ -51,7 +51,15 @@ body[data-side="creative"] .creative-heading h1 span { font-style: italic; }
 /* Panels retain headings for non-JS reading; tab labels name them with JS. */
 .feature-panel[role="tabpanel"] > h3 { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
 .feature-panel > .muted { font-size: .8rem; }
-.overview-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; min-height: 215px; }
+/* Let the Brief size to its content instead of centering it in empty space.
+   minmax(0, ...) lets both columns shrink without pushing outside the card. */
+.overview-grid { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1.15fr); gap: 28px; align-items: start; }
+.brief-summary > p { margin: 0; }
+.brief-summary > .muted { margin-top: 12px; font-size: .8rem; }
+.brief-sample-label { margin: 0 0 12px; color: var(--muted); font: .75rem/1.5 Consolas, monospace; }
+.brief-evidence { min-width: 0; }
+.brief-evidence .evidence-stats div { justify-content: flex-end; }
+.brief-evidence .evidence-stats dt { line-height: 1.5; overflow-wrap: anywhere; }
 .overview-grid .text-link { display: inline-block; margin-top: 18px; }
 .evidence-stats { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 12px; margin: 0; }
 .evidence-stats div { display: flex; flex-direction: column-reverse; gap: 8px; border: 1px solid var(--line); border-radius: 6px; padding: 18px; background: #0b1e18; }

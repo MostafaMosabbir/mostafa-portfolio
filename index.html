@@ -16,7 +16,7 @@
 
   <!-- These paths must match your folders and filenames exactly. -->
   <link rel="stylesheet" href="styles/main.css">
-  <link rel="stylesheet" href="styles/refined.css?v=heatblast-1">
+  <link rel="stylesheet" href="styles/refined.css?v=brief-2">
 
   <!-- defer makes JavaScript wait until the HTML has been parsed. -->
   <script src="scripts/side-switch.js?v=heatblast-1" defer></script>
@@ -160,11 +160,14 @@
           <section id="panel-overview" class="feature-panel" aria-labelledby="overview-heading">
             <h3 id="overview-heading">Brief</h3>
             <div class="overview-grid">
-              <div><p>Summarize ticket exports, find missing resolution notes, and review repeated subject wording.</p>
+              <div class="brief-summary"><p>Summarize ticket exports, find missing resolution notes, and review repeated subject wording.</p>
                 <p class="muted">Fictional sample data · Local tool</p>
                 <a class="text-link" href="projects/ticket-analyzer/index.html">Open the case file ↗</a>
               </div>
-              <dl class="evidence-stats"><div><dt>Fictional tickets</dt><dd>38</dd></div><div><dt>Missing resolution notes</dt><dd>3</dd></div><div><dt>Repeated subject groups</dt><dd>4</dd></div></dl>
+              <div class="brief-evidence">
+                <p class="brief-sample-label" id="brief-sample-label">Python sample · 38 fictional tickets</p>
+                <dl class="evidence-stats" aria-labelledby="brief-sample-label"><div><dt>Fictional tickets</dt><dd>38</dd></div><div><dt>Missing resolution notes</dt><dd>3</dd></div><div><dt>Repeated subject groups</dt><dd>4</dd></div></dl>
+              </div>
             </div>
           </section>
           <section id="panel-process" class="feature-panel" aria-labelledby="process-heading">
