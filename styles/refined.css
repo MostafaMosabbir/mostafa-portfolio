@@ -133,36 +133,56 @@ body[data-side="creative"] .side-switch { color: #fff4ed; }
 @media (prefers-reduced-motion: reduce) { .project-card, .workflow button { transition: none; } .project-card:hover { transform: none; } .matrix-rain { opacity: .18; } }
 @media (prefers-reduced-motion: reduce) { .hero .eyebrow::after { animation: none; } }
 
-/* PIXEL COMPANION
-   A 32-unit original sprite replaces the monogram. Only a deliberate side
-   change animates it; the resting header stays quiet and readable. */
+
+/* PERSONAL ROBOT
+   The full-body sprite keeps the approved M and side-swept hair. A separate
+   eye anchor gives JavaScript a precise screen position at every breakpoint. */
 .brand-group { display: flex; align-items: center; gap: 10px; }
-.pixel-switch { --cape: #12835e; --cape-light: #63f0b7; display: grid;
-  place-items: center; flex: 0 0 48px; width: 48px; height: 54px; padding: 0;
-  border: 1px solid transparent; border-radius: 6px; background: transparent;
-  cursor: pointer; touch-action: manipulation; }
+.pixel-switch { display: grid; place-items: center; flex: 0 0 76px;
+  width: 76px; height: 80px; padding: 2px; border: 1px solid transparent;
+  border-radius: 8px; background: transparent; cursor: pointer; touch-action: manipulation; }
 .pixel-switch[hidden] { display: none; }
-.pixel-switch:hover { background: #ffffff09; border-color: #ffffff25; }
+.pixel-switch:hover { background: #ffffff08; border-color: #ffffff20; }
 .pixel-switch:disabled { cursor: wait; }
-.pixel-explorer { width: 48px; height: 54px; overflow: visible; }
-body[data-side="creative"] .pixel-switch,
-body[data-transition="creative"] .pixel-switch { --cape: #d82846; --cape-light: #ff8791; }
-body[data-transition="professional"] .pixel-switch { --cape: #12835e; --cape-light: #63f0b7; }
-.pixel-figure { transform-origin: 16px 30px; }
-.pixel-cape { transform-origin: 13px 15px; }
-body[data-transition] .pixel-figure { animation: explorer-launch 420ms ease-out both; }
-body[data-transition] .pixel-cape { animation: explorer-flutter 280ms ease-in-out infinite alternate; }
-@keyframes explorer-launch { 0% { transform: translateY(0); } 35% { transform: translateY(2px) rotate(-7deg); } 100% { transform: translateY(-3px) rotate(8deg); } }
-@keyframes explorer-flutter { from { transform: skewY(-8deg) scaleX(.85); } to { transform: skewY(9deg) scaleX(1.25); } }
-/* JS expands the cape from the character's exact screen position. The
-   full rectangle at the midpoint conceals the view swap without a flash. */
-.burn-curtain, .burn-curtain[data-destination="professional"] {
-  inset: -10vh -10vw; transform-origin: 0 0; animation: none;
-  clip-path: none; border-radius: 0;
+.robot-figure { display: block; position: relative; width: 72px; line-height: 0; transform-origin: 50% 90%; }
+.robot-art { display: block; width: 100%; height: auto; }
+.robot-eyes { position: absolute; left: 56%; top: 12%; width: 8%; height: 2%; pointer-events: none; }
+body[data-transition] .robot-figure { animation: robot-brace 300ms ease-out both; }
+/* A single subtle brace, no constant bobbing or strobing. */
+@keyframes robot-brace { from { transform: translateY(0); } to { transform: translateY(1px); } }
+.heat-transition { position: fixed; inset: 0; z-index: 100; overflow: hidden;
+  pointer-events: none; --beam-color: #58f5b1; --beam-shadow: #13d68a;
+  --heat-dark: #031b15; --heat-mid: #0a4a35; }
+.heat-transition[hidden] { display: none; }
+/* The robot stays emerald; only the return beam takes on After Hours red. */
+.heat-transition[data-destination="professional"] { --beam-color: #ff8794;
+  --beam-shadow: #f23555; --heat-dark: #250b14; --heat-mid: #6e1830; }
+.heat-wash { position: absolute; inset: 0; opacity: 0;
+  background: radial-gradient(ellipse at var(--eye-x) var(--eye-y), var(--heat-mid), var(--heat-dark) 65%);
+  will-change: clip-path, opacity; }
+.heat-wash::after { content: ""; position: absolute; inset: 0;
+  background: repeating-radial-gradient(ellipse at var(--eye-x) var(--eye-y), transparent 0 70px, #ffffff08 72px 74px, transparent 78px 130px); }
+.eye-beam { position: absolute; left: var(--eye-x); top: var(--eye-y);
+  width: calc(100vw - var(--eye-x)); height: 3px; opacity: 0;
+  transform-origin: left center; background: #d7ffe9;
+  box-shadow: 0 0 6px 2px var(--beam-color), 0 0 22px 6px var(--beam-shadow), 0 0 48px 10px #23d88b33;
+  will-change: transform, opacity; }
+.eye-charge { position: absolute; left: var(--eye-x); top: var(--eye-y);
+  width: 10px; height: 5px; margin: -2px 0 0 -5px; opacity: 0;
+  background: #eafff3; box-shadow: 0 0 12px 5px var(--beam-color), 0 0 30px var(--beam-shadow); }
+.heat-particles { position: absolute; left: var(--eye-x); top: var(--eye-y); opacity: 0; }
+.heat-particles i { position: absolute; width: 3px; height: 3px; background: var(--beam-color); box-shadow: 0 0 8px var(--beam-color); }
+.heat-particles i:nth-child(1) { left: 28vw; top: -12px; }
+.heat-particles i:nth-child(2) { left: 43vw; top: 18px; }
+.heat-particles i:nth-child(3) { left: 57vw; top: -24px; }
+.heat-particles i:nth-child(4) { left: 69vw; top: 10px; }
+.heat-particles i:nth-child(5) { left: 17vw; top: 7px; }
+@media (max-width: 620px) {
+  .brand-group { flex: 1; gap: 6px; } .site-header { column-gap: 8px; }
+  .pixel-switch { flex-basis: 64px; width: 64px; height: 68px; }
+  .robot-figure { width: 60px; }
 }
-.burn-curtain::before { animation: cape-folds 480ms ease-in-out infinite alternate; }
-@media (max-width: 620px) { .brand-group { flex: 1; gap: 6px; } .site-header { column-gap: 10px; } }
 @media (prefers-reduced-motion: reduce) {
-  body[data-transition] .pixel-figure, body[data-transition] .pixel-cape,
-  .burn-curtain::before { animation: none; }
+  body[data-transition] .robot-figure { animation: none; }
+  .heat-transition { display: none !important; }
 }

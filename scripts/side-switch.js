@@ -81,34 +81,49 @@
     });
   }
 
-  // 3. Grow fabric from the companion, then let it billow off the right edge.
-  // Every polygon has eight points so the browser can interpolate the shape.
-  // At the midpoint the cape is a solid rectangle larger than the viewport.
-  async function sweep(entering, origin) {
-    const full = "polygon(0% 0%,50% 0%,100% 0%,100% 50%,100% 100%,50% 100%,0% 100%,0% 50%)";
-    const flutter = "polygon(0% 0%,55% 5%,100% 0%,88% 45%,100% 96%,48% 88%,0% 100%,8% 50%)";
-    const width = window.innerWidth * 1.2;
-    const height = window.innerHeight * 1.2;
-    const seed = `translate(${origin.x + window.innerWidth * .1}px, ${origin.y + window.innerHeight * .1}px) scale(${18 / width}, ${28 / height})`;
-    const frames = entering ? [
-      { transform: seed, clipPath: flutter },
-      { transform: "translate(0,0) scale(1)", clipPath: flutter, offset: .8 },
-      { transform: "translate(0,0) scale(1)", clipPath: full }
-    ] : [
-      { transform: "translate(0,0) scale(1)", clipPath: full },
-      { transform: "translate(35%, -3%) skewY(-5deg)", clipPath: flutter, offset: .45 },
-      { transform: "translate(115%, -8%) skewY(8deg)", clipPath: flutter }
-    ];
-    const animation = curtain.animate(frames, {
-      duration: entering ? 680 : 720,
-      easing: "cubic-bezier(.45, 0, .2, 1)", fill: "forwards"
-    });
-    try { await animation.finished; }
-    finally {
-      // Persist the final frame before removing the animation to avoid a flash.
-      Object.assign(curtain.style, frames[frames.length - 1]);
-      animation.cancel();
-    }
+  // 3. Keep the effects in one bounded sequence. Retaining animations until
+  // cleanup prevents a flash between stages. Only visual layers animate;
+  // no screenshots, remote services, or page-content duplication are needed.
+  const effects = [];
+  async function animate(element, frames, duration, easing = "ease-out") {
+    const effect = element.animate(frames, { duration, easing, fill: "forwards" });
+    effects.push(effect);
+    await effect.finished;
+  }
+
+  async function heatBlast(nextCreative) {
+    const eye = document.querySelector(".robot-eyes") || companion || button;
+    const rect = eye.getBoundingClientRect();
+    const x = Math.max(0, Math.min(innerWidth, rect.left + rect.width / 2));
+    const y = Math.max(0, Math.min(innerHeight, rect.top + rect.height / 2 + 1));
+    // Pixel coordinates remain aligned with the actual eye at any screen size.
+    curtain.style.setProperty("--eye-x", `${x}px`);
+    curtain.style.setProperty("--eye-y", `${y}px`);
+    curtain.dataset.destination = nextCreative ? "creative" : "professional";
+    document.body.dataset.transition = curtain.dataset.destination;
+    const charge = curtain.querySelector(".eye-charge");
+    const beam = curtain.querySelector(".eye-beam");
+    const wash = curtain.querySelector(".heat-wash");
+    const particles = curtain.querySelector(".heat-particles");
+    curtain.hidden = false;
+
+    // Anticipation: one steady build in brightness, then a fine horizontal beam.
+    await animate(charge, [{ opacity: 0, transform: "scale(.4)" }, { opacity: .9, transform: "scale(1)" }], 260);
+    await animate(beam, [{ opacity: 0, transform: "scaleX(0)" }, { opacity: .95, transform: "scaleX(1)" }], 240, "cubic-bezier(.2,.6,.3,1)");
+    // The dark, opaque heat wave expands from the eye and conceals the swap.
+    // Its radius reaches every corner, even in tall portrait viewports.
+    const radius = Math.ceil(Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y))) + 20;
+    await Promise.all([
+      animate(wash, [
+        { opacity: 1, clipPath: `circle(0px at ${x}px ${y}px)` },
+        { opacity: 1, clipPath: `circle(${radius}px at ${x}px ${y}px)` }
+      ], 480, "cubic-bezier(.4,0,.2,1)"),
+      animate(particles, [{ opacity: 0, transform: "translateX(-20px)" }, { opacity: .8, offset: .35 }, { opacity: 0, transform: "translateX(70px)" }], 480),
+      animate(beam, [{ opacity: .95 }, { opacity: 0 }], 440),
+      animate(charge, [{ opacity: .9 }, { opacity: 0 }], 300)
+    ]);
+    showSide(nextCreative);
+    await animate(wash, [{ opacity: 1 }, { opacity: 0 }], 420, "ease-in-out");
   }
 
   // 4. Run the transition when the button is clicked.
@@ -130,18 +145,7 @@
         // Switch immediately when animation is unwanted or unsupported.
         showSide(nextCreative);
       } else {
-        // Scarlet fabric opens creative mode; emerald fabric returns home.
-        // Capture the visible sprite before switching layouts or scrolling.
-        const rect = (companion || button).getBoundingClientRect();
-        const origin = { x: Math.max(0, Math.min(innerWidth, rect.left + rect.width / 2)),
-          y: Math.max(0, Math.min(innerHeight, rect.top + rect.height / 2)) };
-        document.body.dataset.transition = nextCreative ? "creative" : "professional";
-        curtain.dataset.destination = nextCreative ? "creative" : "professional";
-        curtain.style.transform = "scale(0)";
-        curtain.hidden = false;
-        await sweep(true, origin);
-        showSide(nextCreative);
-        await sweep(false, origin);
+        await heatBlast(nextCreative);
       }
     } catch (error) {
       // An animation failure should not prevent access to either side.
@@ -153,6 +157,7 @@
     } finally {
       // Always clean up and make the button usable again.
       curtain.hidden = true;
+      effects.splice(0).forEach(effect => effect.cancel());
       delete document.body.dataset.transition;
       controls.forEach(control => { control.disabled = false; });
       isSwitching = false;

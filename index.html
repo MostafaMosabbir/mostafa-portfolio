@@ -16,10 +16,10 @@
 
   <!-- These paths must match your folders and filenames exactly. -->
   <link rel="stylesheet" href="styles/main.css">
-  <link rel="stylesheet" href="styles/refined.css?v=pixel-cape-1">
+  <link rel="stylesheet" href="styles/refined.css?v=heatblast-1">
 
   <!-- defer makes JavaScript wait until the HTML has been parsed. -->
-  <script src="scripts/side-switch.js?v=pixel-cape-1" defer></script>
+  <script src="scripts/side-switch.js?v=heatblast-1" defer></script>
   <!-- Decorative animation is separate from the creative-side interaction. -->
   <script src="scripts/matrix.js" defer></script>
   <!-- Independent enhancements: navigation, project filtering, and sample analysis. -->
@@ -32,30 +32,16 @@
 
   <header class="site-header wrap">
     <div class="brand-group">
-      <!-- Original pixel explorer: rectangles keep the artwork crisp at any size.
+      <!-- Personal pixel robot with the approved hairstyle and chest M.
            This is a separate button so the name remains a normal home link. -->
       <button id="pixel-switch" class="pixel-switch" type="button" hidden
         aria-label="Open After Hours" aria-controls="professional-view creative-view">
-        <svg class="pixel-explorer" viewBox="0 0 32 36" aria-hidden="true" focusable="false" shape-rendering="crispEdges">
-          <ellipse cx="16" cy="34" rx="11" ry="1" fill="#000" opacity=".3"/>
-          <g class="pixel-figure">
-            <g class="pixel-cape" fill="var(--cape)">
-              <path d="M12 14h9v5h3v5h3v7h-5v-2h-4v-3h-6z"/>
-              <path d="M18 17h3v7h3v5h-3v-3h-3z" fill="var(--cape-light)"/>
-              <path d="M12 17h3v10h-3z" fill="#000" opacity=".3"/>
-            </g>
-            <path d="M11 22h5v9h-2v2H8v-3h3zm6 0h5v8h3v3h-7v-4h-1z" fill="#819499"/>
-            <path d="M10 14h11v10H10z" fill="#d8e4df"/>
-            <path d="M10 14h3v9h-3zM19 15h3v9h-3z" fill="#6a8387"/>
-            <path d="M8 16h3v8H8zm14 0h3v7h-3z" fill="#acbdb8"/>
-            <path d="M10 23h12v3H10z" fill="#263b41"/>
-            <path d="M14 24h3v2h-3z" fill="var(--cape-light)"/>
-            <path d="M11 3h9v2h3v8h-3v3h-9v-2H8V6h3z" fill="#a8bdbb"/>
-            <path d="M11 6h11v6H11z" fill="#152d35"/>
-            <path d="M12 7h8v2h-8z" fill="var(--cape-light)"/>
-            <path d="M12 12h8v2h-8z" fill="#e0ebe3"/>
-          </g>
-        </svg>
+        <!-- The approved artwork is local: no image service runs for visitors.
+             The invisible eye anchor aligns the beam with this exact sprite. -->
+        <span class="robot-figure">
+          <img class="robot-art" src="assets/robot/mostafa-robot.webp" width="288" height="306" alt="" fetchpriority="high">
+          <span class="robot-eyes" aria-hidden="true"></span>
+        </span>
       </button>
       <a class="brand" href="#main"><span>Mostafa Mosabbir</span></a>
     </div>
@@ -91,15 +77,20 @@
   </header>
 
   <!--
-    Decorative fabric curtain used during the fluttering cape transition.
+    Decorative eye beam and heat wave used during the side transition.
     It is hidden from screen readers and never captures mouse clicks.
   -->
   <div
-    class="burn-curtain"
+    class="heat-transition"
     id="burn-curtain"
     aria-hidden="true"
     hidden
-  ></div>
+  >
+    <div class="heat-wash"></div>
+    <div class="eye-beam"></div>
+    <div class="eye-charge"></div>
+    <div class="heat-particles"><i></i><i></i><i></i><i></i><i></i></div>
+  </div>
 
   <!-- Announce view changes without adding visible text to the design. -->
   <p class="visually-hidden" id="side-status" role="status"></p>
