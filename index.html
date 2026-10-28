@@ -3,8 +3,8 @@
 <html lang="en">
 <head>
   <!-- Robot-head icons retain the approved hair and emerald eyes at small sizes. -->
-  <link rel="icon" type="image/png" sizes="64x64" href="assets/robot/favicon.png?v=1">
-  <link rel="apple-touch-icon" sizes="180x180" href="assets/robot/apple-touch-icon.png?v=1">
+  <link rel="icon" type="image/png" sizes="64x64" href="assets/robot/favicon.png?v=2">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/robot/apple-touch-icon.png?v=2">
 
   <meta charset="UTF-8">
 
@@ -20,10 +20,10 @@
 
   <!-- These paths must match your folders and filenames exactly. -->
   <link rel="stylesheet" href="styles/main.css">
-  <link rel="stylesheet" href="styles/refined.css?v=geometry-1">
+  <link rel="stylesheet" href="styles/refined.css?v=robot-coat-2">
 
   <!-- defer makes JavaScript wait until the HTML has been parsed. -->
-  <script src="scripts/side-switch.js?v=heatblast-1" defer></script>
+  <script src="scripts/side-switch.js?v=robot-coat-2" defer></script>
   <!-- Decorative animation is separate from the creative-side interaction. -->
   <script src="scripts/matrix.js" defer></script>
   <script src="scripts/geometry.js?v=3" defer></script>
@@ -46,7 +46,8 @@
         <!-- The approved artwork is local: no image service runs for visitors.
              The invisible eye anchor aligns the beam with this exact sprite. -->
         <span class="robot-figure">
-          <img class="robot-art" src="assets/robot/mostafa-robot.webp" width="288" height="306" alt="" fetchpriority="high">
+          <img class="robot-art robot-idle" src="assets/robot/robot-idle.webp" width="320" height="320" alt="" fetchpriority="high">
+          <img class="robot-art robot-firing" src="assets/robot/robot-fire.webp" width="320" height="320" alt="" decoding="async">
           <span class="robot-eyes" aria-hidden="true"></span>
         </span>
       </button>

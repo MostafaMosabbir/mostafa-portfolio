@@ -91,7 +91,31 @@
     await effect.finished;
   }
 
+  // Decode early: the first transition should be as reliable as later ones.
+  const idleArt = document.querySelector(".robot-idle");
+  const firingArt = document.querySelector(".robot-firing");
+  const artworkReady = Promise.all([idleArt, firingArt].filter(Boolean).map(image =>
+    typeof image.decode === "function" ? image.decode().catch(() => null) : null
+  ));
+
+  async function pose(braced, duration) {
+    if (!idleArt || !firingArt) return;
+    await Promise.all([
+      animate(idleArt, [{ opacity: braced ? 1 : 0 }, { opacity: braced ? 0 : 1 }], duration, "ease-in-out"),
+      animate(firingArt, [{ opacity: braced ? 0 : 1 }, { opacity: braced ? 1 : 0 }], duration, "ease-in-out")
+    ]);
+  }
+
   async function heatBlast(nextCreative) {
+    await artworkReady;
+    // Both controls can be activated after scrolling; bring the actor into view.
+    window.scrollTo({ top: 0, behavior: "instant" });
+    // A failed download must not fade the working idle artwork away.
+    if (firingArt && (!firingArt.complete || !firingArt.naturalWidth)) {
+      showSide(nextCreative);
+      return;
+    }
+    await pose(true, 260);
     const eye = document.querySelector(".robot-eyes") || companion || button;
     const rect = eye.getBoundingClientRect();
     const x = Math.max(0, Math.min(innerWidth, rect.left + rect.width / 2));
@@ -123,7 +147,9 @@
       animate(charge, [{ opacity: .9 }, { opacity: 0 }], 300)
     ]);
     showSide(nextCreative);
-    await animate(wash, [{ opacity: 1 }, { opacity: 0 }], 420, "ease-in-out");
+    await animate(wash, [{ opacity: 1 }, { opacity: 0 }], 300, "ease-in-out");
+    // Let the visitor see the robot settle back into its idle silhouette.
+    await pose(false, 320);
   }
 
   // 4. Run the transition when the button is clicked.

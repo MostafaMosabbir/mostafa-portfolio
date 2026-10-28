@@ -5,7 +5,7 @@ const vm = require('node:vm');
 const fs = require('node:fs');
 const path = require('node:path');
 const source = fs.readFileSync(path.join(__dirname, '../scripts/side-switch.js'), 'utf8');
-function setup({reduced = false, failure = false, supported = true, hold = false} = {}) {
+function setup({reduced = false, failure = false, supported = true, hold = false, artwork = false, brokenImage = false} = {}) {
   const nodes = {}, effects = [];
   let release;
   const gate = new Promise(resolve => { release = resolve; });
@@ -18,6 +18,12 @@ function setup({reduced = false, failure = false, supported = true, hold = false
         finished: failure ? Promise.reject(new Error('animation unavailable')) : hold ? gate : Promise.resolve() };
       effects.push(effect); return effect;
     };
+  }
+  if (artwork) {
+    for (const selector of ['.robot-idle', '.robot-firing']) {
+      nodes[selector] = { complete: true, naturalWidth: brokenImage ? 0 : 320,
+        decode: () => Promise.resolve(), animate: nodes['.eye-charge'].animate };
+    }
   }
   const body = {dataset:{}};
   vm.runInNewContext(source,{document:{body,getElementById:id=>nodes[id],querySelector:s=>nodes[s]},
@@ -48,8 +54,24 @@ for (const mode of [{reduced:true},{supported:false},{failure:true}]) {
   });
 }
 test('rapid duplicate activation cannot start a second transition',async()=>{
-  const s=setup({hold:true}); const first=s.click('pixel-switch');
+  const s=setup({hold:true}); const first=s.click('pixel-switch'); await Promise.resolve(); await Promise.resolve();
   assert.equal(s.nodes['side-switch'].disabled,true);
   await s.click('side-switch'); assert.equal(s.effects.length,1);
   s.release(); await first; assert.equal(s.body.dataset.side,'creative');
+});
+
+test('articulated frames brace, recover, and release all animation effects', async()=>{
+  const s=setup({artwork:true}); await s.click('pixel-switch');
+  assert.equal(s.body.dataset.side,'creative');
+  assert.equal(s.effects[0].frames[1].opacity,0);
+  assert.equal(s.effects[1].frames[1].opacity,1);
+  assert.equal(s.effects.at(-2).frames[1].opacity,1);
+  assert.equal(s.effects.at(-1).frames[1].opacity,0);
+  assert.ok(s.effects.every(e=>e.cancelled));
+});
+test('missing firing artwork keeps navigation usable without hiding idle robot', async()=>{
+  const s=setup({artwork:true,brokenImage:true}); await s.click('pixel-switch');
+  assert.equal(s.body.dataset.side,'creative');
+  assert.equal(s.effects.length,0);
+  assert.equal(s.nodes['pixel-switch'].disabled,false);
 });
