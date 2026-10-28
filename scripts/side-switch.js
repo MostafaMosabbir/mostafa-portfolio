@@ -46,14 +46,14 @@
     // The label always names the destination of the next click.
     label.textContent = isCreative
       ? "Professional side"
-      : "Creative side";
+      : "After Hours";
 
     document.title = isCreative
-      ? "Mostafa Mosabbir | Creative"
+      ? "Mostafa Mosabbir | After Hours"
       : "Mostafa Mosabbir | IT & AI Automation";
 
     status.textContent = isCreative
-      ? "Creative side opened."
+      ? "After Hours creative side opened."
       : "Professional side opened.";
 
     // Clear a section anchor because its section may now be hidden.
