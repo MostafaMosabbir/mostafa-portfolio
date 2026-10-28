@@ -132,3 +132,37 @@ body[data-side="creative"] .side-switch { color: #fff4ed; }
 }
 @media (prefers-reduced-motion: reduce) { .project-card, .workflow button { transition: none; } .project-card:hover { transform: none; } .matrix-rain { opacity: .18; } }
 @media (prefers-reduced-motion: reduce) { .hero .eyebrow::after { animation: none; } }
+
+/* PIXEL COMPANION
+   A 32-unit original sprite replaces the monogram. Only a deliberate side
+   change animates it; the resting header stays quiet and readable. */
+.brand-group { display: flex; align-items: center; gap: 10px; }
+.pixel-switch { --cape: #12835e; --cape-light: #63f0b7; display: grid;
+  place-items: center; flex: 0 0 48px; width: 48px; height: 54px; padding: 0;
+  border: 1px solid transparent; border-radius: 6px; background: transparent;
+  cursor: pointer; touch-action: manipulation; }
+.pixel-switch[hidden] { display: none; }
+.pixel-switch:hover { background: #ffffff09; border-color: #ffffff25; }
+.pixel-switch:disabled { cursor: wait; }
+.pixel-explorer { width: 48px; height: 54px; overflow: visible; }
+body[data-side="creative"] .pixel-switch,
+body[data-transition="creative"] .pixel-switch { --cape: #d82846; --cape-light: #ff8791; }
+body[data-transition="professional"] .pixel-switch { --cape: #12835e; --cape-light: #63f0b7; }
+.pixel-figure { transform-origin: 16px 30px; }
+.pixel-cape { transform-origin: 13px 15px; }
+body[data-transition] .pixel-figure { animation: explorer-launch 420ms ease-out both; }
+body[data-transition] .pixel-cape { animation: explorer-flutter 280ms ease-in-out infinite alternate; }
+@keyframes explorer-launch { 0% { transform: translateY(0); } 35% { transform: translateY(2px) rotate(-7deg); } 100% { transform: translateY(-3px) rotate(8deg); } }
+@keyframes explorer-flutter { from { transform: skewY(-8deg) scaleX(.85); } to { transform: skewY(9deg) scaleX(1.25); } }
+/* JS expands the cape from the character's exact screen position. The
+   full rectangle at the midpoint conceals the view swap without a flash. */
+.burn-curtain, .burn-curtain[data-destination="professional"] {
+  inset: -10vh -10vw; transform-origin: 0 0; animation: none;
+  clip-path: none; border-radius: 0;
+}
+.burn-curtain::before { animation: cape-folds 480ms ease-in-out infinite alternate; }
+@media (max-width: 620px) { .brand-group { flex: 1; gap: 6px; } .site-header { column-gap: 10px; } }
+@media (prefers-reduced-motion: reduce) {
+  body[data-transition] .pixel-figure, body[data-transition] .pixel-cape,
+  .burn-curtain::before { animation: none; }
+}

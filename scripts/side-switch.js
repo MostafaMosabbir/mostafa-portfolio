@@ -11,6 +11,8 @@
 
   // 1. Find the HTML elements using their IDs.
   const button = document.getElementById("side-switch");
+  const companion = document.getElementById("pixel-switch");
+  const controls = [button, companion].filter(Boolean);
   const label = document.getElementById("switch-label");
   const professional = document.getElementById("professional-view");
   const creative = document.getElementById("creative-view");
@@ -42,6 +44,7 @@
     navigation.hidden = isCreative;
 
     button.setAttribute("aria-pressed", String(isCreative));
+    if (companion) companion.setAttribute("aria-label", isCreative ? "Open The Workbench" : "Open After Hours");
 
     // The label always names the destination of the next click.
     label.textContent = isCreative
@@ -78,39 +81,44 @@
     });
   }
 
-  // 3. The whole cape sweeps across the viewport while CSS flutters its
-  // fabric edge and folds. The center position fully covers the page.
-  // direction reverses travel when returning to the professional side.
-  async function sweep(entering, direction) {
+  // 3. Grow fabric from the companion, then let it billow off the right edge.
+  // Every polygon has eight points so the browser can interpolate the shape.
+  // At the midpoint the cape is a solid rectangle larger than the viewport.
+  async function sweep(entering, origin) {
+    const full = "polygon(0% 0%,50% 0%,100% 0%,100% 50%,100% 100%,50% 100%,0% 100%,0% 50%)";
+    const flutter = "polygon(0% 0%,55% 5%,100% 0%,88% 45%,100% 96%,48% 88%,0% 100%,8% 50%)";
+    const width = window.innerWidth * 1.2;
+    const height = window.innerHeight * 1.2;
+    const seed = `translate(${origin.x + window.innerWidth * .1}px, ${origin.y + window.innerHeight * .1}px) scale(${18 / width}, ${28 / height})`;
     const frames = entering ? [
-      { transform: "translateX(" + (-direction * 125) + "%) rotate(" + (-direction * 7) + "deg) skewY(-3deg)" },
-      { transform: "translateX(" + (-direction * 42) + "%) rotate(" + (direction * 3) + "deg) skewY(2deg)", offset: .65 },
-      { transform: "translateX(0) rotate(0deg) skewY(0deg)" }
+      { transform: seed, clipPath: flutter },
+      { transform: "translate(0,0) scale(1)", clipPath: flutter, offset: .8 },
+      { transform: "translate(0,0) scale(1)", clipPath: full }
     ] : [
-      { transform: "translateX(0) rotate(0deg) skewY(0deg)" },
-      { transform: "translateX(" + (direction * 45) + "%) rotate(" + (-direction * 3) + "deg) skewY(-2deg)", offset: .45 },
-      { transform: "translateX(" + (direction * 125) + "%) rotate(" + (direction * 7) + "deg) skewY(3deg)" }
+      { transform: "translate(0,0) scale(1)", clipPath: full },
+      { transform: "translate(35%, -3%) skewY(-5deg)", clipPath: flutter, offset: .45 },
+      { transform: "translate(115%, -8%) skewY(8deg)", clipPath: flutter }
     ];
     const animation = curtain.animate(frames, {
-      duration: entering ? 760 : 900,
-      easing: "cubic-bezier(.42, 0, .25, 1)",
-      fill: "forwards"
+      duration: entering ? 680 : 720,
+      easing: "cubic-bezier(.45, 0, .2, 1)", fill: "forwards"
     });
-    try {
-      await animation.finished;
-    } finally {
-      curtain.style.transform = frames[frames.length - 1].transform;
+    try { await animation.finished; }
+    finally {
+      // Persist the final frame before removing the animation to avoid a flash.
+      Object.assign(curtain.style, frames[frames.length - 1]);
       animation.cancel();
     }
   }
 
   // 4. Run the transition when the button is clicked.
-  button.addEventListener("click", async () => {
+  async function switchSide(event) {
+    const trigger = event.currentTarget;
     // Prevent repeated clicks from starting overlapping animations.
     if (isSwitching) return;
 
     isSwitching = true;
-    button.disabled = true;
+    controls.forEach(control => { control.disabled = true; });
 
     const nextCreative = !isCreative;
 
@@ -123,13 +131,17 @@
         showSide(nextCreative);
       } else {
         // Scarlet fabric opens creative mode; emerald fabric returns home.
-        const direction = nextCreative ? 1 : -1;
+        // Capture the visible sprite before switching layouts or scrolling.
+        const rect = (companion || button).getBoundingClientRect();
+        const origin = { x: Math.max(0, Math.min(innerWidth, rect.left + rect.width / 2)),
+          y: Math.max(0, Math.min(innerHeight, rect.top + rect.height / 2)) };
+        document.body.dataset.transition = nextCreative ? "creative" : "professional";
         curtain.dataset.destination = nextCreative ? "creative" : "professional";
-        curtain.style.transform = "translateX(" + (-direction * 125) + "%)";
+        curtain.style.transform = "scale(0)";
         curtain.hidden = false;
-        await sweep(true, direction);
+        await sweep(true, origin);
         showSide(nextCreative);
-        await sweep(false, direction);
+        await sweep(false, origin);
       }
     } catch (error) {
       // An animation failure should not prevent access to either side.
@@ -141,15 +153,17 @@
     } finally {
       // Always clean up and make the button usable again.
       curtain.hidden = true;
-      button.disabled = false;
+      delete document.body.dataset.transition;
+      controls.forEach(control => { control.disabled = false; });
       isSwitching = false;
 
       // Keep keyboard focus on the control the visitor just used.
-      button.focus({ preventScroll: true });
+      trigger.focus({ preventScroll: true });
     }
-  });
+  }
+  controls.forEach(control => control.addEventListener("click", switchSide));
 
   // 5. Reveal the button only after its click handler is ready.
   // If JavaScript is unavailable, the professional site still works.
-  button.hidden = false;
+  controls.forEach(control => { control.hidden = false; });
 })();
