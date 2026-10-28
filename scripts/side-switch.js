@@ -45,7 +45,7 @@
 
     // The label always names the destination of the next click.
     label.textContent = isCreative
-      ? "Professional side"
+      ? "The Workbench"
       : "After Hours";
 
     document.title = isCreative
@@ -54,7 +54,7 @@
 
     status.textContent = isCreative
       ? "After Hours creative side opened."
-      : "Professional side opened.";
+      : "The Workbench opened.";
 
     // Clear a section anchor because its section may now be hidden.
     // replaceState does not add a new entry to the browser's Back history.
