@@ -1,0 +1,13 @@
+﻿requirement_id,priority,domain,gap
+REQ-002,medium,Govern,Requirement coverage has not been approved by a human reviewer.
+REQ-003,medium,Govern,CTL-003: status is partial; do not claim implementation.
+REQ-005,medium,Identify,EV-005: evidence review is stale under the selected freshness window.
+REQ-006,high,Identify,CTL-006: status is planned; do not claim implementation.
+REQ-006,high,Identify,CTL-006: target date is overdue.
+REQ-007,high,Protect,CTL-007: evidence reference is missing.
+REQ-008,high,Protect,CTL-008: owner is missing.
+REQ-009,medium,Protect,EV-009: evidence has not passed recorded human review.
+REQ-010,high,Protect,CTL-010: status is partial; do not claim implementation.
+REQ-012,high,Detect,No control mapped; document an approach and assign a control owner.
+REQ-014,medium,Respond,EV-014: evidence has not passed recorded human review.
+REQ-015,high,Recover,EV-015: evidence review date is in the future.

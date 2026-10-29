@@ -1,0 +1,450 @@
+{
+  "summary": {
+    "schema_version": 1,
+    "as_of": "2026-10-28",
+    "max_age_days": 180,
+    "requirements": 15,
+    "supported_drafts": 4,
+    "needs_work": 11,
+    "gap_items": 12,
+    "evidence_validation": "Recorded human-review metadata only; evidence files are not inspected.",
+    "scope": "Selected project-defined requirements only; mappings indicate relevance, not complete framework outcome coverage.",
+    "inputs": {
+      "requirements.csv": "01f6471ce02b766bd7e3ebed4953167dcbf761286352858a4c61784dcceb6e65",
+      "controls.csv": "f2d70b4b2dffb480e7d367c36fe28fa985e8ce31a075c45b153633dfb782367f",
+      "evidence.csv": "54fe99e580aae3b77e5fcd99a750935e48da75d5cdcc68f00c5cf83cf574aa65"
+    }
+  },
+  "requirements": [
+    {
+      "requirement_id": "REQ-001",
+      "domain": "Govern",
+      "requirement": "Assign owners for client-data and advertising-account security.",
+      "priority": "medium",
+      "control_ids": "CTL-001",
+      "coverage_review": "approved",
+      "reviewer": "Demo reviewer",
+      "reviewed_on": "2026-10-20",
+      "framework": "NIST CSF",
+      "framework_version": "2.0",
+      "source_ref": "GV.RR-02",
+      "source_url": "https://doi.org/10.6028/NIST.CSWP.29",
+      "state": "supported_draft",
+      "gaps": [],
+      "claims": [
+        {
+          "control_id": "CTL-001",
+          "status": "implemented",
+          "owner": "Demo IT owner",
+          "statement": "Fictional scenario: security responsibility register is recorded as operating for the defined demo scope.",
+          "target_date": "",
+          "evidence_ids": [
+            "EV-001"
+          ]
+        }
+      ]
+    },
+    {
+      "requirement_id": "REQ-002",
+      "domain": "Govern",
+      "requirement": "Communicate the agency's approved client-file handling policy.",
+      "priority": "medium",
+      "control_ids": "CTL-002",
+      "coverage_review": "pending",
+      "reviewer": "Demo reviewer",
+      "reviewed_on": "2026-10-20",
+      "framework": "NIST CSF",
+      "framework_version": "2.0",
+      "source_ref": "GV.PO-01",
+      "source_url": "https://doi.org/10.6028/NIST.CSWP.29",
+      "state": "needs_work",
+      "gaps": [
+        "Requirement coverage has not been approved by a human reviewer."
+      ],
+      "claims": [
+        {
+          "control_id": "CTL-002",
+          "status": "implemented",
+          "owner": "Demo IT owner",
+          "statement": "Fictional scenario: client-file handling policy is recorded as operating for the defined demo scope.",
+          "target_date": "",
+          "evidence_ids": [
+            "EV-002"
+          ]
+        }
+      ]
+    },
+    {
+      "requirement_id": "REQ-003",
+      "domain": "Govern",
+      "requirement": "List and prioritize campaign platforms and freelance suppliers.",
+      "priority": "medium",
+      "control_ids": "CTL-003",
+      "coverage_review": "approved",
+      "reviewer": "Demo reviewer",
+      "reviewed_on": "2026-10-20",
+      "framework": "NIST CSF",
+      "framework_version": "2.0",
+      "source_ref": "GV.SC-04",
+      "source_url": "https://doi.org/10.6028/NIST.CSWP.29",
+      "state": "needs_work",
+      "gaps": [
+        "CTL-003: status is partial; do not claim implementation."
+      ],
+      "claims": [
+        {
+          "control_id": "CTL-003",
+          "status": "partial",
+          "owner": "Demo IT owner",
+          "statement": "Fictional scenario: supplier inventory is incomplete; coverage and verification work remain.",
+          "target_date": "2026-11-15",
+          "evidence_ids": [
+            "EV-003"
+          ]
+        }
+      ]
+    },
+    {
+      "requirement_id": "REQ-004",
+      "domain": "Identify",
+      "requirement": "Maintain an inventory of agency-managed laptops.",
+      "priority": "medium",
+      "control_ids": "CTL-004",
+      "coverage_review": "approved",
+      "reviewer": "Demo reviewer",
+      "reviewed_on": "2026-10-20",
+      "framework": "NIST CSF",
+      "framework_version": "2.0",
+      "source_ref": "ID.AM-01",
+      "source_url": "https://doi.org/10.6028/NIST.CSWP.29",
+      "state": "supported_draft",
+      "gaps": [],
+      "claims": [
+        {
+          "control_id": "CTL-004",
+          "status": "implemented",
+          "owner": "Demo IT owner",
+          "statement": "Fictional scenario: laptop inventory reconciliation is recorded as operating for the defined demo scope.",
+          "target_date": "",
+          "evidence_ids": [
+            "EV-004"
+          ]
+        }
+      ]
+    },
+    {
+      "requirement_id": "REQ-005",
+      "domain": "Identify",
+      "requirement": "Record the agency's managed design and marketing software.",
+      "priority": "medium",
+      "control_ids": "CTL-005",
+      "coverage_review": "approved",
+      "reviewer": "Demo reviewer",
+      "reviewed_on": "2026-10-20",
+      "framework": "NIST CSF",
+      "framework_version": "2.0",
+      "source_ref": "ID.AM-02",
+      "source_url": "https://doi.org/10.6028/NIST.CSWP.29",
+      "state": "needs_work",
+      "gaps": [
+        "EV-005: evidence review is stale under the selected freshness window."
+      ],
+      "claims": [
+        {
+          "control_id": "CTL-005",
+          "status": "implemented",
+          "owner": "Demo IT owner",
+          "statement": "Fictional scenario: software inventory is recorded as operating for the defined demo scope.",
+          "target_date": "",
+          "evidence_ids": [
+            "EV-005"
+          ]
+        }
+      ]
+    },
+    {
+      "requirement_id": "REQ-006",
+      "domain": "Identify",
+      "requirement": "Track the chosen response to shared advertising-account risk.",
+      "priority": "high",
+      "control_ids": "CTL-006",
+      "coverage_review": "approved",
+      "reviewer": "Demo reviewer",
+      "reviewed_on": "2026-10-20",
+      "framework": "NIST CSF",
+      "framework_version": "2.0",
+      "source_ref": "ID.RA-06",
+      "source_url": "https://doi.org/10.6028/NIST.CSWP.29",
+      "state": "needs_work",
+      "gaps": [
+        "CTL-006: status is planned; do not claim implementation.",
+        "CTL-006: target date is overdue."
+      ],
+      "claims": [
+        {
+          "control_id": "CTL-006",
+          "status": "planned",
+          "owner": "Demo IT owner",
+          "statement": "Fictional scenario: shared-account remediation plan has been proposed but is not operating.",
+          "target_date": "2026-10-01",
+          "evidence_ids": [
+            "EV-006"
+          ]
+        }
+      ]
+    },
+    {
+      "requirement_id": "REQ-007",
+      "domain": "Protect",
+      "requirement": "Require MFA for the in-scope human advertising-account logins.",
+      "priority": "high",
+      "control_ids": "CTL-007",
+      "coverage_review": "approved",
+      "reviewer": "Demo reviewer",
+      "reviewed_on": "2026-10-20",
+      "framework": "NIST CSF",
+      "framework_version": "2.0",
+      "source_ref": "PR.AA-03",
+      "source_url": "https://doi.org/10.6028/NIST.CSWP.29",
+      "state": "needs_work",
+      "gaps": [
+        "CTL-007: evidence reference is missing."
+      ],
+      "claims": [
+        {
+          "control_id": "CTL-007",
+          "status": "implemented",
+          "owner": "Demo IT owner",
+          "statement": "Fictional scenario: advertising-account mfa is recorded as operating for the defined demo scope.",
+          "target_date": "",
+          "evidence_ids": []
+        }
+      ]
+    },
+    {
+      "requirement_id": "REQ-008",
+      "domain": "Protect",
+      "requirement": "Review freelancer permissions to client campaign folders.",
+      "priority": "high",
+      "control_ids": "CTL-008",
+      "coverage_review": "approved",
+      "reviewer": "Demo reviewer",
+      "reviewed_on": "2026-10-20",
+      "framework": "NIST CSF",
+      "framework_version": "2.0",
+      "source_ref": "PR.AA-05",
+      "source_url": "https://doi.org/10.6028/NIST.CSWP.29",
+      "state": "needs_work",
+      "gaps": [
+        "CTL-008: owner is missing."
+      ],
+      "claims": [
+        {
+          "control_id": "CTL-008",
+          "status": "implemented",
+          "owner": "",
+          "statement": "Fictional scenario: freelancer access review is recorded as operating for the defined demo scope.",
+          "target_date": "",
+          "evidence_ids": [
+            "EV-008"
+          ]
+        }
+      ]
+    },
+    {
+      "requirement_id": "REQ-009",
+      "domain": "Protect",
+      "requirement": "Train staff to recognize fraudulent campaign payment requests.",
+      "priority": "medium",
+      "control_ids": "CTL-009",
+      "coverage_review": "approved",
+      "reviewer": "Demo reviewer",
+      "reviewed_on": "2026-10-20",
+      "framework": "NIST CSF",
+      "framework_version": "2.0",
+      "source_ref": "PR.AT-01",
+      "source_url": "https://doi.org/10.6028/NIST.CSWP.29",
+      "state": "needs_work",
+      "gaps": [
+        "EV-009: evidence has not passed recorded human review."
+      ],
+      "claims": [
+        {
+          "control_id": "CTL-009",
+          "status": "implemented",
+          "owner": "Demo IT owner",
+          "statement": "Fictional scenario: payment-fraud awareness exercise is recorded as operating for the defined demo scope.",
+          "target_date": "",
+          "evidence_ids": [
+            "EV-009"
+          ]
+        }
+      ]
+    },
+    {
+      "requirement_id": "REQ-010",
+      "domain": "Protect",
+      "requirement": "Record protected campaign-file backups and a restore test.",
+      "priority": "high",
+      "control_ids": "CTL-010",
+      "coverage_review": "approved",
+      "reviewer": "Demo reviewer",
+      "reviewed_on": "2026-10-20",
+      "framework": "NIST CSF",
+      "framework_version": "2.0",
+      "source_ref": "PR.DS-11",
+      "source_url": "https://doi.org/10.6028/NIST.CSWP.29",
+      "state": "needs_work",
+      "gaps": [
+        "CTL-010: status is partial; do not claim implementation."
+      ],
+      "claims": [
+        {
+          "control_id": "CTL-010",
+          "status": "partial",
+          "owner": "Demo IT owner",
+          "statement": "Fictional scenario: campaign backup and restore exercise is incomplete; coverage and verification work remain.",
+          "target_date": "2026-11-10",
+          "evidence_ids": [
+            "EV-010"
+          ]
+        }
+      ]
+    },
+    {
+      "requirement_id": "REQ-011",
+      "domain": "Detect",
+      "requirement": "Monitor agency laptops for suspicious activity.",
+      "priority": "medium",
+      "control_ids": "CTL-011",
+      "coverage_review": "approved",
+      "reviewer": "Demo reviewer",
+      "reviewed_on": "2026-10-20",
+      "framework": "NIST CSF",
+      "framework_version": "2.0",
+      "source_ref": "DE.CM-09",
+      "source_url": "https://doi.org/10.6028/NIST.CSWP.29",
+      "state": "supported_draft",
+      "gaps": [],
+      "claims": [
+        {
+          "control_id": "CTL-011",
+          "status": "implemented",
+          "owner": "Demo IT owner",
+          "statement": "Fictional scenario: endpoint alert monitoring is recorded as operating for the defined demo scope.",
+          "target_date": "",
+          "evidence_ids": [
+            "EV-011"
+          ]
+        }
+      ]
+    },
+    {
+      "requirement_id": "REQ-012",
+      "domain": "Detect",
+      "requirement": "Correlate campaign account alerts with identity activity.",
+      "priority": "high",
+      "control_ids": "",
+      "coverage_review": "approved",
+      "reviewer": "Demo reviewer",
+      "reviewed_on": "2026-10-20",
+      "framework": "NIST CSF",
+      "framework_version": "2.0",
+      "source_ref": "DE.AE-03",
+      "source_url": "https://doi.org/10.6028/NIST.CSWP.29",
+      "state": "needs_work",
+      "gaps": [
+        "No control mapped; document an approach and assign a control owner."
+      ],
+      "claims": []
+    },
+    {
+      "requirement_id": "REQ-013",
+      "domain": "Respond",
+      "requirement": "Triage and validate reported advertising-account incidents.",
+      "priority": "high",
+      "control_ids": "CTL-013",
+      "coverage_review": "approved",
+      "reviewer": "Demo reviewer",
+      "reviewed_on": "2026-10-20",
+      "framework": "NIST CSF",
+      "framework_version": "2.0",
+      "source_ref": "RS.MA-02",
+      "source_url": "https://doi.org/10.6028/NIST.CSWP.29",
+      "state": "supported_draft",
+      "gaps": [],
+      "claims": [
+        {
+          "control_id": "CTL-013",
+          "status": "implemented",
+          "owner": "Demo IT owner",
+          "statement": "Fictional scenario: incident triage checklist is recorded as operating for the defined demo scope.",
+          "target_date": "",
+          "evidence_ids": [
+            "EV-013"
+          ]
+        }
+      ]
+    },
+    {
+      "requirement_id": "REQ-014",
+      "domain": "Respond",
+      "requirement": "Keep a tamper-evident record of investigation actions.",
+      "priority": "medium",
+      "control_ids": "CTL-014",
+      "coverage_review": "approved",
+      "reviewer": "Demo reviewer",
+      "reviewed_on": "2026-10-20",
+      "framework": "NIST CSF",
+      "framework_version": "2.0",
+      "source_ref": "RS.AN-06",
+      "source_url": "https://doi.org/10.6028/NIST.CSWP.29",
+      "state": "needs_work",
+      "gaps": [
+        "EV-014: evidence has not passed recorded human review."
+      ],
+      "claims": [
+        {
+          "control_id": "CTL-014",
+          "status": "implemented",
+          "owner": "Demo IT owner",
+          "statement": "Fictional scenario: investigation activity journal is recorded as operating for the defined demo scope.",
+          "target_date": "",
+          "evidence_ids": [
+            "EV-014"
+          ]
+        }
+      ]
+    },
+    {
+      "requirement_id": "REQ-015",
+      "domain": "Recover",
+      "requirement": "Check campaign backup integrity before restoration.",
+      "priority": "high",
+      "control_ids": "CTL-015",
+      "coverage_review": "approved",
+      "reviewer": "Demo reviewer",
+      "reviewed_on": "2026-10-20",
+      "framework": "NIST CSF",
+      "framework_version": "2.0",
+      "source_ref": "RC.RP-03",
+      "source_url": "https://doi.org/10.6028/NIST.CSWP.29",
+      "state": "needs_work",
+      "gaps": [
+        "EV-015: evidence review date is in the future."
+      ],
+      "claims": [
+        {
+          "control_id": "CTL-015",
+          "status": "implemented",
+          "owner": "Demo IT owner",
+          "statement": "Fictional scenario: pre-restoration integrity check is recorded as operating for the defined demo scope.",
+          "target_date": "",
+          "evidence_ids": [
+            "EV-015"
+          ]
+        }
+      ]
+    }
+  ]
+}

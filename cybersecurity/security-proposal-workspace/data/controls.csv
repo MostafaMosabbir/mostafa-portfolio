@@ -1,0 +1,16 @@
+﻿control_id,title,status,owner,statement,target_date,evidence_ids
+CTL-001,Security responsibility register,implemented,Demo IT owner,Fictional scenario: security responsibility register is recorded as operating for the defined demo scope.,,EV-001
+CTL-002,Client-file handling policy,implemented,Demo IT owner,Fictional scenario: client-file handling policy is recorded as operating for the defined demo scope.,,EV-002
+CTL-003,Supplier inventory,partial,Demo IT owner,Fictional scenario: supplier inventory is incomplete; coverage and verification work remain.,2026-11-15,EV-003
+CTL-004,Laptop inventory reconciliation,implemented,Demo IT owner,Fictional scenario: laptop inventory reconciliation is recorded as operating for the defined demo scope.,,EV-004
+CTL-005,Software inventory,implemented,Demo IT owner,Fictional scenario: software inventory is recorded as operating for the defined demo scope.,,EV-005
+CTL-006,Shared-account remediation plan,planned,Demo IT owner,Fictional scenario: shared-account remediation plan has been proposed but is not operating.,2026-10-01,EV-006
+CTL-007,Advertising-account MFA,implemented,Demo IT owner,Fictional scenario: advertising-account mfa is recorded as operating for the defined demo scope.,,
+CTL-008,Freelancer access review,implemented,,Fictional scenario: freelancer access review is recorded as operating for the defined demo scope.,,EV-008
+CTL-009,Payment-fraud awareness exercise,implemented,Demo IT owner,Fictional scenario: payment-fraud awareness exercise is recorded as operating for the defined demo scope.,,EV-009
+CTL-010,Campaign backup and restore exercise,partial,Demo IT owner,Fictional scenario: campaign backup and restore exercise is incomplete; coverage and verification work remain.,2026-11-10,EV-010
+CTL-011,Endpoint alert monitoring,implemented,Demo IT owner,Fictional scenario: endpoint alert monitoring is recorded as operating for the defined demo scope.,,EV-011
+CTL-012,Alert correlation procedure,implemented,Demo IT owner,Fictional scenario: alert correlation procedure is recorded as operating for the defined demo scope.,,EV-012
+CTL-013,Incident triage checklist,implemented,Demo IT owner,Fictional scenario: incident triage checklist is recorded as operating for the defined demo scope.,,EV-013
+CTL-014,Investigation activity journal,implemented,Demo IT owner,Fictional scenario: investigation activity journal is recorded as operating for the defined demo scope.,,EV-014
+CTL-015,Pre-restoration integrity check,implemented,Demo IT owner,Fictional scenario: pre-restoration integrity check is recorded as operating for the defined demo scope.,,EV-015

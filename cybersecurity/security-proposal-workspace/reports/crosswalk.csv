@@ -1,0 +1,16 @@
+﻿requirement_id,domain,requirement,priority,control_ids,coverage_review,reviewer,state,gap_count,framework,framework_version,source_ref,source_url
+REQ-001,Govern,Assign owners for client-data and advertising-account security.,medium,CTL-001,approved,Demo reviewer,supported_draft,0,NIST CSF,2.0,GV.RR-02,https://doi.org/10.6028/NIST.CSWP.29
+REQ-002,Govern,Communicate the agency's approved client-file handling policy.,medium,CTL-002,pending,Demo reviewer,needs_work,1,NIST CSF,2.0,GV.PO-01,https://doi.org/10.6028/NIST.CSWP.29
+REQ-003,Govern,List and prioritize campaign platforms and freelance suppliers.,medium,CTL-003,approved,Demo reviewer,needs_work,1,NIST CSF,2.0,GV.SC-04,https://doi.org/10.6028/NIST.CSWP.29
+REQ-004,Identify,Maintain an inventory of agency-managed laptops.,medium,CTL-004,approved,Demo reviewer,supported_draft,0,NIST CSF,2.0,ID.AM-01,https://doi.org/10.6028/NIST.CSWP.29
+REQ-005,Identify,Record the agency's managed design and marketing software.,medium,CTL-005,approved,Demo reviewer,needs_work,1,NIST CSF,2.0,ID.AM-02,https://doi.org/10.6028/NIST.CSWP.29
+REQ-006,Identify,Track the chosen response to shared advertising-account risk.,high,CTL-006,approved,Demo reviewer,needs_work,2,NIST CSF,2.0,ID.RA-06,https://doi.org/10.6028/NIST.CSWP.29
+REQ-007,Protect,Require MFA for the in-scope human advertising-account logins.,high,CTL-007,approved,Demo reviewer,needs_work,1,NIST CSF,2.0,PR.AA-03,https://doi.org/10.6028/NIST.CSWP.29
+REQ-008,Protect,Review freelancer permissions to client campaign folders.,high,CTL-008,approved,Demo reviewer,needs_work,1,NIST CSF,2.0,PR.AA-05,https://doi.org/10.6028/NIST.CSWP.29
+REQ-009,Protect,Train staff to recognize fraudulent campaign payment requests.,medium,CTL-009,approved,Demo reviewer,needs_work,1,NIST CSF,2.0,PR.AT-01,https://doi.org/10.6028/NIST.CSWP.29
+REQ-010,Protect,Record protected campaign-file backups and a restore test.,high,CTL-010,approved,Demo reviewer,needs_work,1,NIST CSF,2.0,PR.DS-11,https://doi.org/10.6028/NIST.CSWP.29
+REQ-011,Detect,Monitor agency laptops for suspicious activity.,medium,CTL-011,approved,Demo reviewer,supported_draft,0,NIST CSF,2.0,DE.CM-09,https://doi.org/10.6028/NIST.CSWP.29
+REQ-012,Detect,Correlate campaign account alerts with identity activity.,high,,approved,Demo reviewer,needs_work,1,NIST CSF,2.0,DE.AE-03,https://doi.org/10.6028/NIST.CSWP.29
+REQ-013,Respond,Triage and validate reported advertising-account incidents.,high,CTL-013,approved,Demo reviewer,supported_draft,0,NIST CSF,2.0,RS.MA-02,https://doi.org/10.6028/NIST.CSWP.29
+REQ-014,Respond,Keep a tamper-evident record of investigation actions.,medium,CTL-014,approved,Demo reviewer,needs_work,1,NIST CSF,2.0,RS.AN-06,https://doi.org/10.6028/NIST.CSWP.29
+REQ-015,Recover,Check campaign backup integrity before restoration.,high,CTL-015,approved,Demo reviewer,needs_work,1,NIST CSF,2.0,RC.RP-03,https://doi.org/10.6028/NIST.CSWP.29

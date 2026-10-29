@@ -1,0 +1,16 @@
+﻿evidence_id,title,reference,review_status,reviewed_on
+EV-001,Fictional record: Security responsibility register,SYNTHETIC-REFERENCE-001,reviewed,2026-10-20
+EV-002,Fictional record: Client-file handling policy,SYNTHETIC-REFERENCE-002,reviewed,2026-10-20
+EV-003,Fictional record: Supplier inventory,SYNTHETIC-REFERENCE-003,reviewed,2026-10-20
+EV-004,Fictional record: Laptop inventory reconciliation,SYNTHETIC-REFERENCE-004,reviewed,2026-10-20
+EV-005,Fictional record: Software inventory,SYNTHETIC-REFERENCE-005,reviewed,2025-12-01
+EV-006,Fictional record: Shared-account remediation plan,SYNTHETIC-REFERENCE-006,reviewed,2026-10-20
+EV-007,Fictional record: Advertising-account MFA,SYNTHETIC-REFERENCE-007,reviewed,2026-10-20
+EV-008,Fictional record: Freelancer access review,SYNTHETIC-REFERENCE-008,reviewed,2026-10-20
+EV-009,Fictional record: Payment-fraud awareness exercise,SYNTHETIC-REFERENCE-009,pending,2026-10-20
+EV-010,Fictional record: Campaign backup and restore exercise,SYNTHETIC-REFERENCE-010,reviewed,2026-10-20
+EV-011,Fictional record: Endpoint alert monitoring,SYNTHETIC-REFERENCE-011,reviewed,2026-10-20
+EV-012,Fictional record: Alert correlation procedure,SYNTHETIC-REFERENCE-012,reviewed,2026-10-20
+EV-013,Fictional record: Incident triage checklist,SYNTHETIC-REFERENCE-013,reviewed,2026-10-20
+EV-014,Fictional record: Investigation activity journal,SYNTHETIC-REFERENCE-014,rejected,2026-10-20
+EV-015,Fictional record: Pre-restoration integrity check,SYNTHETIC-REFERENCE-015,reviewed,2026-11-01
