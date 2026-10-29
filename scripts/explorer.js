@@ -146,7 +146,6 @@ SAMPLE-006,VPN disconnects,network,,new,`;
   const input = document.getElementById("search-input");
   const results = document.getElementById("search-results");
   const entries = cards.map(card => ({ title: card.querySelector("h3").textContent, detail: [...card.querySelectorAll(".tags li")].map(tag => tag.textContent).join(" / "), id: card.id }));
-  entries.push({ title: "Project 004 · Security Proposal Workspace", detail: "Cybersecurity Python NIST From Requirements to Safeguards", id: "project-security" });
   entries.push(...["about", "cybersecurity", "contact"].map(id => ({ title: document.querySelector(`#${id} h2`).textContent.replace(/\s+/g, " ").trim(), detail: id, id })));
   let returnFocus;
   function closeSearch() { dialog.close(); }

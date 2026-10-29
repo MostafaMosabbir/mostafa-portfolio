@@ -28,7 +28,7 @@
   <script src="scripts/matrix.js" defer></script>
   <script src="scripts/geometry.js?v=3" defer></script>
   <!-- Independent enhancements: navigation, project filtering, and sample analysis. -->
-  <script src="scripts/explorer.js?v=projects-2" defer></script>
+  <script src="scripts/explorer.js?v=projects-3" defer></script>
   <script src="scripts/featured-projects.js?v=1" defer></script>
 </head>
 
@@ -232,7 +232,7 @@
             <button type="button" data-filter="javascript" aria-pressed="false">JavaScript</button>
             <button type="button" data-filter="web" aria-pressed="false">Web</button>
           </div>
-          <p class="small-label" id="filter-status" role="status">3 projects</p>
+          <p class="small-label" id="filter-status" role="status">4 projects</p>
         </div>
         <!-- Real projects only. No demo link until the ticket app is published. -->
         <div class="project-grid">
@@ -289,6 +289,25 @@ Automated tests passed: 9</pre>
               <p class="project-availability">Fictional sample data · Local tool</p>
             </div>
           <button class="feature-select" type="button" data-feature-select="analyzer" aria-pressed="true" hidden>Featured above</button></article>
+          <!-- The case-file card and Cybersecurity entry share the same feature key. -->
+          <article class="project-card" id="project-security-case" data-technologies="python" tabindex="-1">
+            <div class="project-art" aria-hidden="true">
+              <div class="terminal-bar"><i></i><i></i><i></i><span>security / assessment results</span></div>
+              <pre>Selected requirements: 15
+Supported drafts: 4
+Need work: 11
+Fictional marketing-company sample</pre>
+            </div>
+            <div class="project-copy">
+              <p class="eyebrow">Project 004 <span class="badge">Working prototype</span></p>
+              <h3>Security Proposal Workspace</h3>
+              <p>Explore a fictional marketing-company assessment: control ownership, evidence reviews, and gaps mapped to selected NIST CSF 2.0 outcomes.</p>
+              <ul class="tags" aria-label="Security workspace technologies"><li>Python</li><li>Cybersecurity</li><li>NIST CSF 2.0</li></ul>
+              <a class="text-link" href="cybersecurity/security-proposal-workspace/reports/review.html">Open the case file ↗</a>
+              <p class="project-availability">Fictional data · Supports review, not compliance certification.</p>
+            </div>
+            <button class="feature-select" type="button" data-feature-select="security" aria-pressed="false" hidden>Highlight project</button>
+          </article>
         </div>
       </section>
 
