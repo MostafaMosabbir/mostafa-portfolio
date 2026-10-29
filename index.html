@@ -20,7 +20,7 @@
 
   <!-- These paths must match your folders and filenames exactly. -->
   <link rel="stylesheet" href="styles/main.css">
-  <link rel="stylesheet" href="styles/refined.css?v=security-demo-1">
+  <link rel="stylesheet" href="styles/refined.css?v=projects-2">
 
   <!-- defer makes JavaScript wait until the HTML has been parsed. -->
   <script src="scripts/side-switch.js?v=robot-coat-2" defer></script>
@@ -28,7 +28,8 @@
   <script src="scripts/matrix.js" defer></script>
   <script src="scripts/geometry.js?v=3" defer></script>
   <!-- Independent enhancements: navigation, project filtering, and sample analysis. -->
-  <script src="scripts/explorer.js?v=noir-1" defer></script>
+  <script src="scripts/explorer.js?v=projects-2" defer></script>
+  <script src="scripts/featured-projects.js?v=1" defer></script>
 </head>
 
 <body>
@@ -151,9 +152,9 @@
            The tabs and workflow buttons are revealed only after wiring events. -->
       <section class="featured wrap" id="featured" aria-labelledby="featured-title">
         <div class="feature-top">
-          <div><p class="eyebrow">Case file 003 / Featured project</p>
-            <h2 id="featured-title">Python IT Ticket Analyzer</h2>
-            <span class="badge">Working prototype</span>
+          <div><p class="eyebrow" id="featured-number">Project 003 / Featured project</p>
+            <h2 id="featured-title" tabindex="-1">Python IT Ticket Analyzer</h2>
+            <span class="badge" id="featured-badge">Working prototype</span>
           </div>
           <div class="feature-tabs" id="feature-tabs" role="tablist" aria-label="Ticket Analyzer" hidden>
             <button id="tab-overview" role="tab" aria-selected="true" aria-controls="panel-overview" type="button">Brief</button>
@@ -161,10 +162,20 @@
             <button id="tab-evidence" role="tab" aria-selected="false" aria-controls="panel-evidence" tabindex="-1" type="button">Findings</button>
           </div>
         </div>
-        <p class="record-meta">Interface updated <time datetime="2026-10-28">28 Oct 2026</time> <span aria-hidden="true">/</span> Python · CSV · JavaScript demo</p>
+
+        <!-- The same featured area can display any project without rebuilding
+             the Analyzer DOM, so its demo state and event handlers survive. -->
+        <div class="featured-picker" id="featured-picker" role="group" aria-label="Choose a featured project" hidden>
+          <button type="button" data-feature-select="portfolio" aria-pressed="false">001 · Portfolio</button>
+          <button type="button" data-feature-select="assistant" aria-pressed="false">002 · Ticket Assistant</button>
+          <button type="button" data-feature-select="analyzer" aria-pressed="true">003 · Ticket Analyzer</button>
+          <button type="button" data-feature-select="security" aria-pressed="false">004 · Security Workspace</button>
+        </div>
+        <p id="featured-status" class="sr-only" role="status"></p>
+        <p class="record-meta" id="featured-meta">Interface updated <time datetime="2026-10-28">28 Oct 2026</time> <span aria-hidden="true">/</span> Python · CSV · JavaScript demo</p>
         <div class="feature-body">
           <section id="panel-overview" class="feature-panel" aria-labelledby="overview-heading">
-            <h3 id="overview-heading">Brief</h3>
+            <h3 id="overview-heading">Brief</h3><div data-feature-project="analyzer">
             <div class="overview-grid">
               <div class="brief-summary"><p>Summarize ticket exports, find missing resolution notes, and review repeated subject wording.</p>
                 <p class="muted">Fictional sample data · Local tool</p>
@@ -175,9 +186,9 @@
                 <dl class="evidence-stats" aria-labelledby="brief-sample-label"><div><dt>Fictional tickets</dt><dd>38</dd></div><div><dt>Missing resolution notes</dt><dd>3</dd></div><div><dt>Repeated subject groups</dt><dd>4</dd></div></dl>
               </div>
             </div>
-          </section>
+          </div><div data-feature-project="portfolio" hidden><p>A home for my work, learning, and creative exploration.</p><p class="muted">HTML · CSS · JavaScript · Always Improving</p><a class="text-link" href="https://github.com/MostafaMosabbir/mostafa-portfolio">Explore the source ↗</a></div><div data-feature-project="assistant" hidden><p>Rule-based ticket classification and editable response drafts, with human review.</p><p class="muted">JavaScript · Workflow automation</p><p>Local prototype · Public demo coming later</p></div><div data-feature-project="security" hidden><div class="overview-grid"><div class="brief-summary"><p>Explore a fictional marketing-company assessment: control ownership, evidence reviews, and gaps mapped to selected NIST CSF 2.0 outcomes.</p><p class="muted">From Requirements to Safeguards · Python · Fictional data</p><a class="text-link" href="cybersecurity/security-proposal-workspace/reports/review.html">Explore the assessment ↗</a></div><div class="brief-evidence"><p class="brief-sample-label">Fictional marketing-company sample · 28 Oct 2026</p><dl class="evidence-stats"><div><dt>Selected requirements</dt><dd>15</dd></div><div><dt>Supported drafts</dt><dd>4</dd></div><div><dt>Need work</dt><dd>11</dd></div></dl></div></div></div></section>
           <section id="panel-process" class="feature-panel" aria-labelledby="process-heading">
-            <h3 id="process-heading">Method</h3>
+            <h3 id="process-heading">Method</h3><div data-feature-project="analyzer">
             <p class="muted">Browser demonstration · 6 fictional tickets · JavaScript, not the Python runtime</p>
             <div class="workflow" id="workflow" role="group" aria-label="Analysis stages" hidden>
               <button type="button" data-step="0" aria-pressed="true"><span class="step-icon" aria-hidden="true">01</span><strong>CSV</strong><span>Read ticket records</span></button>
@@ -189,16 +200,16 @@
             <div class="sample-actions"><button type="button" class="button" id="run-sample" hidden>Explore the workflow <span aria-hidden="true">↗</span></button><p class="muted" id="sample-status" role="status"></p></div>
             <div class="sample-result" id="sample-result" hidden></div>
             <noscript><p>Enable JavaScript to run the browser demonstration, or read the case study and reports in Findings.</p></noscript>
-          </section>
+          </div><div data-feature-project="portfolio" hidden><p>HTML contains the content and structure. CSS controls the appearance. JavaScript controls project selection, search, the sample workflow, and switching between The Workbench and After Hours.</p><p>The interface includes keyboard navigation and reduced-motion support.</p></div><div data-feature-project="assistant" hidden><p>Read a fictional ticket, suggest a category, explain matching rules, and prepare an editable response draft. A person reviews the draft.</p><p>This prototype uses rules, not a live AI model.</p></div><div data-feature-project="security" hidden><ol class="feature-method"><li>Read the requirements, controls, and evidence records.</li><li>Validate IDs, mappings, dates, and allowed status values.</li><li>Check implementation status, ownership, coverage review, and evidence freshness.</li><li>Export the crosswalk, gaps, and review report for human review.</li></ol><p>Evidence references are not opened or independently verified. Counts are not a compliance score.</p></div></section>
           <section id="panel-evidence" class="feature-panel" aria-labelledby="evidence-heading">
-            <h3 id="evidence-heading">Findings</h3>
+            <h3 id="evidence-heading">Findings</h3><div data-feature-project="analyzer">
             <p>Fictional tickets: 38 · Missing resolution notes: 3 · Repeated subject groups: 4 · Automated tests passed: 9</p>
             <div class="evidence-links"><a href="projects/ticket-analyzer/index.html">Open the case file ↗</a><a href="projects/ticket-analyzer/sample-summary.csv" download>Download sample summary (CSV) ↓</a><a href="projects/ticket-analyzer/sample-findings.md">Read sample findings ↗</a></div>
-          </section>
+          </div><div data-feature-project="portfolio" hidden><p>The portfolio itself is the working example.</p><div class="evidence-links"><a href="https://github.com/MostafaMosabbir/mostafa-portfolio">Explore the source ↗</a><a href="https://github.com/MostafaMosabbir/mostafa-portfolio/tree/main/tests">View interaction tests ↗</a></div></div><div data-feature-project="assistant" hidden><p>Local prototype · Public demo coming later</p><p>No public results or downloadable source are available here yet.</p></div><div data-feature-project="security" hidden><p>15 selected requirements · 4 supported drafts · 11 need work · 15 automated tests passed</p><p class="muted">Fictional sample assessed on 28 Oct 2026. Selected mappings indicate relevance, not complete framework coverage.</p><div class="evidence-links"><a href="cybersecurity/security-proposal-workspace/reports/review.html">Explore the assessment ↗</a><a href="cybersecurity/security-proposal-workspace/reports/crosswalk.csv" download>Download crosswalk · CSV</a><a href="cybersecurity/security-proposal-workspace/reports/gaps.csv" download>Download gaps · CSV</a><a href="https://github.com/MostafaMosabbir/mostafa-portfolio/tree/main/cybersecurity/security-proposal-workspace">Source and walkthrough ↗</a></div></div></section>
         </div>
         <details class="technical-details"><summary>View technical details</summary>
-          <p>The full tool runs locally in Python. This browser demonstration analyzes a separate six-ticket sample using JavaScript. It checks required fields, groups repeated subject wording, and flags resolved or closed tickets without notes. Repeated wording is a review candidate, not proof of the same root cause.</p>
-        </details>
+          <p data-feature-project="analyzer">The full tool runs locally in Python. This browser demonstration analyzes a separate six-ticket sample using JavaScript. It checks required fields, groups repeated subject wording, and flags resolved or closed tickets without notes. Repeated wording is a review candidate, not proof of the same root cause.</p>
+        <p data-feature-project="portfolio" hidden>Built with HTML, CSS, and JavaScript. Published with GitHub Pages. The visual effects and project interactions run in the browser.</p><p data-feature-project="assistant" hidden>A local JavaScript prototype using fictional tickets and rule-based matching. Draft responses require human review.</p><p data-feature-project="security" hidden>The assessment engine runs locally in Python using the standard library. The published report is a fixed fictional example, not a live assessment service or a compliance determination.</p></details>
       </section>
 
       <section
@@ -242,7 +253,7 @@
               <ul class="tags" aria-label="Portfolio technologies"><li>HTML</li><li>CSS</li><li>JavaScript</li></ul>
               <a class="text-link" href="https://github.com/MostafaMosabbir/mostafa-portfolio">Explore the source ↗</a>
             </div>
-          </article>
+          <button class="feature-select" type="button" data-feature-select="portfolio" aria-pressed="false" hidden>Highlight project</button></article>
           <article class="project-card" id="project-assistant" data-technologies="javascript" tabindex="-1">
             <div class="project-art" aria-hidden="true">
               <div class="terminal-bar"><i></i><i></i><i></i><span>assistant / workflow</span></div>
@@ -259,7 +270,7 @@ explainMatches();
               <ul class="tags" aria-label="Assistant technologies"><li>JavaScript</li><li>Workflow automation</li></ul>
               <p class="project-availability">Local prototype · Public demo coming later</p>
             </div>
-          </article>
+          <button class="feature-select" type="button" data-feature-select="assistant" aria-pressed="false" hidden>Highlight project</button></article>
           <!-- Python project: links to real local evidence, not an unpublished repo. -->
           <article class="project-card" id="project-analyzer" data-technologies="python" tabindex="-1">
             <div class="project-art" aria-hidden="true">
@@ -277,7 +288,7 @@ Automated tests passed: 9</pre>
               <a class="text-link" href="projects/ticket-analyzer/index.html">Open the case file ↗</a>
               <p class="project-availability">Fictional sample data · Local tool</p>
             </div>
-          </article>
+          <button class="feature-select" type="button" data-feature-select="analyzer" aria-pressed="true" hidden>Featured above</button></article>
         </div>
       </section>
 
@@ -379,14 +390,16 @@ Automated tests passed: 9</pre>
           </p>
 
           <!-- The public report uses only the fictional marketing-company fixtures. -->
-          <article class="security-project" aria-labelledby="security-project-title">
-            <p class="eyebrow">Security Proposal Workspace</p>
+          <article class="security-project" id="project-security" aria-labelledby="security-project-title" tabindex="-1">
+            <p class="eyebrow">Project 004 · Cybersecurity</p>
+            <p>Security Proposal Workspace</p>
             <h3 id="security-project-title">From Requirements to Safeguards</h3>
             <p>Explore a fictional marketing-company assessment: control ownership,
               evidence reviews, and gaps mapped to selected NIST CSF 2.0 outcomes.</p>
             <p class="muted">Python · 15 selected requirements · Fictional data<br>
               Working prototype · Supports review, not compliance certification.</p>
             <a class="text-link" href="cybersecurity/security-proposal-workspace/reports/review.html">Explore the assessment <span aria-hidden="true">↗</span></a>
+            <button class="feature-select" type="button" data-feature-select="security" aria-pressed="false" hidden>Highlight project</button>
           </article>
 
           <!-- My public learning profile provides context alongside future write-ups. -->

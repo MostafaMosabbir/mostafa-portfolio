@@ -221,3 +221,15 @@ body { isolation: isolate; }
 .security-project .eyebrow { color: var(--accent); font-size: .72rem; }
 .security-project h3 { margin-block: 12px; }
 .security-project .text-link { display: inline-block; margin-top: 12px; }
+
+/* Project selection uses real buttons. The active state is textual as well as colored. */
+.featured-picker { display:flex; flex-wrap:wrap; gap:8px; padding:24px 28px 0; }
+.featured-picker[hidden], .feature-select[hidden] { display:none; }
+.featured-picker button, .feature-select { border:1px solid var(--line); border-radius:6px; background:#0b201b; color:var(--ink); padding:10px 14px; cursor:pointer; font:inherit; font-size:.8rem; }
+.featured-picker button[aria-pressed="true"], .feature-select[aria-pressed="true"] { border-color:var(--accent); color:var(--accent); background:#12382c; }
+.feature-select { margin:0 22px 22px; align-self:flex-start; }
+.security-project .feature-select { display:block; margin:18px 0 0; }
+.security-project .feature-select[hidden] { display:none; }
+.feature-method { padding-left:22px; } .feature-method li { margin-bottom:12px; }
+.sr-only { position:absolute; width:1px; height:1px; padding:0; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
+@media(max-width:620px) { .featured-picker { padding:20px 18px 0; } .featured-picker button { flex:1 1 40%; } }
