@@ -20,7 +20,7 @@
 
   <!-- These paths must match your folders and filenames exactly. -->
   <link rel="stylesheet" href="styles/main.css">
-  <link rel="stylesheet" href="styles/refined.css?v=carousel-1">
+  <link rel="stylesheet" href="styles/refined.css?v=filmstrip-1">
 
   <!-- defer makes JavaScript wait until the HTML has been parsed. -->
   <script src="scripts/side-switch.js?v=robot-coat-2" defer></script>
@@ -28,7 +28,7 @@
   <script src="scripts/matrix.js" defer></script>
   <script src="scripts/geometry.js?v=3" defer></script>
   <!-- Independent enhancements: navigation, project filtering, and sample analysis. -->
-  <script src="scripts/explorer.js?v=carousel-1" defer></script>
+  <script src="scripts/explorer.js?v=filmstrip-1" defer></script>
   <script src="scripts/featured-projects.js?v=1" defer></script>
 </head>
 
@@ -219,18 +219,17 @@
       >
         <div class="section-heading">
           <div>
-            <p class="eyebrow">01 / Case files</p>
-            <h2 id="projects-title">From idea to implementation.</h2>
+            <h2 class="eyebrow" id="projects-title">01 / Case files</h2>
           </div>
-          <p class="small-label">Building the foundations</p>
         </div>
 
         <div class="project-toolbar" id="project-toolbar" hidden>
-          <div class="project-filters" role="group" aria-label="Filter projects by technology">
+          <div class="project-filters" role="group" aria-label="Filter projects by technology or discipline">
             <button type="button" data-filter="all" aria-pressed="true">All</button>
             <button type="button" data-filter="python" aria-pressed="false">Python</button>
             <button type="button" data-filter="javascript" aria-pressed="false">JavaScript</button>
             <button type="button" data-filter="web" aria-pressed="false">Web</button>
+            <button type="button" data-filter="cybersecurity" aria-pressed="false">Cybersecurity</button>
           </div>
           <p class="small-label" id="filter-status" role="status">4 projects</p>
         </div>
@@ -295,7 +294,7 @@ Automated tests passed: 9</pre>
             </div>
           <button class="feature-select" type="button" data-feature-select="analyzer" aria-pressed="true" hidden>Featured above</button></article>
           <!-- The case-file card and Cybersecurity entry share the same feature key. -->
-          <article class="project-card" id="project-security-case" data-technologies="python" tabindex="-1">
+          <article class="project-card" id="project-security-case" data-technologies="python cybersecurity" tabindex="-1">
             <div class="project-art" aria-hidden="true">
               <div class="terminal-bar"><i></i><i></i><i></i><span>security / assessment results</span></div>
               <pre>Selected requirements: 15
@@ -355,11 +354,7 @@ Fictional marketing-company sample</pre>
         aria-labelledby="about-title"
       >
         <div>
-          <p class="eyebrow">02 / About</p>
-          <h2 id="about-title">
-            The work.<br>
-            And the thinking behind it.
-          </h2>
+          <h2 class="eyebrow" id="about-title">02 / About</h2>
         </div>
 
         <div class="section-copy">
@@ -391,16 +386,11 @@ Fictional marketing-company sample</pre>
         aria-labelledby="security-title"
       >
         <div>
-          <p class="eyebrow">03 / Cybersecurity</p>
-          <h2 id="security-title">
-            Understand.<br>
-            Investigate. Protect.
-          </h2>
+          <h2 class="eyebrow" id="security-title">03 / Cybersecurity</h2>
         </div>
 
         <div class="security-card">
           <span class="badge">Learning track</span>
-          <h3>A space for careful investigation.</h3>
 
           <p>
             I'm building my cybersecurity skills through self-directed study
@@ -449,8 +439,7 @@ Fictional marketing-company sample</pre>
       >
         <div class="wrap contact-inner">
           <div>
-            <p class="eyebrow">04 / Contact</p>
-            <h2 id="contact-title">Let's connect.</h2>
+            <h2 class="eyebrow" id="contact-title">04 / Contact</h2>
             <p>
               Connect with me on LinkedIn or follow my projects on GitHub.
             </p>
