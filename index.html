@@ -20,7 +20,7 @@
 
   <!-- These paths must match your folders and filenames exactly. -->
   <link rel="stylesheet" href="styles/main.css">
-  <link rel="stylesheet" href="styles/refined.css?v=filmstrip-1">
+  <link rel="stylesheet" href="styles/refined.css?v=baseline-1">
 
   <!-- defer makes JavaScript wait until the HTML has been parsed. -->
   <script src="scripts/side-switch.js?v=robot-coat-2" defer></script>
@@ -28,8 +28,9 @@
   <script src="scripts/matrix.js" defer></script>
   <script src="scripts/geometry.js?v=3" defer></script>
   <!-- Independent enhancements: navigation, project filtering, and sample analysis. -->
-  <script src="scripts/explorer.js?v=filmstrip-1" defer></script>
+  <script src="scripts/explorer.js?v=baseline-1" defer></script>
   <script src="scripts/featured-projects.js?v=1" defer></script>
+  <script src="scripts/baseline.js?v=1" defer></script>
 </head>
 
 <body>
@@ -59,7 +60,6 @@
     <nav id="professional-nav" aria-label="Main navigation">
       <a href="#about">About</a>
       <a href="#projects">Projects</a>
-      <a href="#cybersecurity">Cybersecurity</a>
       <a href="#contact">Contact</a>
     </nav>
 
@@ -110,6 +110,12 @@
     <div id="professional-view">
 
       <section class="hero wrap" id="home" aria-labelledby="hero-title">
+        <!-- Decorative intro: JS plays once per tab session; the page works without it. -->
+        <div class="baseline-intro" id="baseline-intro" hidden aria-label="Opening text animation">
+          <button type="button" id="baseline-skip">Skip intro</button>
+          <div class="baseline-lines" aria-hidden="true"><span></span><span></span><span></span></div>
+        </div>
+
         <!-- Canvas draws decorative code, not actual user or system data.
              aria-hidden prevents screen readers reading meaningless symbols. -->
         <canvas id="matrix-rain" class="matrix-rain" aria-hidden="true"></canvas>
@@ -220,6 +226,7 @@
         <div class="section-heading">
           <div>
             <h2 class="eyebrow" id="projects-title">01 / Case files</h2>
+            <button class="decode-note" type="button" data-decode="Always changing. Always improving." aria-label="Always changing. Always improving." aria-pressed="false"><span class="decode-width" aria-hidden="true">Always changing. Always improving.</span><span class="decode-text" aria-hidden="true">Always changing. Always improving.</span></button>
           </div>
         </div>
 
@@ -355,6 +362,7 @@ Fictional marketing-company sample</pre>
       >
         <div>
           <h2 class="eyebrow" id="about-title">02 / About</h2>
+            <button class="decode-note" type="button" data-decode="Jack of All Trades" aria-label="Jack of All Trades" aria-pressed="false"><span class="decode-width" aria-hidden="true">Jack of All Trades</span><span class="decode-text" aria-hidden="true">Jack of All Trades</span></button>
         </div>
 
         <div class="section-copy">
@@ -373,62 +381,10 @@ Fictional marketing-company sample</pre>
             decisions, what I contributed, and the lessons I take into
             the next project.
           </p>
-        </div>
-      </section>
-
-      <!--
-        Cybersecurity remains separate from general portfolio projects.
-        The Rowan fishing capstone stays outside this personal portfolio.
-      -->
-      <section
-        class="section wrap two-column"
-        id="cybersecurity"
-        aria-labelledby="security-title"
-      >
-        <div>
-          <h2 class="eyebrow" id="security-title">03 / Cybersecurity</h2>
-        </div>
-
-        <div class="security-card">
-          <span class="badge">Learning track</span>
-
-          <p>
-            I'm building my cybersecurity skills through self-directed study
-            and hands-on labs on TryHackMe, developing my understanding
-            of systems, security concepts, and investigative thinking.
+          <p class="about-credentials" id="cybersecurity">
+            <span>CCRS certification</span>
+            <a class="text-link" href="https://tryhackme.com/p/mostafamosabbir">View my TryHackMe profile <span aria-hidden="true">↗</span></a>
           </p>
-
-          <p class="muted">
-            Future portfolio write-ups will explain each lab's scope,
-            my approach, supporting evidence, and limitations.
-          </p>
-
-          <!-- The public report uses only the fictional marketing-company fixtures. -->
-          <article class="security-project" id="project-security" aria-labelledby="security-project-title" tabindex="-1">
-            <p class="eyebrow">Project 004 · Cybersecurity</p>
-            <p>Security Proposal Workspace</p>
-            <h3 id="security-project-title">From Requirements to Safeguards</h3>
-            <p>Explore a fictional marketing-company assessment: control ownership,
-              evidence reviews, and gaps mapped to selected NIST CSF 2.0 outcomes.</p>
-            <p class="muted">Python · 15 selected requirements · Fictional data<br>
-              Working prototype · Supports review, not compliance certification.</p>
-            <a class="text-link" href="cybersecurity/security-proposal-workspace/reports/review.html">Explore the assessment <span aria-hidden="true">↗</span></a>
-            <button class="feature-select" type="button" data-feature-select="security" aria-pressed="false" hidden>Highlight project</button>
-          </article>
-
-          <!-- My public learning profile provides context alongside future write-ups. -->
-          <p>
-            <a class="text-link" href="https://tryhackme.com/p/mostafamosabbir">
-              View my TryHackMe profile <span aria-hidden="true">↗</span>
-            </a>
-          </p>
-
-          <a
-            class="text-link"
-            href="https://github.com/MostafaMosabbir/mostafa-portfolio/tree/main/cybersecurity"
-          >
-            View the learning outline <span aria-hidden="true">↗</span>
-          </a>
         </div>
       </section>
 
@@ -439,7 +395,8 @@ Fictional marketing-company sample</pre>
       >
         <div class="wrap contact-inner">
           <div>
-            <h2 class="eyebrow" id="contact-title">04 / Contact</h2>
+            <h2 class="eyebrow" id="contact-title">03 / Contact</h2>
+            <button class="decode-note" type="button" data-decode="Every connection holds a possibility." aria-label="Every connection holds a possibility." aria-pressed="false"><span class="decode-width" aria-hidden="true">Every connection holds a possibility.</span><span class="decode-text" aria-hidden="true">Every connection holds a possibility.</span></button>
             <p>
               Connect with me on LinkedIn or follow my projects on GitHub.
             </p>
@@ -546,7 +503,6 @@ Fictional marketing-company sample</pre>
     <a href="#featured" aria-label="Featured project"><span>Featured project</span></a>
     <a href="#projects" aria-label="Projects"><span>Projects</span></a>
     <a href="#about" aria-label="About"><span>About</span></a>
-    <a href="#cybersecurity" aria-label="Cybersecurity"><span>Cybersecurity</span></a>
     <a href="#contact" aria-label="Contact"><span>Contact</span></a>
   </nav>
 

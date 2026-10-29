@@ -184,6 +184,13 @@ SAMPLE-006,VPN disconnects,network,,new,`;
   window.addEventListener("resize", () => showCase(caseIndex, true));
   // Direct links and search results must reveal the requested hidden card.
   function revealHash() {
+    // Preserve previously shared links to the former security project entry.
+    if (location.hash === "#project-security") {
+      filterProjects("all");
+      const securityIndex = cards.findIndex(card => card.id === "project-security-case");
+      if (securityIndex >= 0) { showCase(securityIndex, true); cards[securityIndex].scrollIntoView({ block: "nearest", inline: "nearest" }); }
+      return;
+    }
     const index = cards.findIndex(card => `#${card.id}` === location.hash);
     if (index < 0) return;
     filterProjects("all");
@@ -207,7 +214,7 @@ SAMPLE-006,VPN disconnects,network,,new,`;
   const input = document.getElementById("search-input");
   const results = document.getElementById("search-results");
   const entries = cards.map(card => ({ title: card.querySelector("h3").textContent, detail: [...card.querySelectorAll(".tags li")].map(tag => tag.textContent).join(" / "), id: card.id }));
-  entries.push(...["about", "cybersecurity", "contact"].map(id => ({ title: document.querySelector(`#${id} h2`).textContent.replace(/\s+/g, " ").trim(), detail: id, id })));
+  entries.push(...["about", "contact"].map(id => ({ title: document.querySelector(`#${id} h2`).textContent.replace(/\s+/g, " ").trim(), detail: id, id })));
   let returnFocus;
   function closeSearch() { dialog.close(); }
   function renderSearch() {
