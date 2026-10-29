@@ -20,7 +20,7 @@
 
   <!-- These paths must match your folders and filenames exactly. -->
   <link rel="stylesheet" href="styles/main.css">
-  <link rel="stylesheet" href="styles/refined.css?v=projects-2">
+  <link rel="stylesheet" href="styles/refined.css?v=carousel-1">
 
   <!-- defer makes JavaScript wait until the HTML has been parsed. -->
   <script src="scripts/side-switch.js?v=robot-coat-2" defer></script>
@@ -28,7 +28,7 @@
   <script src="scripts/matrix.js" defer></script>
   <script src="scripts/geometry.js?v=3" defer></script>
   <!-- Independent enhancements: navigation, project filtering, and sample analysis. -->
-  <script src="scripts/explorer.js?v=projects-3" defer></script>
+  <script src="scripts/explorer.js?v=carousel-1" defer></script>
   <script src="scripts/featured-projects.js?v=1" defer></script>
 </head>
 
@@ -235,7 +235,12 @@
           <p class="small-label" id="filter-status" role="status">4 projects</p>
         </div>
         <!-- Real projects only. No demo link until the ticket app is published. -->
-        <div class="project-grid">
+        <div class="case-navigation" id="case-navigation" hidden>
+          <button type="button" id="case-previous" aria-label="Previous case file" aria-controls="case-carousel">←</button>
+          <p id="case-position" role="status" aria-live="polite" aria-atomic="true">001 / 004</p>
+          <button type="button" id="case-next" aria-label="Next case file" aria-controls="case-carousel">→</button>
+        </div>
+        <div class="project-grid" id="case-carousel" role="region" aria-label="Case files">
           <article class="project-card" id="project-portfolio" data-technologies="web javascript" tabindex="-1">
             <div class="project-art" aria-hidden="true">
               <div class="terminal-bar"><i></i><i></i><i></i><span>portfolio / index.html</span></div>

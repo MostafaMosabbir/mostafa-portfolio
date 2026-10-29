@@ -127,15 +127,64 @@ SAMPLE-006,VPN disconnects,network,,new,`;
   // keyboard order. The count is announced without moving the visitor's focus.
   const cards = [...document.querySelectorAll("[data-technologies]")];
   const filters = [...document.querySelectorAll("[data-filter]")];
-  function filterProjects(technology) {
-    let count = 0;
-    cards.forEach(card => {
-      card.hidden = technology !== "all" && !card.dataset.technologies.split(" ").includes(technology);
-      if (!card.hidden) count++;
-    });
-    filters.forEach(button => button.setAttribute("aria-pressed", String(button.dataset.filter === technology)));
-    document.getElementById("filter-status").textContent = `${count} project${count === 1 ? "" : "s"}`;
+  const carousel = document.getElementById("case-carousel");
+  const previous = document.getElementById("case-previous");
+  const next = document.getElementById("case-next");
+  let visibleCards = cards.slice();
+  let caseIndex = 0;
+  // Only the active card remains in the keyboard order. The controls never
+  // auto-advance, and filtering resets to the first matching case file.
+  function showCase(index) {
+    caseIndex = visibleCards.length ? (index + visibleCards.length) % visibleCards.length : 0;
+    cards.forEach(card => { card.hidden = card !== visibleCards[caseIndex]; });
+    const pad = number => String(number).padStart(3, "0");
+    const active = visibleCards[caseIndex];
+    document.getElementById("case-position").textContent = active
+      ? `${pad(caseIndex + 1)} / ${pad(visibleCards.length)} · ${active.querySelector("h3").textContent}`
+      : "No matching case files";
+    previous.disabled = next.disabled = visibleCards.length < 2;
   }
+  function filterProjects(technology) {
+    visibleCards = cards.filter(card => technology === "all" || card.dataset.technologies.split(" ").includes(technology));
+    showCase(0);
+    filters.forEach(button => button.setAttribute("aria-pressed", String(button.dataset.filter === technology)));
+    document.getElementById("filter-status").textContent = `${visibleCards.length} project${visibleCards.length === 1 ? "" : "s"}`;
+  }
+  previous.addEventListener("click", () => showCase(caseIndex - 1));
+  next.addEventListener("click", () => showCase(caseIndex + 1));
+  document.getElementById("case-navigation").addEventListener("keydown", event => {
+    if (!["ArrowLeft", "ArrowRight"].includes(event.key)) return;
+    event.preventDefault();
+    showCase(caseIndex + (event.key === "ArrowRight" ? 1 : -1));
+  });
+  // Horizontal touch gestures browse cards; vertical gestures keep page scroll.
+  let touchStart = null;
+  carousel.addEventListener("touchstart", event => {
+    const touch = event.touches.length === 1 ? event.touches[0] : null;
+    touchStart = touch ? { x: touch.clientX, y: touch.clientY } : null;
+  }, { passive: true });
+  carousel.addEventListener("touchend", event => {
+    if (!touchStart || !event.changedTouches.length) return;
+    const touch = event.changedTouches[0];
+    const dx = touch.clientX - touchStart.x, dy = touch.clientY - touchStart.y;
+    touchStart = null;
+    if (Math.abs(dx) > 65 && Math.abs(dx) > Math.abs(dy) * 1.5) showCase(caseIndex + (dx < 0 ? 1 : -1));
+  }, { passive: true });
+  carousel.addEventListener("touchcancel", () => { touchStart = null; });
+  // Direct links and search results must reveal the requested hidden card.
+  function revealHash() {
+    const index = cards.findIndex(card => `#${card.id}` === location.hash);
+    if (index < 0) return;
+    filterProjects("all");
+    showCase(index);
+    cards[index].scrollIntoView({ block: "nearest" });
+  }
+  window.addEventListener("hashchange", revealHash);
+  carousel.classList.add("case-carousel");
+  carousel.setAttribute("aria-roledescription", "carousel");
+  document.getElementById("case-navigation").hidden = false;
+  filterProjects("all");
+  revealHash();
   filters.forEach(button => button.addEventListener("click", () => filterProjects(button.dataset.filter)));
   document.getElementById("project-toolbar").hidden = false;
 
@@ -160,6 +209,8 @@ SAMPLE-006,VPN disconnects,network,,new,`;
       link.addEventListener("click", () => {
         filterProjects("all"); // A filtered-out project must become reachable.
         const destination = document.getElementById(entry.id);
+        const caseMatch = visibleCards.indexOf(destination);
+        if (caseMatch >= 0) showCase(caseMatch);
         if (!destination.hasAttribute("tabindex")) destination.tabIndex = -1;
         // The dialog's asynchronous close event must not steal focus back
         // from the project the visitor chose.
