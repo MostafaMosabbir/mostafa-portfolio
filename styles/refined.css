@@ -215,3 +215,9 @@ body { isolation: isolate; }
   .pixel-switch { width: 68px; height: 68px; flex-basis: 68px; }
   .robot-figure { width: 62px; height: 62px; }
 }
+
+/* A distinct case study inside the security section, alongside the learning track. */
+.security-project { margin-block: 26px; padding: 24px; border: 1px solid var(--line); border-radius: 8px; background: #0b211b; }
+.security-project .eyebrow { color: var(--accent); font-size: .72rem; }
+.security-project h3 { margin-block: 12px; }
+.security-project .text-link { display: inline-block; margin-top: 12px; }
