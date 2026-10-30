@@ -20,7 +20,7 @@
 
   <!-- These paths must match your folders and filenames exactly. -->
   <link rel="stylesheet" href="styles/main.css">
-  <link rel="stylesheet" href="styles/refined.css?v=welcome-1">
+  <link rel="stylesheet" href="styles/refined.css?v=profile-1">
 
   <!-- defer makes JavaScript wait until the HTML has been parsed. -->
   <script src="scripts/side-switch.js?v=robot-coat-2" defer></script>
@@ -60,7 +60,7 @@
 
     <!-- These sections exist on the professional side only. -->
     <nav id="professional-nav" aria-label="Main navigation">
-      <a href="#about">About</a>
+      <a href="#about">Profile</a>
       <a href="#projects">Projects</a>
       <a href="#contact">Contact</a>
     </nav>
@@ -363,7 +363,7 @@ Fictional marketing-company sample</pre>
         aria-labelledby="about-title"
       >
         <div>
-          <h2 class="eyebrow" id="about-title">02 / About</h2>
+          <h2 class="eyebrow" id="about-title">02 / Profile</h2>
             <button class="decode-note" type="button" data-decode="Jack of All Trades" aria-label="Jack of All Trades" aria-pressed="false"><span class="decode-width" aria-hidden="true">Jack of All Trades</span><span class="decode-text" aria-hidden="true">Jack of All Trades</span></button>
         </div>
 
@@ -383,9 +383,27 @@ Fictional marketing-company sample</pre>
             decisions, what I contributed, and the lessons I take into
             the next project.
           </p>
-          <p class="about-credentials" id="cybersecurity">
+          <!-- CCRS remains unlinked until its certificate is available.
+               Course completion badges are separate from the featured credential. -->
+          <div class="profile-credentials" id="cybersecurity">
+            <h3>Credentials</h3>
+            <article class="credential-feature" aria-labelledby="ccrs-title">
+              <h4 id="ccrs-title">CCRS</h4>
+              <p>GalacticAdvisors</p>
+              <p class="credential-meta">Issued May 2026 · Expires May 2029</p>
+            </article>
+            <h3>Supporting education</h3>
+            <ul class="credential-list">
+              <li><div><h4>Networking Essentials</h4><p>Cisco · Course completion badge</p><p class="credential-meta">December 17, 2024</p></div>
+                <a class="text-link" href="https://www.credly.com/badges/b3a9a9b4-1947-4f5a-9b3f-336f6b98f8a3" aria-label="View Cisco Networking Essentials badge">View badge ↗</a></li>
+              <li><div><h4>Microsoft Azure Essentials by Microsoft Press</h4><p>LinkedIn Learning · Course completion</p><p class="credential-meta">May 12, 2026</p></div>
+                <a class="text-link" href="https://www.linkedin.com/learning/certificates/76d73d960c0eb3addd3c25c64d4e1f6f659820d2c7bd436705b09a83c534749a" aria-label="View Microsoft Azure Essentials certificate">View certificate ↗</a></li>
+              <li><div><h4>Project Management: Technical Projects</h4><p>LinkedIn Learning · Course completion</p><p class="credential-meta">May 11, 2026</p></div>
+                <a class="text-link" href="https://www.linkedin.com/learning/certificates/1cc147953bd1f49925d195df9df59304288e44649f6f9077c534664d9cd98f0c" aria-label="View Technical Projects certificate">View certificate ↗</a></li>
+            </ul>
+            <h3>Practice</h3>
             <a class="text-link" href="https://tryhackme.com/p/mostafamosabbir">View my TryHackMe profile <span aria-hidden="true">↗</span></a>
-          </p>
+          </div>
         </div>
       </section>
 
@@ -503,7 +521,7 @@ Fictional marketing-company sample</pre>
     <a href="#home" aria-label="Home" aria-current="location"><span>Home</span></a>
     <a href="#featured" aria-label="Featured project"><span>Featured project</span></a>
     <a href="#projects" aria-label="Projects"><span>Projects</span></a>
-    <a href="#about" aria-label="About"><span>About</span></a>
+    <a href="#about" aria-label="Profile"><span>Profile</span></a>
     <a href="#contact" aria-label="Contact"><span>Contact</span></a>
   </nav>
 

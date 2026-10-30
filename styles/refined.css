@@ -290,3 +290,16 @@ body { isolation: isolate; }
 .welcome-word.is-fading { opacity: 0; }
 .welcome-rotation:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
 @media (prefers-reduced-motion: reduce) { .welcome-word { transition: none; } }
+
+/* The featured credential leads; course records remain compact and distinct. */
+.profile-credentials { margin-top: 32px; }
+.profile-credentials h3 { margin: 30px 0 14px; font-size: .95rem; color: var(--ink); }
+.profile-credentials h4 { margin: 0; font-size: 1rem; line-height: 1.5; color: var(--ink); }
+.profile-credentials p { margin: 4px 0 0; font-size: .88rem; }
+.profile-credentials .credential-meta { font-size: .78rem; color: var(--muted); }
+.credential-feature { padding: 22px; border: 1px solid #376653; border-left: 3px solid var(--accent); border-radius: 8px; background: linear-gradient(110deg,#12372b80,#0b191b40); }
+.credential-feature h4 { font-size: 1.45rem; color: var(--accent); }
+.credential-list { list-style: none; padding: 0; margin: 0; }
+.credential-list li { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 20px 0; border-bottom: 1px solid var(--line); }
+.credential-list .text-link { flex-shrink: 0; font-size: .8rem; }
+@media(max-width:640px) { .credential-list li { align-items: flex-start; flex-direction: column; gap: 10px; } }
