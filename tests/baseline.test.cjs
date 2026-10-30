@@ -30,11 +30,15 @@ function setup({ seen = false, reduced = false, hash = '', storageFails = false 
   return {nodes,lines,copy,atmosphere,link,button,output,document,window,motion,jobs,advance};
 }
 
-test('opening types progressively, ends with three phrases, and restores the page',()=>{
+test('boot messages alternate with typed dialogue and restore the homepage',()=>{
   const s=setup(); assert.equal(s.nodes['baseline-intro'].hidden,false); assert.equal(s.copy.inert,true);
-  assert.equal(s.lines[0].textContent,'');s.advance(500);assert.ok(s.lines[0].textContent.startsWith('And blood-black'));assert.ok(s.lines[0].textContent.length<210);
-  s.advance(3600);assert.deepEqual(s.lines.map(l=>l.textContent),Array(3).fill('Within cells interlinked.'));
-  s.advance(600);assert.equal(s.nodes['baseline-intro'].hidden,true);assert.equal(s.copy.inert,false);assert.equal(s.jobs.size,0);
+  assert.equal(s.lines[0].textContent,''); s.advance(150); assert.ok(s.lines[0].textContent.startsWith('INIT')); assert.ok(s.lines[0].textContent.length<24);
+  s.advance(950); assert.ok(s.lines[2].textContent.includes('RESTORING SESSION'));
+  s.advance(2100); assert.ok(s.lines[1].textContent.includes('within one stem...'));
+  s.advance(800); assert.ok(s.lines[1].textContent.includes('VERIFIED'));
+  s.advance(800); assert.equal(s.lines[0].textContent,'Within cells interlinked.');
+  s.advance(1200); assert.equal(s.lines[2].textContent,'SIGNAL FOUND _');
+  s.advance(300); assert.equal(s.nodes['baseline-intro'].hidden,true); assert.equal(s.copy.inert,false); assert.equal(s.jobs.size,0);
 });
 test('skip cancels pending characters and restores focus from the skip control',()=>{
   const s=setup();s.advance(200);s.document.activeElement=s.nodes['baseline-skip'];s.nodes['baseline-skip'].events.click();

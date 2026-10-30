@@ -38,7 +38,7 @@
   if (!intro) return;
   // Deep links take visitors directly to their destination. If storage is
   // unavailable, skip the intro instead of repeating it on every visit.
-  const sessionKey = "mostafam-baseline-v1";
+  const sessionKey = "mostafam-baseline-v2";
   try {
     if (sessionStorage.getItem(sessionKey)) return;
     sessionStorage.setItem(sessionKey, "seen");
@@ -70,7 +70,7 @@
     timers.forEach(clearTimeout); timers.clear();
     const returnFocus = document.activeElement === skip;
     intro.hidden = true;
-    copy.inert = false; atmosphere.inert = false;
+    copy.inert = false;
     hero.classList.remove("baseline-running");
     lines.forEach(line => line.classList.remove("is-typing"));
     if (!reduced.matches && typeof copy.animate === "function") {
@@ -96,15 +96,18 @@
   document.getElementById("side-switch")?.addEventListener("click", finish);
   intro.hidden = false;
   hero.classList.add("baseline-running");
-  copy.inert = true; atmosphere.inert = true;
-  const duration = 4600;
-  typeLine(lines[0], "And blood-black nothingness began to spin... A system of cells interlinked within cells interlinked within cells interlinked within one stem... And dreadfully distinct against the dark, a tall white fountain played.", duration * .51);
-  later(() => {
-    intro.dataset.phase = "ending";
-    lines.forEach(line => { line.textContent = ""; });
-    typeLine(lines[0], "Within cells interlinked.", duration * .08);
-  }, duration * .59);
-  later(() => typeLine(lines[1], "Within cells interlinked.", duration * .08), duration * .70);
-  later(() => typeLine(lines[2], "Within cells interlinked.", duration * .08), duration * .81);
-  later(finish, duration);
+  copy.inert = true;
+  // Three reusable rows keep the boot sequence compact on small screens.
+  // These are theatrical messages only, not real diagnostic results.
+  function phase(kind, messages, typingTime) {
+    intro.dataset.phase = kind;
+    lines.forEach(line => { line.textContent = ""; line.classList.remove("is-typing"); });
+    messages.forEach((message, index) => later(() => typeLine(lines[index], message, typingTime), index * (typingTime + 70)));
+  }
+  phase("boot", ["INITIALIZING TERMINAL...", "MEMORY CHECK ................ OK", "RESTORING SESSION ........... OK"], 270);
+  later(() => phase("dialogue", ["RECITE YOUR BASELINE.", "A system of cells interlinked within cells interlinked within cells interlinked within one stem..."], 800), 1200);
+  later(() => phase("boot", ["CHECKING CONNECTIONS ........ OK", "SIGNAL INTEGRITY ............ VERIFIED"], 250), 3300);
+  later(() => phase("dialogue", ["Within cells interlinked."], 550), 4100);
+  later(() => phase("ready", ["SYSTEM READY.", "OPENING THE WORKBENCH...", "SIGNAL FOUND _"], 220), 4900);
+  later(finish, 6200);
 })();
