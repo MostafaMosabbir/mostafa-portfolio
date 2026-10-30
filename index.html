@@ -20,7 +20,7 @@
 
   <!-- These paths must match your folders and filenames exactly. -->
   <link rel="stylesheet" href="styles/main.css">
-  <link rel="stylesheet" href="styles/refined.css?v=baseline-2">
+  <link rel="stylesheet" href="styles/refined.css?v=welcome-1">
 
   <!-- defer makes JavaScript wait until the HTML has been parsed. -->
   <script src="scripts/side-switch.js?v=robot-coat-2" defer></script>
@@ -31,6 +31,8 @@
   <script src="scripts/explorer.js?v=baseline-1" defer></script>
   <script src="scripts/featured-projects.js?v=1" defer></script>
   <script src="scripts/baseline.js?v=2" defer></script>
+  <!-- A plain welcome remains readable without JavaScript or with reduced motion. -->
+  <script src="scripts/welcome.js?v=1" defer></script>
 </head>
 
 <body>
@@ -132,7 +134,7 @@
 
           <!-- Introduction: a quick explanation of who I am. -->
           <p class="intro">
-            Welcome, Halimoon. My name is Mostafa Mosabbir! I’m an IT Manager focused on IT operations, AI automation, and cybersecurity. I’m always expanding my knowledge and exploring what the dunya has to offer.
+            <span class="welcome-greeting" id="welcome-greeting">Welcome!</span> My name is Mostafa Mosabbir! I’m an IT Manager focused on IT operations, AI automation, and cybersecurity. I’m always expanding my knowledge and exploring what the dunya has to offer.
           </p>
 
           <div class="actions">

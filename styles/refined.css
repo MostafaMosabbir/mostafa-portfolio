@@ -280,3 +280,13 @@ body { isolation: isolate; }
 .feature-method { padding-left:22px; } .feature-method li { margin-bottom:12px; }
 .sr-only { position:absolute; width:1px; height:1px; padding:0; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
 @media(max-width:620px) { .featured-picker { padding:20px 18px 0; } .featured-picker button { flex:1 1 40%; } }
+
+/* Reserve the greeting width so translations never move the surrounding text. */
+.welcome-rotation { display: inline; padding: 0; border: 0; background: transparent; color: inherit; font: inherit; text-align: left; cursor: pointer; }
+.welcome-word-slot { display: inline-grid; vertical-align: baseline; }
+.welcome-word-slot > span { grid-area: 1 / 1; }
+.welcome-word-size { visibility: hidden; }
+.welcome-word { color: var(--accent); opacity: 1; transition: opacity 350ms ease; }
+.welcome-word.is-fading { opacity: 0; }
+.welcome-rotation:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+@media (prefers-reduced-motion: reduce) { .welcome-word { transition: none; } }
