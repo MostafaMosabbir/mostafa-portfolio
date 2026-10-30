@@ -291,15 +291,20 @@ body { isolation: isolate; }
 .welcome-rotation:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
 @media (prefers-reduced-motion: reduce) { .welcome-word { transition: none; } }
 
-/* The featured credential leads; course records remain compact and distinct. */
-.profile-credentials { margin-top: 32px; }
-.profile-credentials h3 { margin: 30px 0 14px; font-size: .95rem; color: var(--ink); }
-.profile-credentials h4 { margin: 0; font-size: 1rem; line-height: 1.5; color: var(--ink); }
-.profile-credentials p { margin: 4px 0 0; font-size: .88rem; }
-.profile-credentials .credential-meta { font-size: .78rem; color: var(--muted); }
-.credential-feature { padding: 22px; border: 1px solid #376653; border-left: 3px solid var(--accent); border-radius: 8px; background: linear-gradient(110deg,#12372b80,#0b191b40); }
-.credential-feature h4 { font-size: 1.45rem; color: var(--accent); }
-.credential-list { list-style: none; padding: 0; margin: 0; }
-.credential-list li { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 20px 0; border-bottom: 1px solid var(--line); }
-.credential-list .text-link { flex-shrink: 0; font-size: .8rem; }
-@media(max-width:640px) { .credential-list li { align-items: flex-start; flex-direction: column; gap: 10px; } }
+/* Official artwork is contained, never cropped into a new issuer badge. */
+.profile-layout { display:grid; grid-template-columns:minmax(0,1.1fr) minmax(0,1fr); gap:48px; margin-top:24px; align-items:start; }
+.profile-badges { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:28px 20px; text-align:center; }
+.profile-badges .item { min-width:0; }
+.profile-badges .shield { height:185px; max-width:220px; margin:auto; background:#385b4c; clip-path:polygon(6% 0,94% 0,94% 68%,50% 100%,6% 68%); padding:2px; }
+.profile-badges .inside { height:100%; background:#10231c; clip-path:polygon(6% 0,94% 0,94% 68%,50% 100%,6% 68%); display:flex; align-items:center; justify-content:center; flex-direction:column; padding:15px 18px 38px; }
+.profile-badges .inside img { width:100%; height:auto; max-height:120px; object-fit:contain; }
+.profile-badges .cisco { height:185px; width:185px; max-width:100%; object-fit:contain; }
+.profile-badges h4 { font-size:.94rem; line-height:1.4; margin:12px 0 4px; color:var(--ink); }
+.profile-badges p { font-size:.78rem; color:var(--muted); margin:3px 0; }
+.profile-badges a { display:inline-block; padding:8px 0; color:var(--accent); font-size:.82rem; text-underline-offset:4px; }
+.profile-badges .pending { color:var(--accent); font-size:32px; letter-spacing:.08em; }
+.profile-badges .pending small { font-size:11px; letter-spacing:0; color:var(--muted); }
+.profile-practice { border-top:1px solid var(--line); padding-top:20px; margin-top:32px; }
+.profile-practice h3 { font: .8rem/1.5 monospace; color:var(--muted); margin:0 0 12px; }
+@media(max-width:760px) { .profile-layout { grid-template-columns:1fr; gap:28px; } .profile-copy { order:-1; } }
+@media(max-width:380px) { .profile-badges { gap:24px 12px; } .profile-badges .shield { height:155px; } .profile-badges .cisco { width:155px; height:155px; } }
