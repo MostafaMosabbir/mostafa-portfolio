@@ -1,0 +1,12 @@
+action_id,requirement_id,action,owner,due_date,status,verification_criteria
+ACT-001,REQ-002,Review the client-file policy against the selected requirement.,Demo security reviewer,2026-11-15,planned,Record a dated coverage decision and its rationale.
+ACT-002,REQ-003,Complete and prioritize the supplier inventory.,Demo operations lead,2026-11-15,planned,Review an inventory covering all in-scope campaign platforms and freelancers.
+ACT-003,REQ-005,Reconcile the software inventory and review current evidence.,Demo IT owner,2026-11-15,planned,Review a current inventory export against managed software; record the actual review date.
+ACT-004,REQ-006,Implement the selected shared-account risk response and revise the overdue plan.,Demo IT owner,2026-11-15,planned,"Document the chosen treatment, demonstrate its operation, and record reviewer acceptance."
+ACT-005,REQ-007,Collect and map evidence of MFA coverage.,Demo identity administrator,2026-11-15,planned,Review in-scope login coverage and exceptions before linking the evidence record to CTL-007.
+ACT-006,REQ-008,Assign accountability for freelancer access reviews.,Demo operations lead,2026-11-15,planned,Confirm the owner accepts responsibility and review the latest permissions review record.
+ACT-007,REQ-009,Complete human review of staff training evidence.,Demo training lead,2026-11-15,planned,Check attendance and exercise results for the in-scope staff; record review outcome.
+ACT-008,REQ-010,Complete protected backup coverage and perform a restore test.,Demo IT owner,2026-11-15,planned,"Review backup scope, protection settings and a documented successful restore test."
+ACT-009,REQ-012,Define and map an alert-correlation control.,Demo security lead,2026-11-15,planned,"Test a fictional alert scenario; record ownership, implementation and reviewed evidence before mapping the control."
+ACT-010,REQ-014,Address the rejected investigation-record evidence.,Demo incident lead,2026-11-15,planned,Resolve reviewer objections and submit a replacement record for a new human review.
+ACT-011,REQ-015,Investigate the future-dated backup-integrity review.,Demo recovery lead,2026-11-15,planned,"Verify the actual review date and supporting record, or perform a new review; do not merely backdate the entry."

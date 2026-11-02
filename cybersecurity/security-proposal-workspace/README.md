@@ -1,6 +1,6 @@
 # Security Proposal Workspace
 
-**Local development prototype — From Requirements to Safeguards.**
+**Working prototype — From Requirements to Safeguards.**
 
 This Python tool checks whether recorded security statements have owners,
 implementation status, mapped controls, current evidence-review metadata, and
@@ -104,8 +104,42 @@ follow input validation, evaluation, escaping and report generation.
 
 ## Next milestone
 
-Add a remediation action register with explicit actions, accountable owners,
-deadlines and verification criteria. Then build an editable dashboard, create
-actual fictional evidence artifacts, review mapping coverage and personalize
-the public case study before publishing. This version is local and has no
+Review the local matrix and action-register preview, then create actual
+fictional evidence artifacts and demonstrate reassessment after remediation.
+An editable dashboard and personalized public case study remain future work. This version is local and has no
 accounts, uploads, AI service, external connectors or automatic certification.
+
+## Local preview: matrix and remediation register
+
+The report now groups requirements into clickable domain tiles. Each tile shows
+its recorded state, review-item count and associated action count. The filter
+changes only the visible tiles. The complete findings and action table remain
+available below, including without JavaScript.
+
+Optional `data/actions.csv` stores actions, requirement IDs, accountable roles,
+due dates, status and verification criteria. All fields are required; IDs must
+be unique and refer to an existing requirement. Supported statuses are `planned`,
+`in_progress`, and `ready_for_review`. There is deliberately no automatic close
+button. The fictional November 15 deadlines are planning assumptions, not
+framework requirements. Due dates earlier than the report date are overdue.
+
+The action register does not influence the assessment verdict. To resolve a gap,
+update the relevant controls, evidence or coverage-review records after the work
+and human review, then rerun the assessment. `assessment.json` contains the
+register, and `summary.json` hashes its input bytes alongside the other inputs.
+
+Try this in a copy: change ACT-005 to `ready_for_review` and rerun. REQ-007 still
+needs work because its evidence mapping is missing. Explain why an action status
+is not sufficient proof. Next, follow the existing MFA evidence-mapping exercise
+and compare the outputs. Do not treat fixture changes as real evidence review.
+
+Preview command: `python proposal.py --as-of 2026-10-28 --output preview-review`.
+The matrix and action register are included in the published demonstration.
+
+## Reassessment walkthrough
+
+Run `python demo_reassessment.py --output my-reassessment` to reproduce three
+fictional runs. Open `my-reassessment/index.html` to compare them.
+The example demonstrates 4, 4, then 5 supported drafts. Marking an action ready
+does not clear a finding; adding the existing synthetic evidence mapping does.
+The original input files remain unchanged. No real evidence is inspected.

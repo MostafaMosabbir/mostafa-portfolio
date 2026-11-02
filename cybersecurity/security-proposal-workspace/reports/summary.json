@@ -11,6 +11,8 @@
   "inputs": {
     "requirements.csv": "01f6471ce02b766bd7e3ebed4953167dcbf761286352858a4c61784dcceb6e65",
     "controls.csv": "f2d70b4b2dffb480e7d367c36fe28fa985e8ce31a075c45b153633dfb782367f",
-    "evidence.csv": "54fe99e580aae3b77e5fcd99a750935e48da75d5cdcc68f00c5cf83cf574aa65"
-  }
+    "evidence.csv": "54fe99e580aae3b77e5fcd99a750935e48da75d5cdcc68f00c5cf83cf574aa65",
+    "actions.csv": "442cd07a2d814db206fba912567c443b9882385f8019eef953cc134d1e918866"
+  },
+  "remediation_actions": 11
 }

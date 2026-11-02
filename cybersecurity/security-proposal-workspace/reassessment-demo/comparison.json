@@ -1,0 +1,158 @@
+{
+  "scenario": "Fictional metadata-only MFA reassessment",
+  "as_of": "2026-10-28",
+  "stages": [
+    {
+      "folder": "before",
+      "title": "Original assessment",
+      "summary": {
+        "schema_version": 1,
+        "as_of": "2026-10-28",
+        "max_age_days": 180,
+        "requirements": 15,
+        "supported_drafts": 4,
+        "needs_work": 11,
+        "gap_items": 12,
+        "evidence_validation": "Recorded human-review metadata only; evidence files are not inspected.",
+        "scope": "Selected project-defined requirements only; mappings indicate relevance, not complete framework outcome coverage.",
+        "inputs": {
+          "requirements.csv": "01f6471ce02b766bd7e3ebed4953167dcbf761286352858a4c61784dcceb6e65",
+          "controls.csv": "f2d70b4b2dffb480e7d367c36fe28fa985e8ce31a075c45b153633dfb782367f",
+          "evidence.csv": "54fe99e580aae3b77e5fcd99a750935e48da75d5cdcc68f00c5cf83cf574aa65",
+          "actions.csv": "442cd07a2d814db206fba912567c443b9882385f8019eef953cc134d1e918866"
+        },
+        "remediation_actions": 11
+      },
+      "requirement": {
+        "requirement_id": "REQ-007",
+        "domain": "Protect",
+        "requirement": "Require MFA for the in-scope human advertising-account logins.",
+        "priority": "high",
+        "control_ids": "CTL-007",
+        "coverage_review": "approved",
+        "reviewer": "Demo reviewer",
+        "reviewed_on": "2026-10-20",
+        "framework": "NIST CSF",
+        "framework_version": "2.0",
+        "source_ref": "PR.AA-03",
+        "source_url": "https://doi.org/10.6028/NIST.CSWP.29",
+        "state": "needs_work",
+        "gaps": [
+          "CTL-007: evidence reference is missing."
+        ],
+        "claims": [
+          {
+            "control_id": "CTL-007",
+            "status": "implemented",
+            "owner": "Demo IT owner",
+            "statement": "Fictional scenario: advertising-account mfa is recorded as operating for the defined demo scope.",
+            "target_date": "",
+            "evidence_ids": []
+          }
+        ]
+      }
+    },
+    {
+      "folder": "action-ready",
+      "title": "Action marked ready for review",
+      "summary": {
+        "schema_version": 1,
+        "as_of": "2026-10-28",
+        "max_age_days": 180,
+        "requirements": 15,
+        "supported_drafts": 4,
+        "needs_work": 11,
+        "gap_items": 12,
+        "evidence_validation": "Recorded human-review metadata only; evidence files are not inspected.",
+        "scope": "Selected project-defined requirements only; mappings indicate relevance, not complete framework outcome coverage.",
+        "inputs": {
+          "requirements.csv": "01f6471ce02b766bd7e3ebed4953167dcbf761286352858a4c61784dcceb6e65",
+          "controls.csv": "f2d70b4b2dffb480e7d367c36fe28fa985e8ce31a075c45b153633dfb782367f",
+          "evidence.csv": "54fe99e580aae3b77e5fcd99a750935e48da75d5cdcc68f00c5cf83cf574aa65",
+          "actions.csv": "296d70c101e25e0409890a6aaacdb4f6fd0c6e31b24b1cefd4e9fa03a622b7fe"
+        },
+        "remediation_actions": 11
+      },
+      "requirement": {
+        "requirement_id": "REQ-007",
+        "domain": "Protect",
+        "requirement": "Require MFA for the in-scope human advertising-account logins.",
+        "priority": "high",
+        "control_ids": "CTL-007",
+        "coverage_review": "approved",
+        "reviewer": "Demo reviewer",
+        "reviewed_on": "2026-10-20",
+        "framework": "NIST CSF",
+        "framework_version": "2.0",
+        "source_ref": "PR.AA-03",
+        "source_url": "https://doi.org/10.6028/NIST.CSWP.29",
+        "state": "needs_work",
+        "gaps": [
+          "CTL-007: evidence reference is missing."
+        ],
+        "claims": [
+          {
+            "control_id": "CTL-007",
+            "status": "implemented",
+            "owner": "Demo IT owner",
+            "statement": "Fictional scenario: advertising-account mfa is recorded as operating for the defined demo scope.",
+            "target_date": "",
+            "evidence_ids": []
+          }
+        ]
+      }
+    },
+    {
+      "folder": "after",
+      "title": "Evidence mapping added",
+      "summary": {
+        "schema_version": 1,
+        "as_of": "2026-10-28",
+        "max_age_days": 180,
+        "requirements": 15,
+        "supported_drafts": 5,
+        "needs_work": 10,
+        "gap_items": 11,
+        "evidence_validation": "Recorded human-review metadata only; evidence files are not inspected.",
+        "scope": "Selected project-defined requirements only; mappings indicate relevance, not complete framework outcome coverage.",
+        "inputs": {
+          "requirements.csv": "01f6471ce02b766bd7e3ebed4953167dcbf761286352858a4c61784dcceb6e65",
+          "controls.csv": "59d96bf165780fede2492ee32f8cc9b1a229db1b15c1aef0b740f96a743f24e3",
+          "evidence.csv": "54fe99e580aae3b77e5fcd99a750935e48da75d5cdcc68f00c5cf83cf574aa65",
+          "actions.csv": "296d70c101e25e0409890a6aaacdb4f6fd0c6e31b24b1cefd4e9fa03a622b7fe"
+        },
+        "remediation_actions": 11
+      },
+      "requirement": {
+        "requirement_id": "REQ-007",
+        "domain": "Protect",
+        "requirement": "Require MFA for the in-scope human advertising-account logins.",
+        "priority": "high",
+        "control_ids": "CTL-007",
+        "coverage_review": "approved",
+        "reviewer": "Demo reviewer",
+        "reviewed_on": "2026-10-20",
+        "framework": "NIST CSF",
+        "framework_version": "2.0",
+        "source_ref": "PR.AA-03",
+        "source_url": "https://doi.org/10.6028/NIST.CSWP.29",
+        "state": "supported_draft",
+        "gaps": [],
+        "claims": [
+          {
+            "control_id": "CTL-007",
+            "status": "implemented",
+            "owner": "Demo IT owner",
+            "statement": "Fictional scenario: advertising-account mfa is recorded as operating for the defined demo scope.",
+            "target_date": "",
+            "evidence_ids": [
+              "EV-007"
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "other_requirements_unchanged": true,
+  "limitation": "No MFA configuration, login, screenshot, or evidence file was inspected."
+}

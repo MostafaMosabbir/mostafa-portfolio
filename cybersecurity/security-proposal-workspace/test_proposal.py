@@ -112,7 +112,8 @@ class AssessmentTests(unittest.TestCase):
         rows=app.evaluate(self.data,self.day)
         summary={'as_of':'2026-10-28','max_age_days':180,'scope':'Demo','requirements':15,'supported_drafts':4,'needs_work':11}
         rendered=app.render_review(rows,summary)
-        self.assertNotIn('<script>',rendered)
+        self.assertNotIn('<script>alert(1)</script>',rendered)
+        self.assertEqual(rendered.count('<script>'), 1)  # Only the fixed local UI script.
         self.assertIn('&lt;script&gt;',rendered)
         path=self.root/'safe.csv'
         app.write_csv(path,['value'],[['=1+1'],['  @SUM(1)']])

@@ -12,8 +12,10 @@
     "inputs": {
       "requirements.csv": "01f6471ce02b766bd7e3ebed4953167dcbf761286352858a4c61784dcceb6e65",
       "controls.csv": "f2d70b4b2dffb480e7d367c36fe28fa985e8ce31a075c45b153633dfb782367f",
-      "evidence.csv": "54fe99e580aae3b77e5fcd99a750935e48da75d5cdcc68f00c5cf83cf574aa65"
-    }
+      "evidence.csv": "54fe99e580aae3b77e5fcd99a750935e48da75d5cdcc68f00c5cf83cf574aa65",
+      "actions.csv": "442cd07a2d814db206fba912567c443b9882385f8019eef953cc134d1e918866"
+    },
+    "remediation_actions": 11
   },
   "requirements": [
     {
@@ -445,6 +447,107 @@
           ]
         }
       ]
+    }
+  ],
+  "actions": [
+    {
+      "action_id": "ACT-001",
+      "requirement_id": "REQ-002",
+      "action": "Review the client-file policy against the selected requirement.",
+      "owner": "Demo security reviewer",
+      "due_date": "2026-11-15",
+      "status": "planned",
+      "verification_criteria": "Record a dated coverage decision and its rationale."
+    },
+    {
+      "action_id": "ACT-002",
+      "requirement_id": "REQ-003",
+      "action": "Complete and prioritize the supplier inventory.",
+      "owner": "Demo operations lead",
+      "due_date": "2026-11-15",
+      "status": "planned",
+      "verification_criteria": "Review an inventory covering all in-scope campaign platforms and freelancers."
+    },
+    {
+      "action_id": "ACT-003",
+      "requirement_id": "REQ-005",
+      "action": "Reconcile the software inventory and review current evidence.",
+      "owner": "Demo IT owner",
+      "due_date": "2026-11-15",
+      "status": "planned",
+      "verification_criteria": "Review a current inventory export against managed software; record the actual review date."
+    },
+    {
+      "action_id": "ACT-004",
+      "requirement_id": "REQ-006",
+      "action": "Implement the selected shared-account risk response and revise the overdue plan.",
+      "owner": "Demo IT owner",
+      "due_date": "2026-11-15",
+      "status": "planned",
+      "verification_criteria": "Document the chosen treatment, demonstrate its operation, and record reviewer acceptance."
+    },
+    {
+      "action_id": "ACT-005",
+      "requirement_id": "REQ-007",
+      "action": "Collect and map evidence of MFA coverage.",
+      "owner": "Demo identity administrator",
+      "due_date": "2026-11-15",
+      "status": "planned",
+      "verification_criteria": "Review in-scope login coverage and exceptions before linking the evidence record to CTL-007."
+    },
+    {
+      "action_id": "ACT-006",
+      "requirement_id": "REQ-008",
+      "action": "Assign accountability for freelancer access reviews.",
+      "owner": "Demo operations lead",
+      "due_date": "2026-11-15",
+      "status": "planned",
+      "verification_criteria": "Confirm the owner accepts responsibility and review the latest permissions review record."
+    },
+    {
+      "action_id": "ACT-007",
+      "requirement_id": "REQ-009",
+      "action": "Complete human review of staff training evidence.",
+      "owner": "Demo training lead",
+      "due_date": "2026-11-15",
+      "status": "planned",
+      "verification_criteria": "Check attendance and exercise results for the in-scope staff; record review outcome."
+    },
+    {
+      "action_id": "ACT-008",
+      "requirement_id": "REQ-010",
+      "action": "Complete protected backup coverage and perform a restore test.",
+      "owner": "Demo IT owner",
+      "due_date": "2026-11-15",
+      "status": "planned",
+      "verification_criteria": "Review backup scope, protection settings and a documented successful restore test."
+    },
+    {
+      "action_id": "ACT-009",
+      "requirement_id": "REQ-012",
+      "action": "Define and map an alert-correlation control.",
+      "owner": "Demo security lead",
+      "due_date": "2026-11-15",
+      "status": "planned",
+      "verification_criteria": "Test a fictional alert scenario; record ownership, implementation and reviewed evidence before mapping the control."
+    },
+    {
+      "action_id": "ACT-010",
+      "requirement_id": "REQ-014",
+      "action": "Address the rejected investigation-record evidence.",
+      "owner": "Demo incident lead",
+      "due_date": "2026-11-15",
+      "status": "planned",
+      "verification_criteria": "Resolve reviewer objections and submit a replacement record for a new human review."
+    },
+    {
+      "action_id": "ACT-011",
+      "requirement_id": "REQ-015",
+      "action": "Investigate the future-dated backup-integrity review.",
+      "owner": "Demo recovery lead",
+      "due_date": "2026-11-15",
+      "status": "planned",
+      "verification_criteria": "Verify the actual review date and supporting record, or perform a new review; do not merely backdate the entry."
     }
   ]
 }

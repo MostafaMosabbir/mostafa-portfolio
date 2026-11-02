@@ -194,13 +194,15 @@ def write_csv(path: Path, headers: list[str], rows: list[list]) -> None:
         writer.writerows([[safe_cell(cell) for cell in row] for row in rows])
 
 
-def render_review(rows: list[dict], summary: dict) -> str:
-    """Offline report: escape every imported value; no scripts or remote assets.
+def render_review(rows: list[dict], summary: dict, actions=None) -> str:
+    """Offline report: escaped imported text, local filtering, no remote assets.
 
     Native details elements work with keyboard and touch. The report is a view
     of this run, not a second database; edits belong in the source CSV files.
     """
     esc = lambda value: html.escape(str(value), quote=True)
+    from remediation import render_matrix
+    matrix = render_matrix(rows, actions or [], summary["as_of"])
     cards = []
     priority_order = {"critical": 0, "high": 1, "medium": 2, "low": 3}
     for row in sorted(rows, key=lambda r: (r["state"] != "needs_work", priority_order[r["priority"]], r["requirement_id"])):
@@ -210,7 +212,7 @@ def render_review(rows: list[dict], summary: dict) -> str:
             f"<td>{esc(c['owner']) or 'Unassigned'}</td><td>{esc(c['target_date']) or 'Not set'}</td>"
             f"<td>{esc('; '.join(c['evidence_ids'])) or 'Missing'}</td></tr>" for c in row["claims"])
         statements = "".join(f"<li><strong>{esc(c['control_id'])}</strong>: {esc(c['statement']) or 'No statement recorded.'}</li>" for c in row['claims'])
-        cards.append(f'''<details class="{row['state']}"><summary>
+        cards.append(f'''<details id="finding-{esc(row['requirement_id'])}" class="{row['state']}"><summary>
           <span>{esc(row['requirement_id'])} · {esc(row['domain'])}</span>
           <strong>{esc(row['requirement'])}</strong>
           <span>{esc(row['priority'])} priority · {row['state'].replace('_', ' ')} · {len(row['gaps'])} review {'item' if len(row['gaps']) == 1 else 'items'}</span>
@@ -259,7 +261,8 @@ def render_review(rows: list[dict], summary: dict) -> str:
       <nav class="exports" aria-label="Assessment exports"><a href="crosswalk.csv" download>Download crosswalk · CSV</a>
       <a href="gaps.csv" download>Download gaps · CSV</a><a href="assessment.json" download>Download assessment · JSON</a></nav>
       <p>Open a requirement to inspect its controls and review items. Items needing work appear first, ordered by the supplied priority. Counts are not a compliance percentage.</p>
-      {''.join(cards)}<footer><p>Generated locally. Edit the input files and rerun the tool to update this report.</p></footer></main></body></html>'''
+      {matrix}
+      <h2>Requirement findings</h2>{''.join(cards)}<footer><p>Generated locally. Edit the input files and rerun the tool to update this report.</p></footer></main></body></html>'''
 
 
 def generate(data_dir: Path, output_dir: Path, as_of: date, max_age_days: int = 180,
@@ -269,6 +272,13 @@ def generate(data_dir: Path, output_dir: Path, as_of: date, max_age_days: int = 
     snapshots = {kind: path.read_bytes() for kind, path in sources.items()}
     data = {kind: read_csv(path, kind, snapshots[kind]) for kind, path in sources.items()}
     rows = evaluate(data, as_of, max_age_days)
+    from remediation import load_actions
+    action_path = data_dir / "actions.csv"
+    action_raw = action_path.read_bytes() if action_path.exists() else None
+    try:
+        actions = load_actions(action_raw, rows) if action_raw is not None else []
+    except ValueError as exc:
+        raise InputError(str(exc)) from exc
     supported = sum(row["state"] == "supported_draft" for row in rows)
     summary = {"schema_version": 1, "as_of": as_of.isoformat(), "max_age_days": max_age_days,
                "requirements": len(rows), "supported_drafts": supported,
@@ -276,6 +286,9 @@ def generate(data_dir: Path, output_dir: Path, as_of: date, max_age_days: int = 
                "evidence_validation": "Recorded human-review metadata only; evidence files are not inspected.",
                "scope": "Selected project-defined requirements only; mappings indicate relevance, not complete framework outcome coverage.",
                "inputs": {sources[kind].name: hashlib.sha256(raw).hexdigest() for kind, raw in snapshots.items()}}
+    summary["remediation_actions"] = len(actions)
+    if action_raw is not None:
+        summary["inputs"]["actions.csv"] = hashlib.sha256(action_raw).hexdigest()
     names = ["draft-response.md", "crosswalk.csv", "gaps.csv", "summary.json", "assessment.json", "review.html"]
     if not overwrite and any((output_dir / name).exists() for name in names):
         raise InputError("Output files already exist. Choose a new directory or pass --overwrite.")
@@ -315,8 +328,8 @@ def generate(data_dir: Path, output_dir: Path, as_of: date, max_age_days: int = 
         write_csv(stage / names[1], ["requirement_id", "domain", "requirement", "priority", "control_ids", "coverage_review", "reviewer", "state", "gap_count", "framework", "framework_version", "source_ref", "source_url"], crosswalk)
         write_csv(stage / names[2], ["requirement_id", "priority", "domain", "gap"], gap_rows)
         (stage / names[3]).write_text(json.dumps(summary, indent=2) + "\n", encoding="utf-8")
-        (stage / names[4]).write_text(json.dumps({"summary": summary, "requirements": rows}, indent=2) + "\n", encoding="utf-8")
-        (stage / names[5]).write_text(render_review(rows, summary), encoding="utf-8")
+        (stage / names[4]).write_text(json.dumps({"summary": summary, "requirements": rows, "actions": actions}, indent=2) + "\n", encoding="utf-8")
+        (stage / names[5]).write_text(render_review(rows, summary, actions), encoding="utf-8")
         for name in names:
             os.replace(stage / name, output_dir / name)
     return summary
