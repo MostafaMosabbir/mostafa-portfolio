@@ -1,4 +1,4 @@
-control_id,title,status,owner,statement,target_date,evidence_ids
+﻿control_id,title,status,owner,statement,target_date,evidence_ids
 CTL-001,Security responsibility register,implemented,Demo IT owner,Fictional scenario: security responsibility register is recorded as operating for the defined demo scope.,,EV-001
 CTL-002,Client-file handling policy,implemented,Demo IT owner,Fictional scenario: client-file handling policy is recorded as operating for the defined demo scope.,,EV-002
 CTL-003,Supplier inventory,partial,Demo IT owner,Fictional scenario: supplier inventory is incomplete; coverage and verification work remain.,2026-11-15,EV-003

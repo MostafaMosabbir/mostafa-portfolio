@@ -1,0 +1,2 @@
+# Preserve exact CSV bytes so report provenance hashes remain reproducible.
+*.csv -text

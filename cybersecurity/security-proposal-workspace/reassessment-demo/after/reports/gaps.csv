@@ -1,4 +1,4 @@
-requirement_id,priority,domain,gap
+﻿requirement_id,priority,domain,gap
 REQ-002,medium,Govern,Requirement coverage has not been approved by a human reviewer.
 REQ-003,medium,Govern,CTL-003: status is partial; do not claim implementation.
 REQ-005,medium,Identify,EV-005: evidence review is stale under the selected freshness window.
