@@ -13,6 +13,9 @@
   const SPEED = .12; // Radians per second: a full turn takes roughly a minute.
   let width = 0, height = 0, frameId = null, scrollFrame = null, last = 0, phase = 0;
   let mouse = null, mouseAge = 3;
+  // Remember whether the last paint could have left anything on the canvas.
+  // This lets a scroll clear departing artwork once, then avoid empty paints.
+  let canvasHasContent = false;
   let scrollTop = 0, heroBottom = 650, rainBounds = null;
   const GLOW_RADIUS = 55;
   const REACH = 210; // Cursor influence extends beyond the small visible glow.
@@ -110,6 +113,8 @@
   }
   function draw(dt = 0) {
     ctx.clearRect(0,0,width,height);
+    canvasHasContent = hasVisibleGeometry() ||
+      Boolean(mouse && mouseAge <= 1.8 && !paused() && pointer.matches);
     const red = document.body.dataset.side === 'creative';
     const color = red ? '255,166,173' : '77,191,145';
     // Low opacity under content avoids competing with text and project cards.
@@ -197,9 +202,13 @@
     if (scrollFrame!==null) return;
     scrollFrame=requestAnimationFrame(()=>{
       scrollFrame=null;measure();settleOffscreen();
-      // A running frame will repaint visible shapes. Clear once immediately
-      // when they leave view, and repaint a paused or sleeping scene as needed.
-      if (paused() || frameId===null || !hasVisibleGeometry()) draw();
+      // A running animation repaints visible shapes. Clear once when artwork
+      // leaves view; avoid repeatedly clearing an already empty full canvas.
+      // Paused shapes still move with scrolling, so repaint while visible.
+      const visible = hasVisibleGeometry();
+      const glow = mouse && mouseAge <= 1.8 && !paused() && pointer.matches;
+      if ((paused() || frameId===null || (!visible && !glow && canvasHasContent)) &&
+          (visible || glow || canvasHasContent)) draw();
       schedule();
     });
   },{passive:true});
