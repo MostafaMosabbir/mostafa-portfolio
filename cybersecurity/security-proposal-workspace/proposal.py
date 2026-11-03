@@ -210,7 +210,8 @@ def render_review(rows: list[dict], summary: dict, actions=None, portfolio_nav=F
     # known relationship to the portfolio and the sibling reassessment demo.
     navigation = ('<header class="portfolio-header"><a class="portfolio-brand" href="../../../#main">Mostafa Mosabbir</a>'
                   '<nav aria-label="Portfolio navigation"><a href="../../../#about">Profile</a>'
-                  '<a href="../../../#projects">Projects</a><a href="../../../#contact">Contact</a></nav></header>'
+                  '<a href="../../../#projects">Projects</a><a href="../../../articles/index.html">Articles</a>'
+                  '<a href="../../../tools/index.html">Tools</a><a href="../../../#contact">Contact</a></nav></header>'
                   '<p><a href="../../../#projects">← Back to portfolio</a> · '
                   '<a href="../reassessment-demo/index.html">Follow the MFA reassessment</a></p>'
                   if portfolio_nav else '')
