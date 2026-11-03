@@ -25,6 +25,9 @@
       if (button.classList.contains("feature-select")) button.textContent = selected ? "Featured above" : "Highlight project";
     });
     feature.dataset.project = key;
+    // Articles are currently prepared only for Project 004. Project switches
+    // return to Brief below, so a hidden tab never remains selected.
+    document.getElementById("tab-articles").hidden = key !== "security";
     title.textContent = project.title;
     document.getElementById("featured-number").textContent = `Project ${project.number} / Featured project`;
     document.getElementById("featured-badge").textContent = project.badge;

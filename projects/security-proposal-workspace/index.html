@@ -47,6 +47,11 @@
     .questions li { padding: .25rem 0 .25rem .35rem; }
     .questions li::marker { color: #8edeb0; }
     .button { display: inline-block; background: #9be5ba; color: #0b1a11; padding: .65rem 1rem; border-radius: 5px; font-weight: 600; text-decoration: none; margin: .3rem 0 1rem; }
+    /* This is a visible layout placeholder, not a published article. */
+    .article-placeholder { border: 1px solid #355647; border-radius: 8px; padding: 1rem; background: #10231b; }
+    .article-image-placeholder { display: grid; place-items: center; min-height: 130px; padding: 1rem; border: 1px dashed #6f9b82; color: #c2d3c8; text-align: center; margin-bottom: 1rem; }
+    .article-placeholder .placeholder-label { color: #9be5ba; font: .8rem/1.5 ui-monospace, monospace; letter-spacing: .04em; text-transform: uppercase; }
+    .article-placeholder .placeholder-copy { color: #c2d2c7; }
     .muted { color: #b5c8bd; }
     footer { border-top: 1px solid #2a4639; padding-block: 1.5rem; margin-top: 1rem; color: #b5c8bd; }
     @media (max-width: 680px) { .site-header { align-items: flex-start; flex-direction: column; } .hero, .body-grid { grid-template-columns: 1fr; gap: 1.5rem; } }
@@ -60,6 +65,7 @@
     <nav class="site-nav" aria-label="Main navigation">
       <a href="../../index.html#about">Profile</a>
       <a href="../../index.html#projects">Projects</a>
+      <a href="../../articles/index.html">Articles</a>
       <a href="../../index.html#contact">Contact</a>
     </nav>
   </header>
@@ -126,7 +132,13 @@
         <section class="block" id="articles" aria-labelledby="articles-title">
           <p class="eyebrow">Writing</p>
           <h2 id="articles-title">Articles</h2>
-          <p>Articles will be added as the hands-on work progresses.</p>
+          <div class="article-placeholder" aria-label="Article layout placeholder">
+            <div class="article-image-placeholder">Image placeholder</div>
+            <p class="placeholder-label">Article title placeholder</p>
+            <p class="placeholder-copy">Article text placeholder</p>
+            <p>No article has been published here yet.</p>
+          </div>
+          <p><a href="../../articles/index.html">View Articles</a></p>
         </section>
       </aside>
     </div>

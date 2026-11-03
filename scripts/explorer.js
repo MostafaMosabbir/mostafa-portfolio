@@ -75,8 +75,11 @@ SAMPLE-006,VPN disconnects,network,,new,`;
     panel.tabIndex = 0;
     tab.addEventListener("click", () => selectTab(index));
     tab.addEventListener("keydown", event => {
-      const target = { ArrowRight: (index + 1) % tabs.length, ArrowLeft: (index + tabs.length - 1) % tabs.length, Home: 0, End: tabs.length - 1 }[event.key];
-      if (target !== undefined) { event.preventDefault(); selectTab(target, true); }
+      // Skip tabs hidden for the currently featured project.
+      const visibleTabs = tabs.filter(item => !item.hidden);
+      const current = visibleTabs.indexOf(tab);
+      const target = { ArrowRight: (current + 1) % visibleTabs.length, ArrowLeft: (current + visibleTabs.length - 1) % visibleTabs.length, Home: 0, End: visibleTabs.length - 1 }[event.key];
+      if (target !== undefined) { event.preventDefault(); selectTab(tabs.indexOf(visibleTabs[target]), true); }
     });
   });
   selectTab(1); // Open on the interactive process, like the approved mockup.

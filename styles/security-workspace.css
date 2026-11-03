@@ -12,3 +12,14 @@
 .security-note { margin-top: 1rem; }
 @media (max-width: 850px) { .security-steps { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 500px) { .security-steps { grid-template-columns: 1fr; } .security-step { border-top: 0; border-left: 2px solid #7ed4a3; } }
+
+/* A clearly labeled empty layout, ready for a future Project 004 article. */
+#tab-articles[hidden] { display: none; }
+.article-slot { display: grid; grid-template-columns: minmax(140px, .65fr) minmax(0, 1.35fr); gap: 1.2rem; align-items: center; padding: 1.2rem; border: 1px solid #365449; border-radius: 7px; background: #10211a; }
+.article-slot-image { display: grid; place-items: center; min-height: 130px; padding: 1rem; border: 1px dashed #698779; color: #c4d8ca; text-align: center; font: .75rem/1.5 ui-monospace, monospace; letter-spacing: .06em; }
+.article-slot-label { color: #a7ddbb; font: .75rem/1.5 ui-monospace, monospace; letter-spacing: .08em; }
+.article-slot h4 { margin: .4rem 0; font-size: 1rem; }
+.article-slot p { margin: .5rem 0; }
+.article-slot-note { color: #c0d1c5; font-size: .85rem; }
+@media (max-width: 550px) { .article-slot { grid-template-columns: 1fr; } .article-slot-image { min-height: 100px; } }
+@media (max-width: 420px) { #featured[data-project="security"] .feature-tabs { flex-wrap: wrap; } #featured[data-project="security"] .feature-tabs button { flex: 1 1 calc(50% - .5rem); } }

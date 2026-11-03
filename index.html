@@ -21,7 +21,7 @@
   <!-- These paths must match your folders and filenames exactly. -->
   <link rel="stylesheet" href="styles/main.css">
   <link rel="stylesheet" href="styles/refined.css?v=kaizen-1">
-  <link rel="stylesheet" href="styles/security-workspace.css?v=1">
+  <link rel="stylesheet" href="styles/security-workspace.css?v=2">
 
   <!-- defer makes JavaScript wait until the HTML has been parsed. -->
   <script src="scripts/side-switch.js?v=robot-coat-2" defer></script>
@@ -29,8 +29,8 @@
   <script src="scripts/matrix.js" defer></script>
   <script src="scripts/geometry.js?v=3" defer></script>
   <!-- Independent enhancements: navigation, project filtering, and sample analysis. -->
-  <script src="scripts/explorer.js?v=baseline-1" defer></script>
-  <script src="scripts/featured-projects.js?v=1" defer></script>
+  <script src="scripts/explorer.js?v=articles-1" defer></script>
+  <script src="scripts/featured-projects.js?v=articles-1" defer></script>
   <script src="scripts/security-sample-data.js?v=1" defer></script>
   <script src="scripts/security-workspace.js?v=1" defer></script>
   <script src="scripts/baseline.js?v=2" defer></script>
@@ -65,6 +65,7 @@
     <nav id="professional-nav" aria-label="Main navigation">
       <a href="#about">Profile</a>
       <a href="#projects">Projects</a>
+      <a href="articles/index.html">Articles</a>
       <a href="#contact">Contact</a>
     </nav>
 
@@ -171,6 +172,8 @@
             <button id="tab-overview" role="tab" aria-selected="true" aria-controls="panel-overview" type="button">Brief</button>
             <button id="tab-process" role="tab" aria-selected="false" aria-controls="panel-process" tabindex="-1" type="button">Method</button>
             <button id="tab-evidence" role="tab" aria-selected="false" aria-controls="panel-evidence" tabindex="-1" type="button">Findings</button>
+            <!-- This tab appears when Project 004 is featured. -->
+            <button id="tab-articles" role="tab" aria-selected="false" aria-controls="panel-articles" tabindex="-1" type="button" hidden>Articles</button>
           </div>
         </div>
 
@@ -234,6 +237,16 @@
             <p>Fictional tickets: 38 · Missing resolution notes: 3 · Repeated subject groups: 4 · Automated tests passed: 9</p>
             <div class="evidence-links"><a href="projects/ticket-analyzer/index.html">Open the case file ↗</a><a href="projects/ticket-analyzer/sample-summary.csv" download>Download sample summary (CSV) ↓</a><a href="projects/ticket-analyzer/sample-findings.md">Read sample findings ↗</a></div>
           </div><div data-feature-project="portfolio" hidden><p>The portfolio itself is the working example.</p><div class="evidence-links"><a href="https://github.com/MostafaMosabbir/mostafa-portfolio">Explore the source ↗</a><a href="https://github.com/MostafaMosabbir/mostafa-portfolio/tree/main/tests">View interaction tests ↗</a></div></div><div data-feature-project="assistant" hidden><p>Local prototype · Public demo coming later</p><p>No public results or downloadable source are available here yet.</p></div><div data-feature-project="security" hidden><p>15 selected requirements · 4 supported drafts · 11 need work · 21 automated tests passed</p><p class="muted">Fictional sample assessed on 28 Oct 2026. Selected mappings indicate relevance, not complete framework coverage.</p><div class="evidence-links"><a href="cybersecurity/security-proposal-workspace/reports/review.html">Explore the assessment ↗</a><a href="cybersecurity/security-proposal-workspace/reassessment-demo/index.html">Follow the MFA reassessment ↗</a><a href="cybersecurity/security-proposal-workspace/reports/crosswalk.csv" download>Download crosswalk · CSV</a><a href="cybersecurity/security-proposal-workspace/reports/gaps.csv" download>Download gaps · CSV</a><a href="https://github.com/MostafaMosabbir/mostafa-portfolio/tree/main/cybersecurity/security-proposal-workspace">Source and walkthrough ↗</a></div></div></section>
+          <section id="panel-articles" class="feature-panel" aria-labelledby="articles-heading" hidden>
+            <h3 id="articles-heading">Articles</h3>
+            <div data-feature-project="security" hidden>
+              <!-- Visible placeholders reserve the layout for Mostafa's future writing. -->
+              <div class="article-slot">
+                <div class="article-slot-image" role="img" aria-label="Image placeholder">IMAGE PLACEHOLDER</div>
+                <div><p class="article-slot-label">PROJECT 004 / PLACEHOLDER</p><h4>ARTICLE TITLE PLACEHOLDER</h4><p>ARTICLE DESCRIPTION PLACEHOLDER</p><p class="article-slot-note">Placeholder text and image. No article has been published here yet.</p><a class="text-link" href="articles/index.html">View Articles collection ↗</a></div>
+              </div>
+            </div>
+          </section>
         </div>
         <details class="technical-details"><summary>View technical details</summary>
           <p data-feature-project="analyzer">The full tool runs locally in Python. This browser demonstration analyzes a separate six-ticket sample using JavaScript. It checks required fields, groups repeated subject wording, and flags resolved or closed tickets without notes. Repeated wording is a review candidate, not proof of the same root cause.</p>
