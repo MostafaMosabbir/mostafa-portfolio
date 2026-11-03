@@ -11,7 +11,7 @@
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const pointer = matchMedia('(hover: hover) and (pointer: fine)');
   const SPEED = .12; // Radians per second: a full turn takes roughly a minute.
-  let width = 0, height = 0, frameId = null, last = 0, phase = 0;
+  let width = 0, height = 0, frameId = null, scrollFrame = null, last = 0, phase = 0;
   let mouse = null, mouseAge = 3;
   let scrollTop = 0, heroBottom = 650, rainBounds = null;
   const GLOW_RADIUS = 55;
@@ -78,6 +78,31 @@
     [.95,100,34],[.04,320,32],[.92,560,30],[.05,780,29],[.93,1000,30],[.06,1240,33]];
 
   function paused() { return reduced.matches || pause.getAttribute('aria-pressed') === 'true'; }
+
+  // Stop clearing and redrawing the full-screen canvas when every shape is
+  // outside the viewport. The margin accounts for floating and cursor nudges,
+  // so shapes start moving before they scroll into view rather than popping in.
+  function hasVisibleGeometry() {
+    return placements.some(([, y, size], index) => {
+      if (width < 700 && ![0,2,4,6,8].includes(index)) return false;
+      const centerY = (index < 3 ? y : heroBottom + y) - scrollTop;
+      const radius = (width < 700 ? size * .65 : size) * 1.9 + 65;
+      return centerY + radius >= 0 && centerY - radius <= height;
+    });
+  }
+  function needsFrame() {
+    return !paused() && !document.hidden &&
+      (hasVisibleGeometry() || (mouse && pointer.matches && mouseAge < 1.8));
+  }
+  // Once shapes are offscreen and no glow is active, discard any invisible
+  // cursor displacement so a sleeping shape cannot return in a nudged state.
+  function settleOffscreen() {
+    if (hasVisibleGeometry() || (mouse && pointer.matches && mouseAge < 1.8 && !paused() && !document.hidden)) return;
+    motion.forEach(offset => { offset.x = 0; offset.y = 0; });
+  }
+  function schedule() {
+    if (frameId === null && needsFrame()) { last = 0; frameId = requestAnimationFrame(frame); }
+  }
   function rotate(v, a, b) {
     const x = v[0] * Math.cos(a) + v[2] * Math.sin(a);
     const z = -v[0] * Math.sin(a) + v[2] * Math.cos(a);
@@ -134,11 +159,12 @@
   }
   function frame(time) {
     frameId=null;
-    if (paused() || document.hidden) return;
+    if (!needsFrame()) { settleOffscreen();last=0; return; }
     if (!last) last=time;
     const elapsed=time-last;
     if (elapsed>=33) { const dt=Math.min(elapsed/1000,.1);phase+=dt*SPEED;mouseAge+=dt;draw(dt);last=time; }
-    frameId=requestAnimationFrame(frame);
+    if (needsFrame()) frameId=requestAnimationFrame(frame);
+    else { settleOffscreen();last=0; }
   }
   function sync() {
     if (frameId!==null) cancelAnimationFrame(frameId);
@@ -150,27 +176,37 @@
       creativePause.disabled=reduced.matches;
       creativePause.setAttribute('aria-pressed',String(paused()));
     }
-    measure();draw();
-    if (!paused() && !document.hidden) frameId=requestAnimationFrame(frame);
+    measure();settleOffscreen();draw();
+    schedule();
   }
   function resize() {
     width=innerWidth;height=innerHeight;
     const ratio=Math.min(devicePixelRatio||1,1.5);
     canvas.width=Math.round(width*ratio);canvas.height=Math.round(height*ratio);
-    ctx.setTransform(ratio,0,0,ratio,0,0);measure();draw();
+    ctx.setTransform(ratio,0,0,ratio,0,0);measure();draw();schedule();
   }
   window.addEventListener('pointermove',event=>{
     if (event.pointerType==='touch' || !pointer.matches || paused()) return;
-    mouse={x:event.clientX,y:event.clientY};mouseAge=0;
+    mouse={x:event.clientX,y:event.clientY};mouseAge=0;schedule();
   },{passive:true});
-  document.documentElement.addEventListener('pointerleave',()=>{mouse=null;draw();});
-  window.addEventListener('blur',()=>{mouse=null;draw();});
+  document.documentElement.addEventListener('pointerleave',()=>{mouse=null;settleOffscreen();draw();});
+  window.addEventListener('blur',()=>{mouse=null;settleOffscreen();draw();});
   window.addEventListener('resize',resize);
-  window.addEventListener('scroll',()=>{measure();if(paused()) draw();},{passive:true});
-  if ('ResizeObserver' in window) new ResizeObserver(()=>{measure();draw();}).observe(document.getElementById('home') || canvas);
+  // Coalesce rapid scroll events into one measurement and paint per frame.
+  window.addEventListener('scroll',()=>{
+    if (scrollFrame!==null) return;
+    scrollFrame=requestAnimationFrame(()=>{
+      scrollFrame=null;measure();settleOffscreen();
+      // A running frame will repaint visible shapes. Clear once immediately
+      // when they leave view, and repaint a paused or sleeping scene as needed.
+      if (paused() || frameId===null || !hasVisibleGeometry()) draw();
+      schedule();
+    });
+  },{passive:true});
+  if ('ResizeObserver' in window) new ResizeObserver(()=>{measure();draw();schedule();}).observe(document.getElementById('home') || canvas);
   document.addEventListener('visibilitychange',sync);
   reduced.addEventListener('change',sync);
-  pointer.addEventListener('change',()=>{mouse=null;draw();});
+  pointer.addEventListener('change',()=>{mouse=null;settleOffscreen();draw();});
   // Matrix remains the single owner of the pause state. Both views share it.
   creativePause?.addEventListener('click',()=>pause.click());
   new MutationObserver(sync).observe(pause,{attributes:true,attributeFilter:['aria-pressed']});
