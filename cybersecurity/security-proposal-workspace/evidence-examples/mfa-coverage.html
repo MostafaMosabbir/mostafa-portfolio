@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MFA Coverage Verification | Security Proposal Workspace</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #091311; color: #eaf3ee; font: 16px/1.7 system-ui, sans-serif; }
+    main { max-width: 850px; margin: auto; padding: 36px 20px; }
+    a { color: #86e4bf; }
+    a:focus-visible { outline: 3px solid #86e4bf; outline-offset: 4px; }
+    h1 { line-height: 1.15; font-size: clamp(2rem, 5vw, 3rem); }
+    h2 { margin-top: 2rem; font-size: 1.2rem; }
+    .eyebrow { color: #86e4bf; font: .8rem/1.5 monospace; letter-spacing: .08em; }
+    .note { border-left: 3px solid #86e4bf; padding: 12px 20px; background: #10211a; }
+    .facts { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 24px; }
+    .facts div { border-bottom: 1px solid #365449; padding: 8px 0; }
+    dt { color: #b5c8bd; } dd { margin: 0; overflow-wrap: anywhere; }
+    li { margin: 8px 0; }
+    @media (max-width: 560px) { main { padding: 24px 16px; } .facts { grid-template-columns: 1fr; } }
+    @media print { body { background: white; color: black; } a { color: black; } dt { color: #333; } .note { background: white; } }
+  </style>
+</head>
+<body>
+<main>
+  <nav aria-label="Project navigation"><a href="../reports/review.html#finding-REQ-007">← Back to assessment</a> · <a href="../reassessment-demo/index.html">MFA reassessment walkthrough</a></nav>
+  <p class="eyebrow">PROJECT 004 / FICTIONAL EVIDENCE EXAMPLE</p>
+  <h1>MFA Coverage Verification</h1>
+  <dl class="facts">
+    <div><dt>Scenario</dt><dd>Fictional marketing company</dd></div>
+    <div><dt>Requirement</dt><dd>REQ-007</dd></div>
+    <div><dt>Control</dt><dd>CTL-007</dd></div>
+    <div><dt>Assessment date</dt><dd>October 28, 2026</dd></div>
+  </dl>
+  <h2>Requirement and scope</h2>
+  <p>The company requires multifactor authentication for human users who sign in to the advertising accounts included in this assessment.</p>
+  <p>A reviewer would need to identify the accounts in scope, determine who can access them, and review any exceptions before making a claim about coverage.</p>
+  <h2>Evidence record</h2>
+  <dl class="facts">
+    <div><dt>Evidence ID</dt><dd>EV-007</dd></div>
+    <div><dt>Title</dt><dd>Advertising-account MFA</dd></div>
+    <div><dt>Reference</dt><dd>SYNTHETIC-REFERENCE-007</dd></div>
+    <div><dt>Recorded review status</dt><dd>Reviewed</dd></div>
+    <div><dt>Recorded review date</dt><dd>October 20, 2026</dd></div>
+  </dl>
+  <p class="note">This is a fictional record. Its reference is an example identifier, not a link to a real document or proof that MFA is enabled.</p>
+  <h2>Reviewer’s notes</h2>
+  <p>Before supporting an MFA coverage claim, the reviewer would examine whether the evidence:</p>
+  <ul>
+    <li>Identifies the advertising accounts and users included in the review.</li>
+    <li>Shows the MFA configuration for those accounts.</li>
+    <li>Documents any exceptions and how they are managed.</li>
+    <li>Is current enough for the purpose of the assessment.</li>
+  </ul>
+  <p>The fictional sample records a review status and date, but it does not contain actual configuration evidence.</p>
+  <h2>Assessment progression</h2>
+  <p><strong>Original assessment:</strong> CTL-007 is recorded as implemented, but no evidence is linked to it. REQ-007 is marked <strong>Needs work</strong>.</p>
+  <p><strong>Reassessment demonstration:</strong> EV-007 is linked to CTL-007. The tool’s recorded metadata checks then mark REQ-007 as a <strong>Supported draft</strong>.</p>
+  <p class="note">A supported draft remains subject to human review. The tool does not open the evidence reference or verify MFA settings.</p>
+</main>
+</body>
+</html>

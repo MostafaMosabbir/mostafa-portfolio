@@ -21,6 +21,7 @@
   <!-- These paths must match your folders and filenames exactly. -->
   <link rel="stylesheet" href="styles/main.css">
   <link rel="stylesheet" href="styles/refined.css?v=kaizen-1">
+  <link rel="stylesheet" href="styles/security-workspace.css?v=1">
 
   <!-- defer makes JavaScript wait until the HTML has been parsed. -->
   <script src="scripts/side-switch.js?v=robot-coat-2" defer></script>
@@ -30,6 +31,8 @@
   <!-- Independent enhancements: navigation, project filtering, and sample analysis. -->
   <script src="scripts/explorer.js?v=baseline-1" defer></script>
   <script src="scripts/featured-projects.js?v=1" defer></script>
+  <script src="scripts/security-sample-data.js?v=1" defer></script>
+  <script src="scripts/security-workspace.js?v=1" defer></script>
   <script src="scripts/baseline.js?v=2" defer></script>
   <!-- A plain welcome remains readable without JavaScript or with reduced motion. -->
   <script src="scripts/welcome.js?v=1" defer></script>
@@ -207,8 +210,25 @@
             <p id="step-detail" class="step-detail" role="status">Read six fictional records from an embedded CSV sample. No workplace data is uploaded.</p>
             <div class="sample-actions"><button type="button" class="button" id="run-sample" hidden>Explore the workflow <span aria-hidden="true">↗</span></button><p class="muted" id="sample-status" role="status"></p></div>
             <div class="sample-result" id="sample-result" hidden></div>
-            <noscript><p>Enable JavaScript to run the browser demonstration, or read the case study and reports in Findings.</p></noscript>
-          </div><div data-feature-project="portfolio" hidden><p>HTML contains the content and structure. CSS controls the appearance. JavaScript controls project selection, search, the sample workflow, and switching between The Workbench and After Hours.</p><p>The interface includes keyboard navigation and reduced-motion support.</p></div><div data-feature-project="assistant" hidden><p>Read a fictional ticket, suggest a category, explain matching rules, and prepare an editable response draft. A person reviews the draft.</p><p>This prototype uses rules, not a live AI model.</p></div><div data-feature-project="security" hidden><ol class="feature-method"><li>Read the requirements, controls, and evidence records.</li><li>Validate IDs, mappings, dates, and allowed status values.</li><li>Check implementation status, ownership, coverage review, and evidence freshness.</li><li>Export the crosswalk, gaps, and review report for human review.</li></ol><p>Evidence references are not opened or independently verified. Counts are not a compliance score.</p></div></section>
+            <noscript><p>Enable JavaScript to run the browser demonstration, or read the case study and reports in Findings. <a href="cybersecurity/security-proposal-workspace/reports/review.html">Open the Project 004 assessment</a>.</p></noscript>
+          </div><div data-feature-project="portfolio" hidden><p>HTML contains the content and structure. CSS controls the appearance. JavaScript controls project selection, search, the sample workflow, and switching between The Workbench and After Hours.</p><p>The interface includes keyboard navigation and reduced-motion support.</p></div><div data-feature-project="assistant" hidden><p>Read a fictional ticket, suggest a category, explain matching rules, and prepare an editable response draft. A person reviews the draft.</p><p>This prototype uses rules, not a live AI model.</p></div><div data-feature-project="security" hidden id="security-method">
+            <p class="muted" data-security-date>Fictional sample assessed 2026-10-28.</p>
+            <p>Follow a requirement through the assessment and its planned next action.</p>
+            <div class="security-picker" data-security-picker role="group" aria-label="Choose a fictional scenario" hidden></div>
+            <div class="security-flow" data-security-flow hidden>
+              <p class="security-selected" data-security-selected aria-live="polite"></p>
+              <div class="security-steps">
+                <div class="security-step"><strong>01 / Requirement</strong><p data-security-value></p></div>
+                <div class="security-step"><strong>02 / Control</strong><p data-security-value></p></div>
+                <div class="security-step"><strong>03 / Evidence</strong><p data-security-value></p></div>
+                <div class="security-step"><strong>04 / Finding</strong><p data-security-value></p></div>
+                <div class="security-step"><strong>05 / Next action</strong><p data-security-value></p></div>
+              </div>
+            </div>
+            <p class="security-note muted">Fixed fictional sample. The browser displays recorded assessment results; it does not run Python or inspect evidence.</p>
+            <a class="text-link" href="cybersecurity/security-proposal-workspace/reports/review.html">Open the full assessment ↗</a>
+            <details><summary>How the assessment works</summary><ol class="feature-method"><li>Read the requirements, controls, and evidence records.</li><li>Validate IDs, mappings, dates, and allowed status values.</li><li>Check implementation status, ownership, coverage review, and evidence freshness.</li><li>Export the crosswalk, gaps, and review report for human review.</li></ol><p>Evidence references are not opened or independently verified. Counts are not a compliance score.</p></details>
+          </div></section>
           <section id="panel-evidence" class="feature-panel" aria-labelledby="evidence-heading">
             <h3 id="evidence-heading">Findings</h3><div data-feature-project="analyzer">
             <p>Fictional tickets: 38 · Missing resolution notes: 3 · Repeated subject groups: 4 · Automated tests passed: 9</p>
@@ -316,7 +336,7 @@ Fictional marketing-company sample</pre>
               <h3>Security Proposal Workspace</h3>
               <p>Explore a fictional marketing-company assessment: control ownership, evidence reviews, and gaps mapped to selected NIST CSF 2.0 outcomes.</p>
               <ul class="tags" aria-label="Security workspace technologies"><li>Python</li><li>Cybersecurity</li><li>NIST CSF 2.0</li></ul>
-              <a class="text-link" href="cybersecurity/security-proposal-workspace/reports/review.html">Open the case file ↗</a>
+              <a class="text-link" href="projects/security-proposal-workspace/index.html">Open the case file ↗</a>
               <p class="project-availability">Fictional data · Supports review, not compliance certification.</p>
             </div>
             <button class="feature-select" type="button" data-feature-select="security" aria-pressed="false" hidden>Highlight project</button>

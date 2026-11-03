@@ -1,0 +1,14 @@
+/* Project 004's sample flow uses the portfolio's existing emerald palette. */
+.security-picker { display: flex; flex-wrap: wrap; gap: .5rem; margin: 1.1rem 0; }
+.security-picker[hidden], .security-flow[hidden] { display: none; }
+.security-picker button { background: transparent; color: var(--text, #e8f3ed); border: 1px solid #496b5a; border-radius: 999px; padding: .6rem .85rem; font: inherit; text-align: left; }
+.security-picker button[aria-pressed="true"] { background: #94dfb4; border-color: #94dfb4; color: #0b1912; }
+.security-picker button:focus-visible { outline: 2px solid #a7e9c1; outline-offset: 3px; }
+.security-selected { color: #a9ddbc; margin: .8rem 0; }
+.security-steps { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: .6rem; }
+.security-step { border-top: 2px solid #7ed4a3; background: #12221c; padding: .9rem; min-width: 0; }
+.security-step strong { display: block; color: #a1dfb6; font-size: .83rem; margin-bottom: .5rem; }
+.security-step p { margin: 0; font-size: .875rem; overflow-wrap: anywhere; }
+.security-note { margin-top: 1rem; }
+@media (max-width: 850px) { .security-steps { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 500px) { .security-steps { grid-template-columns: 1fr; } .security-step { border-top: 0; border-left: 2px solid #7ed4a3; } }

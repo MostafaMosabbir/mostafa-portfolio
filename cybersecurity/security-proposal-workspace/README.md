@@ -102,14 +102,15 @@ ISO or SOC 2 catalog is bundled in this release.
 Keep edited practice data elsewhere. Read the comments in `proposal.py` to
 follow input validation, evaluation, escaping and report generation.
 
-## Next milestone
+## Project status and next milestone
 
-Review the local matrix and action-register preview, then create actual
-fictional evidence artifacts and demonstrate reassessment after remediation.
-An editable dashboard and personalized public case study remain future work. This version is local and has no
-accounts, uploads, AI service, external connectors or automatic certification.
+The fictional assessment, matrix, remediation register, and MFA reassessment
+walkthrough are published. The next milestone is to review and understand the
+named scenarios, improve the report, and test the completed project. An editable
+dashboard and fictional evidence artifacts remain possible future work. The tool
+has no accounts, uploads, AI service, external connectors, or automatic certification.
 
-## Local preview: matrix and remediation register
+## Matrix and remediation register
 
 The report now groups requirements into clickable domain tiles. Each tile shows
 its recorded state, review-item count and associated action count. The filter
@@ -136,7 +137,26 @@ and compare the outputs. Do not treat fixture changes as real evidence review.
 Preview command: `python proposal.py --as-of 2026-10-28 --output preview-review`.
 The matrix and action register are included in the published demonstration.
 
+The named scenario flow displays values from the current assessment run; it
+does not alter results. Display names are limited to their matching fictional
+requirements, while requirement and control IDs remain available as references.
+For the published portfolio's `reports/` folder only, add `--portfolio-nav`
+when generating a report to include the portfolio and MFA walkthrough links.
+Those relative links depend on the published folder layout and are omitted from
+ordinary local runs.
+
+The portfolio homepage displays a fixed fictional snapshot in the Method tab.
+It does not run Python or inspect evidence. After regenerating the published
+sample's `reports/assessment.json`, run `python scripts/build_security_sample.py`
+from the portfolio root to refresh `scripts/security-sample-data.js` from that
+report. Review the generated snapshot before publishing; it is not a place for
+workplace or other sensitive records.
+
 ## Reassessment walkthrough
+
+[Read the fictional MFA evidence example](evidence-examples/mfa-coverage.html)
+for the scenario scope, recorded review metadata, reviewer questions, and
+assessment progression. It is an educational example, not configuration proof.
 
 Run `python demo_reassessment.py --output my-reassessment` to reproduce three
 fictional runs. Open `my-reassessment/index.html` to compare them.

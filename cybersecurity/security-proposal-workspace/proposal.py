@@ -194,7 +194,7 @@ def write_csv(path: Path, headers: list[str], rows: list[list]) -> None:
         writer.writerows([[safe_cell(cell) for cell in row] for row in rows])
 
 
-def render_review(rows: list[dict], summary: dict, actions=None) -> str:
+def render_review(rows: list[dict], summary: dict, actions=None, portfolio_nav=False) -> str:
     """Offline report: escaped imported text, local filtering, no remote assets.
 
     Native details elements work with keyboard and touch. The report is a view
@@ -202,7 +202,20 @@ def render_review(rows: list[dict], summary: dict, actions=None) -> str:
     """
     esc = lambda value: html.escape(str(value), quote=True)
     from remediation import render_matrix
+    from assessment_flow import render_assessment_flow
+    from scenario_names import scenario_name
     matrix = render_matrix(rows, actions or [], summary["as_of"])
+    flow = render_assessment_flow(rows, actions or [])
+    # These links are only for the published reports/ folder, which has a
+    # known relationship to the portfolio and the sibling reassessment demo.
+    navigation = ('<header class="portfolio-header"><a class="portfolio-brand" href="../../../#main">Mostafa Mosabbir</a>'
+                  '<nav aria-label="Portfolio navigation"><a href="../../../#about">Profile</a>'
+                  '<a href="../../../#projects">Projects</a><a href="../../../#contact">Contact</a></nav></header>'
+                  '<p><a href="../../../#projects">← Back to portfolio</a> · '
+                  '<a href="../reassessment-demo/index.html">Follow the MFA reassessment</a></p>'
+                  if portfolio_nav else '')
+    evidence_example = ('<p><a href="../evidence-examples/mfa-coverage.html">Read the fictional MFA evidence example</a></p>'
+                        if portfolio_nav else '')
     cards = []
     priority_order = {"critical": 0, "high": 1, "medium": 2, "low": 3}
     for row in sorted(rows, key=lambda r: (r["state"] != "needs_work", priority_order[r["priority"]], r["requirement_id"])):
@@ -212,8 +225,11 @@ def render_review(rows: list[dict], summary: dict, actions=None) -> str:
             f"<td>{esc(c['owner']) or 'Unassigned'}</td><td>{esc(c['target_date']) or 'Not set'}</td>"
             f"<td>{esc('; '.join(c['evidence_ids'])) or 'Missing'}</td></tr>" for c in row["claims"])
         statements = "".join(f"<li><strong>{esc(c['control_id'])}</strong>: {esc(c['statement']) or 'No statement recorded.'}</li>" for c in row['claims'])
+        name = scenario_name(row)
+        named_heading = f'<strong>{esc(name)}</strong>' if name != row['requirement'] else ''
         cards.append(f'''<details id="finding-{esc(row['requirement_id'])}" class="{row['state']}"><summary>
           <span>{esc(row['requirement_id'])} · {esc(row['domain'])}</span>
+          {named_heading}
           <strong>{esc(row['requirement'])}</strong>
           <span>{esc(row['priority'])} priority · {row['state'].replace('_', ' ')} · {len(row['gaps'])} review {'item' if len(row['gaps']) == 1 else 'items'}</span>
           </summary><div class="detail"><p>Related source: {esc(row['framework'])} {esc(row['framework_version'])} / {esc(row['source_ref'])}</p>
@@ -243,10 +259,13 @@ def render_review(rows: list[dict], summary: dict, actions=None) -> str:
       .guide p{{margin:8px 0}}.exports{{display:flex;gap:12px;flex-wrap:wrap;margin:22px 0 34px}}
       .exports a{{border:1px solid #4a6a5c;border-radius:6px;padding:9px 14px;text-decoration:none}}
       .exports a:hover{{background:#1e3e30}}a:focus-visible{{outline:3px solid #86e4bf;outline-offset:4px}}
+      .portfolio-header{{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;border-bottom:1px solid #365449;padding-bottom:18px;margin-bottom:20px}}
+      .portfolio-header nav{{display:flex;gap:20px;flex-wrap:wrap}}.portfolio-header a{{color:#eaf3ee;text-decoration:none}}
+      .portfolio-brand{{font-size:1.1rem;font-weight:600}}
       summary{{list-style-position:outside;margin-left:20px}}summary::marker{{color:#86e4bf}}summary>span{{font-size:.82rem}}
       details[open]{{background:#132b21}}.stats p{{background:#10211acc}}footer{{margin-top:40px;border-top:1px solid #365449;padding-top:18px}}
       @media print{{body{{color:#111;background:white}}details{{break-inside:avoid;background:white}}.stats b,summary>span{{color:#222}}}}
-      </style></head><body><main><!-- PUBLIC_NAV --><p class="eyebrow">SECURITY PROPOSAL WORKSPACE / WORKING PROTOTYPE</p>
+      </style></head><body><main>{navigation}<p class="eyebrow">SECURITY PROPOSAL WORKSPACE / WORKING PROTOTYPE</p>
       <h1>From Requirements to Safeguards</h1>
       <p>A security review for a fictional marketing company: client campaign files, advertising accounts, freelance access, and the evidence behind each recorded safeguard.</p>
       <p class="muted">The bundled dataset is entirely fictional, including its evidence and review records.</p>
@@ -257,16 +276,17 @@ def render_review(rows: list[dict], summary: dict, actions=None) -> str:
       <aside class="guide" aria-labelledby="guide-title"><h2 id="guide-title">How to read this assessment</h2>
       <p><strong>Supported draft:</strong> the recorded information passes this tool's checks. It is not independent verification.</p>
       <p><strong>Needs work:</strong> a mapping, owner, implementation status, or evidence-review record needs attention.</p>
-      <p>Start with <strong>REQ-007</strong>: MFA is recorded as implemented, but no evidence is mapped. The tool flags the missing support instead of accepting the claim.</p></aside>
+      <p>Start with <strong>REQ-007</strong>: MFA is recorded as implemented, but no evidence is mapped. The tool flags the missing support instead of accepting the claim.</p>{evidence_example}</aside>
       <nav class="exports" aria-label="Assessment exports"><a href="crosswalk.csv" download>Download crosswalk · CSV</a>
       <a href="gaps.csv" download>Download gaps · CSV</a><a href="assessment.json" download>Download assessment · JSON</a></nav>
       <p>Open a requirement to inspect its controls and review items. Items needing work appear first, ordered by the supplied priority. Counts are not a compliance percentage.</p>
+      {flow}
       {matrix}
       <h2>Requirement findings</h2>{''.join(cards)}<footer><p>Generated locally. Edit the input files and rerun the tool to update this report.</p></footer></main></body></html>'''
 
 
 def generate(data_dir: Path, output_dir: Path, as_of: date, max_age_days: int = 180,
-             overwrite: bool = False) -> dict:
+             overwrite: bool = False, portfolio_nav: bool = False) -> dict:
     sources = {kind: data_dir / f"{kind}.csv" for kind in SCHEMAS}
     # Read all bytes first so the provenance hashes describe the actual inputs.
     snapshots = {kind: path.read_bytes() for kind, path in sources.items()}
@@ -329,7 +349,7 @@ def generate(data_dir: Path, output_dir: Path, as_of: date, max_age_days: int = 
         write_csv(stage / names[2], ["requirement_id", "priority", "domain", "gap"], gap_rows)
         (stage / names[3]).write_text(json.dumps(summary, indent=2) + "\n", encoding="utf-8")
         (stage / names[4]).write_text(json.dumps({"summary": summary, "requirements": rows, "actions": actions}, indent=2) + "\n", encoding="utf-8")
-        (stage / names[5]).write_text(render_review(rows, summary, actions), encoding="utf-8")
+        (stage / names[5]).write_text(render_review(rows, summary, actions, portfolio_nav), encoding="utf-8")
         for name in names:
             os.replace(stage / name, output_dir / name)
     return summary
@@ -342,12 +362,13 @@ def main() -> int:
     parser.add_argument("--as-of", default=date.today().isoformat(), help="YYYY-MM-DD; defaults to today's local date")
     parser.add_argument("--max-age-days", type=int, default=180)
     parser.add_argument("--overwrite", action="store_true")
+    parser.add_argument("--portfolio-nav", action="store_true", help="Add navigation for the published reports/ folder only")
     args = parser.parse_args()
     try:
         as_of = parse_date(args.as_of, "--as-of")
         if as_of is None:
             raise InputError("--as-of cannot be empty")
-        summary = generate(args.data, args.output, as_of, args.max_age_days, args.overwrite)
+        summary = generate(args.data, args.output, as_of, args.max_age_days, args.overwrite, args.portfolio_nav)
     except (InputError, OSError, UnicodeError, csv.Error) as exc:
         print(f"Cannot generate reports: {exc}")
         return 2

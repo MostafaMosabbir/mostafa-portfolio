@@ -7,6 +7,7 @@ import csv
 import io
 import html
 from datetime import date
+from scenario_names import scenario_name
 
 FIELDS = ["action_id", "requirement_id", "action", "owner", "due_date", "status", "verification_criteria"]
 STATUSES = {"planned", "in_progress", "ready_for_review"}
@@ -48,7 +49,12 @@ def render_matrix(rows, actions, as_of):
     domains = []
     for domain in dict.fromkeys(r["domain"] for r in rows):
         group = [r for r in rows if r["domain"] == domain]
-        cells = "".join(f'<a class="matrix-cell {r["state"]}" data-state="{r["state"]}" href="#finding-{esc(r["requirement_id"])}"><b>{esc(r["requirement_id"])}</b><span>{esc(r["state"].replace("_", " "))}</span><small>{len(r["gaps"])} review items Â· {len(by_req[r["requirement_id"]])} actions</small></a>' for r in group)
+        def cell(r):
+            name = scenario_name(r)
+            identifier = r["requirement_id"]
+            heading = f'<b>{esc(name)}</b><small>{esc(identifier)}</small>' if name != r["requirement"] else f'<b>{esc(identifier)}</b>'
+            return f'<a class="matrix-cell {r["state"]}" data-state="{r["state"]}" href="#finding-{esc(identifier)}">{heading}<span>{esc(r["state"].replace("_", " "))}</span><small>{len(r["gaps"])} review items · {len(by_req[identifier])} actions</small></a>'
+        cells = "".join(cell(r) for r in group)
         domains.append(f'<div class="matrix-domain"><h3>{esc(domain)}</h3><div class="matrix-cells">{cells}</div></div>')
     table = []
     for r in rows:
