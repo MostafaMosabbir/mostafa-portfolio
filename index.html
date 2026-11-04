@@ -22,6 +22,8 @@
   <link rel="stylesheet" href="styles/main.css">
   <link rel="stylesheet" href="styles/refined.css?v=kaizen-1">
   <link rel="stylesheet" href="styles/security-workspace.css?v=2">
+  <!-- Articles and Tools each have their own section on this page. -->
+  <link rel="stylesheet" href="styles/homepage-sections.css?v=1">
 
   <!-- defer makes JavaScript wait until the HTML has been parsed. -->
   <script src="scripts/side-switch.js?v=robot-coat-2" defer></script>
@@ -33,6 +35,8 @@
   <script src="scripts/featured-projects.js?v=articles-1" defer></script>
   <script src="scripts/security-sample-data.js?v=1" defer></script>
   <script src="scripts/security-workspace.js?v=1" defer></script>
+  <!-- Only the workspace's height is received, never its assessment data. -->
+  <script src="scripts/homepage-sections.js?v=1" defer></script>
   <script src="scripts/baseline.js?v=2" defer></script>
   <!-- A plain welcome remains readable without JavaScript or with reduced motion. -->
   <script src="scripts/welcome.js?v=1" defer></script>
@@ -65,8 +69,8 @@
     <nav id="professional-nav" aria-label="Main navigation">
       <a href="#about">Profile</a>
       <a href="#projects">Projects</a>
-      <a href="articles/index.html">Articles</a>
-      <a href="tools/index.html">Tools</a>
+      <a href="#articles">Articles</a>
+      <a href="#tools">Tools</a>
       <a href="#contact">Contact</a>
     </nav>
 
@@ -244,7 +248,7 @@
               <!-- Visible placeholders reserve the layout for Mostafa's future writing. -->
               <div class="article-slot">
                 <div class="article-slot-image" role="img" aria-label="Image placeholder">IMAGE PLACEHOLDER</div>
-                <div><p class="article-slot-label">PROJECT 004 / PLACEHOLDER</p><h4>ARTICLE TITLE PLACEHOLDER</h4><p>ARTICLE DESCRIPTION PLACEHOLDER</p><p class="article-slot-note">Placeholder text and image. No article has been published here yet.</p><a class="text-link" href="articles/index.html">View Articles collection ↗</a></div>
+                <div><p class="article-slot-label">PROJECT 004 / PLACEHOLDER</p><h4>ARTICLE TITLE PLACEHOLDER</h4><p>ARTICLE DESCRIPTION PLACEHOLDER</p><p class="article-slot-note">Placeholder text and image. No article has been published here yet.</p><a class="text-link" href="#articles">View Articles ↓</a></div>
               </div>
             </div>
           </section>
@@ -357,6 +361,7 @@ Fictional marketing-company sample</pre>
           </article>
         </div>
       </section>
+
 
 <div class="wrap workbench"><details><summary>On my workbench</summary>        <aside class="focus-panel" aria-labelledby="focus-title">
           <p class="eyebrow" id="focus-title">On my workbench</p>
@@ -493,6 +498,32 @@ Fictional marketing-company sample</pre>
           <button class="button" type="submit">Send message</button>
         </form>
       </section>
+
+      <!-- This section is a visible placeholder until personal articles are ready. -->
+      <section class="section wrap home-articles" id="articles" aria-labelledby="home-articles-title">
+        <div class="section-heading"><div><h2 class="eyebrow" id="home-articles-title">04 / Articles</h2><button class="decode-note" type="button" data-decode="More than meets the eye" aria-label="More than meets the eye" aria-pressed="false"><span class="decode-width" aria-hidden="true">More than meets the eye</span><span class="decode-text" aria-hidden="true">More than meets the eye</span></button></div></div>
+        <p class="home-section-note">Placeholder text: Your introduction to this collection goes here.</p>
+        <article class="home-article-card" aria-label="Project 004 article placeholder">
+          <div class="home-article-image">Image placeholder</div>
+          <div><p class="home-placeholder-label">Project 004 / Not yet written</p><h3>Article title placeholder</h3><p>Article text placeholder</p><p class="home-section-note">No article has been published here yet.</p><a class="text-link" href="projects/security-proposal-workspace/index.html">View Project 004 ↗</a></div>
+        </article>
+      </section>
+
+      <!-- The workspace is displayed within this page. The separate link is a
+           fallback for browsers that cannot display the embedded experience. -->
+      <section class="section wrap home-tools" id="tools" aria-labelledby="home-tools-title">
+        <div class="section-heading"><div><h2 class="eyebrow" id="home-tools-title">05 / Tools</h2><button class="decode-note" type="button" data-decode="Build what comes next" aria-label="Build what comes next" aria-pressed="false"><span class="decode-width" aria-hidden="true">Build what comes next</span><span class="decode-text" aria-hidden="true">Build what comes next</span></button></div></div>
+        <p class="home-section-note">Placeholder text: Your introduction to your tools goes here.</p>
+        <div class="home-workspace-heading"><div><p class="home-placeholder-label">Security / Project 004</p><h3>Security Proposal Workspace</h3></div><div><a class="text-link" href="projects/security-proposal-workspace/index.html">View project ↗</a> · <a class="text-link" href="cybersecurity/security-proposal-workspace/reports/review.html">View fictional example ↗</a></div></div>
+        <!-- Load the workspace only when requested; keep it mounted afterward
+             so scrolling away does not discard an unfinished assessment. -->
+        <button class="button home-workspace-open" id="home-workspace-open" type="button" aria-controls="home-workspace-frame" hidden>Open workspace here</button>
+        <iframe class="home-workspace-frame" id="home-workspace-frame" title="Security Proposal Workspace" data-workspace-src="tools/security-proposal-workspace/index.html?embed=1" loading="lazy" sandbox="allow-scripts allow-downloads allow-same-origin allow-modals allow-forms" hidden>
+          <p>Your browser could not display the workspace. <a href="tools/security-proposal-workspace/index.html">Open the Security Proposal Workspace</a>.</p>
+        </iframe>
+        <p class="home-section-note"><a class="text-link" href="tools/security-proposal-workspace/index.html">Open the workspace on its own ↗</a></p>
+      </section>
+
     </div>
 
     <!--

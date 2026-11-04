@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'none'; form-action 'none'; base-uri 'none'">
+  <meta name="description" content="Organize security requirements, controls, and evidence for human review.">
+  <title>Security Proposal Workspace | Mostafa Mosabbir</title>
+  <link rel="icon" type="image/png" sizes="64x64" href="../../assets/robot/favicon.png?v=2">
+  <link rel="stylesheet" href="workspace.css">
+  <!-- The assessment engine handles the rules; the interface handles the form. -->
+  <script src="security-engine.js" defer></script>
+  <script src="workspace-ui.js" defer></script>
+  <script src="workspace-geometry.js" defer></script>
+</head>
+<body>
+  <!-- One decorative wireframe sits behind the form and never intercepts input. -->
+  <canvas class="workspace-geometry" aria-hidden="true"></canvas>
+  <a class="skip" href="#main">Skip to workspace</a>
+  <header class="header wrap">
+    <a class="brand" href="../../index.html#main">Mostafa Mosabbir</a>
+    <nav aria-label="Main navigation">
+      <a href="../../index.html#about">Profile</a>
+      <a href="../../index.html#projects">Projects</a>
+      <a href="../../index.html#articles">Articles</a>
+      <a href="../../index.html#tools">Tools</a>
+      <a href="../../index.html#contact">Contact</a>
+    </nav>
+  </header>
+  <main id="main" class="wrap">
+    <p class="back"><a href="../../index.html#tools">← Back to Tools</a></p>
+    <p class="eyebrow">Tools / Security Proposal Workspace</p>
+    <h1>Build an assessment</h1>
+    <p><strong>Prototype:</strong> Organize requirements, controls, and evidence records for human review.</p>
+    <aside class="notice" aria-label="Privacy and assessment boundaries">
+      <p><strong>On this device:</strong> This page is designed to process information in your browser. It does not upload your assessment, open evidence references, or inspect evidence files. Do not enter passwords, secrets, or access tokens.</p>
+      <p><strong>Save your work:</strong> This workspace does not save entries automatically. Download a workspace file before refreshing or leaving, then open it here to continue. This tool does not verify safeguards or certify compliance.</p>
+    </aside>
+    <p class="workspace-example-link"><a href="../../cybersecurity/security-proposal-workspace/reports/review.html">Explore the fictional example →</a></p>
+    <p id="initial-status">This workspace needs JavaScript to load in your browser.</p>
+    <div id="workspace" hidden>
+      <div class="workspace-actions" aria-label="Workspace files">
+        <button type="button" id="save-workspace">Download workspace</button>
+        <label for="open-workspace" class="file-label">Open workspace file</label>
+        <input type="file" id="open-workspace" accept=".json,application/json">
+      </div>
+      <p class="muted">Workspace files can contain sensitive information. Store them appropriately.</p>
+      <p id="file-status" role="status" aria-live="polite"></p>
+
+      <form id="assessment-form" novalidate autocomplete="off" spellcheck="false">
+        <section class="settings" aria-labelledby="settings-title">
+          <h2 id="settings-title">Assessment settings</h2>
+          <div class="fields two">
+            <label>Assessment date <span aria-hidden="true">*</span><input id="as-of" type="date" required></label>
+            <label>Review freshness in days <span aria-hidden="true">*</span><input id="max-age" type="number" min="1" step="1" max="36500" value="180" required></label>
+          </div>
+          <p class="muted">The freshness window is a configurable project rule, not a framework requirement.</p>
+        </section>
+
+        <section class="record-section" aria-labelledby="requirements-title">
+          <div class="section-title"><div><p class="eyebrow">01 / Requirement</p><h2 id="requirements-title">What needs to be addressed?</h2></div><button type="button" data-add="requirements">Add requirement</button></div>
+          <p>Record the requirement, its source, and the person who reviewed whether the mapped controls cover it.</p>
+          <div id="requirements-list" class="record-list"></div>
+        </section>
+
+        <section class="record-section" aria-labelledby="controls-title">
+          <div class="section-title"><div><p class="eyebrow">02 / Control and owner</p><h2 id="controls-title">What safeguard is recorded?</h2></div><button type="button" data-add="controls">Add control</button></div>
+          <p>Link controls to requirements using their IDs. Separate multiple IDs with semicolons.</p>
+          <div id="controls-list" class="record-list"></div>
+        </section>
+
+        <section class="record-section" aria-labelledby="evidence-title">
+          <div class="section-title"><div><p class="eyebrow">03 / Evidence and review</p><h2 id="evidence-title">What evidence is recorded?</h2></div><button type="button" data-add="evidence">Add evidence record</button></div>
+          <p>Link evidence records to controls using their IDs. The reference is recorded as text and is not opened.</p>
+          <div id="evidence-list" class="record-list"></div>
+        </section>
+
+        <section class="record-section" aria-labelledby="review-title">
+          <p class="eyebrow">04 / Findings</p><h2 id="review-title">Review the recorded information</h2>
+          <p>Checks apply to all mapped controls and evidence. A supported draft still needs human review.</p>
+          <button class="primary" type="submit">Review assessment</button>
+          <p id="review-status" role="status" aria-live="polite"></p>
+          <div id="review-error" role="alert" hidden></div>
+          <div id="results" hidden></div>
+          <button type="button" id="download-report" hidden>Download review draft</button>
+        </section>
+      </form>
+    </div>
+  </main>
+  <footer class="wrap"><p>Mostafa Mosabbir</p><a href="#main">Back to top ↑</a></footer>
+</body>
+</html>
