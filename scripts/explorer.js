@@ -217,7 +217,9 @@ SAMPLE-006,VPN disconnects,network,,new,`;
   const input = document.getElementById("search-input");
   const results = document.getElementById("search-results");
   const entries = cards.map(card => ({ title: card.querySelector("h3").textContent, detail: [...card.querySelectorAll(".tags li")].map(tag => tag.textContent).join(" / "), id: card.id }));
-  entries.push(...["about", "contact"].map(id => ({ title: document.querySelector(`#${id} h2`).textContent.replace(/\s+/g, " ").trim(), detail: id, id })));
+  // Index these homepage sections, so visitors can use search to reach
+  // Articles and Tools just as they can reach Profile and Contact.
+  entries.push(...["about", "contact", "articles", "tools"].map(id => ({ title: document.querySelector(`#${id} h2`).textContent.replace(/\s+/g, " ").trim(), detail: id, id })));
   let returnFocus;
   function closeSearch() { dialog.close(); }
   function renderSearch() {
@@ -242,7 +244,7 @@ SAMPLE-006,VPN disconnects,network,,new,`;
         // to this tabindex-enabled destination after closing the dialog.
       });
     }
-    document.getElementById("search-status").textContent = matches.length ? `${matches.length} results` : "No matches. Try Python, JavaScript, or cybersecurity.";
+    document.getElementById("search-status").textContent = matches.length ? `${matches.length} ${matches.length === 1 ? "result" : "results"}` : "No matches. Try Python, JavaScript, or cybersecurity.";
   }
   function openSearch() {
     if (document.body.dataset.side === "creative" || dialog.open) return;
