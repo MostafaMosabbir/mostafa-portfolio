@@ -106,10 +106,10 @@
   function schedule() {
     if (frameId === null && needsFrame()) { last = 0; frameId = requestAnimationFrame(frame); }
   }
-  function rotate(v, a, b) {
-    const x = v[0] * Math.cos(a) + v[2] * Math.sin(a);
-    const z = -v[0] * Math.sin(a) + v[2] * Math.cos(a);
-    return [x, v[1] * Math.cos(b) - z * Math.sin(b), v[1] * Math.sin(b) + z * Math.cos(b)];
+  function rotate(v, cosA, sinA, cosB, sinB) {
+    const x = v[0] * cosA + v[2] * sinA;
+    const z = -v[0] * sinA + v[2] * cosA;
+    return [x, v[1] * cosB - z * sinB, v[1] * sinB + z * cosB];
   }
   function draw(dt = 0) {
     ctx.clearRect(0,0,width,height);
@@ -145,7 +145,13 @@
         cx = rainBounds.left-radius-8;
       }
       if (cy+radius < 0 || cy-radius > height) return;
-      const vertices = model.vertices.map(v => rotate(v,phase + index*.8 + motion[index].x*.012,phase*.6 + index*.4 + motion[index].y*.012));
+      // Every vertex in this solid shares its angles. Calculate the four
+      // trigonometric values once per solid instead of once per vertex.
+      const angleA = phase + index*.8 + motion[index].x*.012;
+      const angleB = phase*.6 + index*.4 + motion[index].y*.012;
+      const cosA = Math.cos(angleA), sinA = Math.sin(angleA);
+      const cosB = Math.cos(angleB), sinB = Math.sin(angleB);
+      const vertices = model.vertices.map(v => rotate(v,cosA,sinA,cosB,sinB));
       const points = vertices.map(v => [cx + v[0]*scale*3/(3+v[2]*.25), cy + v[1]*scale*3/(3+v[2]*.25)]);
       ctx.lineWidth = .8;
       for (const [a,b] of model.edges) {

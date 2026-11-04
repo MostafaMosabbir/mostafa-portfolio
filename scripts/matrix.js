@@ -15,8 +15,14 @@
   const SPEED = 24; // Approximate pixels per second, not pixels per frame.
   const SPACING = 22;
   const symbols = "01<>/{}[];:+=";
+  // Streams have lengths 9 through 20. Prepare their tail colors once instead
+  // of building a new color string for every character on every frame.
+  const tailColors = Array.from({ length: 21 }, (_, length) =>
+    Array.from({ length }, (_, index) => "rgba(67,157,107," + ((1 - index / length) * .8) + ")")
+  );
   let width = 0;
   let height = 0;
+  let resolution = 0;
   let streams = [];
   let animationId = null;
   let lastTime = 0;
@@ -27,10 +33,14 @@
   // an unnecessarily expensive canvas. CSS still controls the visible size.
   function resize() {
     const bounds = canvas.getBoundingClientRect();
+    if (!bounds.width || !bounds.height) return;
+    const ratio = Math.min(window.devicePixelRatio || 1, 2);
+    // ResizeObserver and window resize can report the same size. Avoid
+    // resetting the canvas and randomizing every stream twice for one change.
+    if (width === bounds.width && height === bounds.height && resolution === ratio) return;
     width = bounds.width;
     height = bounds.height;
-    if (!width || !height) return;
-    const ratio = Math.min(window.devicePixelRatio || 1, 2);
+    resolution = ratio;
     canvas.width = Math.round(width * ratio);
     canvas.height = Math.round(height * ratio);
     context.setTransform(ratio, 0, 0, ratio, 0, 0);
@@ -48,15 +58,17 @@
     context.clearRect(0, 0, width, height);
     context.font = "12px Consolas, monospace";
     for (const stream of streams) {
-      for (let i = 0; i < stream.length; i++) {
+      // Skip the invisible part of a stream without testing every character.
+      const first = Math.max(0, Math.ceil((stream.y - height) / 16));
+      const last = Math.min(stream.length - 1, Math.floor(stream.y / 16));
+      const seed = stream.seed + Math.floor(stream.y / 32);
+      for (let i = first; i <= last; i++) {
         const y = stream.y - i * 16;
-        if (y < 0 || y > height) continue;
-        const alpha = (1 - i / stream.length) * .8;
         context.fillStyle = i === 0
           ? "rgba(146,225,179,.9)"
-          : "rgba(67,157,107," + alpha + ")";
+          : tailColors[stream.length][i];
         // A stable seed avoids flickering unrelated characters every frame.
-        const index = (stream.seed + i * 3 + Math.floor(stream.y / 32)) % symbols.length;
+        const index = (seed + i * 3) % symbols.length;
         context.fillText(symbols[index], stream.x, y);
       }
     }
