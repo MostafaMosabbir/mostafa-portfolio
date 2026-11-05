@@ -5,6 +5,7 @@ from datetime import date, timedelta
 import hashlib
 import json
 from pathlib import Path
+import re
 import tempfile
 import unittest
 from unittest.mock import patch
@@ -108,12 +109,15 @@ class AssessmentTests(unittest.TestCase):
         self.assertEqual(summary['inputs']['requirements.csv'],expected)
 
     def test_rendered_input_cannot_become_html_or_spreadsheet_formula(self):
+        summary={'as_of':'2026-10-28','max_age_days':180,'scope':'Demo','requirements':15,'supported_drafts':4,'needs_work':11}
+        baseline=app.render_review(app.evaluate(self.data,self.day),summary)
         self.data['requirements'][0]['requirement']='<script>alert(1)</script>'
         rows=app.evaluate(self.data,self.day)
-        summary={'as_of':'2026-10-28','max_age_days':180,'scope':'Demo','requirements':15,'supported_drafts':4,'needs_work':11}
         rendered=app.render_review(rows,summary)
         self.assertNotIn('<script>alert(1)</script>',rendered)
-        self.assertEqual(rendered.count('<script>'), 1)  # Only the fixed local UI script.
+        # Untrusted text must not add or change any of the report's own scripts.
+        scripts=lambda html: re.findall(r'<script\b[^>]*>.*?</script\s*>',html,re.IGNORECASE | re.DOTALL)
+        self.assertEqual(scripts(rendered),scripts(baseline))
         self.assertIn('&lt;script&gt;',rendered)
         path=self.root/'safe.csv'
         app.write_csv(path,['value'],[['=1+1'],['  @SUM(1)']])
