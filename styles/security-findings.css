@@ -1,0 +1,26 @@
+/* A small static chart: no animation loop or third-party libraries. */
+.security-findings { margin: 1rem 0 1.4rem; }
+.security-findings p { margin: .45rem 0; }
+.sf-meta, .sf-note { color: #aec4b7; font-size: .85rem; }
+.sf-stats { display: flex; flex-wrap: wrap; gap: 1.4rem; margin: 1rem 0; padding: .8rem 0; border-block: 1px solid #2b493b; }
+.sf-stat { display: grid; min-width: 7.4rem; color: #aec4b7; font-size: .8rem; }
+.sf-stat strong { color: #edf5ef; font-size: 1.45rem; line-height: 1.2; }
+.sf-grid { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, .9fr); gap: 1rem; }
+.sf-chart, .sf-detail { background: #091711; border: 1px solid #2b493b; border-radius: .4rem; padding: 1rem; min-width: 0; }
+.sf-chart h4, .sf-detail h4 { margin: 0 0 .5rem; color: #edf5ef; }
+.sf-legend { display: flex; flex-wrap: wrap; gap: .8rem; color: #aec4b7; font-size: .78rem; margin: .5rem 0; }
+.sf-dot { display: inline-block; width: .65rem; height: .65rem; margin-right: .3rem; border-radius: 50%; background: #8be0b1; }
+.sf-dot.sf-warn { background: #e4b877; }
+.sf-rows { display: grid; gap: .15rem; }
+.sf-row { display: grid; grid-template-columns: 5.2rem minmax(2rem, 1fr) 3.7rem; gap: .55rem; align-items: center; text-align: left; padding: .45rem .35rem; width: 100%; border: 1px solid transparent; border-radius: .3rem; background: transparent; color: #c7d9ce; font: inherit; font-size: .84rem; cursor: pointer; }
+.sf-row[aria-pressed="true"] { color: #f0f8f2; border-color: #4c7960; background: #153025; }
+.sf-row:focus-visible { outline: 2px solid #8be0b1; outline-offset: 2px; }
+.sf-track { height: .7rem; display: flex; overflow: hidden; border-radius: .2rem; background: #20352b; }
+.sf-supported { background: #8be0b1; }
+.sf-needs { background: #e4b877; }
+.sf-numbers { text-align: right; font: .8rem ui-monospace, monospace; white-space: nowrap; }
+.sf-detail-label { color: #8be0b1; font: .75rem ui-monospace, monospace; letter-spacing: .07em; text-transform: uppercase; }
+.sf-detail ul { margin: .6rem 0 0; padding-left: 1.25rem; color: #c7d9ce; }
+.sf-detail li { margin-bottom: .35rem; }
+.sf-limit { margin-top: .9rem !important; color: #aec4b7; font-size: .78rem; }
+@media (max-width: 720px) { .sf-grid { grid-template-columns: 1fr; } }

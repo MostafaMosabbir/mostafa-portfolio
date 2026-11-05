@@ -26,6 +26,8 @@
   <link rel="stylesheet" href="styles/homepage-sections.css?v=1">
   <!-- Keep the optional game player separate so the game only loads on demand. -->
   <link rel="stylesheet" href="styles/color-columns-embed.css?v=1">
+  <!-- A lightweight chart for the fictional Project 004 assessment. -->
+  <link rel="stylesheet" href="styles/security-findings.css?v=1">
 
   <!-- defer makes JavaScript wait until the HTML has been parsed. -->
   <script src="scripts/side-switch.js?v=robot-coat-2" defer></script>
@@ -36,6 +38,9 @@
   <script src="scripts/explorer.js?v=sections-2" defer></script>
   <script src="scripts/featured-projects.js?v=color-columns-2" defer></script>
   <script src="scripts/color-columns-embed.js?v=1" defer></script>
+  <!-- R creates the data file; this script displays it without a network request. -->
+  <script src="cybersecurity/security-proposal-workspace/analysis/findings-data.js?v=1" defer></script>
+  <script src="scripts/security-findings.js?v=1" defer></script>
   <script src="scripts/security-sample-data.js?v=1" defer></script>
   <script src="scripts/security-workspace.js?v=1" defer></script>
   <!-- Only the workspace's height is received, never its assessment data. -->
@@ -270,7 +275,10 @@
             <h3 id="evidence-heading">Findings</h3><div data-feature-project="analyzer">
             <p>Fictional tickets: 38 · Missing resolution notes: 3 · Repeated subject groups: 4 · Automated tests passed: 9</p>
             <div class="evidence-links"><a href="projects/ticket-analyzer/index.html">Open the case file ↗</a><a href="projects/ticket-analyzer/sample-summary.csv" download>Download sample summary (CSV) ↓</a><a href="projects/ticket-analyzer/sample-findings.md">Read sample findings ↗</a></div>
-          </div><div data-feature-project="portfolio" hidden><p>The portfolio itself is the working example.</p><div class="evidence-links"><a href="https://github.com/MostafaMosabbir/mostafa-portfolio">Explore the source ↗</a><a href="https://github.com/MostafaMosabbir/mostafa-portfolio/tree/main/tests">View interaction tests ↗</a></div></div><div data-feature-project="assistant" hidden><p>Local prototype · Public demo coming later</p><p>No public results or downloadable source are available here yet.</p></div><div data-feature-project="security" hidden><p>15 selected requirements · 4 supported drafts · 11 need work · 21 automated tests passed</p><p class="muted">Fictional sample assessed on 28 Oct 2026. Selected mappings indicate relevance, not complete framework coverage.</p><div class="evidence-links"><a href="cybersecurity/security-proposal-workspace/reports/review.html">Explore the assessment ↗</a><a href="cybersecurity/security-proposal-workspace/reassessment-demo/index.html">Follow the MFA reassessment ↗</a><a href="cybersecurity/security-proposal-workspace/reports/crosswalk.csv" download>Download crosswalk · CSV</a><a href="cybersecurity/security-proposal-workspace/reports/gaps.csv" download>Download gaps · CSV</a><a href="https://github.com/MostafaMosabbir/mostafa-portfolio/tree/main/cybersecurity/security-proposal-workspace">Source and walkthrough ↗</a></div></div>
+          </div><div data-feature-project="portfolio" hidden><p>The portfolio itself is the working example.</p><div class="evidence-links"><a href="https://github.com/MostafaMosabbir/mostafa-portfolio">Explore the source ↗</a><a href="https://github.com/MostafaMosabbir/mostafa-portfolio/tree/main/tests">View interaction tests ↗</a></div></div><div data-feature-project="assistant" hidden><p>Local prototype · Public demo coming later</p><p>No public results or downloadable source are available here yet.</p></div><div data-feature-project="security" hidden>
+            <!-- Fallback remains readable if JavaScript or generated data is unavailable. -->
+            <div id="security-findings-chart"><p>Fictional sample as of 28 Oct 2026: 15 selected requirements, 4 supported drafts and 11 needing work. These counts are not compliance scores; evidence is not independently verified.</p></div>
+            <div class="evidence-links"><a href="cybersecurity/security-proposal-workspace/reports/review.html">Explore the assessment ↗</a><a href="cybersecurity/security-proposal-workspace/reassessment-demo/index.html">Follow the MFA reassessment ↗</a><a href="cybersecurity/security-proposal-workspace/reports/crosswalk.csv" download>Download crosswalk · CSV</a><a href="cybersecurity/security-proposal-workspace/reports/gaps.csv" download>Download gaps · CSV</a><a href="https://github.com/MostafaMosabbir/mostafa-portfolio/tree/main/cybersecurity/security-proposal-workspace">Source and walkthrough ↗</a></div></div>
             <div data-feature-project="columns" hidden>
               <p>Explore the original game, the learning fork, and the Rust source and instructions for this browser adaptation. Personal reflections and further testing notes will be added as the work continues.</p>
               <div class="evidence-links"><a href="https://github.com/MostafaMosabbir/color-columns">Explore the fork ↗</a><a href="https://github.com/rdrmic/color-columns">Original game ↗</a><a href="https://github.com/MostafaMosabbir/mostafa-portfolio/blob/main/projects/color-columns/play/src/lib.rs">Browser Rust source ↗</a><a href="https://github.com/MostafaMosabbir/mostafa-portfolio/blob/main/projects/color-columns/play/README.md">Browser build notes ↗</a></div>
