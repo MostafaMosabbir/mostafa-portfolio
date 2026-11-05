@@ -1,0 +1,22 @@
+/* Real-world CISA data has its own frame and never merges with assessment results. */
+.kev-chart { margin-top: 2rem; padding: 1.3rem; border: 1px solid #284638; border-radius: .5rem; background: #0c1913; }
+.kev-chart h4 { margin: .25rem 0 .7rem; color: #e8f3ec; font-size: 1.25rem; }
+.kev-chart p { color: #b6c9bd; }
+.kev-chart a { color: #b7f1c9; text-underline-offset: .2rem; }
+.kev-eyebrow { margin: .25rem 0; color: #91e3b0 !important; font: .73rem/1.5 ui-monospace, monospace; text-transform: uppercase; letter-spacing: .1em; }
+.kev-note, .kev-status { font-size: .85rem; color: #b6c9bd; }
+.kev-status { min-height: 1.5em; }
+.kev-layout { display: grid; grid-template-columns: minmax(0, 1.8fr) minmax(190px, .8fr); gap: 1rem; margin: 1rem 0; }
+.kev-plot, .kev-details { min-width: 0; padding: 1rem; border: 1px solid #294638; border-radius: .35rem; background: #09140f; }
+.kev-scroll { min-width: 0; overflow-x: auto; padding: .5rem 3px; }
+.kev-bars, .kev-labels { display: grid; grid-template-columns: repeat(12,minmax(32px,1fr)); gap: .4rem; min-width: 510px; }
+.kev-bars { height: 220px; align-items: end; border-bottom: 1px solid #53735e; }
+.kev-bar { height: 100%; min-width: 0; padding: 0; border: 0; background: transparent; color: #d6e8dd; display: flex; flex-direction: column; justify-content: end; align-items: center; gap: .2rem; cursor: pointer; }
+.kev-column { display: block; flex: 0 1 auto; width: min(90%, 35px); min-height: 0; background: #78d6a0; border-radius: 3px 3px 0 0; }
+.kev-bar:hover .kev-column, .kev-bar[aria-pressed=true] .kev-column { outline: 2px solid #c6f8d7; outline-offset: 1px; background: #a5efbe; }
+.kev-bar:focus-visible { outline: 2px solid #a5efbe; outline-offset: 2px; }
+.kev-count, .kev-labels { font: .67rem/1.4 ui-monospace, monospace; text-align: center; }
+.kev-labels { color: #a0b6aa; margin-top: .5rem; }
+.kev-details h5 { margin: .5rem 0; font-size: 1rem; color: #e8f3ec; }
+.kev-details strong { display: block; font-size: 2.2rem; color: #e8f3ec; }
+@media (max-width: 800px) { .kev-layout { grid-template-columns: 1fr; } }

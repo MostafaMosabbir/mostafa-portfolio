@@ -1,0 +1,42 @@
+# Public CISA data only. No workplace data or personal credentials are used.
+# The site reads the refreshed JSON from GitHub directly: commits made with
+# GITHUB_TOKEN do not trigger the site's separate branch-based Pages build.
+name: Refresh CISA KEV snapshot
+on:
+  workflow_dispatch:
+  # Test the workflow when its configuration changes. Its own data-only
+  # commit will not match this path and cannot cause a refresh loop.
+  push:
+    paths:
+      - '.github/workflows/refresh-cisa-kev.yml'
+  schedule:
+    - cron: '17 17 * * *'
+permissions:
+  contents: write
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Ensure base R is available
+        run: |
+          if ! command -v Rscript >/dev/null; then
+            sudo apt-get update
+            sudo apt-get install -y --no-install-recommends r-base-core
+          fi
+      - name: Fetch and summarize the CISA catalog
+        run: Rscript --vanilla cybersecurity/security-proposal-workspace/kev/update-kev.R --output cybersecurity/security-proposal-workspace/kev/snapshot.json
+      - name: Commit only a changed snapshot
+        run: |
+          file=cybersecurity/security-proposal-workspace/kev/snapshot.json
+          if git diff --quiet -- "$file"; then
+            echo 'Catalog snapshot unchanged.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -- "$file"
+          git commit -m 'Refresh CISA KEV snapshot'
+          # No force: if main changed concurrently, the run fails safely.
+          git push origin HEAD:main
