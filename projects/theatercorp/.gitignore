@@ -1,0 +1,5 @@
+out/
+build/
+*.class
+theatercorp-data.txt
+practice-data.txt

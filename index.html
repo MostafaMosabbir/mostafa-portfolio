@@ -30,6 +30,7 @@
   <link rel="stylesheet" href="styles/security-findings.css?v=1">
   <!-- Public CISA catalog data powers the Project 007 chart. -->
   <link rel="stylesheet" href="styles/cisa-kev-chart.css?v=1">
+  <link rel="stylesheet" href="styles/theatercorp-demo.css?v=1">
 
   <!-- defer makes JavaScript wait until the HTML has been parsed. -->
   <script src="scripts/side-switch.js?v=robot-coat-2" defer></script>
@@ -38,7 +39,8 @@
   <script src="scripts/geometry.js?v=perf-3" defer></script>
   <!-- Independent enhancements: navigation, project filtering, and sample analysis. -->
   <script src="scripts/explorer.js?v=sections-2" defer></script>
-  <script src="scripts/featured-projects.js?v=project-007-1" defer></script>
+  <script src="scripts/featured-projects.js?v=project-009-1" defer></script>
+  <script src="scripts/theatercorp-demo.js?v=1" defer></script>
   <script src="scripts/color-columns-embed.js?v=1" defer></script>
   <!-- R creates the data file; this script displays it without a network request. -->
   <script src="cybersecurity/security-proposal-workspace/analysis/findings-data.js?v=1" defer></script>
@@ -203,6 +205,7 @@
           <button type="button" data-feature-select="security" aria-pressed="false">004 · Security Workspace</button>
           <button type="button" data-feature-select="columns" aria-pressed="false">006 · Color Columns</button>
           <button type="button" data-feature-select="kev" aria-pressed="false">007 · CISA Explorer</button>
+          <button type="button" data-feature-select="theater" aria-pressed="false">009 · TheaterCorp</button>
         </div>
         <p id="featured-status" class="sr-only" role="status"></p>
         <p class="record-meta" id="featured-meta">Interface updated <time datetime="2026-10-28">28 Oct 2026</time> <span aria-hidden="true">/</span> Python · CSV · JavaScript demo</p>
@@ -242,6 +245,12 @@
               <p>Explore monthly additions to CISA's Known Exploited Vulnerabilities catalog using an automatically refreshed R summary.</p>
               <p class="muted">Public cybersecurity data</p>
               <a class="text-link" href="projects/cisa-vulnerability-explorer/index.html">Open the case file ↗</a>
+            </div>
+            <div data-feature-project="theater" hidden>
+              <p>Adapted from my 2019 class project.</p>
+              <p class="muted">The Java application runs locally. This fictional browser demo is a separate JavaScript adaptation.</p>
+              <div id="theatercorp-demo"><p>The browser demo is unavailable until JavaScript loads. The Java application runs separately.</p></div>
+              <noscript><p>The interactive demo requires JavaScript. The Java source remains available on GitHub.</p></noscript>
             </div>
           </section>
           <section id="panel-process" class="feature-panel" aria-labelledby="process-heading">
@@ -285,6 +294,10 @@
               <p class="muted">The source release date is not the last successful scheduled check. GitHub schedules and caches can delay updates.</p>
               <a class="text-link" href="projects/cisa-vulnerability-explorer/index.html">Read the case file ↗</a>
             </div>
+            <div data-feature-project="theater" hidden>
+              <p>Movies have titles and ratings. Theaters have numbered screens; a screen can be assigned a movie from the catalog.</p>
+              <p class="muted">The local Java application saves its catalog to a file. The separate browser demo uses fictional data for the current session only.</p>
+            </div>
           </section>
           <section id="panel-evidence" class="feature-panel" aria-labelledby="evidence-heading">
             <h3 id="evidence-heading">Findings</h3><div data-feature-project="analyzer">
@@ -308,6 +321,10 @@
             <div data-feature-project="columns" hidden>
               <p>Explore the original game, the learning fork, and the Rust source and instructions for this browser adaptation. Personal reflections and further testing notes will be added as the work continues.</p>
               <div class="evidence-links"><a href="https://github.com/MostafaMosabbir/color-columns">Explore the fork ↗</a><a href="https://github.com/rdrmic/color-columns">Original game ↗</a><a href="https://github.com/MostafaMosabbir/mostafa-portfolio/blob/main/projects/color-columns/play/src/lib.rs">Browser Rust source ↗</a><a href="https://github.com/MostafaMosabbir/mostafa-portfolio/blob/main/projects/color-columns/play/README.md">Browser build notes ↗</a></div>
+            </div>
+            <div data-feature-project="theater" hidden>
+              <p>The local Java prototype passed 77 checks covering model behavior, storage, and terminal interactions. The website demo is a separate implementation.</p>
+              <div class="evidence-links"><a href="https://github.com/MostafaMosabbir/mostafa-portfolio/tree/main/projects/theatercorp">Explore the Java source ↗</a></div>
             </div>
           </section>
           <section id="panel-articles" class="feature-panel" aria-labelledby="articles-heading" hidden>
@@ -338,7 +355,7 @@
         </div>
         <details class="technical-details"><summary>View technical details</summary>
           <p data-feature-project="analyzer">The full tool runs locally in Python. This browser demonstration analyzes a separate six-ticket sample using JavaScript. It checks required fields, groups repeated subject wording, and flags resolved or closed tickets without notes. Repeated wording is a review candidate, not proof of the same root cause.</p>
-        <p data-feature-project="portfolio" hidden>Built with HTML, CSS, and JavaScript. Published with GitHub Pages. The visual effects and project interactions run in the browser.</p><p data-feature-project="assistant" hidden>A local JavaScript prototype using fictional tickets and rule-based matching. Draft responses require human review.</p><p data-feature-project="security" hidden>The assessment engine runs locally in Python using the standard library. The published report is a fixed fictional example, not a live assessment service or a compliance determination.</p><p data-feature-project="columns" hidden>The original desktop game uses Rust and ggez. This browser adaptation reimplements the game rules in Rust compiled to WebAssembly; JavaScript handles the browser display and controls. Closing the game resets the current session.</p><p data-feature-project="kev" hidden>R validates the public CISA catalog and generates a monthly JSON snapshot. GitHub Actions checks daily; JavaScript displays the latest available snapshot and a bundled fallback when needed.</p></details>
+        <p data-feature-project="portfolio" hidden>Built with HTML, CSS, and JavaScript. Published with GitHub Pages. The visual effects and project interactions run in the browser.</p><p data-feature-project="assistant" hidden>A local JavaScript prototype using fictional tickets and rule-based matching. Draft responses require human review.</p><p data-feature-project="security" hidden>The assessment engine runs locally in Python using the standard library. The published report is a fixed fictional example, not a live assessment service or a compliance determination.</p><p data-feature-project="columns" hidden>The original desktop game uses Rust and ggez. This browser adaptation reimplements the game rules in Rust compiled to WebAssembly; JavaScript handles the browser display and controls. Closing the game resets the current session.</p><p data-feature-project="kev" hidden>R validates the public CISA catalog and generates a monthly JSON snapshot. GitHub Actions checks daily; JavaScript displays the latest available snapshot and a bundled fallback when needed.</p><p data-feature-project="theater" hidden>The Java source adapts a 2019 class project and saves locally. The independent browser demo uses JavaScript, does not run the Java application, and resets when the page refreshes.</p></details>
       </section>
 
       <section
@@ -358,12 +375,13 @@
             <button type="button" data-filter="all" aria-pressed="true">All</button>
             <button type="button" data-filter="python" aria-pressed="false">Python</button>
             <button type="button" data-filter="javascript" aria-pressed="false">JavaScript</button>
+            <button type="button" data-filter="java" aria-pressed="false">Java</button>
             <button type="button" data-filter="web" aria-pressed="false">Web</button>
             <button type="button" data-filter="cybersecurity" aria-pressed="false">Cybersecurity</button>
             <button type="button" data-filter="rust" aria-pressed="false">Rust</button>
             <button type="button" data-filter="r" aria-pressed="false">R</button>
           </div>
-          <p class="small-label" id="filter-status" role="status">6 projects</p>
+          <p class="small-label" id="filter-status" role="status">7 projects</p>
         </div>
         <!-- Real projects only. No demo link until the ticket app is published. -->
         <div class="case-navigation" id="case-navigation" hidden>
@@ -481,6 +499,24 @@ Interactive findings</pre>
               <p class="project-availability">CISA catalog data · Counts are not attack totals</p>
             </div>
             <button class="feature-select" type="button" data-feature-select="kev" aria-pressed="false" hidden>Highlight project</button>
+          </article>
+          <article class="project-card" id="project-theatercorp" data-technologies="java javascript web" tabindex="-1">
+            <div class="project-art" aria-hidden="true">
+              <div class="terminal-bar"><i></i><i></i><i></i><span>theater / catalog</span></div>
+              <pre>Movies
+Theaters
+Screens
+Fictional data</pre>
+            </div>
+            <div class="project-copy">
+              <p class="eyebrow">Project 009 <span class="badge">Learning project</span></p>
+              <h3>TheaterCorp</h3>
+              <p>Explore a fictional movie and theater catalog adapted from my 2019 class project.</p>
+              <ul class="tags" aria-label="TheaterCorp technologies"><li>Java</li><li>JavaScript</li><li>Learning project</li></ul>
+              <a class="text-link" href="https://github.com/MostafaMosabbir/mostafa-portfolio/tree/main/projects/theatercorp">Explore the Java source ↗</a>
+              <p class="project-availability">Local Java prototype · Separate browser demo</p>
+            </div>
+            <button class="feature-select" type="button" data-feature-select="theater" aria-pressed="false" hidden>Highlight project</button>
           </article>
         </div>
       </section>

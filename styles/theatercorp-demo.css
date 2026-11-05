@@ -1,0 +1,35 @@
+/* TheaterCorp browser demo: scoped to avoid changing the portfolio's other projects. */
+#theatercorp-demo .tc-shell { color: #e9f1ed; background: #0d1714; border: 1px solid #30483d; border-radius: 12px; padding: clamp(16px, 2.5vw, 28px); }
+#theatercorp-demo .tc-header { margin-bottom: 20px; }
+#theatercorp-demo .tc-eyebrow { color: #8adbb0; font: 600 .72rem/1.4 ui-monospace, monospace; letter-spacing: .1em; margin: 0 0 7px; }
+#theatercorp-demo h3, #theatercorp-demo h4, #theatercorp-demo h5 { color: #f0f5f2; margin: 0; }
+#theatercorp-demo h3 { font-size: clamp(1.25rem, 2vw, 1.6rem); }
+#theatercorp-demo h4 { font-size: 1.12rem; }
+#theatercorp-demo h5 { font-size: 1rem; grid-column: 1 / -1; }
+#theatercorp-demo .tc-note, #theatercorp-demo .tc-model { color: #b4c2bb; font-size: .9rem; line-height: 1.55; margin: 8px 0 0; }
+#theatercorp-demo .tc-panel { background: #111d19; border: 1px solid #2a4438; border-radius: 8px; padding: clamp(14px, 2vw, 22px); }
+#theatercorp-demo .tc-panel-header { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 14px; }
+#theatercorp-demo .tc-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+#theatercorp-demo button { background: #183329; border: 1px solid #426b55; border-radius: 6px; color: #eef8f2; cursor: pointer; font: inherit; font-size: .86rem; min-height: 40px; padding: 8px 12px; }
+#theatercorp-demo button:hover, #theatercorp-demo button[aria-expanded="true"] { background: #24553c; border-color: #88dfae; }
+#theatercorp-demo :is(button,input,select):focus-visible { outline: 3px solid #9de9bc; outline-offset: 3px; }
+#theatercorp-demo .tc-status { color: #b7eacb; font-size: .9rem; min-height: 1.5em; margin: 8px 0; }
+#theatercorp-demo .tc-form { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 8px 14px; align-items: center; background: #0c1813; border: 1px solid #345141; border-radius: 6px; padding: 16px; margin-bottom: 18px; }
+#theatercorp-demo .tc-form[hidden] { display: none; }
+#theatercorp-demo .tc-form label { color: #d5e3db; font-size: .88rem; }
+#theatercorp-demo .tc-form :is(input:not([type=checkbox]),select) { box-sizing: border-box; min-width: 0; width: 100%; background: #0b1511; border: 1px solid #5a7867; border-radius: 5px; color: #f1f8f3; font: inherit; padding: 8px; }
+#theatercorp-demo .tc-check { grid-column: 1 / -1; display: flex; gap: 8px; align-items: center; }
+#theatercorp-demo .tc-form button { justify-self: start; grid-column: 1 / -1; margin-top: 4px; }
+#theatercorp-demo .tc-table-wrap { max-width: 100%; overflow-x: auto; }
+#theatercorp-demo .tc-table { width: 100%; border-collapse: collapse; font-size: .9rem; min-width: 470px; }
+#theatercorp-demo .tc-table th, #theatercorp-demo .tc-table td { text-align: left; border-bottom: 1px solid #304339; padding: 10px 12px; }
+#theatercorp-demo .tc-table th { color: #b7cfc1; font-size: .75rem; letter-spacing: .06em; text-transform: uppercase; }
+#theatercorp-demo .tc-table td { color: #eef4f0; overflow-wrap: anywhere; }
+#theatercorp-demo .tc-inventory { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 14px; margin-top: 18px; color: #d1ddd6; font-size: .88rem; }
+#theatercorp-demo .tc-inventory ul { margin: 7px 0 0; padding-left: 1.2rem; }
+#theatercorp-demo .tc-inventory li { overflow-wrap: anywhere; }
+#theatercorp-demo .tc-sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+@media (max-width: 600px) {
+  #theatercorp-demo .tc-form, #theatercorp-demo .tc-inventory { grid-template-columns: 1fr; }
+  #theatercorp-demo .tc-form label { margin-top: 3px; }
+}

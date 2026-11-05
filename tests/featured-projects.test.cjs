@@ -5,7 +5,7 @@ const fs=require('node:fs');
 const path=require('node:path');
 const source=fs.readFileSync(path.join(__dirname,'../scripts/featured-projects.js'),'utf8');
 function setup(reduced=false){
- const keys=['portfolio','assistant','analyzer','security','columns','kev'];
+ const keys=['portfolio','assistant','analyzer','security','columns','kev','theater'];
  const groups=keys.flatMap(key=>Array.from({length:4},()=>({dataset:{featureProject:key},hidden:true})));
  const buttons=keys.flatMap(key=>[false,true].map(card=>({dataset:{featureSelect:key},hidden:true,attrs:{},classList:{contains:()=>card},setAttribute(k,v){this.attrs[k]=v},addEventListener(k,fn){this.click=fn}})));
  const ids={};
@@ -20,7 +20,7 @@ test('starts on Project 003 without moving focus or changing the default tab',()
  assert.equal(s.ids['tab-overview'].clicked,undefined);
  assert.equal(s.ids['featured-title'].focused,undefined);
 });
-test('all six projects can be selected from either control and return to the analyzer',()=>{
+test('all seven projects can be selected from either control and return to the analyzer',()=>{
  const s=setup();const original=s.groups.slice();
  for(const b of s.buttons){b.click();
   assert.equal(s.ids.featured.dataset.project,b.dataset.featureSelect);
@@ -31,6 +31,14 @@ test('all six projects can be selected from either control and return to the ana
  s.buttons.find(b=>b.dataset.featureSelect==='analyzer').click();
  assert.ok(s.groups.every((g,i)=>g===original[i]));
  assert.equal(s.ids['featured-title'].textContent,'Python IT Ticket Analyzer');
+});
+test('Project 009 selects TheaterCorp and does not show an article placeholder',()=>{
+ const s=setup();s.buttons.find(b=>b.dataset.featureSelect==='theater').click();
+ assert.equal(s.ids['featured-number'].textContent,'Project 009 / Featured project');
+ assert.equal(s.ids['featured-title'].textContent,'TheaterCorp');
+ assert.match(s.ids['featured-meta'].textContent,/Java.*JavaScript browser demo/);
+ assert.equal(s.ids['tab-articles'].hidden,true);
+ assert.ok(s.groups.every(g=>g.hidden===(g.dataset.featureProject!=='theater')));
 });
 test('Project 007 shows explorer metadata and its article placeholder',()=>{
  const s=setup();

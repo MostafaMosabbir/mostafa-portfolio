@@ -9,7 +9,8 @@
     security: { number: "004", title: "Security Proposal Workspace", badge: "Working prototype", meta: "Cybersecurity · Python · Selected NIST CSF 2.0 outcomes" },
     // Project numbers are identifiers, not a count; Project 005 is still planned.
     columns: { number: "006", title: "Color Columns", badge: "Learning project", meta: "Rust · WebAssembly · Browser adaptation" },
-    kev: { number: "007", title: "CISA Vulnerability Explorer", badge: "Working prototype", meta: "Cybersecurity · R · Public CISA data" }
+    kev: { number: "007", title: "CISA Vulnerability Explorer", badge: "Working prototype", meta: "Cybersecurity · R · Public CISA data" },
+    theater: { number: "009", title: "TheaterCorp", badge: "Learning project", meta: "Java · JavaScript browser demo" }
   };
   const feature = document.getElementById("featured");
   if (!feature) return;
