@@ -8,7 +8,8 @@
     analyzer: { number: "003", title: "Python IT Ticket Analyzer", badge: "Working prototype", meta: "Python · CSV · JavaScript demo" },
     security: { number: "004", title: "Security Proposal Workspace", badge: "Working prototype", meta: "Cybersecurity · Python · Selected NIST CSF 2.0 outcomes" },
     // Project numbers are identifiers, not a count; Project 005 is still planned.
-    columns: { number: "006", title: "Color Columns", badge: "Learning project", meta: "Rust · WebAssembly · Browser adaptation" }
+    columns: { number: "006", title: "Color Columns", badge: "Learning project", meta: "Rust · WebAssembly · Browser adaptation" },
+    kev: { number: "007", title: "CISA Vulnerability Explorer", badge: "Working prototype", meta: "Cybersecurity · R · Public CISA data" }
   };
   const feature = document.getElementById("featured");
   if (!feature) return;
@@ -29,7 +30,7 @@
     feature.dataset.project = key;
     // These projects have clearly labelled article placeholders. Project
     // switches return to Brief, so a hidden tab never remains selected.
-    document.getElementById("tab-articles").hidden = !["security", "columns"].includes(key);
+    document.getElementById("tab-articles").hidden = !["security", "columns", "kev"].includes(key);
     title.textContent = project.title;
     document.getElementById("featured-number").textContent = `Project ${project.number} / Featured project`;
     document.getElementById("featured-badge").textContent = project.badge;

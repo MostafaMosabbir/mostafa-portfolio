@@ -38,7 +38,7 @@
   <script src="scripts/geometry.js?v=perf-3" defer></script>
   <!-- Independent enhancements: navigation, project filtering, and sample analysis. -->
   <script src="scripts/explorer.js?v=sections-2" defer></script>
-  <script src="scripts/featured-projects.js?v=color-columns-2" defer></script>
+  <script src="scripts/featured-projects.js?v=project-007-1" defer></script>
   <script src="scripts/color-columns-embed.js?v=1" defer></script>
   <!-- R creates the data file; this script displays it without a network request. -->
   <script src="cybersecurity/security-proposal-workspace/analysis/findings-data.js?v=1" defer></script>
@@ -202,6 +202,7 @@
           <button type="button" data-feature-select="analyzer" aria-pressed="true">003 · Ticket Analyzer</button>
           <button type="button" data-feature-select="security" aria-pressed="false">004 · Security Workspace</button>
           <button type="button" data-feature-select="columns" aria-pressed="false">006 · Color Columns</button>
+          <button type="button" data-feature-select="kev" aria-pressed="false">007 · CISA Explorer</button>
         </div>
         <p id="featured-status" class="sr-only" role="status"></p>
         <p class="record-meta" id="featured-meta">Interface updated <time datetime="2026-10-28">28 Oct 2026</time> <span aria-hidden="true">/</span> Python · CSV · JavaScript demo</p>
@@ -236,6 +237,11 @@
                 <p id="columns-status" class="columns-status" role="status" aria-live="polite"></p>
                 <div id="columns-frame-container"></div>
               </section>
+            </div>
+            <div data-feature-project="kev" hidden>
+              <p>Explore monthly additions to CISA's Known Exploited Vulnerabilities catalog using an automatically refreshed R summary.</p>
+              <p class="muted">Public cybersecurity data · Separate from the fictional Project 004 assessment</p>
+              <a class="text-link" href="projects/cisa-vulnerability-explorer/index.html">Open the case file ↗</a>
             </div>
           </section>
           <section id="panel-process" class="feature-panel" aria-labelledby="process-heading">
@@ -274,6 +280,11 @@
               <p class="muted">The simplified browser version does not save high scores or include every desktop feature.</p>
               <a class="text-link" href="projects/color-columns/index.html">Read the case file ↗</a>
             </div>
+            <div data-feature-project="kev" hidden>
+              <p>R retrieves and validates CISA's public catalog, then summarizes entries by their catalog addition month. A scheduled GitHub workflow checks for updates daily; the browser displays the latest available snapshot.</p>
+              <p class="muted">The source release date is not the last successful scheduled check. GitHub schedules and caches can delay updates.</p>
+              <a class="text-link" href="projects/cisa-vulnerability-explorer/index.html">Read the case file ↗</a>
+            </div>
           </section>
           <section id="panel-evidence" class="feature-panel" aria-labelledby="evidence-heading">
             <h3 id="evidence-heading">Findings</h3><div data-feature-project="analyzer">
@@ -283,13 +294,15 @@
             <!-- Fallback remains readable if JavaScript or generated data is unavailable. -->
             <div id="security-findings-chart"><p>Fictional sample as of 28 Oct 2026: 15 selected requirements, 4 supported drafts and 11 needing work. These counts are not compliance scores; evidence is not independently verified.</p></div>
             <div class="evidence-links"><a href="cybersecurity/security-proposal-workspace/reports/review.html">Explore the assessment ↗</a><a href="cybersecurity/security-proposal-workspace/reassessment-demo/index.html">Follow the MFA reassessment ↗</a><a href="cybersecurity/security-proposal-workspace/reports/crosswalk.csv" download>Download crosswalk · CSV</a><a href="cybersecurity/security-proposal-workspace/reports/gaps.csv" download>Download gaps · CSV</a><a href="https://github.com/MostafaMosabbir/mostafa-portfolio/tree/main/cybersecurity/security-proposal-workspace">Source and walkthrough ↗</a></div>
-            <!-- This chart uses public CISA data, not the fictional assessment. -->
+            </div>
+            <!-- Public CISA data belongs to Project 007, separate from the fictional assessment. -->
+            <div data-feature-project="kev" hidden>
             <section class="kev-chart" aria-labelledby="kev-title">
               <p class="kev-eyebrow">Public data / CISA KEV</p>
               <h4 id="kev-title">Catalog additions by month</h4>
-              <p>Explore entries CISA added to its Known Exploited Vulnerabilities catalog. This public data is separate from the fictional assessment above.</p>
+              <p>Explore entries CISA added to its Known Exploited Vulnerabilities catalog. This public data is separate from the fictional Project 004 assessment.</p>
               <div id="kev-output"><p>Enable JavaScript to explore the chart, or view the <a href="https://github.com/cisagov/kev-data">CISA dataset</a>.</p></div>
-              <p class="kev-note">Counts describe catalog additions, not attacks, all vulnerabilities, or this company’s compliance. CISA can revise previous records; the latest catalog month may be incomplete.</p>
+              <p class="kev-note">Counts describe catalog additions, not attacks, all vulnerabilities, or a compliance score. CISA can revise previous records; the latest catalog month may be incomplete.</p>
               <p class="kev-note"><a href="https://github.com/cisagov/kev-data">CISA dataset ↗</a> · <a href="https://github.com/MostafaMosabbir/mostafa-portfolio/blob/main/cybersecurity/security-proposal-workspace/kev/update-kev.R">R analysis ↗</a> · <a href="https://github.com/MostafaMosabbir/mostafa-portfolio/blob/main/cybersecurity/security-proposal-workspace/kev/README.md">How updates work ↗</a></p>
             </section></div>
             <div data-feature-project="columns" hidden>
@@ -306,6 +319,13 @@
                 <div><p class="article-slot-label">PROJECT 004 / PLACEHOLDER</p><h4>ARTICLE TITLE PLACEHOLDER</h4><p>ARTICLE DESCRIPTION PLACEHOLDER</p><p class="article-slot-note">Placeholder text and image. No article has been published here yet.</p><a class="text-link" href="#articles">View Articles ↓</a></div>
               </div>
             </div>
+            <div data-feature-project="kev" hidden>
+              <!-- The owner will write this article after hands-on analysis. -->
+              <div class="article-slot">
+                <div class="article-slot-image" role="img" aria-label="Image placeholder">IMAGE PLACEHOLDER</div>
+                <div><p class="article-slot-label">PROJECT 007 / PLACEHOLDER</p><h4>ARTICLE TITLE PLACEHOLDER</h4><p>ARTICLE DESCRIPTION PLACEHOLDER</p><p class="article-slot-note">Placeholder text and image. No article has been published here yet.</p><a class="text-link" href="projects/cisa-vulnerability-explorer/index.html#articles">View the case file ↗</a></div>
+              </div>
+            </div>
           
             <div data-feature-project="columns" hidden>
               <!-- The owner will write this reflection after hands-on work. -->
@@ -318,7 +338,7 @@
         </div>
         <details class="technical-details"><summary>View technical details</summary>
           <p data-feature-project="analyzer">The full tool runs locally in Python. This browser demonstration analyzes a separate six-ticket sample using JavaScript. It checks required fields, groups repeated subject wording, and flags resolved or closed tickets without notes. Repeated wording is a review candidate, not proof of the same root cause.</p>
-        <p data-feature-project="portfolio" hidden>Built with HTML, CSS, and JavaScript. Published with GitHub Pages. The visual effects and project interactions run in the browser.</p><p data-feature-project="assistant" hidden>A local JavaScript prototype using fictional tickets and rule-based matching. Draft responses require human review.</p><p data-feature-project="security" hidden>The assessment engine runs locally in Python using the standard library. The published report is a fixed fictional example, not a live assessment service or a compliance determination.</p><p data-feature-project="columns" hidden>The original desktop game uses Rust and ggez. This browser adaptation reimplements the game rules in Rust compiled to WebAssembly; JavaScript handles the browser display and controls. Closing the game resets the current session.</p></details>
+        <p data-feature-project="portfolio" hidden>Built with HTML, CSS, and JavaScript. Published with GitHub Pages. The visual effects and project interactions run in the browser.</p><p data-feature-project="assistant" hidden>A local JavaScript prototype using fictional tickets and rule-based matching. Draft responses require human review.</p><p data-feature-project="security" hidden>The assessment engine runs locally in Python using the standard library. The published report is a fixed fictional example, not a live assessment service or a compliance determination.</p><p data-feature-project="columns" hidden>The original desktop game uses Rust and ggez. This browser adaptation reimplements the game rules in Rust compiled to WebAssembly; JavaScript handles the browser display and controls. Closing the game resets the current session.</p><p data-feature-project="kev" hidden>R validates the public CISA catalog and generates a monthly JSON snapshot. GitHub Actions checks daily; JavaScript displays the latest available snapshot and a bundled fallback when needed.</p></details>
       </section>
 
       <section
@@ -341,13 +361,14 @@
             <button type="button" data-filter="web" aria-pressed="false">Web</button>
             <button type="button" data-filter="cybersecurity" aria-pressed="false">Cybersecurity</button>
             <button type="button" data-filter="rust" aria-pressed="false">Rust</button>
+            <button type="button" data-filter="r" aria-pressed="false">R</button>
           </div>
-          <p class="small-label" id="filter-status" role="status">5 projects</p>
+          <p class="small-label" id="filter-status" role="status">6 projects</p>
         </div>
         <!-- Real projects only. No demo link until the ticket app is published. -->
         <div class="case-navigation" id="case-navigation" hidden>
           <button type="button" id="case-previous" aria-label="Previous case file" aria-controls="case-carousel">←</button>
-          <p id="case-position" role="status" aria-live="polite" aria-atomic="true">001 / 005</p>
+          <p id="case-position" role="status" aria-live="polite" aria-atomic="true">001 / 006</p>
           <button type="button" id="case-next" aria-label="Next case file" aria-controls="case-carousel">→</button>
         </div>
         <div class="project-grid" id="case-carousel" role="region" aria-label="Case files">
@@ -441,6 +462,25 @@ Playable browser adaptation</pre>
               <p class="project-availability">Original game by Rade Drmić · Rust browser adaptation</p>
             </div>
             <button class="feature-select" type="button" data-feature-select="columns" aria-pressed="false" hidden>Highlight project</button>
+          </article>
+          <!-- The monthly chart uses public CISA data, independently of Project 004. -->
+          <article class="project-card" id="project-cisa-explorer" data-technologies="r cybersecurity" tabindex="-1">
+            <div class="project-art" aria-hidden="true">
+              <div class="terminal-bar"><i></i><i></i><i></i><span>cisa / catalog additions</span></div>
+              <pre>Public vulnerability catalog
+R analysis by month
+Daily update check
+Interactive findings</pre>
+            </div>
+            <div class="project-copy">
+              <p class="eyebrow">Project 007 <span class="badge">Working prototype</span></p>
+              <h3>CISA Vulnerability Explorer</h3>
+              <p>Explore monthly additions to CISA's Known Exploited Vulnerabilities catalog with an R-generated chart.</p>
+              <ul class="tags" aria-label="CISA explorer technologies"><li>R</li><li>Cybersecurity</li><li>Public data</li></ul>
+              <a class="text-link" href="projects/cisa-vulnerability-explorer/index.html">Open the case file ↗</a>
+              <p class="project-availability">CISA catalog data · Counts are not attack totals</p>
+            </div>
+            <button class="feature-select" type="button" data-feature-select="kev" aria-pressed="false" hidden>Highlight project</button>
           </article>
         </div>
       </section>
