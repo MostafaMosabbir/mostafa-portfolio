@@ -7,6 +7,8 @@ on:
   # Test the workflow when its configuration changes. Its own data-only
   # commit will not match this path and cannot cause a refresh loop.
   push:
+    branches:
+      - main
     paths:
       - '.github/workflows/refresh-cisa-kev.yml'
   schedule:
@@ -15,6 +17,8 @@ permissions:
   contents: write
 jobs:
   refresh:
+    # Manual runs can choose a branch; never push another branch into main.
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
