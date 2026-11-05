@@ -33,7 +33,7 @@ void testParsing() {
           && limits.values.back() == std::numeric_limits<int>::max(),
           "Both supported integer boundaries should parse");
 
-    for (const std::string& bad : {"1,2", "2x", "3.4", "+", "999999999999999999999999999999", "2 -x"}) {
+    for (const std::string bad : {"1,2", "2x", "3.4", "+", "999999999999999999999999999999", "2 -x"}) {
         const auto result = parseList(bad);
         check(!result.ok && result.values.empty() && !result.error.empty(),
               "Malformed input must fail without exposing partially parsed data");
