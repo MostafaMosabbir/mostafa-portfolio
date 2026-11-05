@@ -1,3 +1,12 @@
+/* The darker creative palette lets the red haze and embers stand out. */
+body[data-side="creative"] {
+  --paper: #16070b;
+  --soft: #260a10;
+  --line: #a34d5277;
+  background: radial-gradient(ellipse at 76% 12%, #411019 0, transparent 58%),
+              linear-gradient(140deg, #15070b, #25090f);
+}
+
 /* After Hours atmosphere: the layer is decorative and sits behind the content. */
 .creative-view {
   position: relative;
@@ -19,7 +28,7 @@
   height: min(65vw, 700px);
   top: 5%;
   right: -20%;
-  background: radial-gradient(ellipse, rgba(145, 25, 32, .27), rgba(110, 13, 23, .10) 38%, transparent 70%);
+  background: radial-gradient(ellipse, rgba(174, 26, 35, .32), rgba(110, 13, 23, .13) 38%, transparent 70%);
   animation: after-hours-drift 24s ease-in-out infinite alternate;
 }
 
@@ -34,11 +43,11 @@
   opacity: 0;
   animation: after-hours-rise 11s ease-in-out infinite;
 }
-.after-hours-ember:nth-of-type(1) { left: 12%; animation-delay: -2s; }
-.after-hours-ember:nth-of-type(2) { left: 28%; animation-delay: -7s; animation-duration: 15s; }
-.after-hours-ember:nth-of-type(3) { left: 48%; animation-delay: -4s; animation-duration: 13s; }
-.after-hours-ember:nth-of-type(4) { left: 72%; animation-delay: -10s; animation-duration: 17s; }
-.after-hours-ember:nth-of-type(5) { left: 89%; animation-delay: -6s; animation-duration: 14s; }
+.after-hours-ember:nth-of-type(1) { left: 12%; top: 18%; animation-delay: -2s; }
+.after-hours-ember:nth-of-type(2) { left: 28%; top: 34%; animation-delay: -7s; animation-duration: 15s; }
+.after-hours-ember:nth-of-type(3) { left: 48%; top: 51%; animation-delay: -4s; animation-duration: 13s; }
+.after-hours-ember:nth-of-type(4) { left: 72%; top: 68%; animation-delay: -10s; animation-duration: 17s; }
+.after-hours-ember:nth-of-type(5) { left: 89%; top: 83%; animation-delay: -6s; animation-duration: 14s; }
 
 @keyframes after-hours-drift {
   from { transform: translate3d(-3%, 2%, 0) scale(.96); opacity: .7; }

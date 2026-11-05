@@ -116,7 +116,7 @@
     canvasHasContent = hasVisibleGeometry() ||
       Boolean(mouse && mouseAge <= 1.8 && !paused() && pointer.matches);
     const red = document.body.dataset.side === 'creative';
-    const color = red ? '255,166,173' : '77,191,145';
+    const color = red ? '255,95,105' : '77,191,145';
     // Low opacity under content avoids competing with text and project cards.
     models.forEach((model,index) => {
       if (width < 700 && ![0,2,4,6,8].includes(index)) return;
@@ -163,7 +163,7 @@
     if (!mouse || mouseAge > 1.8 || paused() || !pointer.matches) return;
     const fade = Math.max(0,1-mouseAge/1.8);
     const glow = ctx.createRadialGradient(mouse.x,mouse.y,0,mouse.x,mouse.y,GLOW_RADIUS);
-    glow.addColorStop(0,`rgba(${color},${.085*fade})`);glow.addColorStop(1,`rgba(${color},0)`);
+    glow.addColorStop(0,`rgba(${color},${(red ? .14 : .085)*fade})`);glow.addColorStop(1,`rgba(${color},0)`);
     ctx.fillStyle=glow;ctx.fillRect(mouse.x-GLOW_RADIUS,mouse.y-GLOW_RADIUS,GLOW_RADIUS*2,GLOW_RADIUS*2);
     // Background solids respond directly; no cursor-following symbols or shapes.
 
