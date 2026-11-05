@@ -31,6 +31,8 @@
   <!-- Public CISA catalog data powers the Project 007 chart. -->
   <link rel="stylesheet" href="styles/cisa-kev-chart.css?v=1">
   <link rel="stylesheet" href="styles/theatercorp-demo.css?v=1">
+  <!-- A small, decorative atmosphere for the After Hours side. -->
+  <link rel="stylesheet" href="styles/after-hours-atmosphere.css?v=1">
 
   <!-- defer makes JavaScript wait until the HTML has been parsed. -->
   <script src="scripts/side-switch.js?v=robot-coat-2" defer></script>
@@ -695,6 +697,15 @@ Fictional data</pre>
       aria-labelledby="creative-title"
       hidden
     >
+      <!-- Decorative layers stay out of the reading order and never block clicks. -->
+      <div class="after-hours-atmosphere" aria-hidden="true">
+        <div class="after-hours-haze"></div>
+        <span class="after-hours-ember"></span>
+        <span class="after-hours-ember"></span>
+        <span class="after-hours-ember"></span>
+        <span class="after-hours-ember"></span>
+        <span class="after-hours-ember"></span>
+      </div>
       <button id="geometry-toggle" class="motion-toggle" type="button" aria-pressed="false" hidden>Pause background</button>
       <div class="creative-heading">
         <p class="eyebrow">
