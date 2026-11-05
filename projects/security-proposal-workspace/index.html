@@ -47,6 +47,11 @@
     .questions li { padding: .25rem 0 .25rem .35rem; }
     .questions li::marker { color: #8edeb0; }
     .button { display: inline-block; background: #9be5ba; color: #0b1a11; padding: .65rem 1rem; border-radius: 5px; font-weight: 600; text-decoration: none; margin: .3rem 0 1rem; }
+    /* The diagram is a conceptual illustration, with a full-size link for detail. */
+    .architecture-figure { margin: 1.25rem 0; }
+    .architecture-figure img { display: block; width: 100%; height: auto; border: 1px solid #355647; border-radius: 6px; }
+    .architecture-figure figcaption { margin-top: .8rem; color: #c2d2c7; }
+    .architecture-links { display: flex; flex-wrap: wrap; gap: .5rem 1.25rem; }
     /* This is a visible layout placeholder, not a published article. */
     .article-placeholder { border: 1px solid #355647; border-radius: 8px; padding: 1rem; background: #10231b; }
     .article-image-placeholder { display: grid; place-items: center; min-height: 130px; padding: 1rem; border: 1px dashed #6f9b82; color: #c2d3c8; text-align: center; margin-bottom: 1rem; }
@@ -112,6 +117,18 @@
           <p>The Security Proposal Workspace grew from my experience working on the technical side of a security proposal. I wanted a way to bring requirements, safeguards, evidence, and follow-up actions together so that gaps are easier to identify and discuss.</p>
           <p>The project uses a fictional marketing company to demonstrate that process. For example, it can flag an MFA control that is marked as implemented but has no evidence linked to it.</p>
           <p><a href="../../cybersecurity/security-proposal-workspace/reports/review.html">Explore the assessment →</a></p>
+        </section>
+
+        <section class="block" id="architecture" aria-labelledby="architecture-title">
+          <p class="eyebrow">Proposed architecture</p>
+          <h2 id="architecture-title">A fictional marketing company</h2>
+          <p>This conceptual design illustrates proposed boundaries and safeguards for the fictional assessment. It is not a deployed or tested system.</p>
+          <figure class="architecture-figure">
+            <img src="security-architecture.png" width="1600" height="1000" loading="lazy" alt="Proposed security architecture. Public visitors reach a website through edge protection. Staff sign in with MFA and access a private application and restricted data. Selected systems send logs to monitoring; data is backed up separately.">
+            <figcaption>Solid lines show requests or data; dashed amber shows identity verification; dotted blue shows security logs; purple shows backup.</figcaption>
+          </figure>
+          <p class="architecture-links"><a href="security-architecture.png">View full-size diagram ↗</a><a href="security-architecture.drawio" download>Download editable draw.io file ↓</a></p>
+          <p class="muted">The diagram is a proposal, not evidence that controls are configured, tested, or compliant.</p>
         </section>
 
         <section class="block" aria-labelledby="reflection-title">
