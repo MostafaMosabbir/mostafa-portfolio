@@ -45,5 +45,7 @@ alone does not necessarily provide a compiler.
 - `tests/algorithm_tests.cpp` checks input, results, counts, and traces.
 - `docs/PRACTICE.md` guides you through an example.
 
-The original coursework is kept separately. The browser concept and C++ tool
-are local work and have not been added to the portfolio website.
+The original coursework is kept separately. The C++ tool and browser concept
+are also available in a public GitHub review branch, but they have not been
+added to the live portfolio website. The automated C++ tests ran on Linux;
+the local Windows build is still being resolved.
