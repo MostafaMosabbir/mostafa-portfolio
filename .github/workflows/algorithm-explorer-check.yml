@@ -25,3 +25,21 @@ jobs:
           grep -F 'Sorted list:' /tmp/algorithm-output.txt
       - name: Run browser concept checks
         run: node --test preview/preview.test.cjs
+  verify-windows:
+    runs-on: windows-latest
+    defaults:
+      run:
+        working-directory: projects/algorithm-explorer
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile and run C++ checks on Windows
+        shell: cmd
+        run: |
+          for /f "usebackq tokens=*" %%i in (`"%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe" -latest -products * -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath`) do set "VSROOT=%%i"
+          if not defined VSROOT exit /b 1
+          call "%VSROOT%\Common7\Tools\VsDevCmd.bat" -arch=x64 -host_arch=x64
+          if errorlevel 1 exit /b 1
+          cl /nologo /std:c++17 /EHsc /W4 src\algorithms.cpp tests\algorithm_tests.cpp /Fe:algorithm-tests.exe
+          if errorlevel 1 exit /b 1
+          algorithm-tests.exe
+          if errorlevel 1 exit /b 1
