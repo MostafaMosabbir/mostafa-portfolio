@@ -1,0 +1,40 @@
+/* Four compact lists lead to one featured selection. */
+.ark-index { margin-top: clamp(64px, 9vw, 115px); }
+.ark-index-heading { display: flex; justify-content: space-between; align-items: end; gap: 20px; margin-bottom: 24px; flex-wrap: wrap; }
+.ark-index-heading h2 { color: #fff9f5; font: 400 clamp(3rem, 6vw, 5.5rem)/1 Georgia, serif; margin: 0; }
+.ark-index-heading p { color: #fff4ef; background: #410811; border-radius: 3px; padding: 8px 10px; font-size: .75rem; }
+.ark-introduction { color: #e8d4d0; margin: 0 0 20px; }
+.ark-search { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; margin: 0 0 20px; }
+.ark-search label { font: 600 .75rem/1.4 ui-monospace, monospace; color: #fff5f2; background: #410811; padding: 7px 10px; }
+.ark-search input { width: min(100%, 260px); border: 1px solid #f0c5bd99; border-radius: 3px; padding: 9px 11px; color: #fff9f5; background: #1d070ddd; font: inherit; }
+.ark-search input::placeholder { color: #e3c3bd; }
+.ark-search input:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+.ark-search p { margin: 0; color: #fff5f2; font-size: .8rem; background: #410811; }
+.ark-index-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: clamp(20px, 3vw, 42px); padding: clamp(18px, 3vw, 34px); background: #1d070ddd; border: 1px solid #e6a3a144; }
+.ark-index-lists { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 20px; align-content: start; }
+.ark-category { min-width: 0; }
+.ark-category[hidden] { display: none; }
+.ark-category h3 { color: #ffe6df; border-bottom: 1px solid #bd6063; padding-bottom: 8px; font: 600 .74rem/1.4 ui-monospace, monospace; letter-spacing: .12em; text-transform: uppercase; }
+.ark-category ul { margin: 9px 0 0; padding: 0; list-style: none; max-height: 230px; overflow-y: auto; scrollbar-width: thin; scrollbar-color: #d8877e #360d15; }
+.ark-category li[hidden] { display: none; }
+.ark-category .ark-entry { width: 100%; padding: 6px 8px; text-align: left; background: none; border: 0; border-left: 2px solid transparent; color: #f4dfdb; font: 400 .86rem/1.3 system-ui, sans-serif; cursor: pointer; }
+.ark-category .ark-entry[aria-pressed="true"] { border-left-color: #ff726e; background: #7a172833; color: white; }
+.ark-category .ark-entry:hover { background: #73203155; color: white; }
+.ark-more { padding: 7px 0; color: #ffc7bd; background: none; border: 0; text-decoration: underline; text-underline-offset: 3px; font-size: .75rem; cursor: pointer; }
+.ark-entry:focus-visible, .ark-more:focus-visible, .ark-feature-info a:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+.ark-index-feature { min-width: 0; background: #14080b; border: 1px solid #e6a3a144; align-self: start; }
+.ark-feature-art { position: relative; display: flex; align-items: center; justify-content: center; width: 100%; min-width: 0; aspect-ratio: 16 / 10; background: #090709; overflow: hidden; }
+.ark-feature-art img { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: contain; }
+.ark-feature-art img[hidden] { display: none; }
+.ark-feature-art p { margin: 20px; color: #e8ccc7; font: .8rem/1.5 ui-monospace, monospace; text-align: center; }
+.ark-feature-info { padding: 20px; }
+.ark-feature-info p { color: #efc5be; font-size: .75rem; margin: 0 0 8px; }
+.ark-feature-info h3 { color: #fff9f5; font: 400 clamp(1.4rem, 2.3vw, 2rem)/1.2 Georgia, serif; margin: 0 0 12px; }
+.ark-feature-info a { color: #fff9f5; text-underline-offset: 3px; font-size: .8rem; }
+@media (max-width: 800px) {
+  .ark-index-layout { grid-template-columns: 1fr; }
+  .ark-index-feature { grid-row: 1; }
+}
+@media (max-width: 430px) {
+  .ark-index-lists { gap: 18px 12px; }
+}

@@ -33,9 +33,14 @@
   <link rel="stylesheet" href="styles/theatercorp-demo.css?v=1">
   <!-- A small, decorative atmosphere for the After Hours side. -->
   <link rel="stylesheet" href="styles/after-hours-atmosphere.css?v=1">
+  <!-- The Ark presents favorite works and links to their official artwork sources. -->
+  <link rel="stylesheet" href="styles/the-ark-index-preview.css?v=4">
 
   <!-- defer makes JavaScript wait until the HTML has been parsed. -->
   <script src="scripts/side-switch.js?v=robot-coat-2" defer></script>
+  <script src="scripts/ark-catalog.js" defer></script>
+  <script src="scripts/ark-art-sources.js" defer></script>
+  <script src="scripts/the-ark-index-preview.js?v=2" defer></script>
   <!-- Decorative animation is separate from the creative-side interaction. -->
   <script src="scripts/matrix.js?v=perf-1" defer></script>
   <script src="scripts/geometry.js?v=perf-3" defer></script>
@@ -723,12 +728,35 @@ Fictional data</pre>
         </p>
       </div>
 
-      <!-- Replace this empty state when your first creative piece is ready. -->
-      <div class="empty-gallery">
-        <span class="gallery-mark" aria-hidden="true">✦</span>
-        <p>No work published yet.</p>
-        <p class="muted">For now, a little room to imagine.</p>
-      </div>
+      <!-- The featured image changes with each selection. -->
+      <section class="ark-index" aria-labelledby="ark-index-title">
+        <div class="ark-index-heading">
+          <h2 id="ark-index-title">The Ark</h2>
+        </div>
+        <p class="ark-introduction">A collection of some of my favorite movies, shows, games, and music.</p>
+        <div class="ark-search">
+          <label for="ark-search">Find a title</label>
+          <input id="ark-search" type="search" placeholder="Search The Ark" autocomplete="off" disabled>
+          <p id="ark-search-status" aria-live="polite"></p>
+        </div>
+        <div class="ark-index-layout">
+          <div class="ark-index-lists" id="ark-index-lists" aria-label="Favorites by category">
+            <p>Loading the collection…</p>
+          </div>
+          <div class="ark-index-feature" aria-live="polite">
+            <div class="ark-feature-art">
+              <img id="ark-feature-image" alt="" hidden referrerpolicy="no-referrer">
+              <p id="ark-feature-placeholder">Select a title to see its artwork.</p>
+            </div>
+            <div class="ark-feature-info">
+              <p id="ark-feature-category"></p>
+              <h3 id="ark-feature-title">Choose a favorite</h3>
+              <p id="ark-feature-credit"></p>
+              <a id="ark-feature-source" hidden>View official source ↗</a>
+            </div>
+          </div>
+        </div>
+      </section>
 
       <p class="creative-note">Stories. Form. Possibility.</p>
     </section>
