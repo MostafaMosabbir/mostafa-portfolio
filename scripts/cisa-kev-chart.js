@@ -1,5 +1,5 @@
-/* CISA's public catalog is separate from the fictional Project 004 sample.
-   R creates the snapshot; the browser displays it without running R. */
+/* R creates a snapshot of CISA's public catalog; the browser displays it
+   without running R. */
 (() => {
   'use strict';
   const url = 'https://raw.githubusercontent.com/MostafaMosabbir/mostafa-portfolio/main/cybersecurity/security-proposal-workspace/kev/snapshot.json';

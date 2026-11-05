@@ -28,7 +28,7 @@
   <link rel="stylesheet" href="styles/color-columns-embed.css?v=1">
   <!-- A lightweight chart for the fictional Project 004 assessment. -->
   <link rel="stylesheet" href="styles/security-findings.css?v=1">
-  <!-- Public CISA data is separate from the fictional assessment. -->
+  <!-- Public CISA catalog data powers the Project 007 chart. -->
   <link rel="stylesheet" href="styles/cisa-kev-chart.css?v=1">
 
   <!-- defer makes JavaScript wait until the HTML has been parsed. -->
@@ -240,7 +240,7 @@
             </div>
             <div data-feature-project="kev" hidden>
               <p>Explore monthly additions to CISA's Known Exploited Vulnerabilities catalog using an automatically refreshed R summary.</p>
-              <p class="muted">Public cybersecurity data · Separate from the fictional Project 004 assessment</p>
+              <p class="muted">Public cybersecurity data</p>
               <a class="text-link" href="projects/cisa-vulnerability-explorer/index.html">Open the case file ↗</a>
             </div>
           </section>
@@ -295,12 +295,12 @@
             <div id="security-findings-chart"><p>Fictional sample as of 28 Oct 2026: 15 selected requirements, 4 supported drafts and 11 needing work. These counts are not compliance scores; evidence is not independently verified.</p></div>
             <div class="evidence-links"><a href="cybersecurity/security-proposal-workspace/reports/review.html">Explore the assessment ↗</a><a href="cybersecurity/security-proposal-workspace/reassessment-demo/index.html">Follow the MFA reassessment ↗</a><a href="cybersecurity/security-proposal-workspace/reports/crosswalk.csv" download>Download crosswalk · CSV</a><a href="cybersecurity/security-proposal-workspace/reports/gaps.csv" download>Download gaps · CSV</a><a href="https://github.com/MostafaMosabbir/mostafa-portfolio/tree/main/cybersecurity/security-proposal-workspace">Source and walkthrough ↗</a></div>
             </div>
-            <!-- Public CISA data belongs to Project 007, separate from the fictional assessment. -->
+            <!-- Public CISA data powers Project 007. -->
             <div data-feature-project="kev" hidden>
             <section class="kev-chart" aria-labelledby="kev-title">
               <p class="kev-eyebrow">Public data / CISA KEV</p>
               <h4 id="kev-title">Catalog additions by month</h4>
-              <p>Explore entries CISA added to its Known Exploited Vulnerabilities catalog. This public data is separate from the fictional Project 004 assessment.</p>
+              <p>Explore entries CISA added to its Known Exploited Vulnerabilities catalog.</p>
               <div id="kev-output"><p>Enable JavaScript to explore the chart, or view the <a href="https://github.com/cisagov/kev-data">CISA dataset</a>.</p></div>
               <p class="kev-note">Counts describe catalog additions, not attacks, all vulnerabilities, or a compliance score. CISA can revise previous records; the latest catalog month may be incomplete.</p>
               <p class="kev-note"><a href="https://github.com/cisagov/kev-data">CISA dataset ↗</a> · <a href="https://github.com/MostafaMosabbir/mostafa-portfolio/blob/main/cybersecurity/security-proposal-workspace/kev/update-kev.R">R analysis ↗</a> · <a href="https://github.com/MostafaMosabbir/mostafa-portfolio/blob/main/cybersecurity/security-proposal-workspace/kev/README.md">How updates work ↗</a></p>
@@ -463,7 +463,7 @@ Playable browser adaptation</pre>
             </div>
             <button class="feature-select" type="button" data-feature-select="columns" aria-pressed="false" hidden>Highlight project</button>
           </article>
-          <!-- The monthly chart uses public CISA data, independently of Project 004. -->
+          <!-- The monthly chart uses public CISA catalog data. -->
           <article class="project-card" id="project-cisa-explorer" data-technologies="r cybersecurity" tabindex="-1">
             <div class="project-art" aria-hidden="true">
               <div class="terminal-bar"><i></i><i></i><i></i><span>cisa / catalog additions</span></div>

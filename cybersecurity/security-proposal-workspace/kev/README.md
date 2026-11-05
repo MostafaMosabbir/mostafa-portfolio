@@ -1,7 +1,6 @@
 # CISA catalog additions chart
 
-This is public, real-world CISA data. It is separate from the fictional
-Project 004 assessment. The chart counts entries currently in the CISA Known
+This is public, real-world CISA data. The chart counts entries currently in the CISA Known
 Exploited Vulnerabilities catalog by the month CISA added them. It is not a
 count of attacks, all vulnerabilities, or a compliance or risk score.
 Corrections or removals can change historical totals. The latest catalog
