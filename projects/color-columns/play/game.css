@@ -1,0 +1,19 @@
+:root { color-scheme: dark; --bg:#08110e; --ink:#e7f4eb; --green:#8de4b0; --muted:#b1c9ba; }
+* { box-sizing:border-box; }
+body { margin:0; background:var(--bg); color:var(--ink); font:16px/1.5 system-ui,sans-serif; }
+.game-shell { max-width:800px; margin:auto; padding:1rem; }
+.heading { display:flex; flex-wrap:wrap; gap:1rem; justify-content:space-between; align-items:center; }
+h1 { margin:0; font-size:1.7rem; } .eyebrow,.label { color:var(--green); font:.75rem/1.5 ui-monospace,monospace; letter-spacing:.09em; }
+.eyebrow { margin:0; } .intro,.instructions,.credit { color:var(--muted); font-size:.87rem; }
+.layout { display:grid; grid-template-columns:minmax(145px,250px) minmax(160px,1fr); gap:1.3rem; align-items:start; }
+/* The board remains sharp because the canvas keeps its native resolution. */
+#board { display:block; width:100%; max-width:250px; height:auto; background:#07110c; border:1px solid #537e63; border-radius:4px; }
+#board:focus-visible { outline:3px solid var(--green); outline-offset:4px; }
+#next { width:36px; height:108px; display:block; background:#07110c; border:1px solid #537e63; }
+.label { margin:.1rem 0; } .score { margin:.1rem 0 1rem; font:1.7rem ui-monospace,monospace; }
+button { background:#142a1e; color:var(--ink); border:1px solid #537e63; padding:.55rem .8rem; border-radius:4px; cursor:pointer; }
+button:hover { border-color:var(--green); } button:focus-visible { outline:3px solid var(--green); outline-offset:3px; }
+button:disabled { opacity:.5; cursor:not-allowed; }
+.controls { display:flex; gap:.4rem; flex-wrap:wrap; } .controls button { min-width:2.5rem; }
+a { color:var(--green); } #status { min-height:3rem; }
+@media(max-width:520px) { .layout { grid-template-columns:minmax(145px, 1fr) minmax(130px,.8fr); gap:.7rem; } .game-shell{padding:.7rem;} .instructions{font-size:.8rem;} }

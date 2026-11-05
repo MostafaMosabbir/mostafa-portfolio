@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Color Columns | Browser adaptation</title>
+  <link rel="stylesheet" href="game.css">
+  <script src="game.js" defer></script>
+</head>
+<body>
+  <main class="game-shell">
+    <div class="heading">
+      <div><p class="eyebrow">PROJECT 006 / RUST IN THE BROWSER</p><h1>Color Columns</h1></div>
+      <button type="button" id="exit">Exit game</button>
+    </div>
+    <p class="intro">A browser adaptation of the original Color Columns by Rade Drmić.</p>
+    <div class="layout">
+      <canvas id="board" width="360" height="720" tabindex="0" aria-label="Color Columns game board, 9 columns by 18 rows. Click or focus the board to use the keyboard."></canvas>
+      <aside>
+        <p class="label">SCORE</p><p id="score" class="score">0</p>
+        <p class="label">NEXT COLUMN</p><canvas id="next" width="48" height="144" aria-label="Next column of three colors"></canvas>
+        <p id="status" role="status" aria-live="polite">Loading Rust game…</p>
+        <button type="button" id="start" disabled>Start game</button>
+        <button type="button" id="pause" disabled>Pause</button>
+        <p class="instructions">Focus the board to play. Left / right arrows or A / D move. Up / down or W / S cycle colors. Space drops. P pauses.</p>
+        <div class="controls" aria-label="On-screen game controls">
+          <button type="button" data-command="1" aria-label="Move left">←</button>
+          <button type="button" data-command="2" aria-label="Move right">→</button>
+          <button type="button" data-command="3" aria-label="Cycle colors up">↑</button>
+          <button type="button" data-command="4" aria-label="Cycle colors down">↓</button>
+          <button type="button" data-command="5">Drop</button>
+        </div>
+        <p class="credit">Adapted from <a href="https://github.com/rdrmic/color-columns" target="_blank" rel="noopener noreferrer">Color Columns</a> under the <a href="https://github.com/rdrmic/color-columns/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">MIT license</a>.</p>
+      </aside>
+    </div>
+  </main>
+</body>
+</html>

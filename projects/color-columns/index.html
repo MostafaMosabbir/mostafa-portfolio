@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Color Columns, a Rust learning project and planned browser adaptation.">
+  <meta name="description" content="Color Columns, a Rust learning project with a browser adaptation.">
   <title>Color Columns | Mostafa Mosabbir</title>
   <link rel="icon" type="image/png" sizes="64x64" href="../../assets/robot/favicon.png?v=2">
   <link rel="apple-touch-icon" sizes="180x180" href="../../assets/robot/apple-touch-icon.png?v=2">
@@ -76,7 +76,7 @@
       <div>
         <p class="eyebrow">Case file / Project 006</p>
         <h1 id="project-title">Color Columns</h1>
-        <p class="intro">A falling block game I explored while learning Rust, with a personalized browser adaptation planned.</p>
+        <p class="intro">A falling block game I explored while learning Rust, now with a browser adaptation.</p>
         <ul class="tags" aria-label="Project topics"><li>Rust</li><li>Game development</li><li>Learning project</li></ul>
       </div>
       <aside class="record" aria-label="Project overview">
@@ -84,7 +84,7 @@
         <dl>
           <div><dt>Status</dt><dd>Learning project</dd></div>
           <div><dt>Original game</dt><dd>Rade Drmić</dd></div>
-          <div><dt>Browser adaptation</dt><dd>Planned</dd></div>
+          <div><dt>Browser adaptation</dt><dd>Playable prototype</dd></div>
         </dl>
       </aside>
     </section>
@@ -94,7 +94,7 @@
           <p class="eyebrow">The purpose</p>
           <h2 id="purpose-title">Why this project</h2>
           <p>I used Color Columns as a way to learn Rust. The original game was created by Rade Drmić and is shared under the MIT license.</p>
-          <p>The planned next step is to explore a darker noir design and a browser version for this portfolio.</p>
+          <p>The browser version brings the game into the portfolio with a darker noir look. More personal design and a hands-on reflection can follow.</p>
         </section>
         <section class="block" aria-labelledby="questions-title">
           <p class="eyebrow">The questions</p>
@@ -110,8 +110,8 @@
         <section class="block" aria-labelledby="approach-title">
           <p class="eyebrow">The process</p>
           <h2 id="approach-title">From desktop game to browser</h2>
-          <p>Planned work: review the original Rust and ggez code, explore browser compatibility, adapt the presentation, and test the result. The original source and license will remain credited.</p>
-          <p>The browser adaptation has not been built or tested, and the game is not playable on this website yet.</p>
+          <p>The original uses Rust and ggez for a desktop window. This browser prototype reimplements the game rules in Rust and compiles them to WebAssembly. JavaScript draws the board and handles browser input.</p>
+          <p>Matching and scoring follow the original game's rules, but this version uses a simplified interface. It does not save high scores or include all desktop animations and menus. The original creator and MIT license remain credited.</p>
         </section>
         <section class="block" aria-labelledby="reflection-title">
           <p class="eyebrow">Reflection</p>
@@ -123,11 +123,13 @@
         <section class="block explore" aria-labelledby="explore-title">
           <p class="eyebrow">Explore the project</p>
           <h2 id="explore-title">View the Rust source</h2>
-          <p>Explore the fork used for learning and the original game.</p>
+          <p>Play the browser adaptation, or explore its source and the original game.</p>
+          <a class="button" href="play/index.html">Play Color Columns ↗</a>
           <a class="button" href="https://github.com/MostafaMosabbir/color-columns">View the fork ↗</a>
+          <p><a href="https://github.com/MostafaMosabbir/mostafa-portfolio/blob/main/projects/color-columns/play/src/lib.rs">Browser Rust source ↗</a> · <a href="https://github.com/MostafaMosabbir/mostafa-portfolio/blob/main/projects/color-columns/play/README.md">Browser build notes ↗</a></p>
           <p><a href="https://github.com/rdrmic/color-columns">Original Color Columns by Rade Drmić ↗</a></p>
           <p><a href="https://github.com/rdrmic/color-columns/blob/main/LICENSE">Original MIT license ↗</a></p>
-          <p class="muted">Personal modifications and a playable browser build are planned, not complete.</p>
+          <p class="muted">The browser version is a prototype. Further visual refinements and personal reflections are still to come.</p>
         </section>
         <section class="block" id="articles" aria-labelledby="articles-title">
           <p class="eyebrow">Writing</p>

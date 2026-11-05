@@ -32,12 +32,12 @@ test('all five projects can be selected from either control and return to the an
  assert.ok(s.groups.every((g,i)=>g===original[i]));
  assert.equal(s.ids['featured-title'].textContent,'Python IT Ticket Analyzer');
 });
-test('Project 006 shows its details and article placeholder without claiming a playable version',()=>{
+test('Project 006 shows browser adaptation details and its article placeholder',()=>{
  const s=setup();
  s.buttons.find(b=>b.dataset.featureSelect==='columns').click();
  assert.equal(s.ids['featured-number'].textContent,'Project 006 / Featured project');
  assert.equal(s.ids['featured-title'].textContent,'Color Columns');
- assert.match(s.ids['featured-meta'].textContent,/Browser adaptation planned/);
+ assert.match(s.ids['featured-meta'].textContent,/WebAssembly.*Browser adaptation/);
  assert.equal(s.ids['tab-articles'].hidden,false);
  s.buttons.find(b=>b.dataset.featureSelect==='analyzer').click();
  assert.equal(s.ids['tab-articles'].hidden,true);

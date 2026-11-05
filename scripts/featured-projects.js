@@ -8,7 +8,7 @@
     analyzer: { number: "003", title: "Python IT Ticket Analyzer", badge: "Working prototype", meta: "Python · CSV · JavaScript demo" },
     security: { number: "004", title: "Security Proposal Workspace", badge: "Working prototype", meta: "Cybersecurity · Python · Selected NIST CSF 2.0 outcomes" },
     // Project numbers are identifiers, not a count; Project 005 is still planned.
-    columns: { number: "006", title: "Color Columns", badge: "Learning project", meta: "Rust · Game development · Browser adaptation planned" }
+    columns: { number: "006", title: "Color Columns", badge: "Learning project", meta: "Rust · WebAssembly · Browser adaptation" }
   };
   const feature = document.getElementById("featured");
   if (!feature) return;
