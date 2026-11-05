@@ -1,0 +1,27 @@
+name: Verify Algorithm Explorer
+on:
+  push:
+    branches: [algorithm-explorer-review]
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: projects/algorithm-explorer
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile the C++ program and checks
+        run: |
+          g++ -std=c++17 -Wall -Wextra -pedantic src/main.cpp src/algorithms.cpp -o /tmp/algorithm-explorer
+          g++ -std=c++17 -Wall -Wextra -pedantic tests/algorithm_tests.cpp src/algorithms.cpp -o /tmp/algorithm-tests
+      - name: Run C++ checks
+        run: /tmp/algorithm-tests
+      - name: Check the command-line program
+        run: |
+          printf '2\n7\n3\n0\n' | /tmp/algorithm-explorer > /tmp/algorithm-output.txt
+          grep -F 'First match at zero-based index 2.' /tmp/algorithm-output.txt
+          grep -F 'Sorted list:' /tmp/algorithm-output.txt
+      - name: Run browser concept checks
+        run: node --test preview/preview.test.cjs

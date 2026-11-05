@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Algorithm Explorer | Local Preview</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <main class="page">
+    <div class="eyebrow">PORTFOLIO / LOCAL PREVIEW</div>
+    <header class="intro">
+      <div><h1>Algorithm Explorer</h1><p>Adapted from my class projects.</p></div>
+      <span class="status">INTERACTIVE CONCEPT</span>
+    </header>
+    <p class="explanation">Follow the comparisons in a search or sort, one step at a time.</p>
+    <section class="workspace" aria-labelledby="explorer-title">
+      <div class="section-header"><div><p class="micro">EXPLORER</p><h2 id="explorer-title">Choose an algorithm</h2></div><span class="subtle">Fictional example data</span></div>
+      <div class="algorithm-tabs" role="group" aria-label="Algorithm">
+        <button type="button" id="choose-search" aria-pressed="true">Linear search</button>
+        <button type="button" id="choose-sort" aria-pressed="false">Selection sort</button>
+      </div>
+      <div class="form-grid">
+        <div class="field"><label for="values">Numbers</label><input id="values" type="text" value="4 2 7 32 55 21" spellcheck="false" autocomplete="off"><small>Up to 50 integers, separated by spaces. Leave blank for an empty list.</small></div>
+        <div class="field" id="target-field"><label for="target">Find</label><input id="target" type="text" value="32" inputmode="numeric" autocomplete="off"><small>Returns the first matching index.</small></div>
+      </div>
+      <div class="actions"><button type="button" class="primary" id="start">Start</button><button type="button" id="next" disabled>Next step</button><button type="button" id="reset">Reset</button></div>
+      <div class="feedback" id="feedback" role="status" aria-live="polite"></div>
+    </section>
+    <section class="workspace visualization" aria-labelledby="trace-title">
+      <div class="section-header"><div><p class="micro">STEP BY STEP</p><h2 id="trace-title">Working through the numbers</h2></div><div class="count"><span>COMPARISONS</span><strong id="comparison-count">0</strong></div></div>
+      <div class="legend"><span><i class="dot active-dot"></i> Current comparison</span><span><i class="dot min-dot"></i> Current minimum</span><span><i class="dot done-dot"></i> Sorted</span></div>
+      <div class="array-scroll"><div class="array" id="array" aria-label="Number list"></div></div>
+      <div class="trace-note" id="trace-note" aria-live="polite">Choose an algorithm and press Start to begin.</div>
+      <div class="results"><div><span>STEP</span><strong id="step-count">0</strong></div><div><span>RESULT</span><strong id="result">Not started</strong></div></div>
+    </section>
+    <p class="footer">This preview uses JavaScript in your browser. The C++ program is a separate local application and is not running here.</p>
+  </main>
+</body>
+</html>
