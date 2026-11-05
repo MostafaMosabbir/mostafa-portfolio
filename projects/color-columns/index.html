@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Color Columns, a Rust learning project and planned browser adaptation.">
+  <title>Color Columns | Mostafa Mosabbir</title>
+  <link rel="icon" type="image/png" sizes="64x64" href="../../assets/robot/favicon.png?v=2">
+  <link rel="apple-touch-icon" sizes="180x180" href="../../assets/robot/apple-touch-icon.png?v=2">
+  <style>
+    /* The colors and spacing continue the portfolio's quiet emerald style. */
+    :root { color-scheme: dark; }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; background: #091310; color: #e9f2eb; font: 16px/1.7 system-ui, sans-serif; }
+    a { color: #9be5ba; text-underline-offset: 4px; }
+    a:focus-visible { outline: 3px solid #9be5ba; outline-offset: 4px; }
+    .skip { position: absolute; left: 1rem; top: -8rem; padding: .7rem 1rem; background: #9be5ba; color: #0b1a11; z-index: 2; }
+    .skip:focus { top: 1rem; }
+    .wrap { width: min(1120px, calc(100% - 40px)); margin-inline: auto; }
+    .site-header { display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding-block: 1.5rem; border-bottom: 1px solid #2a4639; }
+    .brand { color: #f0f8f2; font-size: 1.1rem; font-weight: 600; text-decoration: none; }
+    .site-nav { display: flex; flex-wrap: wrap; gap: 1.25rem; }
+    .site-nav a { color: #c2d3c8; text-decoration: none; }
+    .site-nav a:hover { color: #9be5ba; }
+    .back { margin: 2rem 0 1.5rem; }
+    .hero { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(230px, 1fr); gap: 2rem; align-items: end; padding-bottom: 2rem; border-bottom: 1px solid #2a4639; }
+    .eyebrow { color: #8edeb0; font: .8rem/1.5 ui-monospace, monospace; letter-spacing: .1em; text-transform: uppercase; margin: 0 0 .6rem; }
+    h1 { font-size: clamp(2rem, 5vw, 3.5rem); line-height: 1.12; font-weight: 600; margin: 0 0 1rem; }
+    h2 { font-size: clamp(1.35rem, 3vw, 1.75rem); line-height: 1.25; margin: 0 0 .8rem; }
+    h3 { font-size: 1.05rem; margin: 0 0 .7rem; }
+    p { margin: 0 0 1rem; }
+    .intro { color: #c6d5cb; max-width: 62ch; font-size: 1.1rem; }
+    .tags { display: flex; flex-wrap: wrap; gap: .5rem; padding: 0; margin: 1rem 0 0; list-style: none; }
+    .tags li { color: #b9ddc5; border: 1px solid #355647; border-radius: 4px; font: .8rem/1.4 ui-monospace, monospace; padding: .35rem .5rem; }
+    .record, .explore { background: #10231b; border: 1px solid #2c4a3d; border-radius: 8px; padding: 1.25rem; }
+    .record dl { margin: 0; }
+    .record dl div { display: flex; justify-content: space-between; gap: .75rem; padding: .45rem 0; border-bottom: 1px solid #264136; }
+    .record dl div:last-child { border: 0; }
+    .record dt { color: #b5c8bd; }
+    .record dd { margin: 0; text-align: right; }
+    .body-grid { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(230px, 1fr); gap: 2.5rem; padding-top: 2rem; }
+    .block { margin-bottom: 2rem; }
+    .block + .block { border-top: 1px solid #2a4639; padding-top: 1.6rem; }
+    .block p, .explore p { color: #c2d2c7; }
+    .questions { padding-left: 1.5rem; }
+    .questions li { padding: .25rem 0 .25rem .35rem; }
+    .questions li::marker { color: #8edeb0; }
+    .button { display: inline-block; background: #9be5ba; color: #0b1a11; padding: .65rem 1rem; border-radius: 5px; font-weight: 600; text-decoration: none; margin: .3rem 0 1rem; }
+    /* This is a visible layout placeholder, not a published article. */
+    .article-placeholder { border: 1px solid #355647; border-radius: 8px; padding: 1rem; background: #10231b; }
+    .article-image-placeholder { display: grid; place-items: center; min-height: 130px; padding: 1rem; border: 1px dashed #6f9b82; color: #c2d3c8; text-align: center; margin-bottom: 1rem; }
+    .article-placeholder .placeholder-label { color: #9be5ba; font: .8rem/1.5 ui-monospace, monospace; letter-spacing: .04em; text-transform: uppercase; }
+    .article-placeholder .placeholder-copy { color: #c2d2c7; }
+    .muted { color: #b5c8bd; }
+    footer { border-top: 1px solid #2a4639; padding-block: 1.5rem; margin-top: 1rem; color: #b5c8bd; }
+    @media (max-width: 680px) { .site-header { align-items: flex-start; flex-direction: column; } .hero, .body-grid { grid-template-columns: 1fr; gap: 1.5rem; } }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  </style>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to case file</a>
+  <header class="site-header wrap">
+    <a class="brand" href="../../index.html#main">Mostafa Mosabbir</a>
+    <nav class="site-nav" aria-label="Main navigation">
+      <a href="../../index.html#about">Profile</a>
+      <a href="../../index.html#projects">Projects</a>
+      <a href="../../index.html#articles">Articles</a>
+      <a href="../../index.html#tools">Tools</a>
+      <a href="../../index.html#contact">Contact</a>
+    </nav>
+  </header>
+  <main id="main" class="wrap">
+    <p class="back"><a href="../../index.html#project-color-columns">← Back to projects</a></p>
+    <section class="hero" aria-labelledby="project-title">
+      <div>
+        <p class="eyebrow">Case file / Project 006</p>
+        <h1 id="project-title">Color Columns</h1>
+        <p class="intro">A falling block game I explored while learning Rust, with a personalized browser adaptation planned.</p>
+        <ul class="tags" aria-label="Project topics"><li>Rust</li><li>Game development</li><li>Learning project</li></ul>
+      </div>
+      <aside class="record" aria-label="Project overview">
+        <p class="eyebrow">Project overview</p>
+        <dl>
+          <div><dt>Status</dt><dd>Learning project</dd></div>
+          <div><dt>Original game</dt><dd>Rade Drmić</dd></div>
+          <div><dt>Browser adaptation</dt><dd>Planned</dd></div>
+        </dl>
+      </aside>
+    </section>
+    <div class="body-grid">
+      <div>
+        <section class="block" aria-labelledby="purpose-title">
+          <p class="eyebrow">The purpose</p>
+          <h2 id="purpose-title">Why this project</h2>
+          <p>I used Color Columns as a way to learn Rust. The original game was created by Rade Drmić and is shared under the MIT license.</p>
+          <p>The planned next step is to explore a darker noir design and a browser version for this portfolio.</p>
+        </section>
+        <section class="block" aria-labelledby="questions-title">
+          <p class="eyebrow">The questions</p>
+          <h2 id="questions-title">The Questions Behind the Work</h2>
+          <p>Draft questions for this project, open to revision as the work continues:</p>
+          <ol class="questions">
+            <li>How does the Rust game turn player input into movement and color changes?</li>
+            <li>How are matching blocks detected and cleared?</li>
+            <li>What changes are needed to make the game playable in a browser?</li>
+            <li>How can a noir visual style fit the game while keeping it clear to play?</li>
+          </ol>
+        </section>
+        <section class="block" aria-labelledby="approach-title">
+          <p class="eyebrow">The process</p>
+          <h2 id="approach-title">From desktop game to browser</h2>
+          <p>Planned work: review the original Rust and ggez code, explore browser compatibility, adapt the presentation, and test the result. The original source and license will remain credited.</p>
+          <p>The browser adaptation has not been built or tested, and the game is not playable on this website yet.</p>
+        </section>
+        <section class="block" aria-labelledby="reflection-title">
+          <p class="eyebrow">Reflection</p>
+          <h2 id="reflection-title">Returning to the questions</h2>
+          <p>Findings, lessons, and future improvements will be added after the hands-on work and testing.</p>
+        </section>
+      </div>
+      <aside aria-label="Project resources">
+        <section class="block explore" aria-labelledby="explore-title">
+          <p class="eyebrow">Explore the project</p>
+          <h2 id="explore-title">View the Rust source</h2>
+          <p>Explore the fork used for learning and the original game.</p>
+          <a class="button" href="https://github.com/MostafaMosabbir/color-columns">View the fork ↗</a>
+          <p><a href="https://github.com/rdrmic/color-columns">Original Color Columns by Rade Drmić ↗</a></p>
+          <p><a href="https://github.com/rdrmic/color-columns/blob/main/LICENSE">Original MIT license ↗</a></p>
+          <p class="muted">Personal modifications and a playable browser build are planned, not complete.</p>
+        </section>
+        <section class="block" id="articles" aria-labelledby="articles-title">
+          <p class="eyebrow">Writing</p>
+          <h2 id="articles-title">Articles</h2>
+          <!-- The author can replace these placeholders after hands-on practice. -->
+          <div class="article-placeholder" aria-label="Article layout placeholder">
+            <div class="article-image-placeholder">Image placeholder</div>
+            <p class="placeholder-label">Article title placeholder</p>
+            <p class="placeholder-copy">Article text placeholder</p>
+            <p>No article has been published here yet.</p>
+          </div>
+          <p><a href="../../index.html#articles">View Articles</a></p>
+        </section>
+      </aside>
+    </div>
+  </main>
+  <footer class="wrap"><p>Mostafa Mosabbir</p><a href="#main">Back to top ↑</a></footer>
+</body>
+</html>

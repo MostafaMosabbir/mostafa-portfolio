@@ -32,7 +32,7 @@
   <script src="scripts/geometry.js?v=perf-3" defer></script>
   <!-- Independent enhancements: navigation, project filtering, and sample analysis. -->
   <script src="scripts/explorer.js?v=sections-2" defer></script>
-  <script src="scripts/featured-projects.js?v=articles-1" defer></script>
+  <script src="scripts/featured-projects.js?v=color-columns-1" defer></script>
   <script src="scripts/security-sample-data.js?v=1" defer></script>
   <script src="scripts/security-workspace.js?v=1" defer></script>
   <!-- Only the workspace's height is received, never its assessment data. -->
@@ -177,7 +177,7 @@
             <button id="tab-overview" role="tab" aria-selected="true" aria-controls="panel-overview" type="button">Brief</button>
             <button id="tab-process" role="tab" aria-selected="false" aria-controls="panel-process" tabindex="-1" type="button">Method</button>
             <button id="tab-evidence" role="tab" aria-selected="false" aria-controls="panel-evidence" tabindex="-1" type="button">Findings</button>
-            <!-- This tab appears when Project 004 is featured. -->
+            <!-- These projects have article placeholders; no article is published yet. -->
             <button id="tab-articles" role="tab" aria-selected="false" aria-controls="panel-articles" tabindex="-1" type="button" hidden>Articles</button>
           </div>
         </div>
@@ -189,6 +189,7 @@
           <button type="button" data-feature-select="assistant" aria-pressed="false">002 · Ticket Assistant</button>
           <button type="button" data-feature-select="analyzer" aria-pressed="true">003 · Ticket Analyzer</button>
           <button type="button" data-feature-select="security" aria-pressed="false">004 · Security Workspace</button>
+          <button type="button" data-feature-select="columns" aria-pressed="false">006 · Color Columns</button>
         </div>
         <p id="featured-status" class="sr-only" role="status"></p>
         <p class="record-meta" id="featured-meta">Interface updated <time datetime="2026-10-28">28 Oct 2026</time> <span aria-hidden="true">/</span> Python · CSV · JavaScript demo</p>
@@ -205,7 +206,13 @@
                 <dl class="evidence-stats" aria-labelledby="brief-sample-label"><div><dt>Fictional tickets</dt><dd>38</dd></div><div><dt>Missing resolution notes</dt><dd>3</dd></div><div><dt>Repeated subject groups</dt><dd>4</dd></div></dl>
               </div>
             </div>
-          </div><div data-feature-project="portfolio" hidden><p>A home for my work, learning, and creative exploration.</p><p class="muted">HTML · CSS · JavaScript · Always Improving</p><a class="text-link" href="https://github.com/MostafaMosabbir/mostafa-portfolio">Explore the source ↗</a></div><div data-feature-project="assistant" hidden><p>Rule-based ticket classification and editable response drafts, with human review.</p><p class="muted">JavaScript · Workflow automation</p><p>Local prototype · Public demo coming later</p></div><div data-feature-project="security" hidden><div class="overview-grid"><div class="brief-summary"><p>Explore a fictional marketing-company assessment: control ownership, evidence reviews, and gaps mapped to selected NIST CSF 2.0 outcomes.</p><p class="muted">From Requirements to Safeguards · Python · Fictional data</p><a class="text-link" href="cybersecurity/security-proposal-workspace/reports/review.html">Explore the assessment ↗</a></div><div class="brief-evidence"><p class="brief-sample-label">Fictional marketing-company sample · 28 Oct 2026</p><dl class="evidence-stats"><div><dt>Selected requirements</dt><dd>15</dd></div><div><dt>Supported drafts</dt><dd>4</dd></div><div><dt>Need work</dt><dd>11</dd></div></dl></div></div></div></section>
+          </div><div data-feature-project="portfolio" hidden><p>A home for my work, learning, and creative exploration.</p><p class="muted">HTML · CSS · JavaScript · Always Improving</p><a class="text-link" href="https://github.com/MostafaMosabbir/mostafa-portfolio">Explore the source ↗</a></div><div data-feature-project="assistant" hidden><p>Rule-based ticket classification and editable response drafts, with human review.</p><p class="muted">JavaScript · Workflow automation</p><p>Local prototype · Public demo coming later</p></div><div data-feature-project="security" hidden><div class="overview-grid"><div class="brief-summary"><p>Explore a fictional marketing-company assessment: control ownership, evidence reviews, and gaps mapped to selected NIST CSF 2.0 outcomes.</p><p class="muted">From Requirements to Safeguards · Python · Fictional data</p><a class="text-link" href="cybersecurity/security-proposal-workspace/reports/review.html">Explore the assessment ↗</a></div><div class="brief-evidence"><p class="brief-sample-label">Fictional marketing-company sample · 28 Oct 2026</p><dl class="evidence-stats"><div><dt>Selected requirements</dt><dd>15</dd></div><div><dt>Supported drafts</dt><dd>4</dd></div><div><dt>Need work</dt><dd>11</dd></div></dl></div></div></div>
+            <div data-feature-project="columns" hidden>
+              <p>A falling block game used to learn Rust, with a personalized browser adaptation planned.</p>
+              <p class="muted">Original game by Rade Drmić · Browser version not yet available</p>
+              <a class="text-link" href="projects/color-columns/index.html">Open the case file ↗</a>
+            </div>
+          </section>
           <section id="panel-process" class="feature-panel" aria-labelledby="process-heading">
             <h3 id="process-heading">Method</h3><div data-feature-project="analyzer">
             <p class="muted">Browser demonstration · 6 fictional tickets · JavaScript, not the Python runtime</p>
@@ -236,12 +243,23 @@
             <p class="security-note muted">Fixed fictional sample. The browser displays recorded assessment results; it does not run Python or inspect evidence.</p>
             <a class="text-link" href="cybersecurity/security-proposal-workspace/reports/review.html">Open the full assessment ↗</a>
             <details><summary>How the assessment works</summary><ol class="feature-method"><li>Read the requirements, controls, and evidence records.</li><li>Validate IDs, mappings, dates, and allowed status values.</li><li>Check implementation status, ownership, coverage review, and evidence freshness.</li><li>Export the crosswalk, gaps, and review report for human review.</li></ol><p>Evidence references are not opened or independently verified. Counts are not a compliance score.</p></details>
-          </div></section>
+          </div>
+            <div data-feature-project="columns" hidden>
+              <p>Explore how the original Rust game handles its game loop, falling columns, input, and matching. A browser adaptation and noir styling are planned.</p>
+              <p class="muted">The original is a Windows desktop game. The browser version has not been built.</p>
+              <a class="text-link" href="projects/color-columns/index.html">See the project plan ↗</a>
+            </div>
+          </section>
           <section id="panel-evidence" class="feature-panel" aria-labelledby="evidence-heading">
             <h3 id="evidence-heading">Findings</h3><div data-feature-project="analyzer">
             <p>Fictional tickets: 38 · Missing resolution notes: 3 · Repeated subject groups: 4 · Automated tests passed: 9</p>
             <div class="evidence-links"><a href="projects/ticket-analyzer/index.html">Open the case file ↗</a><a href="projects/ticket-analyzer/sample-summary.csv" download>Download sample summary (CSV) ↓</a><a href="projects/ticket-analyzer/sample-findings.md">Read sample findings ↗</a></div>
-          </div><div data-feature-project="portfolio" hidden><p>The portfolio itself is the working example.</p><div class="evidence-links"><a href="https://github.com/MostafaMosabbir/mostafa-portfolio">Explore the source ↗</a><a href="https://github.com/MostafaMosabbir/mostafa-portfolio/tree/main/tests">View interaction tests ↗</a></div></div><div data-feature-project="assistant" hidden><p>Local prototype · Public demo coming later</p><p>No public results or downloadable source are available here yet.</p></div><div data-feature-project="security" hidden><p>15 selected requirements · 4 supported drafts · 11 need work · 21 automated tests passed</p><p class="muted">Fictional sample assessed on 28 Oct 2026. Selected mappings indicate relevance, not complete framework coverage.</p><div class="evidence-links"><a href="cybersecurity/security-proposal-workspace/reports/review.html">Explore the assessment ↗</a><a href="cybersecurity/security-proposal-workspace/reassessment-demo/index.html">Follow the MFA reassessment ↗</a><a href="cybersecurity/security-proposal-workspace/reports/crosswalk.csv" download>Download crosswalk · CSV</a><a href="cybersecurity/security-proposal-workspace/reports/gaps.csv" download>Download gaps · CSV</a><a href="https://github.com/MostafaMosabbir/mostafa-portfolio/tree/main/cybersecurity/security-proposal-workspace">Source and walkthrough ↗</a></div></div></section>
+          </div><div data-feature-project="portfolio" hidden><p>The portfolio itself is the working example.</p><div class="evidence-links"><a href="https://github.com/MostafaMosabbir/mostafa-portfolio">Explore the source ↗</a><a href="https://github.com/MostafaMosabbir/mostafa-portfolio/tree/main/tests">View interaction tests ↗</a></div></div><div data-feature-project="assistant" hidden><p>Local prototype · Public demo coming later</p><p>No public results or downloadable source are available here yet.</p></div><div data-feature-project="security" hidden><p>15 selected requirements · 4 supported drafts · 11 need work · 21 automated tests passed</p><p class="muted">Fictional sample assessed on 28 Oct 2026. Selected mappings indicate relevance, not complete framework coverage.</p><div class="evidence-links"><a href="cybersecurity/security-proposal-workspace/reports/review.html">Explore the assessment ↗</a><a href="cybersecurity/security-proposal-workspace/reassessment-demo/index.html">Follow the MFA reassessment ↗</a><a href="cybersecurity/security-proposal-workspace/reports/crosswalk.csv" download>Download crosswalk · CSV</a><a href="cybersecurity/security-proposal-workspace/reports/gaps.csv" download>Download gaps · CSV</a><a href="https://github.com/MostafaMosabbir/mostafa-portfolio/tree/main/cybersecurity/security-proposal-workspace">Source and walkthrough ↗</a></div></div>
+            <div data-feature-project="columns" hidden>
+              <p>The original Rust source and Mostafa's GitHub fork are available for review. Personal modifications, testing, and browser results will be documented as work is completed.</p>
+              <div class="evidence-links"><a href="https://github.com/MostafaMosabbir/color-columns">Explore the fork ↗</a><a href="https://github.com/rdrmic/color-columns">Original game ↗</a></div>
+            </div>
+          </section>
           <section id="panel-articles" class="feature-panel" aria-labelledby="articles-heading" hidden>
             <h3 id="articles-heading">Articles</h3>
             <div data-feature-project="security" hidden>
@@ -251,11 +269,19 @@
                 <div><p class="article-slot-label">PROJECT 004 / PLACEHOLDER</p><h4>ARTICLE TITLE PLACEHOLDER</h4><p>ARTICLE DESCRIPTION PLACEHOLDER</p><p class="article-slot-note">Placeholder text and image. No article has been published here yet.</p><a class="text-link" href="#articles">View Articles ↓</a></div>
               </div>
             </div>
+          
+            <div data-feature-project="columns" hidden>
+              <!-- The owner will write this reflection after hands-on work. -->
+              <div class="article-slot">
+                <div class="article-slot-image" role="img" aria-label="Image placeholder">IMAGE PLACEHOLDER</div>
+                <div><p class="article-slot-label">PROJECT 006 / PLACEHOLDER</p><h4>ARTICLE TITLE PLACEHOLDER</h4><p>ARTICLE DESCRIPTION PLACEHOLDER</p><p class="article-slot-note">Placeholder text and image. No article has been published here yet.</p><a class="text-link" href="projects/color-columns/index.html#articles">View the case file ↗</a></div>
+              </div>
+            </div>
           </section>
         </div>
         <details class="technical-details"><summary>View technical details</summary>
           <p data-feature-project="analyzer">The full tool runs locally in Python. This browser demonstration analyzes a separate six-ticket sample using JavaScript. It checks required fields, groups repeated subject wording, and flags resolved or closed tickets without notes. Repeated wording is a review candidate, not proof of the same root cause.</p>
-        <p data-feature-project="portfolio" hidden>Built with HTML, CSS, and JavaScript. Published with GitHub Pages. The visual effects and project interactions run in the browser.</p><p data-feature-project="assistant" hidden>A local JavaScript prototype using fictional tickets and rule-based matching. Draft responses require human review.</p><p data-feature-project="security" hidden>The assessment engine runs locally in Python using the standard library. The published report is a fixed fictional example, not a live assessment service or a compliance determination.</p></details>
+        <p data-feature-project="portfolio" hidden>Built with HTML, CSS, and JavaScript. Published with GitHub Pages. The visual effects and project interactions run in the browser.</p><p data-feature-project="assistant" hidden>A local JavaScript prototype using fictional tickets and rule-based matching. Draft responses require human review.</p><p data-feature-project="security" hidden>The assessment engine runs locally in Python using the standard library. The published report is a fixed fictional example, not a live assessment service or a compliance determination.</p><p data-feature-project="columns" hidden>The original game uses Rust and ggez. Running it in a browser would require a browser-compatible adaptation; no playable web build has been produced yet.</p></details>
       </section>
 
       <section
@@ -277,13 +303,14 @@
             <button type="button" data-filter="javascript" aria-pressed="false">JavaScript</button>
             <button type="button" data-filter="web" aria-pressed="false">Web</button>
             <button type="button" data-filter="cybersecurity" aria-pressed="false">Cybersecurity</button>
+            <button type="button" data-filter="rust" aria-pressed="false">Rust</button>
           </div>
-          <p class="small-label" id="filter-status" role="status">4 projects</p>
+          <p class="small-label" id="filter-status" role="status">5 projects</p>
         </div>
         <!-- Real projects only. No demo link until the ticket app is published. -->
         <div class="case-navigation" id="case-navigation" hidden>
           <button type="button" id="case-previous" aria-label="Previous case file" aria-controls="case-carousel">←</button>
-          <p id="case-position" role="status" aria-live="polite" aria-atomic="true">001 / 004</p>
+          <p id="case-position" role="status" aria-live="polite" aria-atomic="true">001 / 005</p>
           <button type="button" id="case-next" aria-label="Next case file" aria-controls="case-carousel">→</button>
         </div>
         <div class="project-grid" id="case-carousel" role="region" aria-label="Case files">
@@ -358,6 +385,25 @@ Fictional marketing-company sample</pre>
               <p class="project-availability">Fictional data · Supports review, not compliance certification.</p>
             </div>
             <button class="feature-select" type="button" data-feature-select="security" aria-pressed="false" hidden>Highlight project</button>
+          </article>
+          <!-- This is a learning project based on the original MIT-licensed game. -->
+          <article class="project-card" id="project-color-columns" data-technologies="rust" tabindex="-1">
+            <div class="project-art" aria-hidden="true">
+              <div class="terminal-bar"><i></i><i></i><i></i><span>color columns / game loop</span></div>
+              <pre>Move falling columns
+Arrange the colors
+Match and clear blocks
+Browser adaptation: planned</pre>
+            </div>
+            <div class="project-copy">
+              <p class="eyebrow">Project 006 <span class="badge">Learning project</span></p>
+              <h3>Color Columns</h3>
+              <p>A falling block game I explored to learn Rust. A personalized browser adaptation is planned.</p>
+              <ul class="tags" aria-label="Color Columns technologies"><li>Rust</li><li>Game development</li><li>Learning project</li></ul>
+              <a class="text-link" href="projects/color-columns/index.html">Open the case file ↗</a>
+              <p class="project-availability">Original game by Rade Drmić · Browser version not yet available</p>
+            </div>
+            <button class="feature-select" type="button" data-feature-select="columns" aria-pressed="false" hidden>Highlight project</button>
           </article>
         </div>
       </section>

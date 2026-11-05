@@ -5,11 +5,11 @@ const fs=require('node:fs');
 const path=require('node:path');
 const source=fs.readFileSync(path.join(__dirname,'../scripts/featured-projects.js'),'utf8');
 function setup(reduced=false){
- const keys=['portfolio','assistant','analyzer','security'];
+ const keys=['portfolio','assistant','analyzer','security','columns'];
  const groups=keys.flatMap(key=>Array.from({length:4},()=>({dataset:{featureProject:key},hidden:true})));
  const buttons=keys.flatMap(key=>[false,true].map(card=>({dataset:{featureSelect:key},hidden:true,attrs:{},classList:{contains:()=>card},setAttribute(k,v){this.attrs[k]=v},addEventListener(k,fn){this.click=fn}})));
  const ids={};
- for(const id of ['featured','featured-title','featured-number','featured-badge','featured-meta','feature-tabs','tab-overview','featured-status','featured-picker']) ids[id]={dataset:{},attrs:{},setAttribute(k,v){this.attrs[k]=v},focus(){this.focused=true},click(){this.clicked=true},scrollIntoView(o){this.scrolled=o}};
+ for(const id of ['featured','featured-title','featured-number','featured-badge','featured-meta','feature-tabs','tab-overview','tab-articles','featured-status','featured-picker']) ids[id]={dataset:{},attrs:{},setAttribute(k,v){this.attrs[k]=v},focus(){this.focused=true},click(){this.clicked=true},scrollIntoView(o){this.scrolled=o}};
  ids.featured.querySelectorAll=()=>groups;
  vm.runInNewContext(source,{document:{getElementById:id=>ids[id],querySelectorAll:()=>buttons},window:{matchMedia:()=>({matches:reduced})}});
  return {groups,buttons,ids};
@@ -20,7 +20,7 @@ test('starts on Project 003 without moving focus or changing the default tab',()
  assert.equal(s.ids['tab-overview'].clicked,undefined);
  assert.equal(s.ids['featured-title'].focused,undefined);
 });
-test('all four projects can be selected from either control and return to the analyzer',()=>{
+test('all five projects can be selected from either control and return to the analyzer',()=>{
  const s=setup();const original=s.groups.slice();
  for(const b of s.buttons){b.click();
   assert.equal(s.ids.featured.dataset.project,b.dataset.featureSelect);
@@ -31,6 +31,16 @@ test('all four projects can be selected from either control and return to the an
  s.buttons.find(b=>b.dataset.featureSelect==='analyzer').click();
  assert.ok(s.groups.every((g,i)=>g===original[i]));
  assert.equal(s.ids['featured-title'].textContent,'Python IT Ticket Analyzer');
+});
+test('Project 006 shows its details and article placeholder without claiming a playable version',()=>{
+ const s=setup();
+ s.buttons.find(b=>b.dataset.featureSelect==='columns').click();
+ assert.equal(s.ids['featured-number'].textContent,'Project 006 / Featured project');
+ assert.equal(s.ids['featured-title'].textContent,'Color Columns');
+ assert.match(s.ids['featured-meta'].textContent,/Browser adaptation planned/);
+ assert.equal(s.ids['tab-articles'].hidden,false);
+ s.buttons.find(b=>b.dataset.featureSelect==='analyzer').click();
+ assert.equal(s.ids['tab-articles'].hidden,true);
 });
 test('Project 004 has its own metadata, focus announcement and reduced-motion scroll',()=>{
  const s=setup(true);s.buttons.find(b=>b.dataset.featureSelect==='security').click();

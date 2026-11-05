@@ -6,7 +6,9 @@
     portfolio: { number: "001", title: "Personal portfolio", badge: "Always Improving", meta: "HTML · CSS · JavaScript" },
     assistant: { number: "002", title: "IT Ticket Assistant", badge: "Working prototype", meta: "JavaScript · Rule-based matching · Local prototype" },
     analyzer: { number: "003", title: "Python IT Ticket Analyzer", badge: "Working prototype", meta: "Python · CSV · JavaScript demo" },
-    security: { number: "004", title: "Security Proposal Workspace", badge: "Working prototype", meta: "Cybersecurity · Python · Selected NIST CSF 2.0 outcomes" }
+    security: { number: "004", title: "Security Proposal Workspace", badge: "Working prototype", meta: "Cybersecurity · Python · Selected NIST CSF 2.0 outcomes" },
+    // Project numbers are identifiers, not a count; Project 005 is still planned.
+    columns: { number: "006", title: "Color Columns", badge: "Learning project", meta: "Rust · Game development · Browser adaptation planned" }
   };
   const feature = document.getElementById("featured");
   if (!feature) return;
@@ -25,9 +27,9 @@
       if (button.classList.contains("feature-select")) button.textContent = selected ? "Featured above" : "Highlight project";
     });
     feature.dataset.project = key;
-    // Articles are currently prepared only for Project 004. Project switches
-    // return to Brief below, so a hidden tab never remains selected.
-    document.getElementById("tab-articles").hidden = key !== "security";
+    // These projects have clearly labelled article placeholders. Project
+    // switches return to Brief, so a hidden tab never remains selected.
+    document.getElementById("tab-articles").hidden = !["security", "columns"].includes(key);
     title.textContent = project.title;
     document.getElementById("featured-number").textContent = `Project ${project.number} / Featured project`;
     document.getElementById("featured-badge").textContent = project.badge;
