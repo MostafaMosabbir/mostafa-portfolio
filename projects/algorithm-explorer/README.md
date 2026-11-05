@@ -47,5 +47,5 @@ alone does not necessarily provide a compiler.
 
 The original coursework is kept separately. The C++ tool and browser concept
 are also available in a public GitHub review branch, but they have not been
-added to the live portfolio website. The automated C++ tests ran on Linux;
-the local Windows build is still being resolved.
+added to the live portfolio website. The automated C++ tests passed on hosted
+Linux and Windows runners; the build on this PC is still being resolved.
