@@ -35,6 +35,26 @@
 .ark-motion-status { margin: 8px 0 0; color: #e8ccc7; font-size: .8rem; }
 @media (prefers-reduced-motion: reduce) { .ark-feature-art, .ark-feature-info { transition: none; } }
 @media (max-width: 600px) {
-  .ark-feature-art { aspect-ratio: 4 / 3; border-radius: 9px; }
-  .ark-introduction { letter-spacing: .02em; }
+  /* The phone view stacks the collection like an editorial feature. */
+  .ark-index { margin-top: 72px; text-align: left; }
+  .ark-index-heading { justify-content: flex-start; }
+  .ark-index-heading::before, .ark-index-heading::after { display: none; }
+  .ark-index-heading h2 { font-size: clamp(3rem, 12vw, 4rem); }
+  .ark-introduction {
+    margin: 16px 0 28px;
+    max-width: 34ch;
+    font-family: inherit;
+    font-style: normal;
+    letter-spacing: 0;
+  }
+  /* Official images remain entirely visible; the frame does not crop them. */
+  .ark-feature-art { aspect-ratio: 1 / 1; border-radius: 12px; }
+  .ark-feature-info { align-items: flex-start; padding: 22px 0 0; text-align: left; }
+  .ark-feature-info #ark-feature-category { order: 0; margin-bottom: 12px; }
+  .ark-feature-info h3 { order: 1; font-style: normal; margin-bottom: 12px; }
+  .ark-feature-info #ark-feature-credit { order: 2; }
+  .ark-feature-info a { order: 3; min-height: 44px; display: inline-flex; align-items: center; }
+  .ark-reel-controls { gap: 12px; margin-top: 12px; }
+  .ark-reel-progress { width: 100%; margin-top: 22px; }
+  .ark-reel-progress p { text-align: left; }
 }

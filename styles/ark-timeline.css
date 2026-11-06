@@ -17,10 +17,25 @@
 .ark-timeline-item[aria-pressed="true"]::before { background: #ed6a67; box-shadow: 0 0 0 4px #c73c3c33; }
 .ark-timeline-item[aria-pressed="true"] .ark-timeline-year { color: #ffb1a8; }
 .ark-timeline button:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
-@media (max-width: 600px) { .ark-timeline-navigation { gap: 3px; } }
-/* A vertical track keeps long titles readable on a narrow phone. */
-@media (max-width: 420px) {
-  .ark-timeline-items { grid-template-columns: 1fr; gap: 0; background: linear-gradient(to right, transparent 8px, #b2575b 8px, #b2575b 9px, transparent 9px); }
-  .ark-timeline-item { min-height: 66px; align-items: flex-start; gap: 3px; text-align: left; padding: 6px 8px 8px 26px; }
-  .ark-timeline-item::before { top: 14px; left: 2px; }
+@media (max-width: 600px) {
+  /* The dates remain real buttons, including when two favorites share a year. */
+  .ark-timeline {
+    margin-top: 48px;
+    padding: 20px 16px;
+    border: 1px solid #a9474e88;
+    border-radius: 12px;
+    background: #1c0b11;
+    text-align: left;
+  }
+  .ark-timeline h3 { justify-content: flex-start; color: #e8b8ae; font: 600 .75rem/1.4 ui-monospace, monospace; text-transform: uppercase; letter-spacing: .08em; }
+  .ark-timeline h3::before, .ark-timeline h3::after { display: none; }
+  .ark-timeline-current { margin: 16px 0 18px; color: #fff9f5; font: 400 1rem/1.5 Georgia, serif; }
+  /* Put navigation beneath the rail so all three dates stay legible on a phone. */
+  .ark-timeline-navigation { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .ark-timeline-items { grid-row: 1; grid-column: 1 / -1; width: 100%; }
+  .ark-timeline-navigation > button { grid-row: 2; justify-self: start; }
+  .ark-timeline-navigation > button:last-child { justify-self: end; }
+  .ark-timeline-item { padding-inline: 2px; }
+  .ark-timeline-item .ark-timeline-year { font-size: 1.05rem; }
+  .ark-timeline-item .ark-timeline-name { font-size: .8rem; }
 }
