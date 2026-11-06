@@ -1,0 +1,23 @@
+/* The dated timeline complements the shuffled reel without adding moving effects. */
+.ark-timeline { margin: clamp(48px, 7vw, 90px) auto 0; max-width: 980px; text-align: center; }
+.ark-timeline h3 { color: #fff9f5; font: 400 clamp(1.6rem, 3vw, 2.3rem)/1.2 Georgia, serif; margin: 0; }
+.ark-timeline-current { min-height: 1.5em; margin: 12px 0 20px; color: #e8ccc7; font-size: .85rem; }
+.ark-timeline-navigation { display: flex; align-items: center; gap: 12px; }
+.ark-timeline-navigation > button { min-width: 44px; min-height: 44px; border: 1px solid #b2575b; border-radius: 50%; color: #ffe9e4; background: transparent; cursor: pointer; }
+.ark-timeline-navigation > button:disabled { opacity: .35; cursor: default; }
+.ark-timeline-items { flex: 1; min-width: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; border-top: 1px solid #b2575b; }
+.ark-timeline-item { display: flex; flex-direction: column; align-items: center; gap: 6px; min-width: 0; min-height: 88px; padding: 12px 4px; color: #e8ccc7; background: transparent; border: 0; cursor: pointer; font: inherit; overflow-wrap: anywhere; }
+.ark-timeline-item .ark-timeline-year { color: #fff9f5; font: 400 1.15rem/1 Georgia, serif; }
+.ark-timeline-item .ark-timeline-name { font-size: .75rem; line-height: 1.3; }
+.ark-timeline-item[aria-pressed="true"] { color: #fff; background: #79212955; }
+.ark-timeline-item[aria-pressed="true"] .ark-timeline-year { color: #ff9e95; }
+.ark-timeline button:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+@media (max-width: 600px) {
+  .ark-timeline-navigation { gap: 3px; }
+  .ark-timeline-item .ark-timeline-name { font-size: .75rem; }
+}
+/* On narrow phones, use a vertical track so long titles remain readable. */
+@media (max-width: 420px) {
+  .ark-timeline-items { grid-template-columns: 1fr; border-top: 0; border-left: 1px solid #b2575b; }
+  .ark-timeline-item { min-height: 56px; align-items: flex-start; text-align: left; padding: 8px 12px; }
+}

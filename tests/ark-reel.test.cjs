@@ -4,7 +4,7 @@ const fs = require('node:fs');
 const vm = require('node:vm');
 const path = require('node:path');
 
-function setup({reduced = false, observeIntersection = false, seed = 42} = {}) {
+function setup({reduced = false, observeIntersection = false, seed = 42, timelineEnabled = false} = {}) {
   const ids = ['creative-view', 'ark-feature-title', 'ark-feature-category', 'ark-feature-image', 'ark-feature-placeholder', 'ark-feature-credit', 'ark-feature-source', 'ark-previous', 'ark-next', 'ark-progress-bar', 'ark-position', 'ark-reel', 'ark-feature-info', 'ark-play-toggle', 'ark-motion-status'];
   const nodes = Object.fromEntries(ids.map(id => [id, { hidden: false, textContent: '', attrs: {}, style: {}, handlers: {}, classList: {add(){}, remove(){}}, addEventListener(k, f) { this.handlers[k] = f; }, setAttribute(k,v) { this.attrs[k] = String(v); }, removeAttribute(k) { delete this.attrs[k]; }, getAttribute(k) { return this.attrs[k] || null; }, hasAttribute(k) { return Object.hasOwn(this.attrs, k); }, set src(v) { this.attrs.src = v; }, set href(v) { this.attrs.href = v; } }]));
   nodes['creative-view'].hidden = true;
@@ -25,10 +25,12 @@ function setup({reduced = false, observeIntersection = false, seed = 42} = {}) {
   let state = seed >>> 0;
   const math = Object.create(Math);
   math.random = () => { state = (Math.imul(1664525, state) + 1013904223) >>> 0; return state / 0x100000000; };
-  const context = { document, MutationObserver, Math: math, setTimeout:setTimeoutFake, clearTimeout:clearTimeoutFake, window: { ARK_CATALOG: catalog, ARK_ART_SOURCES: art, matchMedia: () => motion } };
+  let selectFromTimeline, timelineReel, timelineItem;
+  const timeline = { init(reel, select) { timelineReel = reel; selectFromTimeline = select; return { show(item) { timelineItem = item; } }; } };
+  const context = { document, MutationObserver, Math: math, setTimeout:setTimeoutFake, clearTimeout:clearTimeoutFake, window: { ARK_CATALOG: catalog, ARK_ART_SOURCES: art, matchMedia: () => motion, ARK_TIMELINE: timelineEnabled ? timeline : undefined } };
   if (observeIntersection) context.IntersectionObserver = IntersectionObserver;
   vm.runInNewContext(script, context);
-  return {nodes, document, motion, tick, intersect(visible) { onIntersection([{target:nodes['ark-reel'],isIntersecting:visible}]); }, open() { nodes['creative-view'].hidden = false; observer(); }, next() { nodes['ark-next'].handlers.click(); }, prev() { nodes['ark-previous'].handlers.click(); }, current() { return nodes['ark-feature-title'].textContent; }, category() { const c = nodes['ark-feature-category'].textContent; return c === 'Game series' ? 'Games' : c; }};
+  return {nodes, document, motion, tick, intersect(visible) { onIntersection([{target:nodes['ark-reel'],isIntersecting:visible}]); }, open() { nodes['creative-view'].hidden = false; observer(); }, next() { nodes['ark-next'].handlers.click(); }, prev() { nodes['ark-previous'].handlers.click(); }, current() { return nodes['ark-feature-title'].textContent; }, category() { const c = nodes['ark-feature-category'].textContent; return c === 'Game series' ? 'Games' : c; }, timelineSelect(index) { selectFromTimeline(index); }, timelineEntry(index) { return timelineReel[index]; }, timelineCurrent() { return timelineItem; }};
 }
 
 function sequence(p) { const out = []; for (let i = 0; i < 10; i++) { out.push([p.current(), p.category()]); p.next(); } return out; }
@@ -61,6 +63,15 @@ test('a source-only entry shows a placeholder and links to the official page', (
   assert.equal(p.nodes['ark-feature-placeholder'].textContent, 'Artwork is not available for this title yet.');
   assert.equal(p.nodes['ark-feature-source'].getAttribute('href'), 'https://example.com/game-two');
   assert.equal(p.nodes['ark-feature-source'].hidden, false);
+});
+test('timeline selections pause the reel and update its featured favorite', () => {
+  const p = setup({timelineEnabled:true}); p.open();
+  const entry = p.timelineEntry(3);
+  p.timelineSelect(3);
+  assert.equal(p.timelineCurrent(), entry);
+  assert.equal(p.current(), entry.title === 'Halo 2 / Reach' ? 'Halo' : entry.title);
+  assert.equal(p.nodes['ark-play-toggle'].textContent, 'Resume reel');
+  const first = p.current(); p.tick(20000); assert.equal(p.current(), first);
 });
 test('the reel fades forward after eight seconds and manual navigation pauses it', () => {
   const p = setup(); p.open(); const first = p.current(); p.tick(8000); assert.equal(p.current(), first);

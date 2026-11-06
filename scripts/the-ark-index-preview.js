@@ -64,6 +64,7 @@
   }
   if (!reel.length) return;
   let selected = 0;
+  let timeline = null;
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
   let paused = false;
   let advanceTimer = null;
@@ -113,6 +114,7 @@
 
   function showSelection() {
     const item = reel[selected];
+    if (timeline) timeline.show(item);
     const artwork = art[item.category + "::" + item.title];
     title.textContent = item.title === "Halo 2 / Reach" ? "Halo" : item.title;
     category.textContent = item.title === "Halo 2 / Reach" ? "Game series" : item.category;
@@ -185,6 +187,17 @@
     stopTimers();
     if (!creative.hidden) { showSelection(); scheduleAdvance(); }
   }).observe(creative, { attributes: true, attributeFilter: ["hidden"] });
+  // A timeline selection pauses the reel, just like the previous/next controls.
+  if (window.ARK_TIMELINE) {
+    timeline = window.ARK_TIMELINE.init(reel, index => {
+      paused = true;
+      stopTimers();
+      selected = index;
+      featureInfo.setAttribute("aria-live", "polite");
+      showSelection();
+      updateMotionControl();
+    });
+  }
   updateMotionControl();
   showSelection();
 })();
