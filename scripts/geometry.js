@@ -275,9 +275,15 @@
   window.addEventListener('resize',resize);
   // Coalesce rapid scroll events into one measurement and paint per frame.
   window.addEventListener('scroll',()=>{
+    // Fog is fixed to the viewport and is already painted by its own loop.
+    // Scrolling it does not require a second canvas frame or layout reading.
+    if (document.body.dataset.side === 'creative') return;
     if (scrollFrame!==null) return;
     scrollFrame=requestAnimationFrame(()=>{
-      scrollFrame=null;measure();settleOffscreen();
+      scrollFrame=null;
+      // A Workbench scroll can still be queued when the visitor switches sides.
+      if (document.body.dataset.side === 'creative') return;
+      measure();settleOffscreen();
       // A running animation repaints visible shapes. Clear once when artwork
       // leaves view; avoid repeatedly clearing an already empty full canvas.
       // Paused shapes still move with scrolling, so repaint while visible.
