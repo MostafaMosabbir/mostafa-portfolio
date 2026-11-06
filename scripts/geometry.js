@@ -21,6 +21,71 @@
   const REACH = 210; // Cursor influence extends beyond the small visible glow.
   const motion = Array.from({length: 9}, () => ({x: 0, y: 0}));
 
+  // The same canvas renders the alternate scene, so the site never runs two
+  // full-screen background animations at once. Gradient sprites are cached.
+  function fogSprite(red, green, blue) {
+    const tile = document.createElement('canvas');
+    tile.width = tile.height = 256;
+    const c = tile.getContext('2d');
+    const glow = c.createRadialGradient(128, 128, 1, 128, 128, 128);
+    glow.addColorStop(0, `rgba(${red},${green},${blue},.48)`);
+    glow.addColorStop(.32, `rgba(${red},${green},${blue},.19)`);
+    glow.addColorStop(1, `rgba(${red},${green},${blue},0)`);
+    c.fillStyle = glow;
+    c.fillRect(0, 0, 256, 256);
+    return tile;
+  }
+  const fogSprites = [fogSprite(133, 13, 33), fogSprite(93, 12, 39), fogSprite(156, 29, 46)];
+  const fogClouds = [
+    {x:.14,y:.28,s:.54,sprite:0,phase:.2}, {x:.35,y:.18,s:.39,sprite:1,phase:2.4},
+    {x:.73,y:.24,s:.60,sprite:0,phase:3.2}, {x:.92,y:.55,s:.45,sprite:1,phase:4.1},
+    {x:.35,y:.70,s:.62,sprite:1,phase:5.3}, {x:.70,y:.87,s:.50,sprite:2,phase:1.2}
+  ].map(cloud => ({...cloud, dx:0, dy:0}));
+  const embers = Array.from({length:28}, (_, i) => ({
+    x:((i * 83 + 37) % 997) / 997, y:((i * 127 + 67) % 991) / 991,
+    speed:4 + (i % 5) * 1.5, radius:i % 7 === 0 ? 1.5 : .8, phase:i * .83
+  }));
+  let fogTime = 0;
+  function drawFog(dt) {
+    ctx.globalCompositeOperation = 'screen';
+    for (const cloud of fogClouds) {
+      const baseX = cloud.x * width + Math.sin(fogTime*.09 + cloud.phase)*30;
+      const baseY = cloud.y * height + Math.cos(fogTime*.07 + cloud.phase)*24;
+      let tx=0, ty=0;
+      if (mouse && mouseAge < 1.8 && !paused() && pointer.matches) {
+        const dx=baseX-mouse.x, dy=baseY-mouse.y, distance=Math.hypot(dx,dy);
+        const reach=Math.min(280,Math.max(170,width*.28));
+        const force=Math.max(0,1-distance/reach)*75*(1-mouseAge/1.8);
+        tx=(dx/(distance||1))*force; ty=(dy/(distance||1))*force;
+      }
+      const ease=1-Math.exp(-dt*2.6);
+      cloud.dx+=(tx-cloud.dx)*ease; cloud.dy+=(ty-cloud.dy)*ease;
+      const size=Math.max(width,height)*cloud.s;
+      ctx.globalAlpha=.60;
+      ctx.drawImage(fogSprites[cloud.sprite],baseX+cloud.dx-size/2,baseY+cloud.dy-size/2,size,size);
+    }
+    ctx.globalAlpha=1;
+    for (const ember of embers) {
+      let x=ember.x*width+Math.sin(fogTime*.2+ember.phase)*9;
+      let y=((ember.y*height-fogTime*ember.speed)%(height+30)+height+30)%(height+30)-15;
+      if (mouse && mouseAge < 1.8 && !paused() && pointer.matches) {
+        const dx=x-mouse.x, dy=y-mouse.y, distance=Math.hypot(dx,dy);
+        const force=Math.max(0,1-distance/140)*18*(1-mouseAge/1.8);
+        x+=(dx/(distance||1))*force; y+=(dy/(distance||1))*force;
+      }
+      const alpha=.16+.25*(1+Math.sin(fogTime*.7+ember.phase))/2;
+      ctx.fillStyle=`rgba(247,110,100,${alpha})`;
+      ctx.beginPath();ctx.arc(x,y,ember.radius,0,Math.PI*2);ctx.fill();
+    }
+    if (mouse && mouseAge < 1.8 && !paused() && pointer.matches) {
+      const fade=1-mouseAge/1.8;
+      const glow=ctx.createRadialGradient(mouse.x,mouse.y,0,mouse.x,mouse.y,52);
+      glow.addColorStop(0,`rgba(245,57,75,${.15*fade})`);glow.addColorStop(1,'rgba(245,57,75,0)');
+      ctx.fillStyle=glow;ctx.fillRect(mouse.x-52,mouse.y-52,104,104);
+    }
+    ctx.globalCompositeOperation = 'source-over';
+  }
+
   // Cache layout on scroll/resize rather than measuring it every animation frame.
   function measure() {
     scrollTop = window.scrollY || 0;
@@ -95,7 +160,7 @@
   }
   function needsFrame() {
     return !paused() && !document.hidden &&
-      (hasVisibleGeometry() || (mouse && pointer.matches && mouseAge < 1.8));
+      (document.body.dataset.side === 'creative' || hasVisibleGeometry() || (mouse && pointer.matches && mouseAge < 1.8));
   }
   // Once shapes are offscreen and no glow is active, discard any invisible
   // cursor displacement so a sleeping shape cannot return in a nudged state.
@@ -113,6 +178,11 @@
   }
   function draw(dt = 0) {
     ctx.clearRect(0,0,width,height);
+    if (document.body.dataset.side === 'creative') {
+      canvasHasContent = true;
+      drawFog(dt);
+      return;
+    }
     canvasHasContent = hasVisibleGeometry() ||
       Boolean(mouse && mouseAge <= 1.8 && !paused() && pointer.matches);
     const red = document.body.dataset.side === 'creative';
@@ -173,7 +243,7 @@
     if (!needsFrame()) { settleOffscreen();last=0; return; }
     if (!last) last=time;
     const elapsed=time-last;
-    if (elapsed>=33) { const dt=Math.min(elapsed/1000,.1);phase+=dt*SPEED;mouseAge+=dt;draw(dt);last=time; }
+    if (elapsed>=33) { const dt=Math.min(elapsed/1000,.1);phase+=dt*SPEED;fogTime+=dt;mouseAge+=dt;draw(dt);last=time; }
     if (needsFrame()) frameId=requestAnimationFrame(frame);
     else { settleOffscreen();last=0; }
   }

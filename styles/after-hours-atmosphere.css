@@ -1,73 +1,8 @@
-/* The darker creative palette lets the red haze and embers stand out. */
+/* This still gradient remains visible when background motion is paused. */
 body[data-side="creative"] {
-  --paper: #16070b;
-  --soft: #260a10;
+  --paper: #100407;
+  --soft: #210810;
   --line: #a34d5277;
-  background: radial-gradient(ellipse at 76% 12%, #411019 0, transparent 58%),
-              linear-gradient(140deg, #15070b, #25090f);
-}
-
-/* After Hours atmosphere: the layer is decorative and sits behind the content. */
-.creative-view {
-  position: relative;
-  isolation: isolate;
-}
-
-.after-hours-atmosphere {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  overflow: hidden;
-  pointer-events: none;
-}
-
-/* Moving a soft gradient with transform is lighter than animating a blur. */
-.after-hours-haze {
-  position: absolute;
-  width: min(75vw, 850px);
-  height: min(65vw, 700px);
-  top: 5%;
-  right: -20%;
-  background: radial-gradient(ellipse, rgba(174, 26, 35, .32), rgba(110, 13, 23, .13) 38%, transparent 70%);
-  animation: after-hours-drift 24s ease-in-out infinite alternate;
-}
-
-/* Each small ember has a different position and timing, but uses one animation. */
-.after-hours-ember {
-  position: absolute;
-  bottom: 12%;
-  width: 3px;
-  height: 3px;
-  border-radius: 50%;
-  background: #e15b55;
-  opacity: 0;
-  animation: after-hours-rise 11s ease-in-out infinite;
-}
-.after-hours-ember:nth-of-type(1) { left: 12%; top: 18%; animation-delay: -2s; }
-.after-hours-ember:nth-of-type(2) { left: 28%; top: 34%; animation-delay: -7s; animation-duration: 15s; }
-.after-hours-ember:nth-of-type(3) { left: 48%; top: 51%; animation-delay: -4s; animation-duration: 13s; }
-.after-hours-ember:nth-of-type(4) { left: 72%; top: 68%; animation-delay: -10s; animation-duration: 17s; }
-.after-hours-ember:nth-of-type(5) { left: 89%; top: 83%; animation-delay: -6s; animation-duration: 14s; }
-
-@keyframes after-hours-drift {
-  from { transform: translate3d(-3%, 2%, 0) scale(.96); opacity: .7; }
-  to { transform: translate3d(-20%, 10%, 0) scale(1.12); opacity: 1; }
-}
-@keyframes after-hours-rise {
-  0% { transform: translate3d(0, 0, 0); opacity: 0; }
-  25% { opacity: .55; }
-  75% { opacity: .35; }
-  100% { transform: translate3d(18px, -180px, 0); opacity: 0; }
-}
-
-/* The existing background button controls both the canvas and this layer. */
-body:has(#matrix-toggle[aria-pressed="true"]) .after-hours-haze,
-body:has(#matrix-toggle[aria-pressed="true"]) .after-hours-ember {
-  animation-play-state: paused;
-}
-
-/* Keep a quiet, static haze and remove movement for reduced-motion visitors. */
-@media (prefers-reduced-motion: reduce) {
-  .after-hours-haze { animation: none; }
-  .after-hours-ember { display: none; }
+  background: radial-gradient(ellipse at 75% 15%, #410c19 0, transparent 47%),
+              radial-gradient(ellipse at 20% 85%, #280812 0, transparent 47%), #100407;
 }
