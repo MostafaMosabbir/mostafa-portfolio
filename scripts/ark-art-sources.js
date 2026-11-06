@@ -1,5 +1,8 @@
 // External official-source candidates. Public reuse rights still need review.
 window.ARK_ART_SOURCES = {
+  "Games::Mass Effect Trilogy": {
+    "source": "https://www.ea.com/games/mass-effect/mass-effect-legendary-edition"
+  },
   "Movies::Blade Runner 2049": {
     "url": "https://www.sonypictures.co.uk/sites/unitedkingdom/files/2020-12/DP_3740916_BLADE%20RUNNER%202049_1920x2560_English%20%28UK%29_1500x2000_thumbnail.jpg",
     "source": "https://www.sonypictures.co.uk/movies/blade-runner-2049",

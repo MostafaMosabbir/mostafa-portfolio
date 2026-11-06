@@ -9,7 +9,7 @@ function setup({reduced = false, observeIntersection = false, seed = 42} = {}) {
   const nodes = Object.fromEntries(ids.map(id => [id, { hidden: false, textContent: '', attrs: {}, style: {}, handlers: {}, classList: {add(){}, remove(){}}, addEventListener(k, f) { this.handlers[k] = f; }, setAttribute(k,v) { this.attrs[k] = String(v); }, removeAttribute(k) { delete this.attrs[k]; }, getAttribute(k) { return this.attrs[k] || null; }, hasAttribute(k) { return Object.hasOwn(this.attrs, k); }, set src(v) { this.attrs.src = v; }, set href(v) { this.attrs.href = v; } }]));
   nodes['creative-view'].hidden = true;
   const catalog = [{category:'Games',title:'Halo 2 / Reach'}, {category:'Games',title:'Game Two'}, {category:'TV',title:'TV One'}, {category:'Movies',title:'Movie One'}, {category:'Music',title:'Album One'}, {category:'Movies',title:'Movie One'}];
-  const art = {'Games::Halo 2 / Reach': {url:'https://example.com/halo.jpg', source:'https://example.com/halo', label:'Official artwork: Halo: Reach'}};
+  const art = {'Games::Halo 2 / Reach': {url:'https://example.com/halo.jpg', source:'https://example.com/halo', label:'Official artwork: Halo: Reach'}, 'Games::Game Two': {source:'https://example.com/game-two'}};
   let observer;
   const document = { hidden: false, handlers: {}, getElementById: id => nodes[id], addEventListener(k,f) { this.handlers[k] = f; } };
   const motion = { matches: reduced, handlers: {}, addEventListener(k,f) { this.handlers[k] = f; } };
@@ -53,6 +53,14 @@ test('navigation preserves the shuffled order, wraps, and defers image requests'
 test('book entries use honest placeholders without inventing art', () => {
   const p = setup(); p.open(); for (let i = 0; i < 10 && p.current() !== 'Enders Game'; i++) p.next();
   assert.equal(p.current(), 'Enders Game'); assert.equal(p.nodes['ark-feature-placeholder'].textContent, 'Artwork is not available for this title yet.');
+});
+test('a source-only entry shows a placeholder and links to the official page', () => {
+  const p = setup(); p.open();
+  for (let i = 0; i < 10 && p.current() !== 'Game Two'; i++) p.next();
+  assert.equal(p.current(), 'Game Two');
+  assert.equal(p.nodes['ark-feature-placeholder'].textContent, 'Artwork is not available for this title yet.');
+  assert.equal(p.nodes['ark-feature-source'].getAttribute('href'), 'https://example.com/game-two');
+  assert.equal(p.nodes['ark-feature-source'].hidden, false);
 });
 test('the reel fades forward after eight seconds and manual navigation pauses it', () => {
   const p = setup(); p.open(); const first = p.current(); p.tick(8000); assert.equal(p.current(), first);

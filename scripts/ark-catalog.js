@@ -1,6 +1,11 @@
 // Favorites catalog for The Ark.
 window.ARK_CATALOG = [
   {
+    "category": "Games",
+    "title": "Mass Effect Trilogy",
+    "sourceCategory": "Video Games"
+  },
+  {
     "category": "Movies",
     "title": "The Dark Knight",
     "sourceCategory": "Movies"

@@ -121,11 +121,15 @@
     source.hidden = true;
     source.removeAttribute("href");
     credit.textContent = "";
-    if (!artwork) {
+    if (!artwork || !artwork.url) {
       image.hidden = true;
       image.removeAttribute("src");
       placeholder.hidden = false;
       placeholder.textContent = "Artwork is not available for this title yet.";
+      if (artwork && artwork.source) {
+        source.href = artwork.source;
+        source.hidden = false;
+      }
       return;
     }
     credit.textContent = artwork.label;
