@@ -1,23 +1,26 @@
-/* The dated timeline complements the shuffled reel without adding moving effects. */
-.ark-timeline { margin: clamp(48px, 7vw, 90px) auto 0; max-width: 980px; text-align: center; }
-.ark-timeline h3 { color: #fff9f5; font: 400 clamp(1.6rem, 3vw, 2.3rem)/1.2 Georgia, serif; margin: 0; }
-.ark-timeline-current { min-height: 1.5em; margin: 12px 0 20px; color: #e8ccc7; font-size: .85rem; }
+/* The timeline reflects the featured selection without another animation loop. */
+.ark-timeline { margin: clamp(56px, 8vw, 90px) auto 0; max-width: 980px; text-align: center; }
+.ark-timeline h3 { display: flex; align-items: center; justify-content: center; gap: clamp(14px, 3vw, 32px); color: #fff9f5; font: italic 400 clamp(1.6rem, 3vw, 2.3rem)/1.2 Georgia, serif; margin: 0; }
+.ark-timeline h3::before, .ark-timeline h3::after { content: ""; width: clamp(35px, 10vw, 125px); height: 1px; background: linear-gradient(90deg, transparent, #d25a5e); }
+.ark-timeline h3::after { transform: scaleX(-1); }
+.ark-timeline-current { min-height: 1.5em; margin: 12px 0 22px; color: #e8ccc7; font-size: .85rem; }
 .ark-timeline-navigation { display: flex; align-items: center; gap: 12px; }
-.ark-timeline-navigation > button { min-width: 44px; min-height: 44px; border: 1px solid #b2575b; border-radius: 50%; color: #ffe9e4; background: transparent; cursor: pointer; }
-.ark-timeline-navigation > button:disabled { opacity: .35; cursor: default; }
-.ark-timeline-items { flex: 1; min-width: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; border-top: 1px solid #b2575b; }
-.ark-timeline-item { display: flex; flex-direction: column; align-items: center; gap: 6px; min-width: 0; min-height: 88px; padding: 12px 4px; color: #e8ccc7; background: transparent; border: 0; cursor: pointer; font: inherit; overflow-wrap: anywhere; }
-.ark-timeline-item .ark-timeline-year { color: #fff9f5; font: 400 1.15rem/1 Georgia, serif; }
-.ark-timeline-item .ark-timeline-name { font-size: .75rem; line-height: 1.3; }
-.ark-timeline-item[aria-pressed="true"] { color: #fff; background: #79212955; }
-.ark-timeline-item[aria-pressed="true"] .ark-timeline-year { color: #ff9e95; }
+.ark-timeline-navigation > button { flex: 0 0 44px; min-width: 44px; min-height: 44px; border: 1px solid #b2575b; border-radius: 50%; color: #ffe9e4; background: transparent; cursor: pointer; }
+.ark-timeline-navigation > button:disabled { opacity: .4; cursor: default; }
+/* The rail is a decorative background. Each actual date stays a button. */
+.ark-timeline-items { flex: 1; min-width: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; background: linear-gradient(to bottom, transparent 41px, #b2575b 41px, #b2575b 42px, transparent 42px); }
+.ark-timeline-item { position: relative; display: flex; flex-direction: column; align-items: center; gap: 36px; min-width: 0; min-height: 104px; padding: 2px 6px 12px; color: #e8ccc7; background: transparent; border: 0; cursor: pointer; font: inherit; overflow-wrap: anywhere; }
+.ark-timeline-item::before { content: ""; position: absolute; top: 35px; left: calc(50% - 7px); width: 12px; height: 12px; border: 1px solid #e67b77; border-radius: 50%; background: #1c080d; }
+.ark-timeline-item .ark-timeline-year { color: #fff9f5; font: italic 400 1.25rem/28px Georgia, serif; }
+.ark-timeline-item .ark-timeline-name { font: italic .85rem/1.3 Georgia, serif; }
+.ark-timeline-item[aria-pressed="true"] { color: #fff; }
+.ark-timeline-item[aria-pressed="true"]::before { background: #ed6a67; box-shadow: 0 0 0 4px #c73c3c33; }
+.ark-timeline-item[aria-pressed="true"] .ark-timeline-year { color: #ffb1a8; }
 .ark-timeline button:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
-@media (max-width: 600px) {
-  .ark-timeline-navigation { gap: 3px; }
-  .ark-timeline-item .ark-timeline-name { font-size: .75rem; }
-}
-/* On narrow phones, use a vertical track so long titles remain readable. */
+@media (max-width: 600px) { .ark-timeline-navigation { gap: 3px; } }
+/* A vertical track keeps long titles readable on a narrow phone. */
 @media (max-width: 420px) {
-  .ark-timeline-items { grid-template-columns: 1fr; border-top: 0; border-left: 1px solid #b2575b; }
-  .ark-timeline-item { min-height: 56px; align-items: flex-start; text-align: left; padding: 8px 12px; }
+  .ark-timeline-items { grid-template-columns: 1fr; gap: 0; background: linear-gradient(to right, transparent 8px, #b2575b 8px, #b2575b 9px, transparent 9px); }
+  .ark-timeline-item { min-height: 66px; align-items: flex-start; gap: 3px; text-align: left; padding: 6px 8px 8px 26px; }
+  .ark-timeline-item::before { top: 14px; left: 2px; }
 }

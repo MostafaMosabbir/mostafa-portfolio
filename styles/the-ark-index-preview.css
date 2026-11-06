@@ -1,30 +1,40 @@
 /* The Ark displays one favorite at a time in a cinematic reel. */
 .ark-index { margin: clamp(64px, 9vw, 115px) auto 0; max-width: 1120px; text-align: center; }
-.ark-index-heading h2 { color: #fff9f5; font: 400 clamp(3rem, 6vw, 5.5rem)/1 Georgia, serif; margin: 0; }
-.ark-introduction { color: #ead6d1; margin: 16px 0 32px; }
+.ark-index-heading { display: flex; justify-content: center; align-items: center; gap: clamp(18px, 3vw, 36px); }
+.ark-index-heading::before, .ark-index-heading::after { content: ""; width: clamp(34px, 10vw, 125px); height: 1px; background: linear-gradient(90deg, transparent, #d25a5e); }
+.ark-index-heading::after { transform: scaleX(-1); }
+.ark-index-heading h2 { color: #fff9f5; font: 400 clamp(3rem, 6vw, 5.5rem)/1 Georgia, serif; margin: 0; white-space: nowrap; }
+.ark-introduction { color: #ead6d1; margin: 15px auto clamp(28px, 4vw, 42px); font-family: Georgia, serif; font-style: italic; line-height: 1.6; letter-spacing: .06em; }
 .ark-reel { width: 100%; }
-.ark-feature-art { position: relative; display: flex; align-items: center; justify-content: center; width: 100%; aspect-ratio: 16 / 8; border: 1px solid #a9474e77; background: #120a0d; overflow: hidden; }
-/* Contain keeps the real image intact instead of cropping or recoloring it. */
+.ark-feature-art { position: relative; display: flex; align-items: center; justify-content: center; width: 100%; aspect-ratio: 2 / 1; border: 1px solid #a9474e88; border-radius: 12px; background: #120a0d; overflow: hidden; }
+/* Contain preserves the official artwork without cropping or recoloring it. */
 .ark-feature-art img { display: block; width: 100%; height: 100%; object-fit: contain; }
 .ark-feature-art img[hidden] { display: none; }
 .ark-feature-art p { margin: 24px; color: #e8ccc7; font: .85rem/1.5 ui-monospace, monospace; }
 .ark-feature-art, .ark-feature-info { opacity: 1; transition: opacity 250ms ease; }
 .ark-reel.is-changing .ark-feature-art, .ark-reel.is-changing .ark-feature-info { opacity: 0; }
-.ark-feature-info { padding: 28px 20px 8px; }
-.ark-feature-info p { color: #e8b8ae; font-size: .75rem; margin: 0 0 10px; }
-.ark-feature-info #ark-feature-category { text-transform: uppercase; letter-spacing: .16em; }
-.ark-feature-info h3 { color: #fff9f5; font: 400 clamp(2rem, 4vw, 3.6rem)/1.1 Georgia, serif; margin: 0 0 12px; }
-.ark-feature-info a { color: #f5d3cb; font-size: .8rem; text-underline-offset: 4px; }
-.ark-reel-controls { display: flex; align-items: center; gap: 24px; width: min(100%, 600px); margin: 26px auto 0; }
-.ark-reel-controls button { display: grid; place-items: center; flex: 0 0 44px; height: 44px; color: #ffe9e4; background: transparent; border: 1px solid #b2575b; border-radius: 50%; cursor: pointer; font: 1.3rem/1 system-ui, sans-serif; }
+.ark-feature-info { display: flex; flex-direction: column; align-items: center; padding: 22px 20px 0; }
+.ark-feature-info h3 { order: 0; color: #fff9f5; font: italic 400 clamp(2rem, 4vw, 3.6rem)/1.1 Georgia, serif; margin: 0 0 10px; }
+.ark-feature-info #ark-feature-category { order: 1; color: #e8b8ae; font-size: .72rem; text-transform: uppercase; letter-spacing: .18em; margin: 0 0 10px; }
+.ark-feature-info #ark-feature-credit { order: 2; color: #e8b8ae; font-size: .75rem; margin: 0 0 8px; }
+.ark-feature-info a { order: 3; display: inline-block; color: #f5d3cb; padding: 7px 2px; font-size: .8rem; text-underline-offset: 4px; }
+.ark-feature-info a[hidden] { display: none; }
+/* Keep the original text labels accessible while showing compact icons. */
+.ark-reel-controls { display: flex; justify-content: center; align-items: center; gap: clamp(14px, 3vw, 24px); margin: 18px auto 0; }
+.ark-reel-controls button { display: grid; place-items: center; flex: 0 0 48px; width: 48px; height: 48px; padding: 0; color: #ffe9e4; background: transparent; border: 1px solid #b2575b; border-radius: 50%; cursor: pointer; font: 1.3rem/1 system-ui, sans-serif; }
+.ark-reel-controls button[hidden] { display: none; }
 .ark-reel-controls button:hover { background: #6f182633; }
+.ark-reel-controls .ark-play-toggle { margin: 0; border-color: #ed6463; font-size: 0; }
+.ark-play-toggle::before { content: "Ⅱ"; font: 1.1rem/1 system-ui, sans-serif; }
+.ark-play-toggle[aria-pressed="true"]::before { content: "▶"; font-size: .9rem; }
 .ark-reel-controls button:focus-visible, .ark-feature-info a:focus-visible { outline: 2px solid #fff; outline-offset: 4px; }
-.ark-reel-progress { flex: 1; min-width: 0; }
-.ark-reel-track { height: 2px; background: #76363b; }
+.ark-reel-progress { width: min(100%, 260px); margin: 17px auto 0; }
+.ark-reel-track { height: 1px; background: #76363b; }
 .ark-reel-track span { display: block; height: 100%; background: #ff7b75; }
 .ark-reel-progress p { margin: 8px 0 0; color: #e8ccc7; font: .75rem/1.3 ui-monospace, monospace; }
-.ark-play-toggle { margin: 16px 0 0; padding: 8px 12px; border: 1px solid #b2575b; background: transparent; color: #ffe9e4; font: inherit; cursor: pointer; }
-.ark-play-toggle:focus-visible { outline: 2px solid white; outline-offset: 4px; }
 .ark-motion-status { margin: 8px 0 0; color: #e8ccc7; font-size: .8rem; }
 @media (prefers-reduced-motion: reduce) { .ark-feature-art, .ark-feature-info { transition: none; } }
-@media (max-width: 600px) { .ark-feature-art { aspect-ratio: 4 / 3; } .ark-reel-controls { gap: 14px; } }
+@media (max-width: 600px) {
+  .ark-feature-art { aspect-ratio: 4 / 3; border-radius: 9px; }
+  .ark-introduction { letter-spacing: .02em; }
+}
