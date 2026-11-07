@@ -39,3 +39,44 @@
   .ark-timeline-item .ark-timeline-year { font-size: 1.05rem; }
   .ark-timeline-item .ark-timeline-name { font-size: .8rem; }
 }
+
+/* Place the real timeline buttons and navigation in one compact phone row. */
+@media (max-width: 600px) {
+  .ark-timeline {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: baseline;
+    gap: 6px 8px;
+    margin-top: 12px;
+    padding: 10px 8px;
+  }
+  .ark-timeline-current { margin: 0; font-size: .8rem; text-align: right; overflow-wrap: anywhere; }
+  .ark-timeline-navigation {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: 44px minmax(0, 1fr) 44px;
+    align-items: center;
+    gap: 1px;
+  }
+  .ark-timeline-items {
+    grid-column: 2;
+    grid-row: 1;
+    width: 100%;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 2px;
+    background: linear-gradient(to bottom, transparent 24px, #b2575b 24px, #b2575b 25px, transparent 25px);
+  }
+  .ark-timeline-navigation > button { grid-row: 1; justify-self: center; }
+  .ark-timeline-navigation > button:first-child { grid-column: 1; }
+  .ark-timeline-navigation > button:last-child { grid-column: 3; }
+  .ark-timeline-item {
+    min-height: 58px;
+    align-items: center;
+    text-align: center;
+    gap: 14px;
+    padding: 0 2px 3px;
+  }
+  .ark-timeline-item::before { top: 18px; left: calc(50% - 7px); }
+  .ark-timeline-item .ark-timeline-year { font-size: .85rem; line-height: 18px; }
+  .ark-timeline-item .ark-timeline-name { font-size: .7rem; line-height: 1.2; }
+}

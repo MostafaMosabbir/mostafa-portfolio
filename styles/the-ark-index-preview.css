@@ -58,3 +58,27 @@
   .ark-reel-progress { width: 100%; margin-top: 22px; }
   .ark-reel-progress p { text-align: left; }
 }
+
+/* A compact phone view keeps the featured work and its timeline together.
+   Heights remain content-driven so long titles and larger text can wrap. */
+@media (max-width: 600px) {
+  .ark-index-heading h2 { font-size: 2.25rem; }
+  .ark-introduction { margin: 6px 0 12px; max-width: none; font-size: .82rem; line-height: 1.35; }
+  .ark-feature-art { aspect-ratio: 16 / 9; max-height: 200px; }
+  .ark-feature-info {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 0 8px;
+    padding-top: 8px;
+  }
+  .ark-feature-info #ark-feature-category { grid-column: 1; grid-row: 1; margin: 0 0 3px; }
+  .ark-feature-info h3 { grid-column: 1; grid-row: 2; margin: 0; font-size: 1.55rem; overflow-wrap: anywhere; }
+  .ark-feature-info #ark-feature-credit { grid-column: 1; grid-row: 3; margin: 3px 0 0; overflow-wrap: anywhere; }
+  .ark-feature-info a { grid-column: 2; grid-row: 1 / 4; min-height: 44px; max-width: 10ch; font-size: .75rem; }
+  .ark-reel-controls { gap: 10px; margin-top: 5px; }
+  .ark-reel-controls button { flex-basis: 44px; width: 44px; height: 44px; }
+  .ark-reel-progress { margin-top: 8px; }
+  .ark-reel-progress p { margin-top: 4px; }
+  .ark-motion-status { margin-top: 4px; }
+}
