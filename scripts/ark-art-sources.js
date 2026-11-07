@@ -25,10 +25,10 @@ window.ARK_ART_SOURCES = {
     "notes": "Deluxe trade paperback edition."
   },
   "Books::Halo: The Fall of Reach": {
-    "url": "https://d28hgpri8am2if.cloudfront.net/book_images/onix/cvr9781982111618/halo-the-fall-of-reach-9781982111618_hr.jpg",
-    "source": "https://www.simonandschuster.com/books/Halo-The-Fall-of-Reach/Eric-Nylund/Halo/9781982111618",
-    "label": "Official cover: Halo: The Fall of Reach",
-    "notes": "Simon & Schuster edition."
+    "url": "https://wpassets.halowaypoint.com/wp-content/2023/08/1TheFallOfReach-64d5442788a99.jpg",
+    "source": "https://www.halowaypoint.com/news/official-halo-book-guide",
+    "label": "Official Halo artwork: The Fall of Reach",
+    "notes": "Halo Studios book guide artwork featuring the original cover."
   },
   "Books::Song of Ice and Fire Series": {
     "url": "https://images4.penguinrandomhouse.com/cover/9780345535566",
