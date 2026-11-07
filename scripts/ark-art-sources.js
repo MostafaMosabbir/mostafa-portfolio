@@ -1,7 +1,40 @@
 // External official-source candidates. Public reuse rights still need review.
 window.ARK_ART_SOURCES = {
   "Games::Mass Effect Trilogy": {
-    "source": "https://www.ea.com/games/mass-effect/mass-effect-legendary-edition"
+    "url": "https://media.contentapi.ea.com/content/dam/masseffect/common/mass-effect-legendary-edition/downloads/masseffect-le-key-art-16x9.jpg",
+    "source": "https://www.ea.com/en-gb/games/mass-effect/media",
+    "label": "Official artwork: Mass Effect Legendary Edition",
+    "notes": "Key art for the Legendary Edition trilogy remaster."
+  },
+  "Books::Enders Game": {
+    "url": "https://mpd-biblio-covers.imgix.net/9781429963930.jpg?dpr=2&v=2&w=900",
+    "source": "https://us.macmillan.com/books/9781429963930/endersgame/",
+    "label": "Official cover: Ender's Game",
+    "notes": "Macmillan ebook edition."
+  },
+  "Books::Harry Potter Series": {
+    "url": "https://www.scholastic.com/content/dam/newsroom/press-kit/harry-potter/HP_Original_HC_Book1_FlatCover.NEW.jpg",
+    "source": "https://www.scholastic.com/newsroom/online-press-kits/harry-potter.html/",
+    "label": "Official cover: Harry Potter and the Sorcerer's Stone",
+    "notes": "Original Scholastic hardcover for the first book."
+  },
+  "Books::Dune": {
+    "url": "https://images3.penguinrandomhouse.com/cover/9798217192205",
+    "source": "https://www.penguinrandomhouse.com/books/829984/dune-deluxe-trade-paperback-edition-by-frank-herbert/",
+    "label": "Official cover: Dune",
+    "notes": "Deluxe trade paperback edition."
+  },
+  "Books::Halo: The Fall of Reach": {
+    "url": "https://d28hgpri8am2if.cloudfront.net/book_images/onix/cvr9781982111618/halo-the-fall-of-reach-9781982111618_hr.jpg",
+    "source": "https://www.simonandschuster.com/books/Halo-The-Fall-of-Reach/Eric-Nylund/Halo/9781982111618",
+    "label": "Official cover: Halo: The Fall of Reach",
+    "notes": "Simon & Schuster edition."
+  },
+  "Books::Song of Ice and Fire Series": {
+    "url": "https://images4.penguinrandomhouse.com/cover/9780345535566",
+    "source": "https://prhcomics.com/book/?isbn=9780345535566",
+    "label": "Official cover: A Song of Ice and Fire five-book boxed set",
+    "notes": "Penguin Random House retail boxed set."
   },
   "Movies::Blade Runner 2049": {
     "url": "https://www.sonypictures.co.uk/sites/unitedkingdom/files/2020-12/DP_3740916_BLADE%20RUNNER%202049_1920x2560_English%20%28UK%29_1500x2000_thumbnail.jpg",
