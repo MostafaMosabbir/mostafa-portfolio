@@ -3,7 +3,7 @@
   function keyFor(item) { return item.category + "::" + item.title; }
   function displayName(item) { return item.title === "Halo 2 / Reach" ? "Halo" : item.title; }
   window.ARK_TIMELINE = {
-    init(reel, select) {
+    init(reel, select, pauseForBrowsing = () => {}) {
       const container = document.getElementById("ark-timeline-items");
       const current = document.getElementById("ark-timeline-current");
       const back = document.getElementById("ark-timeline-back");
@@ -42,8 +42,8 @@
         back.disabled = start === 0;
         forward.disabled = start + visibleCount >= dated.length;
       }
-      back.addEventListener("click", () => { start = Math.max(0, start - 1); render(); });
-      forward.addEventListener("click", () => { start = Math.min(Math.max(0, dated.length - visibleCount), start + 1); render(); });
+      back.addEventListener("click", () => { pauseForBrowsing(); start = Math.max(0, start - 1); render(); });
+      forward.addEventListener("click", () => { pauseForBrowsing(); start = Math.min(Math.max(0, dated.length - visibleCount), start + 1); render(); });
       return {
         show(item) {
           selectedKey = keyFor(item);

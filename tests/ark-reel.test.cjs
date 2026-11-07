@@ -25,12 +25,12 @@ function setup({reduced = false, observeIntersection = false, seed = 42, timelin
   let state = seed >>> 0;
   const math = Object.create(Math);
   math.random = () => { state = (Math.imul(1664525, state) + 1013904223) >>> 0; return state / 0x100000000; };
-  let selectFromTimeline, timelineReel, timelineItem;
-  const timeline = { init(reel, select) { timelineReel = reel; selectFromTimeline = select; return { show(item) { timelineItem = item; } }; } };
+  let selectFromTimeline, browseTimeline, timelineReel, timelineItem;
+  const timeline = { init(reel, select, browse) { timelineReel = reel; selectFromTimeline = select; browseTimeline = browse; return { show(item) { timelineItem = item; } }; } };
   const context = { document, MutationObserver, Math: math, setTimeout:setTimeoutFake, clearTimeout:clearTimeoutFake, window: { ARK_CATALOG: catalog, ARK_ART_SOURCES: art, matchMedia: () => motion, ARK_TIMELINE: timelineEnabled ? timeline : undefined } };
   if (observeIntersection) context.IntersectionObserver = IntersectionObserver;
   vm.runInNewContext(script, context);
-  return {nodes, document, motion, tick, intersect(visible) { onIntersection([{target:nodes['ark-reel'],isIntersecting:visible}]); }, open() { nodes['creative-view'].hidden = false; observer(); }, next() { nodes['ark-next'].handlers.click(); }, prev() { nodes['ark-previous'].handlers.click(); }, current() { return nodes['ark-feature-title'].textContent; }, category() { const c = nodes['ark-feature-category'].textContent; return c === 'Game series' ? 'Games' : c; }, timelineSelect(index) { selectFromTimeline(index); }, timelineEntry(index) { return timelineReel[index]; }, timelineCurrent() { return timelineItem; }};
+  return {nodes, document, motion, tick, intersect(visible) { onIntersection([{target:nodes['ark-reel'],isIntersecting:visible}]); }, open() { nodes['creative-view'].hidden = false; observer(); }, close() { nodes['creative-view'].hidden = true; observer(); }, next() { nodes['ark-next'].handlers.click(); }, prev() { nodes['ark-previous'].handlers.click(); }, current() { return nodes['ark-feature-title'].textContent; }, category() { const c = nodes['ark-feature-category'].textContent; return c === 'Game series' ? 'Games' : c; }, timelineSelect(index) { selectFromTimeline(index); }, browseTimeline() { browseTimeline(); }, timelineEntry(index) { return timelineReel[index]; }, timelineCurrent() { return timelineItem; }};
 }
 
 function sequence(p) { const out = []; for (let i = 0; i < 10; i++) { out.push([p.current(), p.category()]); p.next(); } return out; }
@@ -64,6 +64,17 @@ test('a source-only entry shows a placeholder and links to the official page', (
   assert.equal(p.nodes['ark-feature-source'].getAttribute('href'), 'https://example.com/game-two');
   assert.equal(p.nodes['ark-feature-source'].hidden, false);
 });
+test('failed artwork keeps its helpful fallback after closing and reopening After Hours', () => {
+  const p = setup(); p.open();
+  for (let i = 0; i < 10 && p.current() !== 'Halo'; i++) p.next();
+  const img = p.nodes['ark-feature-image'];
+  img.complete = true; img.naturalWidth = 0; img.handlers.error();
+  assert.match(p.nodes['ark-feature-placeholder'].textContent, /could not be loaded/);
+  p.close(); p.open();
+  assert.match(p.nodes['ark-feature-placeholder'].textContent, /could not be loaded/);
+  assert.equal(p.nodes['ark-feature-source'].getAttribute('href'), 'https://example.com/halo');
+  assert.equal(p.nodes['ark-feature-source'].hidden, false);
+});
 test('timeline selections pause the reel and update its featured favorite', () => {
   const p = setup({timelineEnabled:true}); p.open();
   const entry = p.timelineEntry(3);
@@ -72,6 +83,15 @@ test('timeline selections pause the reel and update its featured favorite', () =
   assert.equal(p.current(), entry.title === 'Halo 2 / Reach' ? 'Halo' : entry.title);
   assert.equal(p.nodes['ark-play-toggle'].textContent, 'Resume reel');
   const first = p.current(); p.tick(20000); assert.equal(p.current(), first);
+});
+test('browsing the timeline pauses automatic changes until the visitor resumes', () => {
+  const p = setup({timelineEnabled:true}); p.open();
+  const first = p.current();
+  p.browseTimeline();
+  assert.equal(p.nodes['ark-play-toggle'].textContent, 'Resume reel');
+  p.tick(20000); assert.equal(p.current(), first);
+  p.nodes['ark-play-toggle'].handlers.click();
+  p.tick(8250); assert.notEqual(p.current(), first);
 });
 test('the reel fades forward after eight seconds and manual navigation pauses it', () => {
   const p = setup(); p.open(); const first = p.current(); p.tick(8000); assert.equal(p.current(), first);

@@ -145,6 +145,15 @@
       placeholder.hidden = true;
       return;
     }
+    // A completed image with no pixels failed to load. Reopening After Hours
+    // must retain the useful source link instead of waiting for an event that
+    // already fired for the same URL.
+    if (sameImage && image.complete && image.naturalWidth === 0) {
+      image.hidden = true;
+      placeholder.hidden = false;
+      placeholder.textContent = "Artwork could not be loaded. Open the official source below.";
+      return;
+    }
     image.hidden = true;
     placeholder.hidden = false;
     placeholder.textContent = "Loading artwork…";
@@ -195,6 +204,12 @@
       selected = index;
       featureInfo.setAttribute("aria-live", "polite");
       showSelection();
+      updateMotionControl();
+    }, () => {
+      // Browsing dates is a manual action: keep the reel from moving the
+      // timeline away until the visitor chooses to resume playback.
+      paused = true;
+      stopTimers();
       updateMotionControl();
     });
   }

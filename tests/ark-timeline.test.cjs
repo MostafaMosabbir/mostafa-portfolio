@@ -19,18 +19,20 @@ function setup() {
   const document = { getElementById: id => nodes[id], createElement: () => new Element() };
   const reel = [
     {category:'Games',title:'Halo 2 / Reach'}, {category:'Books',title:'Dune'},
-    {category:'Movies',title:'Blade Runner 2049'}, {category:'Games',title:'Unknown'}
+    {category:'Movies',title:'Blade Runner 2049'}, {category:'Games',title:'Unknown'},
+    {category:'Games',title:'Later Game'}
   ];
   const window = { ARK_YEARS: {
     'Games::Halo 2 / Reach': {year: 2001, label:'Game series start'},
     'Books::Dune': {year: 1965, label:'First publication'},
-    'Movies::Blade Runner 2049': {year: 2017, label:'Film release'}
+    'Movies::Blade Runner 2049': {year: 2017, label:'Film release'},
+    'Games::Later Game': {year: 2020, label:'Game release'}
   }};
   vm.runInNewContext(fs.readFileSync(path.join(__dirname, '../scripts/ark-timeline.js'), 'utf8'), {window, document});
-  let selected = null;
+  let selected = null, browses = 0;
   let timeline;
-  timeline = window.ARK_TIMELINE.init(reel, index => { selected = index; timeline.show(reel[index]); });
-  return {nodes, reel, timeline, get selected() { return selected; }};
+  timeline = window.ARK_TIMELINE.init(reel, index => { selected = index; timeline.show(reel[index]); }, () => { browses++; });
+  return {nodes, reel, timeline, get selected() { return selected; }, get browses() { return browses; }};
 }
 
 test('timeline sorts verified entries and highlights the featured favorite', () => {
@@ -40,6 +42,14 @@ test('timeline sorts verified entries and highlights the featured favorite', () 
   assert.deepEqual(buttons.map(b => b.children[0].textContent), ['1965', '2001', '2017']);
   assert.equal(buttons[1].attrs['aria-pressed'], 'true');
   assert.equal(buttons[1].children[1].textContent, 'Halo · Games');
+});
+test('timeline arrows notify the reel when visitors browse earlier or later entries', () => {
+  const p = setup(); p.timeline.show(p.reel[0]);
+  p.nodes['ark-timeline-forward'].handlers.click();
+  assert.equal(p.browses, 1);
+  assert.deepEqual(p.nodes['ark-timeline-items'].children.map(b => b.children[0].textContent), ['2001', '2017', '2020']);
+  p.nodes['ark-timeline-back'].handlers.click();
+  assert.equal(p.browses, 2);
 });
 
 test('unknown year is labeled, not guessed, and timeline buttons select and focus a favorite', () => {
