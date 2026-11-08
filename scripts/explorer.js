@@ -133,81 +133,80 @@ SAMPLE-006,VPN disconnects,network,,new,`;
   const carousel = document.getElementById("case-carousel");
   const previous = document.getElementById("case-previous");
   const next = document.getElementById("case-next");
-  let visibleCards = cards.slice();
-  let caseIndex = 0;
-  // Native overflow provides touch/trackpad scrolling. Cards remain available
-  // to keyboard users; only cards excluded by a filter are hidden.
+  const caseNavigation = document.getElementById("case-navigation");
+  let visibleCards = cards;
   const reducedCaseMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-  function updateCasePosition() {
-    const pad = number => String(number).padStart(3, "0");
-    const active = visibleCards[caseIndex];
-    document.getElementById("case-position").textContent = active
-      ? `${pad(caseIndex + 1)} / ${pad(visibleCards.length)} · ${active.querySelector("h3").textContent}`
-      : "No matching case files";
-    previous.disabled = caseIndex === 0 || visibleCards.length < 2;
-    next.disabled = caseIndex >= visibleCards.length - 1;
+  const scrollTolerance = 2;
+
+  function caseScrollEnd() {
+    return carousel.scrollWidth - carousel.clientWidth;
+  }
+  function updateCaseArrows() {
+    // Base the arrow states on scroll distance because several cards can be
+    // visible at the end. aria-disabled keeps keyboard focus on the arrow.
+    previous.setAttribute("aria-disabled", String(carousel.scrollLeft <= scrollTolerance));
+    next.setAttribute("aria-disabled", String(carousel.scrollLeft >= caseScrollEnd() - scrollTolerance));
   }
   function cardOffset(card) {
-    const left = card.getBoundingClientRect().left - carousel.getBoundingClientRect().left + carousel.scrollLeft;
-    return Math.max(0, Math.min(left, carousel.scrollWidth - carousel.clientWidth));
+    return card.getBoundingClientRect().left - carousel.getBoundingClientRect().left + carousel.scrollLeft;
   }
-  function showCase(index, immediate = false) {
-    caseIndex = Math.max(0, Math.min(index, visibleCards.length - 1));
-    updateCasePosition();
-    if (visibleCards[caseIndex]) carousel.scrollTo({ left: cardOffset(visibleCards[caseIndex]), behavior: immediate || reducedCaseMotion.matches ? "instant" : "smooth" });
+  function scrollCases(direction) {
+    const arrow = direction < 0 ? previous : next;
+    if (arrow.getAttribute("aria-disabled") === "true") return;
+
+    // Measure the live rail so an arrow also works after a swipe or resize.
+    const left = carousel.scrollLeft;
+    const offsets = visibleCards.map(cardOffset);
+    const target = direction < 0
+      ? offsets.reverse().find(offset => offset < left - scrollTolerance) ?? 0
+      : offsets.find(offset => offset > left + scrollTolerance) ?? caseScrollEnd();
+    carousel.scrollTo({ left: target, behavior: reducedCaseMotion.matches ? "instant" : "smooth" });
   }
   function filterProjects(technology) {
     visibleCards = cards.filter(card => technology === "all" || card.dataset.technologies.split(" ").includes(technology));
     cards.forEach(card => { card.hidden = !visibleCards.includes(card); });
-    showCase(0, true);
+    carousel.scrollTo({ left: 0, behavior: "instant" });
+    updateCaseArrows();
     filters.forEach(button => button.setAttribute("aria-pressed", String(button.dataset.filter === technology)));
     document.getElementById("filter-status").textContent = `${visibleCards.length} project${visibleCards.length === 1 ? "" : "s"}`;
   }
-  previous.addEventListener("click", () => showCase(caseIndex - 1));
-  next.addEventListener("click", () => showCase(caseIndex + 1));
-  document.getElementById("case-navigation").addEventListener("keydown", event => {
+  previous.addEventListener("click", () => scrollCases(-1));
+  next.addEventListener("click", () => scrollCases(1));
+  caseNavigation.addEventListener("keydown", event => {
     if (!["ArrowLeft", "ArrowRight"].includes(event.key)) return;
     event.preventDefault();
-    showCase(caseIndex + (event.key === "ArrowRight" ? 1 : -1));
+    scrollCases(event.key === "ArrowRight" ? 1 : -1);
   });
-  // Keep the counter in sync when visitors scroll without using the arrows.
-  let scrollFrame = 0;
-  function syncCasePosition() {
-    scrollFrame = 0;
-    if (!visibleCards.length) return;
-    let nearest = 0;
-    visibleCards.forEach((card, index) => {
-      if (Math.abs(cardOffset(card) - carousel.scrollLeft) < Math.abs(cardOffset(visibleCards[nearest]) - carousel.scrollLeft)) nearest = index;
-    });
-    if (nearest !== caseIndex) { caseIndex = nearest; updateCasePosition(); }
+  // Native overflow handles touch and trackpad gestures independently of Featured.
+  carousel.addEventListener("scroll", updateCaseArrows, { passive: true });
+  if ("ResizeObserver" in window) {
+    new ResizeObserver(updateCaseArrows).observe(carousel);
+  } else {
+    window.addEventListener("resize", updateCaseArrows);
   }
-  carousel.addEventListener("scroll", () => {
-    if (!scrollFrame) scrollFrame = requestAnimationFrame(syncCasePosition);
-  }, { passive: true });
-  window.addEventListener("resize", () => showCase(caseIndex, true));
+
+  function showCase(card) {
+    carousel.scrollTo({ left: cardOffset(card), behavior: "instant" });
+    updateCaseArrows();
+  }
   // Direct links and search results must reveal the requested hidden card.
   function revealHash() {
     // Preserve previously shared links to the former security project entry.
-    if (location.hash === "#project-security") {
-      filterProjects("all");
-      const securityIndex = cards.findIndex(card => card.id === "project-security-case");
-      if (securityIndex >= 0) { showCase(securityIndex, true); cards[securityIndex].scrollIntoView({ block: "nearest", inline: "nearest" }); }
-      return;
-    }
-    const index = cards.findIndex(card => `#${card.id}` === location.hash);
-    if (index < 0) return;
+    const id = location.hash === "#project-security" ? "project-security-case" : location.hash.slice(1);
+    const card = cards.find(item => item.id === id);
+    if (!card) return;
     filterProjects("all");
-    showCase(index, true);
-    cards[index].scrollIntoView({ block: "nearest", inline: "nearest" });
+    showCase(card);
+    card.scrollIntoView({ block: "nearest", inline: "nearest" });
   }
   window.addEventListener("hashchange", revealHash);
   carousel.classList.add("case-carousel");
-  carousel.setAttribute("aria-roledescription", "carousel");
-  carousel.after(document.getElementById("case-navigation"));
-  document.getElementById("case-navigation").hidden = false;
+  caseNavigation.hidden = false;
   filterProjects("all");
   revealHash();
-  filters.forEach(button => button.addEventListener("click", () => filterProjects(button.dataset.filter)));
+  filters.forEach(button => button.addEventListener("click", () => {
+    if (button.getAttribute("aria-pressed") === "false") filterProjects(button.dataset.filter);
+  }));
   document.getElementById("project-toolbar").hidden = false;
 
   // 4. Search indexes existing headings and project tags rather than inventing
@@ -233,8 +232,7 @@ SAMPLE-006,VPN disconnects,network,,new,`;
       link.addEventListener("click", () => {
         filterProjects("all"); // A filtered-out project must become reachable.
         const destination = document.getElementById(entry.id);
-        const caseMatch = visibleCards.indexOf(destination);
-        if (caseMatch >= 0) showCase(caseMatch);
+        if (cards.includes(destination)) showCase(destination);
         if (!destination.hasAttribute("tabindex")) destination.tabIndex = -1;
         // The dialog's asynchronous close event must not steal focus back
         // from the project the visitor chose.

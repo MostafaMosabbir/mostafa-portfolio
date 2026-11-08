@@ -7,9 +7,9 @@ const source=fs.readFileSync(path.join(__dirname,'../scripts/featured-projects.j
 function setup(reduced=false){
  const keys=['portfolio','assistant','analyzer','security','columns','kev','theater','algorithm','assembly','securebank'];
  const groups=keys.flatMap(key=>Array.from({length:4},()=>({dataset:{featureProject:key},hidden:true})));
- const buttons=keys.flatMap(key=>[false,true].map(card=>({dataset:{featureSelect:key},hidden:true,attrs:{},classList:{contains:()=>card},setAttribute(k,v){this.attrs[k]=v},addEventListener(k,fn){this.click=fn}})));
+ const buttons=keys.map(key=>({dataset:{featureSelect:key},hidden:true,attrs:{},setAttribute(k,v){this.attrs[k]=v},addEventListener(k,fn){this.click=fn}}));
  const ids={};
- for(const id of ['featured','featured-title','featured-number','featured-badge','featured-meta','feature-tabs','tab-overview','tab-articles','tab-what-changed','featured-status','featured-picker']) ids[id]={dataset:{},attrs:{},setAttribute(k,v){this.attrs[k]=v},focus(){this.focused=true},click(){this.clicked=true},scrollIntoView(o){this.scrolled=o}};
+ for(const id of ['featured','featured-title','featured-number','featured-badge','featured-meta','feature-tabs','tab-overview','tab-articles','tab-what-changed','featured-status']) ids[id]={dataset:{},attrs:{},setAttribute(k,v){this.attrs[k]=v},focus(){this.focused=true},click(){this.clicked=true},scrollIntoView(o){this.scrolled=o}};
  ids.featured.querySelectorAll=()=>groups;
  vm.runInNewContext(source,{document:{getElementById:id=>ids[id],querySelectorAll:()=>buttons},window:{matchMedia:()=>({matches:reduced})}});
  return {groups,buttons,ids};
@@ -20,17 +20,24 @@ test('starts on Project 003 without moving focus or changing the default tab',()
  assert.equal(s.ids['tab-overview'].clicked,undefined);
  assert.equal(s.ids['featured-title'].focused,undefined);
 });
-test('all ten projects can be selected from either control and return to the analyzer',()=>{
+test('all ten projects can be highlighted from Case Files and return to the analyzer',()=>{
  const s=setup();const original=s.groups.slice();
  for(const b of s.buttons){b.click();
   assert.equal(s.ids.featured.dataset.project,b.dataset.featureSelect);
   assert.ok(s.groups.every(g=>g.hidden===(g.dataset.featureProject!==b.dataset.featureSelect)));
-  assert.equal(s.buttons.filter(b=>b.attrs['aria-pressed']==='true').length,2);
+  assert.equal(s.buttons.filter(b=>b.attrs['aria-pressed']==='true').length,1);
+  assert.equal(b.attrs['aria-label'],`Featured above, ${s.ids['featured-title'].textContent}`);
   assert.equal(s.ids['tab-overview'].clicked,true);
  }
  s.buttons.find(b=>b.dataset.featureSelect==='analyzer').click();
  assert.ok(s.groups.every((g,i)=>g===original[i]));
  assert.equal(s.ids['featured-title'].textContent,'Python IT Ticket Analyzer');
+});
+test('activating the already featured card leaves the current tab and focus alone',()=>{
+ const s=setup();
+ s.buttons.find(b=>b.dataset.featureSelect==='analyzer').click();
+ assert.equal(s.ids['tab-overview'].clicked,undefined);
+ assert.equal(s.ids['featured-title'].focused,undefined);
 });
 test('Project 009 selects TheaterCorp and does not show an article placeholder',()=>{
  const s=setup();s.buttons.find(b=>b.dataset.featureSelect==='theater').click();

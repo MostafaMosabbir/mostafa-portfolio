@@ -24,12 +24,13 @@
 
   function selectProject(key, moveFocus = false) {
     const project = projects[key];
-    if (!project) return;
+    if (!project || key === feature.dataset.project) return;
     groups.forEach(group => { group.hidden = group.dataset.featureProject !== key; });
     buttons.forEach(button => {
       const selected = button.dataset.featureSelect === key;
       button.setAttribute("aria-pressed", String(selected));
-      if (button.classList.contains("feature-select")) button.textContent = selected ? "Featured above" : "Highlight project";
+      button.textContent = selected ? "Featured above" : "Highlight project";
+      button.setAttribute("aria-label", `${button.textContent}, ${projects[button.dataset.featureSelect].title}`);
     });
     feature.dataset.project = key;
     // Project switches return to Brief, so a hidden tab never remains selected.
@@ -52,6 +53,5 @@
     button.addEventListener("click", () => selectProject(button.dataset.featureSelect, true));
     button.hidden = false;
   });
-  document.getElementById("featured-picker").hidden = false;
   selectProject("analyzer");
 })();

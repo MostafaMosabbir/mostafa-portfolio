@@ -85,27 +85,33 @@ summary { cursor: pointer; font-size: .85rem; }
 #projects { border: 0; padding-top: 38px; }
 #projects .section-heading { margin-bottom: 20px; }
 #projects .section-heading h2 { font-size: clamp(1.6rem,2.8vw,2rem); }
-.project-toolbar { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 22px; }
+.project-toolbar { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 12px; }
+.project-toolbar[hidden] { display: none; }
 .project-filters { display: flex; flex-wrap: wrap; gap: 8px; }
 .project-filters button { min-height: 36px; padding: 5px 20px; border: 1px solid var(--line); border-radius: 22px; color: var(--muted); background: transparent; cursor: pointer; font-size: .8rem; }
 .project-filters button[aria-pressed="true"] { background: var(--accent); color: #071710; border-color: var(--accent); }
 .project-grid { grid-template-columns: repeat(3,minmax(0,1fr)); gap: 22px; }
-/* A partial next card invites native horizontal scrolling. Without JS the
-   original grid remains available, including every case file. */
-.case-navigation { display: flex; align-items: center; gap: 10px; margin: 16px 0 0; }
+/* The next card peeks into view. Without JS, the full project grid still works. */
+.case-navigation { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 6px; }
 .case-navigation[hidden] { display: none; }
-.case-navigation p { order: -1; margin: 0 auto 0 0; font-family: monospace; color: #a4b9b0; font-size: .75rem; }
+.case-navigation p { margin: 0; font-family: monospace; color: #a4b9b0; font-size: .75rem; }
+.case-arrows { display: flex; gap: 8px; }
 .case-navigation button { min-width: 44px; min-height: 44px; border: 1px solid #416353; border-radius: 6px; background: #10231d; color: #a6e5c0; font-size: 1.25rem; cursor: pointer; }
-.case-navigation button:hover { background: #1c3c2e; }
+.case-navigation button:hover:not([aria-disabled="true"]) { background: #1c3c2e; }
 .case-navigation button:focus-visible { outline: 2px solid #a6e5c0; outline-offset: 4px; }
-.case-navigation button:disabled { opacity: .35; cursor: default; }
-.project-grid.case-carousel { display: flex; gap: 18px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: thin; scrollbar-color: #577867 #14221b; padding: 4px 0 18px; }
-.case-carousel .project-card:not([hidden]) { display: flex; flex-direction: column; flex: 0 0 76%; min-width: 0; scroll-snap-align: start; min-height: 310px; }
+.case-navigation button[aria-disabled="true"] { opacity: .45; cursor: default; }
+.project-grid.case-carousel { display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x proximity; scrollbar-width: thin; scrollbar-color: #689680 #132523; padding: 4px 0 12px; }
+.case-carousel::-webkit-scrollbar { height: 8px; }
+.case-carousel::-webkit-scrollbar-track { background: #132523; border-radius: 8px; }
+.case-carousel::-webkit-scrollbar-thumb { background: #689680; border-radius: 8px; }
+.case-carousel .project-card:not([hidden]) { display: flex; flex-direction: column; flex: 0 0 43%; min-width: 0; scroll-snap-align: start; }
 .case-carousel .project-card[hidden] { display: none; }
 .case-carousel .project-art { display: none; }
-.case-carousel .project-copy { padding: 28px 28px 18px; }
-.case-carousel .project-copy h3 { font-size: 1.45rem; }
-.case-carousel .feature-select { align-self: flex-start; margin: 0 28px 24px; }
+.case-carousel .project-copy { padding: 18px 18px 12px; }
+.case-carousel .project-copy .eyebrow { margin-bottom: 8px; }
+.case-carousel .project-copy h3 { font-size: 1.2rem; overflow-wrap: anywhere; }
+.case-carousel .feature-select { margin: 0 18px 18px; min-height: 44px; }
+.case-carousel .project-card:has(.feature-select[aria-pressed="true"]) { border-color: #5b9e83; }
 .case-carousel .project-card:hover { transform: none; }
 /* One concise heading per section replaces the repeated editorial slogans. */
 #projects-title, #about-title, #contact-title { font-family: var(--font-mono, monospace); font-size: 1.05rem; line-height: 1.5; letter-spacing: .12em; margin: 0 0 12px; }
@@ -131,11 +137,10 @@ summary { cursor: pointer; font-size: .85rem; }
 .baseline-running .hero-copy { visibility: hidden; }
 @media (max-width: 760px) { .baseline-intro { width: 100%; } .baseline-lines { font-size: 13px; } }
 @media (max-width: 640px) {
-  .case-navigation { gap: 12px; }
-  .case-navigation p { flex: 1; font-size: .75rem; }
   .case-carousel .project-card:not([hidden]) { flex-basis: 88%; }
-  .case-carousel .project-copy { padding: 22px 20px 16px; }
-  .case-carousel .feature-select { margin: 0 20px 22px; }
+}
+@media (pointer: coarse) {
+  .project-filters button { min-height: 44px; }
 }
 .project-card { background: linear-gradient(145deg,#0c191b,#081512); border-radius: 8px; transition: border-color .18s, transform .18s; }
 .project-card:hover { border-color: #538a73; transform: translateY(-3px); }
@@ -270,16 +275,14 @@ body { isolation: isolate; }
 .security-project .text-link { display: inline-block; margin-top: 12px; }
 
 /* Project selection uses real buttons. The active state is textual as well as colored. */
-.featured-picker { display:flex; flex-wrap:wrap; gap:8px; padding:24px 28px 0; }
-.featured-picker[hidden], .feature-select[hidden] { display:none; }
-.featured-picker button, .feature-select { border:1px solid var(--line); border-radius:6px; background:#0b201b; color:var(--ink); padding:10px 14px; cursor:pointer; font:inherit; font-size:.8rem; }
-.featured-picker button[aria-pressed="true"], .feature-select[aria-pressed="true"] { border-color:var(--accent); color:var(--accent); background:#12382c; }
+.feature-select[hidden] { display:none; }
+.feature-select { border:1px solid var(--line); border-radius:6px; background:#0b201b; color:var(--ink); padding:10px 14px; cursor:pointer; font:inherit; font-size:.8rem; }
+.feature-select[aria-pressed="true"] { border-color:var(--accent); color:var(--accent); background:#12382c; cursor:default; }
 .feature-select { margin:0 22px 22px; align-self:flex-start; }
 .security-project .feature-select { display:block; margin:18px 0 0; }
 .security-project .feature-select[hidden] { display:none; }
 .feature-method { padding-left:22px; } .feature-method li { margin-bottom:12px; }
 .sr-only { position:absolute; width:1px; height:1px; padding:0; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
-@media(max-width:620px) { .featured-picker { padding:20px 18px 0; } .featured-picker button { flex:1 1 40%; } }
 
 /* Reserve the greeting width so translations never move the surrounding text. */
 .welcome-rotation { display: inline; padding: 0; border: 0; background: transparent; color: inherit; font: inherit; text-align: left; cursor: pointer; }

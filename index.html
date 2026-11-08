@@ -20,7 +20,7 @@
 
   <!-- These paths must match your folders and filenames exactly. -->
   <link rel="stylesheet" href="styles/main.css">
-  <link rel="stylesheet" href="styles/refined.css?v=kaizen-1">
+  <link rel="stylesheet" href="styles/refined.css?v=case-filmstrip-1">
   <link rel="stylesheet" href="styles/security-workspace.css?v=2">
   <!-- Articles and Tools each have their own section on this page. -->
   <link rel="stylesheet" href="styles/homepage-sections.css?v=1">
@@ -51,8 +51,8 @@
   <script src="scripts/matrix.js?v=perf-1" defer></script>
   <script src="scripts/geometry.js?v=after-hours-fog-2" defer></script>
   <!-- Independent enhancements: navigation, project filtering, and sample analysis. -->
-  <script src="scripts/explorer.js?v=sections-2" defer></script>
-  <script src="scripts/featured-projects.js?v=project-012-2" defer></script>
+  <script src="scripts/explorer.js?v=case-filmstrip-1" defer></script>
+  <script src="scripts/featured-projects.js?v=case-filmstrip-1" defer></script>
   <script src="scripts/theatercorp-demo.js?v=1" defer></script>
   <script src="scripts/assembly-calculator.js?v=1" defer></script>
   <script src="projects/algorithm-explorer/demo/app.js?v=1" defer></script>
@@ -213,20 +213,6 @@
           </div>
         </div>
 
-        <!-- The same featured area can display any project without rebuilding
-             the Analyzer DOM, so its demo state and event handlers survive. -->
-        <div class="featured-picker" id="featured-picker" role="group" aria-label="Choose a featured project" hidden>
-          <button type="button" data-feature-select="portfolio" aria-pressed="false">001 · Portfolio</button>
-          <button type="button" data-feature-select="assistant" aria-pressed="false">002 · Ticket Assistant</button>
-          <button type="button" data-feature-select="analyzer" aria-pressed="true">003 · Ticket Analyzer</button>
-          <button type="button" data-feature-select="security" aria-pressed="false">004 · Security Workspace</button>
-          <button type="button" data-feature-select="columns" aria-pressed="false">006 · Color Columns</button>
-          <button type="button" data-feature-select="kev" aria-pressed="false">007 · CISA Explorer</button>
-          <button type="button" data-feature-select="theater" aria-pressed="false">009 · TheaterCorp</button>
-          <button type="button" data-feature-select="algorithm" aria-pressed="false">010 · Algorithm Explorer</button>
-          <button type="button" data-feature-select="assembly" aria-pressed="false">011 · Assembly Calculator</button>
-          <button type="button" data-feature-select="securebank" aria-pressed="false">012 · SecureBank</button>
-        </div>
         <p id="featured-status" class="sr-only" role="status"></p>
         <p class="record-meta" id="featured-meta">Interface updated <time datetime="2026-10-28">28 Oct 2026</time> <span aria-hidden="true">/</span> Python · CSV · JavaScript demo</p>
         <div class="feature-body">
@@ -677,11 +663,12 @@
           </div>
           <p class="small-label" id="filter-status" role="status">10 projects</p>
         </div>
-        <!-- Real projects only. No demo link until the ticket app is published. -->
         <div class="case-navigation" id="case-navigation" hidden>
-          <button type="button" id="case-previous" aria-label="Previous case file" aria-controls="case-carousel">←</button>
-          <p id="case-position" role="status" aria-live="polite" aria-atomic="true">001 / 010</p>
-          <button type="button" id="case-next" aria-label="Next case file" aria-controls="case-carousel">→</button>
+          <p>Scroll or swipe to browse</p>
+          <div class="case-arrows" role="group" aria-label="Scroll Case Files">
+            <button type="button" id="case-previous" aria-label="Scroll to earlier case files" aria-controls="case-carousel" aria-disabled="true">←</button>
+            <button type="button" id="case-next" aria-label="Scroll to later case files" aria-controls="case-carousel" aria-disabled="true">→</button>
+          </div>
         </div>
         <div class="project-grid" id="case-carousel" role="region" aria-label="Case files">
           <article class="project-card" id="project-portfolio" data-technologies="web javascript" tabindex="-1">
