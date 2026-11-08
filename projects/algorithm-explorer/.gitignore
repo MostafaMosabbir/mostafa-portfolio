@@ -1,0 +1,8 @@
+*.exe
+*.o
+*.obj
+build/
+.zig-cache/
+.zig-local-cache*/
+.zig-global-cache*/
+cpp-test-*-cache-*/

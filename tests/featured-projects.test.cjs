@@ -5,7 +5,7 @@ const fs=require('node:fs');
 const path=require('node:path');
 const source=fs.readFileSync(path.join(__dirname,'../scripts/featured-projects.js'),'utf8');
 function setup(reduced=false){
- const keys=['portfolio','assistant','analyzer','security','columns','kev','theater','assembly'];
+ const keys=['portfolio','assistant','analyzer','security','columns','kev','theater','algorithm','assembly'];
  const groups=keys.flatMap(key=>Array.from({length:4},()=>({dataset:{featureProject:key},hidden:true})));
  const buttons=keys.flatMap(key=>[false,true].map(card=>({dataset:{featureSelect:key},hidden:true,attrs:{},classList:{contains:()=>card},setAttribute(k,v){this.attrs[k]=v},addEventListener(k,fn){this.click=fn}})));
  const ids={};
@@ -20,7 +20,7 @@ test('starts on Project 003 without moving focus or changing the default tab',()
  assert.equal(s.ids['tab-overview'].clicked,undefined);
  assert.equal(s.ids['featured-title'].focused,undefined);
 });
-test('all eight projects can be selected from either control and return to the analyzer',()=>{
+test('all nine projects can be selected from either control and return to the analyzer',()=>{
  const s=setup();const original=s.groups.slice();
  for(const b of s.buttons){b.click();
   assert.equal(s.ids.featured.dataset.project,b.dataset.featureSelect);
