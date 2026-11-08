@@ -32,9 +32,9 @@
       if (button.classList.contains("feature-select")) button.textContent = selected ? "Featured above" : "Highlight project";
     });
     feature.dataset.project = key;
-    // These projects have clearly labelled article placeholders. Project
-    // switches return to Brief, so a hidden tab never remains selected.
-    document.getElementById("tab-articles").hidden = !["security", "columns", "kev"].includes(key);
+    // Project switches return to Brief, so a hidden tab never remains selected.
+    document.getElementById("tab-articles").hidden = !["security", "columns", "kev", "securebank"].includes(key);
+    document.getElementById("tab-what-changed").hidden = key !== "securebank";
     title.textContent = project.title;
     document.getElementById("featured-number").textContent = `Project ${project.number} / Featured project`;
     document.getElementById("featured-badge").textContent = project.badge;

@@ -224,3 +224,158 @@
     min-height: 35px;
   }
 }
+
+/* What Changed pairs the designs and keeps unverified evidence separate. */
+#securebank-what-changed :is(h3, h4, p, figure, dl, dd, ul) { margin: 0; }
+
+#securebank-what-changed :is(.wc-section-head, .wc-version-head) {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px 12px;
+}
+
+#securebank-what-changed > .wc-section-head h3 { font-size: 1.25rem; line-height: 1.25; }
+
+#securebank-what-changed :is(.wc-caption, .wc-status, .wc-slot p) {
+  color: var(--muted);
+  font-size: .8rem;
+}
+
+#securebank-what-changed .wc-compare,
+#securebank-what-changed .wc-slots {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+#securebank-what-changed .wc-compare { gap: 12px; margin-top: 13px; }
+
+#securebank-what-changed .wc-version {
+  min-width: 0;
+  padding: clamp(12px, 2vw, 18px);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--paper);
+}
+
+#securebank-what-changed .wc-kicker {
+  color: var(--muted);
+  font: .7rem/1.45 Consolas, ui-monospace, monospace;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+}
+
+#securebank-what-changed .wc-redesign { border-top-color: var(--accent); }
+#securebank-what-changed .wc-redesign .wc-kicker { color: var(--accent); }
+#securebank-what-changed .wc-version h4 { margin-top: 4px; }
+#securebank-what-changed .wc-status strong { color: var(--ink); }
+
+#securebank-what-changed .wc-topology {
+  display: grid;
+  grid-template-columns: minmax(76px, 1fr) minmax(0, 1.8fr);
+  align-items: center;
+  gap: 18px;
+  min-height: 110px;
+  margin: 14px 0 12px;
+}
+
+#securebank-what-changed .wc-node {
+  display: grid;
+  align-content: center;
+  min-width: 0;
+  min-height: 43px;
+  padding: 6px 8px;
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  background: var(--soft);
+  font-size: .83rem;
+  line-height: 1.25;
+}
+
+#securebank-what-changed .wc-node small {
+  color: var(--muted);
+  font: .72rem/1.3 Consolas, ui-monospace, monospace;
+  overflow-wrap: anywhere;
+}
+
+#securebank-what-changed .wc-targets {
+  position: relative;
+  display: grid;
+  gap: 7px;
+  padding: 0;
+  list-style: none;
+}
+
+#securebank-what-changed .wc-targets li { position: relative; }
+
+#securebank-what-changed .wc-targets li::before,
+#securebank-what-changed .wc-targets::after,
+#securebank-what-changed .wc-redesign .wc-targets::before {
+  content: "";
+  position: absolute;
+}
+
+#securebank-what-changed .wc-targets li::before {
+  top: 50%;
+  left: -10px;
+  width: 10px;
+  border-top: 1px solid var(--line);
+}
+
+#securebank-what-changed .wc-targets::after {
+  top: 50%;
+  left: -18px;
+  width: 8px;
+  border-top: 1px solid var(--line);
+}
+
+#securebank-what-changed .wc-redesign .wc-targets::before {
+  top: 22px;
+  bottom: 22px;
+  left: -10px;
+  border-left: 1px solid var(--line);
+}
+
+#securebank-what-changed .wc-design-row { padding: 9px 0; border-top: 1px solid var(--line); }
+#securebank-what-changed .wc-design-row dt { font-weight: 600; }
+#securebank-what-changed .wc-design-row dd { color: var(--muted); margin-top: 2px; }
+#securebank-what-changed .wc-evidence { margin-top: 19px; }
+#securebank-what-changed .wc-evidence h4 { font-size: 1rem; line-height: 1.25; }
+#securebank-what-changed .wc-evidence details { border-top: 1px solid var(--line); }
+#securebank-what-changed .wc-evidence details:first-of-type { margin-top: 8px; }
+#securebank-what-changed .wc-evidence summary { min-height: 44px; padding: 10px 0; }
+#securebank-what-changed .wc-evidence summary::marker { color: var(--accent); }
+#securebank-what-changed .wc-evidence summary span { margin-left: 7px; color: var(--muted); }
+#securebank-what-changed .wc-slots { gap: 9px; padding-bottom: 12px; }
+
+#securebank-what-changed .wc-slot {
+  min-width: 0;
+  padding: 9px 10px;
+  border: 1px dashed var(--line);
+  border-radius: 6px;
+  background: var(--paper);
+}
+
+#securebank-what-changed .wc-slot p { margin-top: 3px; }
+
+@media (min-width: 651px) {
+  #securebank-what-changed .wc-version {
+    display: grid;
+    grid-row: span 5;
+    grid-template-rows: subgrid;
+    row-gap: 0;
+  }
+
+  #securebank-what-changed .wc-version dl { display: contents; }
+}
+
+@media (max-width: 650px) {
+  #securebank-what-changed :is(.wc-compare, .wc-slots) { grid-template-columns: minmax(0, 1fr); }
+  #securebank-what-changed .wc-topology { min-height: 0; }
+}
+
+@media (max-width: 620px) {
+  #featured[data-project="securebank"] .feature-tabs { flex-wrap: wrap; }
+  #featured[data-project="securebank"] .feature-tabs button { flex: 1 1 30%; min-height: 44px; }
+}

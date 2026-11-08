@@ -92,3 +92,32 @@ test("SecureBank Findings separate the expected policy from pending observations
     key, verdict, expected: verdict, observed: "Pending"
   })));
 });
+
+test("SecureBank What Changed compares two versions and leaves all evidence pending", () => {
+  const homepage = fs.readFileSync(path.join(__dirname, "../index.html"), "utf8");
+  const start = homepage.indexOf('id="securebank-what-changed"');
+  const end = homepage.indexOf('<details class="technical-details">', start);
+  assert.ok(start >= 0 && end > start, "The What Changed comparison is present in the featured project");
+  const comparison = homepage.slice(start, end);
+  assert.match(comparison, /id="wc-v1-title">Original branch lab</);
+  assert.match(comparison, /id="wc-v2-title">Branch and HQ</);
+
+  const versions = Array.from(
+    comparison.matchAll(/class="wc-status"[^>]*>\s*Observed ·\s*<strong>([^<]+)<\/strong>/gi),
+    ([, status]) => status.trim().toLowerCase()
+  );
+  assert.deepEqual(versions, ["pending", "pending"]);
+
+  const evidence = Array.from(
+    comparison.matchAll(/class="wc-slot"[^>]*>\s*<strong>([^<]+)<\/strong>\s*<p>Expected ([^·]+)· Observed ([^<]+)<\/p>/gi),
+    ([, name, expected, observed]) => [name.trim(), expected.trim(), observed.trim().toLowerCase()]
+  );
+  assert.deepEqual(evidence, [
+    ["Teller → HQ app", "allow", "pending"],
+    ["Staff → HQ app", "block at R2", "pending"],
+    ["Guest → Outside test site", "allow", "pending"],
+    ["Guest → HQ app", "block at R1", "pending"],
+    ["Admin → R1 SSH", "allow", "pending"],
+    ["Staff → R1 SSH", "block", "pending"]
+  ]);
+});

@@ -33,7 +33,7 @@
   <link rel="stylesheet" href="styles/theatercorp-demo.css?v=1">
   <link rel="stylesheet" href="styles/assembly-calculator.css?v=1">
   <link rel="stylesheet" href="projects/algorithm-explorer/demo/style.css?v=1">
-  <link rel="stylesheet" href="styles/securebank-lab.css?v=1">
+  <link rel="stylesheet" href="styles/securebank-lab.css?v=2">
   <!-- A small, decorative atmosphere for the After Hours side. -->
   <link rel="stylesheet" href="styles/after-hours-atmosphere.css?v=3">
   <!-- The Ark presents favorite works and links to their official artwork sources. -->
@@ -52,7 +52,7 @@
   <script src="scripts/geometry.js?v=after-hours-fog-2" defer></script>
   <!-- Independent enhancements: navigation, project filtering, and sample analysis. -->
   <script src="scripts/explorer.js?v=sections-2" defer></script>
-  <script src="scripts/featured-projects.js?v=project-012-1" defer></script>
+  <script src="scripts/featured-projects.js?v=project-012-2" defer></script>
   <script src="scripts/theatercorp-demo.js?v=1" defer></script>
   <script src="scripts/assembly-calculator.js?v=1" defer></script>
   <script src="projects/algorithm-explorer/demo/app.js?v=1" defer></script>
@@ -209,6 +209,7 @@
             <button id="tab-evidence" role="tab" aria-selected="false" aria-controls="panel-evidence" tabindex="-1" type="button">Findings</button>
             <!-- These projects have article placeholders; no article is published yet. -->
             <button id="tab-articles" role="tab" aria-selected="false" aria-controls="panel-articles" tabindex="-1" type="button" hidden>Articles</button>
+            <button id="tab-what-changed" role="tab" aria-selected="false" aria-controls="panel-what-changed" tabindex="-1" type="button" hidden>What Changed</button>
           </div>
         </div>
 
@@ -565,6 +566,79 @@
                 <div class="article-slot-image" role="img" aria-label="Image placeholder">IMAGE PLACEHOLDER</div>
                 <div><p class="article-slot-label">PROJECT 006 / PLACEHOLDER</p><h4>ARTICLE TITLE PLACEHOLDER</h4><p>ARTICLE DESCRIPTION PLACEHOLDER</p><p class="article-slot-note">Placeholder text and image. No article has been published here yet.</p><a class="text-link" href="projects/color-columns/index.html#articles">View the case file ↗</a></div>
               </div>
+            </div>
+            <div data-feature-project="securebank" hidden>
+              <p class="muted">Article placeholder · SecureBank Packet Tracer walkthrough</p>
+            </div>
+          </section>
+          <section id="panel-what-changed" class="feature-panel" aria-labelledby="tab-what-changed" hidden>
+            <div id="securebank-what-changed" data-feature-project="securebank" hidden>
+              <header class="wc-section-head">
+                <h3>What Changed</h3>
+                <span class="wc-caption">Design comparison · Packet Tracer evidence pending</span>
+              </header>
+              <div class="wc-compare">
+                <section class="wc-version" aria-labelledby="wc-v1-title">
+                  <header class="wc-version-head">
+                    <div><p class="wc-kicker">V1 · Baseline</p><h4 id="wc-v1-title">Original branch lab</h4></div>
+                    <p class="wc-status">Observed · <strong>Pending</strong></p>
+                  </header>
+                  <figure class="wc-topology" aria-label="V1 topology. One branch router connects the branch VLANs to a local DMZ web server.">
+                    <div class="wc-node"><strong>R1</strong><small>Branch router</small></div>
+                    <ul class="wc-targets"><li class="wc-node"><strong>Local DMZ web</strong><small>10.12.30.10</small></li></ul>
+                  </figure>
+                  <dl>
+                    <div class="wc-design-row"><dt>Application access</dt><dd>A local demo web service on the branch network.</dd></div>
+                    <div class="wc-design-row"><dt>Guest access</dt><dd>Guest HTTP is allowed to the local DMZ in the original policy.</dd></div>
+                    <div class="wc-design-row"><dt>Router administration</dt><dd>Only the Admin PC’s source IP is permitted to SSH to R1.</dd></div>
+                  </dl>
+                </section>
+                <section class="wc-version wc-redesign" aria-labelledby="wc-v2-title">
+                  <header class="wc-version-head">
+                    <div><p class="wc-kicker">V2 · Redesign</p><h4 id="wc-v2-title">Branch and HQ</h4></div>
+                    <p class="wc-status">Observed · <strong>Pending</strong></p>
+                  </header>
+                  <figure class="wc-topology" aria-label="V2 topology. R1 connects over a simulated WAN to R2 and the HQ teller app. An outside test site sits on a separate VLAN.">
+                    <div class="wc-node"><strong>R1</strong><small>Branch router</small></div>
+                    <ul class="wc-targets">
+                      <li class="wc-node"><strong>R2 → HQ teller app</strong><small>Simulated WAN · 10.20.60.10</small></li>
+                      <li class="wc-node"><strong>Outside test site</strong><small>VLAN 90 · 192.0.2.10</small></li>
+                    </ul>
+                  </figure>
+                  <dl>
+                    <div class="wc-design-row"><dt>Application access</dt><dd>R2’s policy permits Teller VLAN 50 to the HQ app and blocks Staff.</dd></div>
+                    <div class="wc-design-row"><dt>Guest access</dt><dd>R1’s policy permits the outside test site and blocks Guest traffic to HQ.</dd></div>
+                    <div class="wc-design-row"><dt>Router administration</dt><dd>The Admin-only SSH rule carries forward and gets tested again.</dd></div>
+                  </dl>
+                </section>
+              </div>
+              <section class="wc-evidence" aria-labelledby="wc-evidence-title">
+                <header class="wc-section-head">
+                  <h4 id="wc-evidence-title">V2 Packet Tracer evidence</h4>
+                  <span class="wc-caption">Topology screenshot pending</span>
+                </header>
+                <details data-evidence="hq" open>
+                  <summary>HQ app access <span>2 pending</span></summary>
+                  <div class="wc-slots">
+                    <div class="wc-slot"><strong>Teller → HQ app</strong><p>Expected allow · Observed pending</p><p>HQ page screenshot pending</p></div>
+                    <div class="wc-slot"><strong>Staff → HQ app</strong><p>Expected block at R2 · Observed pending</p><p>R2 packet drop screenshot pending</p></div>
+                  </div>
+                </details>
+                <details data-evidence="guest">
+                  <summary>Guest access <span>2 pending</span></summary>
+                  <div class="wc-slots">
+                    <div class="wc-slot"><strong>Guest → Outside test site</strong><p>Expected allow · Observed pending</p><p>Outside page screenshot pending</p></div>
+                    <div class="wc-slot"><strong>Guest → HQ app</strong><p>Expected block at R1 · Observed pending</p><p>R1 packet drop screenshot pending</p></div>
+                  </div>
+                </details>
+                <details data-evidence="ssh">
+                  <summary>Admin SSH <span>2 pending</span></summary>
+                  <div class="wc-slots">
+                    <div class="wc-slot"><strong>Admin → R1 SSH</strong><p>Expected allow · Observed pending</p><p>Successful R1 login screenshot pending</p></div>
+                    <div class="wc-slot"><strong>Staff → R1 SSH</strong><p>Expected block · Observed pending</p><p>Successful ping and failed SSH screenshot pending</p></div>
+                  </div>
+                </details>
+              </section>
             </div>
           </section>
         </div>

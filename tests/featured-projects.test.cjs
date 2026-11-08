@@ -9,7 +9,7 @@ function setup(reduced=false){
  const groups=keys.flatMap(key=>Array.from({length:4},()=>({dataset:{featureProject:key},hidden:true})));
  const buttons=keys.flatMap(key=>[false,true].map(card=>({dataset:{featureSelect:key},hidden:true,attrs:{},classList:{contains:()=>card},setAttribute(k,v){this.attrs[k]=v},addEventListener(k,fn){this.click=fn}})));
  const ids={};
- for(const id of ['featured','featured-title','featured-number','featured-badge','featured-meta','feature-tabs','tab-overview','tab-articles','featured-status','featured-picker']) ids[id]={dataset:{},attrs:{},setAttribute(k,v){this.attrs[k]=v},focus(){this.focused=true},click(){this.clicked=true},scrollIntoView(o){this.scrolled=o}};
+ for(const id of ['featured','featured-title','featured-number','featured-badge','featured-meta','feature-tabs','tab-overview','tab-articles','tab-what-changed','featured-status','featured-picker']) ids[id]={dataset:{},attrs:{},setAttribute(k,v){this.attrs[k]=v},focus(){this.focused=true},click(){this.clicked=true},scrollIntoView(o){this.scrolled=o}};
  ids.featured.querySelectorAll=()=>groups;
  vm.runInNewContext(source,{document:{getElementById:id=>ids[id],querySelectorAll:()=>buttons},window:{matchMedia:()=>({matches:reduced})}});
  return {groups,buttons,ids};
@@ -65,4 +65,18 @@ test('Project 004 has its own metadata, focus announcement and reduced-motion sc
  assert.equal(s.ids['featured-title'].focused,true);
  assert.equal(s.ids.featured.scrolled.behavior,'instant');
  assert.match(s.ids['featured-status'].textContent,/004/);
+});
+test('only SecureBank exposes What Changed and it also shows Articles',()=>{
+ const s=setup();
+ assert.equal(s.ids['tab-what-changed'].hidden,true);
+ const select=key=>s.buttons.find(b=>b.dataset.featureSelect===key).click();
+ select('securebank');
+ assert.equal(s.ids['tab-articles'].hidden,false);
+ assert.equal(s.ids['tab-what-changed'].hidden,false);
+ select('security');
+ assert.equal(s.ids['tab-articles'].hidden,false);
+ assert.equal(s.ids['tab-what-changed'].hidden,true);
+ select('assembly');
+ assert.equal(s.ids['tab-articles'].hidden,true);
+ assert.equal(s.ids['tab-what-changed'].hidden,true);
 });
