@@ -151,16 +151,16 @@ SAMPLE-006,VPN disconnects,network,,new,`;
     return card.getBoundingClientRect().left - carousel.getBoundingClientRect().left + carousel.scrollLeft;
   }
   function scrollCases(direction) {
-    const arrow = direction < 0 ? previous : next;
-    if (arrow.getAttribute("aria-disabled") === "true") return;
-
     // Measure the live rail so an arrow also works after a swipe or resize.
     const left = carousel.scrollLeft;
+    const end = caseScrollEnd();
+    if (direction < 0 ? left <= scrollTolerance : left >= end - scrollTolerance) return;
     const offsets = visibleCards.map(cardOffset);
     const target = direction < 0
       ? offsets.reverse().find(offset => offset < left - scrollTolerance) ?? 0
-      : offsets.find(offset => offset > left + scrollTolerance) ?? caseScrollEnd();
+      : offsets.find(offset => offset > left + scrollTolerance) ?? end;
     carousel.scrollTo({ left: target, behavior: reducedCaseMotion.matches ? "instant" : "smooth" });
+    updateCaseArrows();
   }
   function filterProjects(technology) {
     visibleCards = cards.filter(card => technology === "all" || card.dataset.technologies.split(" ").includes(technology));
