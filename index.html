@@ -33,6 +33,7 @@
   <link rel="stylesheet" href="styles/theatercorp-demo.css?v=1">
   <link rel="stylesheet" href="styles/assembly-calculator.css?v=1">
   <link rel="stylesheet" href="projects/algorithm-explorer/demo/style.css?v=1">
+  <link rel="stylesheet" href="styles/securebank-lab.css?v=1">
   <!-- A small, decorative atmosphere for the After Hours side. -->
   <link rel="stylesheet" href="styles/after-hours-atmosphere.css?v=3">
   <!-- The Ark presents favorite works and links to their official artwork sources. -->
@@ -51,10 +52,11 @@
   <script src="scripts/geometry.js?v=after-hours-fog-2" defer></script>
   <!-- Independent enhancements: navigation, project filtering, and sample analysis. -->
   <script src="scripts/explorer.js?v=sections-2" defer></script>
-  <script src="scripts/featured-projects.js?v=project-010-1" defer></script>
+  <script src="scripts/featured-projects.js?v=project-012-1" defer></script>
   <script src="scripts/theatercorp-demo.js?v=1" defer></script>
   <script src="scripts/assembly-calculator.js?v=1" defer></script>
   <script src="projects/algorithm-explorer/demo/app.js?v=1" defer></script>
+  <script src="scripts/securebank-lab.js?v=1" defer></script>
   <script src="scripts/color-columns-embed.js?v=1" defer></script>
   <!-- R creates the data file; this script displays it without a network request. -->
   <script src="cybersecurity/security-proposal-workspace/analysis/findings-data.js?v=1" defer></script>
@@ -222,6 +224,7 @@
           <button type="button" data-feature-select="theater" aria-pressed="false">009 · TheaterCorp</button>
           <button type="button" data-feature-select="algorithm" aria-pressed="false">010 · Algorithm Explorer</button>
           <button type="button" data-feature-select="assembly" aria-pressed="false">011 · Assembly Calculator</button>
+          <button type="button" data-feature-select="securebank" aria-pressed="false">012 · SecureBank</button>
         </div>
         <p id="featured-status" class="sr-only" role="status"></p>
         <p class="record-meta" id="featured-meta">Interface updated <time datetime="2026-10-28">28 Oct 2026</time> <span aria-hidden="true">/</span> Python · CSV · JavaScript demo</p>
@@ -365,6 +368,43 @@
                 </div>
               </section>
             </div>
+            <div data-feature-project="securebank" hidden>
+              <div id="securebank-lab" hidden>
+                <figure class="sb-panel" aria-labelledby="sb-topology-title" aria-describedby="sb-topology-description">
+                  <figcaption>
+                    <h4 id="sb-topology-title">Lab topology</h4>
+                    <p class="sb-caption" id="sb-topology-description">Four VLANs on one switch, routed through one policy boundary.</p>
+                  </figcaption>
+                  <div class="sb-network" data-network data-verdict="allow">
+                    <div class="sb-device sb-core" data-node="router"><strong>R1 · Router</strong><span>ACLs / SSH</span></div>
+                    <div class="sb-wire"><span>802.1Q trunk</span></div>
+                    <div class="sb-device sb-core"><strong>SW1 · Switch</strong><span>VLAN access ports</span></div>
+                    <div class="sb-wire sb-drop" aria-hidden="true"></div>
+                    <ul class="sb-branches" aria-label="Endpoints connected to switch SW1">
+                      <li><div class="sb-device" data-node="staff"><strong>Staff</strong><span>VLAN 10</span><span class="sb-subnet">10.12.10.0/24</span></div></li>
+                      <li><div class="sb-device" data-node="guest"><strong>Guest</strong><span>VLAN 20</span><span class="sb-subnet">10.12.20.0/24</span></div></li>
+                      <li><div class="sb-device" data-node="dmz"><strong>DMZ web</strong><span>VLAN 30</span><span class="sb-subnet">10.12.30.0/24</span></div></li>
+                      <li><div class="sb-device" data-node="admin"><strong>Admin</strong><span>VLAN 40</span><span class="sb-subnet">10.12.40.0/24</span></div></li>
+                    </ul>
+                    <div class="sb-route" role="status" aria-atomic="true">
+                      <strong data-verdict-label>Expected allow</strong>
+                      <span data-route-detail>R1 permits Guest HTTP to the DMZ web server.</span>
+                    </div>
+                  </div>
+                </figure>
+                <section class="sb-panel" aria-labelledby="sb-paths-title">
+                  <h4 id="sb-paths-title">Trace a planned path</h4>
+                  <div class="sb-paths" role="group" aria-label="Planned traffic paths">
+                    <button type="button" data-path="guestWeb" aria-pressed="true"><span>Guest → DMZ web</span><span>HTTP</span></button>
+                    <button type="button" data-path="guestStaff" aria-pressed="false"><span>Guest → Staff</span><span>Ping</span></button>
+                    <button type="button" data-path="dmzStaff" aria-pressed="false"><span>DMZ → Staff</span><span>Ping</span></button>
+                    <button type="button" data-path="adminSsh" aria-pressed="false"><span>Admin → Router</span><span>SSH</span></button>
+                    <button type="button" data-path="staffSsh" aria-pressed="false"><span>Staff → Router</span><span>SSH</span></button>
+                  </div>
+                </section>
+              </div>
+              <p class="muted">Adapted from my network security coursework. Packet Tracer build and test captures pending.</p>
+            </div>
           </section>
           <section id="panel-process" class="feature-panel" aria-labelledby="process-heading">
             <h3 id="process-heading">Method</h3><div data-feature-project="analyzer">
@@ -420,6 +460,16 @@
               <p>Adapted from my Computer Organization class project. The trace starts with the inputs already in <code>ESI</code> and <code>EDI</code>. Each operation copies <code>ESI</code> into <code>EAX</code>, performs its arithmetic, and saves the result.</p>
               <p>Division prepares <code>EDX:EAX</code> with <code>CDQ</code>. Then <code>IDIV</code> puts the quotient in <code>EAX</code> and the remainder in <code>EDX</code>.</p>
             </div>
+            <div data-feature-project="securebank" hidden>
+              <h4>From topology to test</h4>
+              <ol>
+                <li><strong>Build.</strong> Connect three PCs and one web server to the switch. Assign each endpoint its own VLAN.</li>
+                <li><strong>Route.</strong> Trunk the four VLANs to R1, give each a gateway, and verify connectivity before filtering.</li>
+                <li><strong>Restrict.</strong> Allow Guest HTTP to the DMZ server and web replies back to Guest. Limit router SSH to the Admin PC.</li>
+                <li><strong>Verify.</strong> Compare the baseline with the filtered traffic. Try SSH from Admin and Staff using the same router address.</li>
+              </ol>
+              <p class="muted">The broader architecture design includes VPN access, IDS/IPS, SIEM, and a honeypot.</p>
+            </div>
           </section>
           <section id="panel-evidence" class="feature-panel" aria-labelledby="evidence-heading">
             <h3 id="evidence-heading">Findings</h3><div data-feature-project="analyzer">
@@ -471,6 +521,26 @@
               <p>Try <code>−18 ÷ 4</code> to see a quotient of <code>−4</code> and remainder of <code>−2</code>. Change the divisor to <code>0</code> to see the trace stop at <code>IDIV</code> before the result is saved.</p>
               <div class="evidence-links"><a href="https://github.com/MostafaMosabbir/mostafa-portfolio/blob/main/scripts/assembly-calculator.js">Explore the simulation source ↗</a></div>
             </div>
+            <div id="securebank-findings" data-feature-project="securebank" hidden>
+              <h4>The Questions Behind the Work</h4>
+              <ol>
+                <li>Can a guest use the web service while Staff stays isolated?</li>
+                <li>Can the DMZ server initiate a connection to Staff?</li>
+                <li>Which workstation can administer the router over SSH?</li>
+              </ol>
+              <table class="sb-checks">
+                <caption class="sr-only">Expected outcomes and observed Packet Tracer results</caption>
+                <thead><tr><th scope="col">Traffic path</th><th scope="col">Expected</th><th scope="col">Observed</th></tr></thead>
+                <tbody>
+                  <tr data-check="guestWeb" data-verdict="allow"><th scope="row">Guest → DMZ · HTTP</th><td>Allow</td><td>Pending</td></tr>
+                  <tr data-check="guestStaff" data-verdict="block"><th scope="row">Guest → Staff · Ping</th><td>Block</td><td>Pending</td></tr>
+                  <tr data-check="dmzStaff" data-verdict="block"><th scope="row">DMZ → Staff · Ping</th><td>Block</td><td>Pending</td></tr>
+                  <tr data-check="adminSsh" data-verdict="allow"><th scope="row">Admin → Router · SSH</th><td>Allow</td><td>Pending</td></tr>
+                  <tr data-check="staffSsh" data-verdict="block"><th scope="row">Staff → Router · SSH</th><td>Block</td><td>Pending</td></tr>
+                </tbody>
+              </table>
+              <p class="muted">Observed results are pending the Packet Tracer run.</p>
+            </div>
           </section>
           <section id="panel-articles" class="feature-panel" aria-labelledby="articles-heading" hidden>
             <h3 id="articles-heading">Articles</h3>
@@ -501,6 +571,7 @@
         <details class="technical-details"><summary>View technical details</summary>
           <p data-feature-project="algorithm" hidden>The Workbench demo traces the algorithms in JavaScript. The C++17 command line program runs locally. Both implementations have their own tests.</p>
           <p data-feature-project="assembly" hidden>JavaScript models the arithmetic instructions shown in the trace. The input range keeps the results within signed 32-bit limits.</p>
+          <p data-feature-project="securebank" hidden>The browser trace illustrates the planned policy. Packet Tracer will supply the observed results.</p>
           <p data-feature-project="analyzer">The full tool runs locally in Python. This browser demonstration analyzes a separate six-ticket sample using JavaScript. It checks required fields, groups repeated subject wording, and flags resolved or closed tickets without notes. Repeated wording is a review candidate, not proof of the same root cause.</p>
         <p data-feature-project="portfolio" hidden>Built with HTML, CSS, and JavaScript. Published with GitHub Pages. The visual effects and project interactions run in the browser.</p><p data-feature-project="assistant" hidden>A local JavaScript prototype using fictional tickets and rule-based matching. Draft responses require human review.</p><p data-feature-project="security" hidden>The assessment engine runs locally in Python using the standard library. The published report is a fixed fictional example, not a live assessment service or a compliance determination.</p><p data-feature-project="columns" hidden>The original desktop game uses Rust and ggez. This browser adaptation reimplements the game rules in Rust compiled to WebAssembly; JavaScript handles the browser display and controls. Closing the game resets the current session.</p><p data-feature-project="kev" hidden>R validates the public CISA catalog and generates a monthly JSON snapshot. GitHub Actions checks daily; JavaScript displays the latest available snapshot and a bundled fallback when needed.</p><p data-feature-project="theater" hidden>The Java source adapts a 2019 class project and saves locally. The independent browser demo uses JavaScript, does not run the Java application, and resets when the page refreshes.</p></details>
       </section>
@@ -530,12 +601,12 @@
             <button type="button" data-filter="rust" aria-pressed="false">Rust</button>
             <button type="button" data-filter="r" aria-pressed="false">R</button>
           </div>
-          <p class="small-label" id="filter-status" role="status">9 projects</p>
+          <p class="small-label" id="filter-status" role="status">10 projects</p>
         </div>
         <!-- Real projects only. No demo link until the ticket app is published. -->
         <div class="case-navigation" id="case-navigation" hidden>
           <button type="button" id="case-previous" aria-label="Previous case file" aria-controls="case-carousel">←</button>
-          <p id="case-position" role="status" aria-live="polite" aria-atomic="true">001 / 009</p>
+          <p id="case-position" role="status" aria-live="polite" aria-atomic="true">001 / 010</p>
           <button type="button" id="case-next" aria-label="Next case file" aria-controls="case-carousel">→</button>
         </div>
         <div class="project-grid" id="case-carousel" role="region" aria-label="Case files">
@@ -699,6 +770,24 @@ idiv edi       ; eax = 4, edx = 2</pre>
               <p class="project-availability">Interactive browser simulation</p>
             </div>
             <button class="feature-select" type="button" data-feature-select="assembly" aria-pressed="false" hidden>Highlight project</button>
+          </article>
+          <article class="project-card" id="project-securebank" data-technologies="cybersecurity javascript" tabindex="-1">
+            <div class="project-art" aria-hidden="true">
+              <div class="terminal-bar"><i></i><i></i><i></i><span>securebank / planned traffic</span></div>
+              <pre>Guest → DMZ web   HTTP
+Expected: allow
+
+Guest → Staff     ICMP
+Expected: block</pre>
+            </div>
+            <div class="project-copy">
+              <p class="eyebrow">Project 012 <span class="badge">Lab plan</span></p>
+              <h3>SecureBank Network Defense Lab</h3>
+              <p>Trace five planned traffic paths through a fictional bank network and see where the router should allow or block them.</p>
+              <ul class="tags" aria-label="SecureBank technologies"><li>Cybersecurity</li><li>Packet Tracer</li><li>Network segmentation</li></ul>
+              <p class="project-availability">Interactive traffic plan · Lab results pending</p>
+            </div>
+            <button class="feature-select" type="button" data-feature-select="securebank" aria-pressed="false" hidden>Highlight project</button>
           </article>
         </div>
       </section>

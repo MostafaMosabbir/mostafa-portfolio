@@ -1,0 +1,226 @@
+/* The topology and checks use the Workbench palette and share its featured tabs. */
+#securebank-lab:not([hidden]) {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
+  gap: 14px;
+}
+
+#securebank-lab .sb-panel {
+  min-width: 0;
+  margin: 0;
+  padding: clamp(12px, 2.4vw, 18px);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--paper);
+}
+
+#securebank-lab h4 {
+  margin: 0 0 4px;
+  font-size: 1rem;
+}
+
+#securebank-lab .sb-caption {
+  margin: 0 0 14px;
+  color: var(--muted);
+  font-size: .8rem;
+}
+
+#securebank-lab .sb-network {
+  --sb-path: var(--accent);
+  display: grid;
+  justify-items: center;
+  padding-top: 10px;
+  min-width: 0;
+}
+
+#securebank-lab .sb-network[data-verdict="block"] { --sb-path: #ffb6a9; }
+
+#securebank-lab .sb-device {
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  gap: 2px;
+  min-width: 0;
+  min-height: 50px;
+  padding: 6px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  color: var(--ink);
+  background: var(--soft);
+  text-align: center;
+  line-height: 1.25;
+}
+
+#securebank-lab .sb-device strong { font-size: .83rem; }
+#securebank-lab .sb-device span,
+#securebank-lab .sb-wire span,
+#securebank-lab .sb-paths button span:last-child {
+  color: var(--muted);
+  font: .72rem/1.3 Consolas, ui-monospace, monospace;
+}
+
+#securebank-lab .sb-device[data-state="source"],
+#securebank-lab .sb-device[data-state="arrival"],
+#securebank-lab .sb-network[data-verdict="block"] [data-node="router"] {
+  border-color: var(--sb-path);
+}
+
+#securebank-lab .sb-device[data-state="blocked"] { border: 1px dashed var(--sb-path); }
+#securebank-lab .sb-core { min-width: 124px; }
+
+#securebank-lab .sb-wire {
+  position: relative;
+  width: 2px;
+  height: 30px;
+  background: var(--sb-path);
+}
+
+#securebank-lab .sb-wire span {
+  position: absolute;
+  left: 9px;
+  top: 6px;
+  white-space: nowrap;
+}
+
+#securebank-lab .sb-drop {
+  height: 14px;
+  background: var(--line);
+}
+
+#securebank-lab .sb-branches {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+#securebank-lab .sb-branches li {
+  position: relative;
+  min-width: 0;
+  padding: 17px 4px 0;
+}
+
+#securebank-lab .sb-branches li::before,
+#securebank-lab .sb-branches li::after {
+  content: "";
+  position: absolute;
+}
+
+#securebank-lab .sb-branches li::before {
+  inset: 0 0 auto;
+  border-top: 1px solid var(--line);
+}
+
+#securebank-lab .sb-branches li:first-child::before { left: 50%; }
+#securebank-lab .sb-branches li:last-child::before { right: 50%; }
+#securebank-lab .sb-branches li::after {
+  top: 0;
+  left: 50%;
+  height: 17px;
+  border-left: 1px solid var(--line);
+}
+
+#securebank-lab .sb-branches li[data-state="source"]::after,
+#securebank-lab .sb-branches li[data-state="arrival"]::after { border-color: var(--sb-path); }
+
+#securebank-lab .sb-branches li[data-state="blocked"]::after {
+  border-color: var(--sb-path);
+  border-style: dashed;
+}
+
+#securebank-lab .sb-subnet { overflow-wrap: anywhere; }
+
+#securebank-lab .sb-route {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 2px 8px;
+  margin: 0;
+  padding-top: 9px;
+  color: var(--muted);
+  font-size: .82rem;
+}
+
+#securebank-lab .sb-route :is(b, strong) { color: var(--sb-path); }
+#securebank-lab .sb-paths { display: grid; gap: 5px; margin-top: 10px; }
+
+#securebank-lab .sb-paths button {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 3px 9px;
+  min-height: 44px;
+  padding: 6px 9px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  color: var(--ink);
+  background: var(--soft);
+  font: inherit;
+  font-size: .83rem;
+  text-align: left;
+  cursor: pointer;
+}
+
+#securebank-lab .sb-paths button:hover,
+#securebank-lab .sb-paths [aria-pressed="true"] { border-color: var(--accent); }
+#securebank-lab .sb-paths [aria-pressed="true"] {
+  background: color-mix(in srgb, var(--accent) 12%, var(--soft));
+}
+
+#securebank-findings .sb-checks {
+  width: 100%;
+  margin: 12px 0;
+  border-collapse: collapse;
+  font-size: .85rem;
+}
+
+#securebank-findings .sb-checks :is(th, td) {
+  padding: 8px 6px;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  overflow-wrap: anywhere;
+}
+
+#securebank-findings .sb-checks td:last-child { color: var(--muted); }
+#securebank-findings [data-verdict="allow"] td:nth-child(2) { color: var(--accent); }
+#securebank-findings [data-verdict="block"] td:nth-child(2) { color: #ffb6a9; }
+
+@media (max-width: 900px) {
+  #securebank-lab:not([hidden]) { grid-template-columns: minmax(0, 1fr); }
+}
+
+@media (max-width: 560px) {
+  #securebank-lab .sb-network { justify-items: start; }
+  #securebank-lab .sb-wire { margin-left: 18px; }
+  #securebank-lab .sb-branches {
+    grid-template-columns: minmax(0, 1fr);
+    padding-left: 18px;
+  }
+
+  #securebank-lab .sb-branches li {
+    padding: 4px 0 4px 14px;
+    border-left: 1px solid var(--line);
+  }
+
+  #securebank-lab .sb-branches li::before { display: none; }
+  #securebank-lab .sb-branches li::after {
+    left: 0;
+    top: 50%;
+    width: 14px;
+    height: 0;
+    border-left: 0;
+    border-top: 1px solid var(--line);
+  }
+
+  #securebank-lab .sb-branches .sb-device {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 3px 9px;
+    min-height: 35px;
+  }
+}
