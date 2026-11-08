@@ -10,7 +10,26 @@ function scene({reduced=false,fine=true}={}) {
   const canvas={getContext:()=>ctx};
   const pause={textContent:'Pause background',value:'false',getAttribute(){return this.value;},click(){this.value=this.value==='true'?'false':'true';observers[0]();}};
   const creative={setAttribute(k,v){this[k]=v;},addEventListener(k,f){this[k]=f;}};
-  const doc={body:{dataset:{}},hidden:false,documentElement:{addEventListener(){}},getElementById:id=>({'geometry-field':canvas,'matrix-toggle':pause,'geometry-toggle':creative}[id]),addEventListener(k,f){events[k]=f;}};
+  const doc = {
+    body: {dataset: {}},
+    hidden: false,
+    documentElement: {addEventListener() {}},
+    getElementById: id => ({
+      'geometry-field': canvas,
+      'matrix-toggle': pause,
+      'geometry-toggle': creative
+    }[id]),
+    // Cached fog tiles render separately from the visible cursor glow.
+    createElement(tag) {
+      assert.equal(tag, 'canvas');
+      const tileContext = {
+        createRadialGradient() { return {addColorStop() {}}; },
+        fillRect() {}
+      };
+      return {getContext: () => tileContext};
+    },
+    addEventListener(k, f) { events[k] = f; }
+  };
   const context={document:doc,window:{addEventListener(k,f){events[k]=f;}},innerWidth:1200,innerHeight:800,devicePixelRatio:2,
     matchMedia:q=>({matches:q.includes('reduce')?reduced:fine,addEventListener(){}}),
     MutationObserver:class{constructor(f){observers.push(f);}observe(){}},
