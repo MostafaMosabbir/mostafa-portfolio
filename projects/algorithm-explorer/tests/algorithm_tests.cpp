@@ -80,6 +80,29 @@ void testSearch() {
     }
 }
 
+void testBinarySearch() {
+    using explorer::binarySearchFirst;
+    const std::vector<int> values{2, 4, 7, 7, 11, 15, 19, 23};
+
+    const auto duplicate = binarySearchFirst(values, 7);
+    check(duplicate.foundIndex == 2, "Return the first 7");
+    check(duplicate.comparisons == 3 && duplicate.steps.size() == 3,
+          "Record one step per probe");
+    check(duplicate.steps[0].index == 3 && duplicate.steps[1].index == 1
+          && duplicate.steps[2].index == 2, "Probe indices 3, 1, 2 in order");
+
+    const auto missing = binarySearchFirst(values, 10);
+    check(!missing.foundIndex && missing.comparisons == 3,
+          "An absent target should produce no match");
+
+    const auto empty = binarySearchFirst({}, 7);
+    check(!empty.foundIndex && empty.comparisons == 0,
+          "An empty list should make zero probes");
+
+    const auto first = binarySearchFirst({7, 7, 7, 7}, 7);
+    check(first.foundIndex == 0, "Index zero is a valid match");
+}
+
 void testSorting() {
     using explorer::selectionSort;
     const std::vector<std::vector<int>> examples = {
@@ -126,6 +149,7 @@ int main() {
     try {
         testParsing();
         testSearch();
+        testBinarySearch();
         testSorting();
         std::cout << "Algorithm Explorer checks passed: " << checks << '\n';
         return 0;

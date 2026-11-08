@@ -35,7 +35,7 @@
     feature.dataset.project = key;
     // Project switches return to Brief, so a hidden tab never remains selected.
     document.getElementById("tab-articles").hidden = !["security", "columns", "kev", "securebank"].includes(key);
-    document.getElementById("tab-what-changed").hidden = key !== "securebank";
+    document.getElementById("tab-what-changed").hidden = !["algorithm", "securebank"].includes(key);
     title.textContent = project.title;
     document.getElementById("featured-number").textContent = `Project ${project.number} / Featured project`;
     document.getElementById("featured-badge").textContent = project.badge;

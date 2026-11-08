@@ -50,6 +50,37 @@ SearchResult linearSearch(const std::vector<int>& values, int target) {
     return result;
 }
 
+SearchResult binarySearchFirst(const std::vector<int>& values, int target) {
+    SearchResult result{{}, std::nullopt, 0};
+
+    // The bounds are inclusive. A signed high can become -1.
+    std::ptrdiff_t low = 0;
+    std::ptrdiff_t high = static_cast<std::ptrdiff_t>(values.size()) - 1;
+
+    while (low <= high) {
+        // Find the middle without adding the two bounds.
+        const auto mid = low + (high - low) / 2;
+        const auto index = static_cast<std::size_t>(mid);
+        const int value = values[index];
+        const bool matched = value == target;
+
+        result.steps.push_back({index, value, matched});
+        ++result.comparisons;
+
+        if (value < target) {
+            low = mid + 1;
+        } else {
+            // Save this match, then look to its left for an earlier one.
+            if (matched) {
+                result.foundIndex = index;
+            }
+            high = mid - 1;
+        }
+    }
+
+    return result;
+}
+
 SortResult selectionSort(const std::vector<int>& values) {
     SortResult result{values, 0, {}};
     // i + 1 < size avoids subtracting 1 from an empty unsigned size.

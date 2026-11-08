@@ -39,6 +39,9 @@ struct SearchResult {
 // Find the first match, using zero-based positions, or return no match.
 SearchResult linearSearch(const std::vector<int>& values, int target);
 
+// The input must already be sorted in ascending order.
+SearchResult binarySearchFirst(const std::vector<int>& values, int target);
+
 struct SortComparison {
     std::size_t candidateIndex;
     std::size_t minimumIndexBefore;

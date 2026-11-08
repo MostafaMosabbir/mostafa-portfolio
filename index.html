@@ -32,7 +32,7 @@
   <link rel="stylesheet" href="styles/cisa-kev-chart.css?v=1">
   <link rel="stylesheet" href="styles/theatercorp-demo.css?v=1">
   <link rel="stylesheet" href="styles/assembly-calculator.css?v=1">
-  <link rel="stylesheet" href="projects/algorithm-explorer/demo/style.css?v=1">
+  <link rel="stylesheet" href="projects/algorithm-explorer/demo/style.css?v=2">
   <link rel="stylesheet" href="styles/securebank-lab.css?v=2">
   <!-- A small, decorative atmosphere for the After Hours side. -->
   <link rel="stylesheet" href="styles/after-hours-atmosphere.css?v=3">
@@ -52,10 +52,11 @@
   <script src="scripts/geometry.js?v=after-hours-fog-2" defer></script>
   <!-- Independent enhancements: navigation, project filtering, and sample analysis. -->
   <script src="scripts/explorer.js?v=case-filmstrip-2" defer></script>
-  <script src="scripts/featured-projects.js?v=case-filmstrip-1" defer></script>
+  <script src="scripts/featured-projects.js?v=algorithm-comparison-1" defer></script>
   <script src="scripts/theatercorp-demo.js?v=1" defer></script>
   <script src="scripts/assembly-calculator.js?v=1" defer></script>
   <script src="projects/algorithm-explorer/demo/app.js?v=1" defer></script>
+  <script src="projects/algorithm-explorer/demo/comparison.js?v=1" defer></script>
   <script src="scripts/securebank-lab.js?v=1" defer></script>
   <script src="scripts/color-columns-embed.js?v=1" defer></script>
   <!-- R creates the data file; this script displays it without a network request. -->
@@ -558,6 +559,48 @@
             </div>
           </section>
           <section id="panel-what-changed" class="feature-panel" aria-labelledby="tab-what-changed" hidden>
+            <div id="algorithm-search-comparison" data-feature-project="algorithm" hidden>
+              <h3>What Changed</h3>
+              <p class="algorithm-compare-note">Follow linear and binary search on the same sorted list. One probe means checking one position. Indices start at zero.</p>
+              <div class="algorithm-compare-toolbar">
+                <label for="algorithm-compare-example">Search example</label>
+                <select id="algorithm-compare-example" data-example>
+                  <option value="23">23 · Late match</option>
+                  <option value="2">2 · Early match</option>
+                  <option value="7">7 · Duplicate</option>
+                  <option value="10">10 · Missing</option>
+                </select>
+              </div>
+              <div class="algorithm-compare-lanes">
+                <section class="algorithm-compare-lane" data-lane="linear" aria-labelledby="algorithm-compare-linear">
+                  <header>
+                    <div><p class="algorithm-compare-kicker">V1 / Baseline</p><h4 id="algorithm-compare-linear">Linear search</h4></div>
+                    <p class="algorithm-compare-count" data-count></p>
+                  </header>
+                  <p class="algorithm-compare-note">Works in any order</p>
+                  <ol class="algorithm-compare-array" data-array aria-label="Linear search values"></ol>
+                  <p class="algorithm-compare-detail" data-detail></p>
+                  <p class="algorithm-compare-result" data-result></p>
+                </section>
+                <section class="algorithm-compare-lane" data-lane="binary" aria-labelledby="algorithm-compare-binary">
+                  <header>
+                    <div><p class="algorithm-compare-kicker">V2 / Added</p><h4 id="algorithm-compare-binary">Binary search</h4></div>
+                    <p class="algorithm-compare-count" data-count></p>
+                  </header>
+                  <p class="algorithm-compare-note">Requires ascending order</p>
+                  <ol class="algorithm-compare-array" data-array aria-label="Binary search values"></ol>
+                  <p class="algorithm-compare-detail" data-detail></p>
+                  <p class="algorithm-compare-result" data-result></p>
+                </section>
+              </div>
+              <div class="algorithm-compare-controls" role="group" aria-label="Step through both searches">
+                <button type="button" data-previous aria-disabled="true">Previous</button>
+                <button type="button" class="algorithm-compare-next" data-next>Next probe</button>
+                <button type="button" data-finish>Show results</button>
+                <p class="algorithm-compare-position" data-position></p>
+              </div>
+              <p class="sr-only" data-live role="status"></p>
+            </div>
             <div id="securebank-what-changed" data-feature-project="securebank" hidden>
               <header class="wc-section-head">
                 <h3>What Changed</h3>

@@ -73,12 +73,15 @@ test('Project 004 has its own metadata, focus announcement and reduced-motion sc
  assert.equal(s.ids.featured.scrolled.behavior,'instant');
  assert.match(s.ids['featured-status'].textContent,/004/);
 });
-test('only SecureBank exposes What Changed and it also shows Articles',()=>{
+test('Algorithm Explorer and SecureBank expose What Changed',()=>{
  const s=setup();
  assert.equal(s.ids['tab-what-changed'].hidden,true);
  const select=key=>s.buttons.find(b=>b.dataset.featureSelect===key).click();
  select('securebank');
  assert.equal(s.ids['tab-articles'].hidden,false);
+ assert.equal(s.ids['tab-what-changed'].hidden,false);
+ select('algorithm');
+ assert.equal(s.ids['tab-articles'].hidden,true);
  assert.equal(s.ids['tab-what-changed'].hidden,false);
  select('security');
  assert.equal(s.ids['tab-articles'].hidden,false);

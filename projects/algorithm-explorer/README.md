@@ -25,6 +25,16 @@ The Workbench demo implements the same algorithms in JavaScript. The C++17
 command line program runs locally. You can test each implementation
 independently.
 
+## Compare searches
+
+Open **What Changed** to step through linear search and first-match binary
+search on the same sorted list. One probe is one inspected position. The
+binary search saves a match and keeps looking left for an earlier one. The
+duplicate example checks indices 3, 1, then 2 and returns index 2.
+
+The C++ test program calls `binarySearchFirst` directly. The comparison in
+`demo/comparison.js` follows the same bounds and midpoint rules.
+
 ## Compile with a C++17 compiler
 
 Open this folder in VS Code and use a terminal with `g++` available:
@@ -42,7 +52,7 @@ g++ -std=c++17 -Wall -Wextra -pedantic tests/algorithm_tests.cpp src/algorithms.
 ```
 
 If you use Zig, substitute `zig c++` for `g++` in both commands. The C++ test
-program passed all 61 checks on Windows with Zig in C++17 mode.
+program passed all 67 checks on Windows with Zig in C++17 mode.
 
 ## Follow the code
 
