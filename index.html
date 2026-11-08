@@ -31,6 +31,7 @@
   <!-- Public CISA catalog data powers the Project 007 chart. -->
   <link rel="stylesheet" href="styles/cisa-kev-chart.css?v=1">
   <link rel="stylesheet" href="styles/theatercorp-demo.css?v=1">
+  <link rel="stylesheet" href="styles/assembly-calculator.css?v=1">
   <!-- A small, decorative atmosphere for the After Hours side. -->
   <link rel="stylesheet" href="styles/after-hours-atmosphere.css?v=3">
   <!-- The Ark presents favorite works and links to their official artwork sources. -->
@@ -49,8 +50,9 @@
   <script src="scripts/geometry.js?v=after-hours-fog-2" defer></script>
   <!-- Independent enhancements: navigation, project filtering, and sample analysis. -->
   <script src="scripts/explorer.js?v=sections-2" defer></script>
-  <script src="scripts/featured-projects.js?v=project-009-1" defer></script>
+  <script src="scripts/featured-projects.js?v=project-011-1" defer></script>
   <script src="scripts/theatercorp-demo.js?v=1" defer></script>
+  <script src="scripts/assembly-calculator.js?v=1" defer></script>
   <script src="scripts/color-columns-embed.js?v=1" defer></script>
   <!-- R creates the data file; this script displays it without a network request. -->
   <script src="cybersecurity/security-proposal-workspace/analysis/findings-data.js?v=1" defer></script>
@@ -216,6 +218,7 @@
           <button type="button" data-feature-select="columns" aria-pressed="false">006 · Color Columns</button>
           <button type="button" data-feature-select="kev" aria-pressed="false">007 · CISA Explorer</button>
           <button type="button" data-feature-select="theater" aria-pressed="false">009 · TheaterCorp</button>
+          <button type="button" data-feature-select="assembly" aria-pressed="false">011 · Assembly Calculator</button>
         </div>
         <p id="featured-status" class="sr-only" role="status"></p>
         <p class="record-meta" id="featured-meta">Interface updated <time datetime="2026-10-28">28 Oct 2026</time> <span aria-hidden="true">/</span> Python · CSV · JavaScript demo</p>
@@ -261,6 +264,48 @@
               <p class="muted">The Java application runs locally. This fictional browser demo is a separate JavaScript adaptation.</p>
               <div id="theatercorp-demo"><p>The browser demo is unavailable until JavaScript loads. The Java application runs separately.</p></div>
               <noscript><p>The interactive demo requires JavaScript. The Java source remains available on GitHub.</p></noscript>
+            </div>
+            <div data-feature-project="assembly" hidden>
+              <p>Two inputs, four operations, and a view into the registers.</p>
+              <section id="assembly-calculator" aria-label="Assembly Calculator browser simulation" hidden>
+                <div class="assembly-panel">
+                  <form id="assembly-inputs" novalidate>
+                    <div class="assembly-operands">
+                      <label for="assembly-left">First number <code>ESI</code>
+                        <input id="assembly-left" type="text" value="18" autocomplete="off" aria-describedby="assembly-input-help">
+                      </label>
+                      <label for="assembly-right">Second number <code>EDI</code>
+                        <input id="assembly-right" type="text" value="4" autocomplete="off" aria-describedby="assembly-input-help">
+                      </label>
+                    </div>
+                    <p id="assembly-input-help" class="assembly-note">Whole numbers from −9,999 to 9,999.</p>
+                    <button class="assembly-run" type="submit">Run calculation</button>
+                    <p id="assembly-error" class="assembly-error" role="alert"></p>
+                  </form>
+                  <h4>Results <span class="assembly-note">Select an operation to trace</span></h4>
+                  <div class="assembly-results" role="group" aria-label="Operations">
+                    <button type="button" data-assembly-operation="add" aria-pressed="true">Addition <span data-assembly-result></span></button>
+                    <button type="button" data-assembly-operation="subtract" aria-pressed="false">Subtraction <span data-assembly-result></span></button>
+                    <button type="button" data-assembly-operation="multiply" aria-pressed="false">Multiplication <span data-assembly-result></span></button>
+                    <button type="button" data-assembly-operation="divide" aria-pressed="false">Division <span data-assembly-result></span></button>
+                  </div>
+                </div>
+                <div class="assembly-panel">
+                  <h4>Register trace <span class="assembly-note">Browser simulation</span></h4>
+                  <ol id="assembly-instructions" aria-label="Assembly instructions"></ol>
+                  <dl class="assembly-registers">
+                    <div><dt>ESI</dt><dd data-register="esi"></dd></div>
+                    <div><dt>EDI</dt><dd data-register="edi"></dd></div>
+                    <div><dt>EAX</dt><dd data-register="eax"></dd></div>
+                    <div><dt>EDX</dt><dd data-register="edx"></dd></div>
+                  </dl>
+                  <p id="assembly-step-status" role="status"></p>
+                  <div class="assembly-step-controls">
+                    <button type="button" id="assembly-previous">← Previous step</button>
+                    <button type="button" id="assembly-next">Next step →</button>
+                  </div>
+                </div>
+              </section>
             </div>
           </section>
           <section id="panel-process" class="feature-panel" aria-labelledby="process-heading">
@@ -308,6 +353,10 @@
               <p>Movies have titles and ratings. Theaters have numbered screens; a screen can be assigned a movie from the catalog.</p>
               <p class="muted">The local Java application saves its catalog to a file. The separate browser demo uses fictional data for the current session only.</p>
             </div>
+            <div data-feature-project="assembly" hidden>
+              <p>Adapted from my Computer Organization class project. The trace starts with the inputs already in <code>ESI</code> and <code>EDI</code>. Each operation copies <code>ESI</code> into <code>EAX</code>, performs its arithmetic, and saves the result.</p>
+              <p>Division prepares <code>EDX:EAX</code> with <code>CDQ</code>. Then <code>IDIV</code> puts the quotient in <code>EAX</code> and the remainder in <code>EDX</code>.</p>
+            </div>
           </section>
           <section id="panel-evidence" class="feature-panel" aria-labelledby="evidence-heading">
             <h3 id="evidence-heading">Findings</h3><div data-feature-project="analyzer">
@@ -335,6 +384,16 @@
             <div data-feature-project="theater" hidden>
               <p>The local Java prototype passed 77 checks covering model behavior, storage, and terminal interactions. The website demo is a separate implementation.</p>
               <div class="evidence-links"><a href="https://github.com/MostafaMosabbir/mostafa-portfolio/tree/main/projects/theatercorp">Explore the Java source ↗</a></div>
+            </div>
+            <div data-feature-project="assembly" hidden>
+              <h4>The Questions Behind the Work</h4>
+              <ol>
+                <li>What changes in the registers when the result is negative?</li>
+                <li>Where does the remainder go after division?</li>
+                <li>What happens to the registers when the divisor is zero?</li>
+              </ol>
+              <p>Try <code>−18 ÷ 4</code> to see a quotient of <code>−4</code> and remainder of <code>−2</code>. Change the divisor to <code>0</code> to see the trace stop at <code>IDIV</code> before the result is saved.</p>
+              <div class="evidence-links"><a href="https://github.com/MostafaMosabbir/mostafa-portfolio/blob/main/scripts/assembly-calculator.js">Explore the simulation source ↗</a></div>
             </div>
           </section>
           <section id="panel-articles" class="feature-panel" aria-labelledby="articles-heading" hidden>
@@ -364,6 +423,7 @@
           </section>
         </div>
         <details class="technical-details"><summary>View technical details</summary>
+          <p data-feature-project="assembly" hidden>JavaScript models the arithmetic instructions shown in the trace. The input range keeps the results within signed 32-bit limits.</p>
           <p data-feature-project="analyzer">The full tool runs locally in Python. This browser demonstration analyzes a separate six-ticket sample using JavaScript. It checks required fields, groups repeated subject wording, and flags resolved or closed tickets without notes. Repeated wording is a review candidate, not proof of the same root cause.</p>
         <p data-feature-project="portfolio" hidden>Built with HTML, CSS, and JavaScript. Published with GitHub Pages. The visual effects and project interactions run in the browser.</p><p data-feature-project="assistant" hidden>A local JavaScript prototype using fictional tickets and rule-based matching. Draft responses require human review.</p><p data-feature-project="security" hidden>The assessment engine runs locally in Python using the standard library. The published report is a fixed fictional example, not a live assessment service or a compliance determination.</p><p data-feature-project="columns" hidden>The original desktop game uses Rust and ggez. This browser adaptation reimplements the game rules in Rust compiled to WebAssembly; JavaScript handles the browser display and controls. Closing the game resets the current session.</p><p data-feature-project="kev" hidden>R validates the public CISA catalog and generates a monthly JSON snapshot. GitHub Actions checks daily; JavaScript displays the latest available snapshot and a bundled fallback when needed.</p><p data-feature-project="theater" hidden>The Java source adapts a 2019 class project and saves locally. The independent browser demo uses JavaScript, does not run the Java application, and resets when the page refreshes.</p></details>
       </section>
@@ -386,17 +446,18 @@
             <button type="button" data-filter="python" aria-pressed="false">Python</button>
             <button type="button" data-filter="javascript" aria-pressed="false">JavaScript</button>
             <button type="button" data-filter="java" aria-pressed="false">Java</button>
+            <button type="button" data-filter="assembly" aria-pressed="false">Assembly</button>
             <button type="button" data-filter="web" aria-pressed="false">Web</button>
             <button type="button" data-filter="cybersecurity" aria-pressed="false">Cybersecurity</button>
             <button type="button" data-filter="rust" aria-pressed="false">Rust</button>
             <button type="button" data-filter="r" aria-pressed="false">R</button>
           </div>
-          <p class="small-label" id="filter-status" role="status">7 projects</p>
+          <p class="small-label" id="filter-status" role="status">8 projects</p>
         </div>
         <!-- Real projects only. No demo link until the ticket app is published. -->
         <div class="case-navigation" id="case-navigation" hidden>
           <button type="button" id="case-previous" aria-label="Previous case file" aria-controls="case-carousel">←</button>
-          <p id="case-position" role="status" aria-live="polite" aria-atomic="true">001 / 006</p>
+          <p id="case-position" role="status" aria-live="polite" aria-atomic="true">001 / 008</p>
           <button type="button" id="case-next" aria-label="Next case file" aria-controls="case-carousel">→</button>
         </div>
         <div class="project-grid" id="case-carousel" role="region" aria-label="Case files">
@@ -527,6 +588,22 @@ Fictional data</pre>
               <p class="project-availability">Local Java prototype · Separate browser demo</p>
             </div>
             <button class="feature-select" type="button" data-feature-select="theater" aria-pressed="false" hidden>Highlight project</button>
+          </article>
+          <article class="project-card" id="project-assembly-calculator" data-technologies="assembly javascript web" tabindex="-1">
+            <div class="project-art" aria-hidden="true">
+              <div class="terminal-bar"><i></i><i></i><i></i><span>x86 / signed division</span></div>
+              <pre>mov eax, esi   ; eax = 18
+cdq            ; edx = 0
+idiv edi       ; eax = 4, edx = 2</pre>
+            </div>
+            <div class="project-copy">
+              <p class="eyebrow">Project 011 <span class="badge">Class project adaptation</span></p>
+              <h3>x86 Assembly Calculator</h3>
+              <p>Run four arithmetic operations and follow the x86 registers one instruction at a time.</p>
+              <ul class="tags" aria-label="Assembly Calculator technologies"><li>Assembly</li><li>JavaScript</li></ul>
+              <p class="project-availability">Interactive browser simulation</p>
+            </div>
+            <button class="feature-select" type="button" data-feature-select="assembly" aria-pressed="false" hidden>Highlight project</button>
           </article>
         </div>
       </section>

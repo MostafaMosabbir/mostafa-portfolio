@@ -10,7 +10,8 @@
     // Project numbers are identifiers, not a count; Project 005 is still planned.
     columns: { number: "006", title: "Color Columns", badge: "Learning project", meta: "Rust · WebAssembly · Browser adaptation" },
     kev: { number: "007", title: "CISA Vulnerability Explorer", badge: "Working prototype", meta: "Cybersecurity · R · Public CISA data" },
-    theater: { number: "009", title: "TheaterCorp", badge: "Learning project", meta: "Java · JavaScript browser demo" }
+    theater: { number: "009", title: "TheaterCorp", badge: "Learning project", meta: "Java · JavaScript browser demo" },
+    assembly: { number: "011", title: "x86 Assembly Calculator", badge: "Class project adaptation", meta: "x86 Assembly · JavaScript browser simulation" }
   };
   const feature = document.getElementById("featured");
   if (!feature) return;
