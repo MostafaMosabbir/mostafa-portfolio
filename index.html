@@ -20,7 +20,7 @@
 
   <!-- These paths must match your folders and filenames exactly. -->
   <link rel="stylesheet" href="styles/main.css">
-  <link rel="stylesheet" href="styles/refined.css?v=office-buildout-1">
+  <link rel="stylesheet" href="styles/refined.css?v=zoom-phone-1">
   <link rel="stylesheet" href="styles/security-workspace.css?v=2">
   <!-- Articles and Tools each have their own section on this page. -->
   <link rel="stylesheet" href="styles/homepage-sections.css?v=1">
@@ -52,7 +52,7 @@
   <script src="scripts/geometry.js?v=after-hours-fog-2" defer></script>
   <!-- Independent enhancements: navigation, project filtering, and sample analysis. -->
   <script src="scripts/explorer.js?v=case-filmstrip-2" defer></script>
-  <script src="scripts/featured-projects.js?v=office-buildout-1" defer></script>
+  <script src="scripts/featured-projects.js?v=zoom-phone-1" defer></script>
   <script src="scripts/theatercorp-demo.js?v=1" defer></script>
   <script src="scripts/assembly-calculator.js?v=1" defer></script>
   <script src="projects/algorithm-explorer/demo/app.js?v=1" defer></script>
@@ -371,6 +371,20 @@
                 </div>
               </div>
             </div>
+            <div data-feature-project="zoom-phone" hidden>
+              <div class="overview-grid">
+                <div class="brief-summary">
+                  <p>I migrated the entire company's phone service from Vonage to Zoom Phone. Keeping our existing numbers reachable during the switch was critical to business continuity.</p>
+                  <p class="muted">We already used Zoom for meetings. The delay in our 10DLC registration for business texting was the main reason I decided to move the phones there too.</p>
+                </div>
+                <div class="brief-evidence">
+                  <h4 class="brief-sample-label" id="zoom-phone-cost-title">Cost outcome</h4>
+                  <dl class="evidence-stats zoom-phone-cost" aria-labelledby="zoom-phone-cost-title">
+                    <div><dt>Lower monthly phone bill compared with what we paid for Vonage before the switch</dt><dd>25%</dd></div>
+                  </dl>
+                </div>
+              </div>
+            </div>
             <div data-feature-project="securebank" hidden>
               <div id="securebank-lab" hidden>
                 <figure class="sb-panel" aria-labelledby="sb-topology-title" aria-describedby="sb-topology-description">
@@ -473,6 +487,38 @@
               </ol>
               <p class="muted">I also evaluated camera options, presented them to leadership for approval, and coordinated delivery and cabling.</p>
             </div>
+            <div data-feature-project="zoom-phone" hidden>
+              <h4>Call and text testing</h4>
+              <p>I coordinated the transfer of our existing numbers, set up staff in Zoom Phone, and checked calls and texts in both directions.</p>
+              <div class="zoom-phone-validation">
+                <section aria-labelledby="zoom-phone-voice-title">
+                  <h4 id="zoom-phone-voice-title">Voice calls</h4>
+                  <dl>
+                    <div>
+                      <dt>Incoming call</dt>
+                      <dd><strong>My cell <span aria-hidden="true">→</span> Existing number</strong><p>I called from my cell and confirmed the call rang for the intended staff member in Zoom Phone.</p></dd>
+                    </div>
+                    <div>
+                      <dt>Outgoing call</dt>
+                      <dd><strong>Staff in Zoom Phone <span aria-hidden="true">→</span> My cell</strong><p>I had staff call my cell and confirmed the call came through.</p></dd>
+                    </div>
+                  </dl>
+                </section>
+                <section aria-labelledby="zoom-phone-text-title">
+                  <h4 id="zoom-phone-text-title">Text messages after 10DLC approval</h4>
+                  <dl>
+                    <div>
+                      <dt>Outgoing text</dt>
+                      <dd><strong>Zoom Phone <span aria-hidden="true">→</span> My cell</strong><p>I sent a test message and confirmed it arrived on my cell.</p></dd>
+                    </div>
+                    <div>
+                      <dt>Incoming reply</dt>
+                      <dd><strong>My cell <span aria-hidden="true">→</span> Zoom Phone</strong><p>I replied from my cell and confirmed the reply appeared in Zoom Phone.</p></dd>
+                    </div>
+                  </dl>
+                </section>
+              </div>
+            </div>
             <div data-feature-project="securebank" hidden>
               <h4>From topology to test</h4>
               <ol>
@@ -535,12 +581,21 @@
               <div class="evidence-links"><a href="https://github.com/MostafaMosabbir/mostafa-portfolio/blob/main/scripts/assembly-calculator.js">Explore the simulation source ↗</a></div>
             </div>
             <div data-feature-project="office" hidden>
-              <dl class="office-buildout-checks" aria-label="Office buildout checks and outcomes">
+              <dl class="case-study-findings" aria-label="Office buildout checks and outcomes">
                 <div><dt>Wired and Wi-Fi internet</dt><dd>Websites loaded from a wired computer and a computer connected to Wi-Fi.</dd></div>
                 <div><dt>Office cameras</dt><dd>Live viewing worked and a saved recording played back.</dd></div>
                 <div><dt>Day one readiness</dt><dd>Staff could get started without an IT issue preventing them from working.</dd></div>
                 <div><dt>Monthly internet cost</dt><dd>The new bill was 15% lower than the previous monthly bill.</dd></div>
               </dl>
+            </div>
+            <div data-feature-project="zoom-phone" hidden>
+              <dl class="case-study-findings" aria-label="Zoom Phone migration outcomes">
+                <div><dt>Monthly cost</dt><dd>The monthly Zoom Phone bill was 25% lower than the previous monthly Vonage bill.</dd></div>
+                <div><dt>Existing numbers</dt><dd>Staff could receive calls on the transferred numbers and make outgoing calls.</dd></div>
+                <div><dt>Business texting</dt><dd>The 10DLC registration was approved, and the send and reply tests worked.</dd></div>
+              </dl>
+              <h4>What I’d do next time</h4>
+              <p>I’d start 10DLC registration earlier and test calls and texts both ways before calling the switch done.</p>
             </div>
             <div id="securebank-findings" data-feature-project="securebank" hidden>
               <h4>The Questions Behind the Work</h4>
@@ -709,6 +764,7 @@
           <p data-feature-project="assembly" hidden>JavaScript models the arithmetic instructions shown in the trace. The input range keeps the results within signed 32-bit limits.</p>
           <p data-feature-project="securebank" hidden>The browser trace illustrates the planned policy. Packet Tracer will supply the observed results.</p>
           <p data-feature-project="office" hidden>I coordinated the service transfer, set up the router and Wi-Fi, and verified basic internet access on both connection types. The cost comparison uses the previous monthly internet bill as its baseline.</p>
+          <p data-feature-project="zoom-phone" hidden>I used my cell as the external endpoint so the checks exercised calls and texts between Zoom Phone and a separate mobile line.</p>
           <p data-feature-project="analyzer">The full tool runs locally in Python. This browser demonstration analyzes a separate six-ticket sample using JavaScript. It checks required fields, groups repeated subject wording, and flags resolved or closed tickets without notes. Repeated wording is a review candidate, not proof of the same root cause.</p>
         <p data-feature-project="portfolio" hidden>Built with HTML, CSS, and JavaScript. Published with GitHub Pages. The visual effects and project interactions run in the browser.</p><p data-feature-project="assistant" hidden>A local JavaScript prototype using fictional tickets and rule-based matching. Draft responses require human review.</p><p data-feature-project="security" hidden>The assessment engine runs locally in Python using the standard library. The published report is a fixed fictional example, not a live assessment service or a compliance determination.</p><p data-feature-project="columns" hidden>The original desktop game uses Rust and ggez. This browser adaptation reimplements the game rules in Rust compiled to WebAssembly; JavaScript handles the browser display and controls. Closing the game resets the current session.</p><p data-feature-project="kev" hidden>R validates the public CISA catalog and generates a monthly JSON snapshot. GitHub Actions checks daily; JavaScript displays the latest available snapshot and a bundled fallback when needed.</p><p data-feature-project="theater" hidden>The Java source adapts a 2019 class project and saves locally. The independent browser demo uses JavaScript, does not run the Java application, and resets when the page refreshes.</p></details>
       </section>
@@ -739,7 +795,7 @@
             <button type="button" data-filter="rust" aria-pressed="false">Rust</button>
             <button type="button" data-filter="r" aria-pressed="false">R</button>
           </div>
-          <p class="small-label" id="filter-status" role="status">11 projects</p>
+          <p class="small-label" id="filter-status" role="status">12 projects</p>
         </div>
         <div class="case-navigation" id="case-navigation" hidden>
           <p>Scroll or swipe to browse</p>
@@ -936,6 +992,15 @@ Expected: block</pre>
               <ul class="tags" aria-label="Office buildout disciplines"><li>IT Operations</li><li>Infrastructure</li><li>Readiness testing</li></ul>
             </div>
             <button class="feature-select" type="button" data-feature-select="office" aria-pressed="false" hidden>Highlight project</button>
+          </article>
+          <article class="project-card" id="project-zoom-phone-migration" data-technologies="it-operations" tabindex="-1">
+            <div class="project-copy">
+              <p class="eyebrow">Project 014 <span class="badge">Case study</span></p>
+              <h3>Zoom Phone Migration</h3>
+              <p>A phone migration across the company that kept existing numbers, verified calls and texts both ways, and reduced the monthly bill.</p>
+              <ul class="tags" aria-label="Zoom Phone migration disciplines"><li>IT Operations</li><li>VoIP</li><li>Business texting</li></ul>
+            </div>
+            <button class="feature-select" type="button" data-feature-select="zoom-phone" aria-pressed="false" hidden>Highlight project</button>
           </article>
         </div>
       </section>

@@ -14,7 +14,8 @@
     algorithm: { number: "010", title: "Algorithm Explorer", badge: "Learning project", meta: "C++ · JavaScript browser demo" },
     assembly: { number: "011", title: "x86 Assembly Calculator", badge: "Class project adaptation", meta: "x86 Assembly · JavaScript browser simulation" },
     securebank: { number: "012", title: "SecureBank Network Defense Lab", badge: "Lab plan", meta: "Cybersecurity · Packet Tracer · Fictional bank network" },
-    office: { number: "013", title: "Office IT Buildout", badge: "Case study", meta: "IT Operations · Office relocation · Readiness testing" }
+    office: { number: "013", title: "Office IT Buildout", badge: "Case study", meta: "IT Operations · Office relocation · Readiness testing" },
+    "zoom-phone": { number: "014", title: "Zoom Phone Migration", badge: "Case study", meta: "IT Operations · Phone migration · Business continuity" }
   };
   const feature = document.getElementById("featured");
   if (!feature) return;

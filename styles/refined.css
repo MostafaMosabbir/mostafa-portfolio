@@ -341,21 +341,44 @@ body { isolation: isolate; }
 .office-buildout-steps li::marker { color: var(--accent); font-family: monospace; }
 .office-buildout-steps li p { margin: 5px 0 0; color: var(--muted); font-size: .86rem; }
 
-.office-buildout-checks { margin: 0; }
-.office-buildout-checks div {
+.case-study-findings { margin: 0; }
+.case-study-findings div {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
   gap: 4px 16px;
   padding: 10px 0;
   border-bottom: 1px solid var(--line);
 }
-.office-buildout-checks div:last-child { border-bottom: 0; }
-.office-buildout-checks dt { font-weight: 600; }
-.office-buildout-checks dd { margin: 0; color: var(--muted); }
+.case-study-findings div:last-child { border-bottom: 0; }
+.case-study-findings dt { font-weight: 600; }
+.case-study-findings dd { margin: 0; color: var(--muted); }
+.case-study-findings + h4 { margin: 12px 0 4px; }
+
+.zoom-phone-cost { grid-template-columns: minmax(0, 1fr); }
+.zoom-phone-cost dd { font-size: clamp(2rem, 5vw, 3rem); }
+.zoom-phone-validation {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 12px;
+}
+.zoom-phone-validation section {
+  min-width: 0;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #0b1e18;
+}
+.zoom-phone-validation h4 { margin: 0 0 8px; }
+.zoom-phone-validation dl, .zoom-phone-validation dd { margin: 0; }
+.zoom-phone-validation dl div { padding: 9px 0; border-top: 1px solid var(--line); }
+.zoom-phone-validation dl div:last-child { padding-bottom: 0; }
+.zoom-phone-validation dt { color: var(--accent); font: .76rem/1.5 monospace; }
+.zoom-phone-validation dd p { margin: 3px 0 0; color: var(--muted); font-size: .86rem; }
 
 @media (max-width: 640px) {
-  .office-buildout-steps { grid-template-columns: minmax(0, 1fr); }
+  .office-buildout-steps, .zoom-phone-validation { grid-template-columns: minmax(0, 1fr); }
 }
 @media (max-width: 480px) {
-  .office-buildout-checks div { grid-template-columns: minmax(0, 1fr); }
+  .case-study-findings div { grid-template-columns: minmax(0, 1fr); }
 }
