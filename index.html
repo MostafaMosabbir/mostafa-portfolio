@@ -20,7 +20,7 @@
 
   <!-- These paths must match your folders and filenames exactly. -->
   <link rel="stylesheet" href="styles/main.css">
-  <link rel="stylesheet" href="styles/refined.css?v=case-filmstrip-1">
+  <link rel="stylesheet" href="styles/refined.css?v=office-buildout-1">
   <link rel="stylesheet" href="styles/security-workspace.css?v=2">
   <!-- Articles and Tools each have their own section on this page. -->
   <link rel="stylesheet" href="styles/homepage-sections.css?v=1">
@@ -52,7 +52,7 @@
   <script src="scripts/geometry.js?v=after-hours-fog-2" defer></script>
   <!-- Independent enhancements: navigation, project filtering, and sample analysis. -->
   <script src="scripts/explorer.js?v=case-filmstrip-2" defer></script>
-  <script src="scripts/featured-projects.js?v=algorithm-comparison-1" defer></script>
+  <script src="scripts/featured-projects.js?v=office-buildout-1" defer></script>
   <script src="scripts/theatercorp-demo.js?v=1" defer></script>
   <script src="scripts/assembly-calculator.js?v=1" defer></script>
   <script src="projects/algorithm-explorer/demo/app.js?v=1" defer></script>
@@ -356,6 +356,21 @@
                 </div>
               </section>
             </div>
+            <div data-feature-project="office" hidden>
+              <div class="overview-grid">
+                <div class="brief-summary">
+                  <p>I got the technology ready for an office move, from arranging the internet transfer to physically moving, reconnecting, and testing the equipment people needed to work.</p>
+                  <p class="muted">The work covered wired internet, Wi-Fi, workstations, and the office camera system.</p>
+                </div>
+                <div class="brief-evidence">
+                  <h4 class="brief-sample-label" id="office-buildout-results-title">Results</h4>
+                  <dl class="evidence-stats office-buildout-results" aria-labelledby="office-buildout-results-title">
+                    <div><dt>Lower monthly internet bill compared with the previous bill</dt><dd>15%</dd></div>
+                    <div><dt>Staff could start work without an IT issue blocking them</dt><dd>Day one</dd></div>
+                  </dl>
+                </div>
+              </div>
+            </div>
             <div data-feature-project="securebank" hidden>
               <div id="securebank-lab" hidden>
                 <figure class="sb-panel" aria-labelledby="sb-topology-title" aria-describedby="sb-topology-description">
@@ -448,6 +463,16 @@
               <p>Adapted from my Computer Organization class project. The trace starts with the inputs already in <code>ESI</code> and <code>EDI</code>. Each operation copies <code>ESI</code> into <code>EAX</code>, performs its arithmetic, and saves the result.</p>
               <p>Division prepares <code>EDX:EAX</code> with <code>CDQ</code>. Then <code>IDIV</code> puts the quotient in <code>EAX</code> and the remainder in <code>EDX</code>.</p>
             </div>
+            <div data-feature-project="office" hidden>
+              <h4>Desk-by-desk testing</h4>
+              <p>I tested each desk as I set it up, then moved on once it was ready.</p>
+              <ol class="office-buildout-steps">
+                <li><strong>Move and reconnect</strong><p>Bring the equipment into the new office and set up the workstation.</p></li>
+                <li><strong>Test as I go</strong><p>Check the setup and confirm that the workstation works before moving on.</p></li>
+                <li><strong>Fix and retest</strong><p>If a check fails, correct the setup and repeat the check.</p></li>
+              </ol>
+              <p class="muted">I also evaluated camera options, presented them to leadership for approval, and coordinated delivery and cabling.</p>
+            </div>
             <div data-feature-project="securebank" hidden>
               <h4>From topology to test</h4>
               <ol>
@@ -508,6 +533,14 @@
               </ol>
               <p>Try <code>−18 ÷ 4</code> to see a quotient of <code>−4</code> and remainder of <code>−2</code>. Change the divisor to <code>0</code> to see the trace stop at <code>IDIV</code> before the result is saved.</p>
               <div class="evidence-links"><a href="https://github.com/MostafaMosabbir/mostafa-portfolio/blob/main/scripts/assembly-calculator.js">Explore the simulation source ↗</a></div>
+            </div>
+            <div data-feature-project="office" hidden>
+              <dl class="office-buildout-checks" aria-label="Office buildout checks and outcomes">
+                <div><dt>Wired and Wi-Fi internet</dt><dd>Websites loaded from a wired computer and a computer connected to Wi-Fi.</dd></div>
+                <div><dt>Office cameras</dt><dd>Live viewing worked and a saved recording played back.</dd></div>
+                <div><dt>Day one readiness</dt><dd>Staff could get started without an IT issue preventing them from working.</dd></div>
+                <div><dt>Monthly internet cost</dt><dd>The new bill was 15% lower than the previous monthly bill.</dd></div>
+              </dl>
             </div>
             <div id="securebank-findings" data-feature-project="securebank" hidden>
               <h4>The Questions Behind the Work</h4>
@@ -675,6 +708,7 @@
           <p data-feature-project="algorithm" hidden>The Workbench demo traces the algorithms in JavaScript. The C++17 command line program runs locally. Both implementations have their own tests.</p>
           <p data-feature-project="assembly" hidden>JavaScript models the arithmetic instructions shown in the trace. The input range keeps the results within signed 32-bit limits.</p>
           <p data-feature-project="securebank" hidden>The browser trace illustrates the planned policy. Packet Tracer will supply the observed results.</p>
+          <p data-feature-project="office" hidden>I coordinated the service transfer, set up the router and Wi-Fi, and verified basic internet access on both connection types. The cost comparison uses the previous monthly internet bill as its baseline.</p>
           <p data-feature-project="analyzer">The full tool runs locally in Python. This browser demonstration analyzes a separate six-ticket sample using JavaScript. It checks required fields, groups repeated subject wording, and flags resolved or closed tickets without notes. Repeated wording is a review candidate, not proof of the same root cause.</p>
         <p data-feature-project="portfolio" hidden>Built with HTML, CSS, and JavaScript. Published with GitHub Pages. The visual effects and project interactions run in the browser.</p><p data-feature-project="assistant" hidden>A local JavaScript prototype using fictional tickets and rule-based matching. Draft responses require human review.</p><p data-feature-project="security" hidden>The assessment engine runs locally in Python using the standard library. The published report is a fixed fictional example, not a live assessment service or a compliance determination.</p><p data-feature-project="columns" hidden>The original desktop game uses Rust and ggez. This browser adaptation reimplements the game rules in Rust compiled to WebAssembly; JavaScript handles the browser display and controls. Closing the game resets the current session.</p><p data-feature-project="kev" hidden>R validates the public CISA catalog and generates a monthly JSON snapshot. GitHub Actions checks daily; JavaScript displays the latest available snapshot and a bundled fallback when needed.</p><p data-feature-project="theater" hidden>The Java source adapts a 2019 class project and saves locally. The independent browser demo uses JavaScript, does not run the Java application, and resets when the page refreshes.</p></details>
       </section>
@@ -701,10 +735,11 @@
             <button type="button" data-filter="assembly" aria-pressed="false">Assembly</button>
             <button type="button" data-filter="web" aria-pressed="false">Web</button>
             <button type="button" data-filter="cybersecurity" aria-pressed="false">Cybersecurity</button>
+            <button type="button" data-filter="it-operations" aria-pressed="false">IT Operations</button>
             <button type="button" data-filter="rust" aria-pressed="false">Rust</button>
             <button type="button" data-filter="r" aria-pressed="false">R</button>
           </div>
-          <p class="small-label" id="filter-status" role="status">10 projects</p>
+          <p class="small-label" id="filter-status" role="status">11 projects</p>
         </div>
         <div class="case-navigation" id="case-navigation" hidden>
           <p>Scroll or swipe to browse</p>
@@ -892,6 +927,15 @@ Expected: block</pre>
               <p class="project-availability">Interactive traffic plan · Lab results pending</p>
             </div>
             <button class="feature-select" type="button" data-feature-select="securebank" aria-pressed="false" hidden>Highlight project</button>
+          </article>
+          <article class="project-card" id="project-office-it-buildout" data-technologies="it-operations" tabindex="-1">
+            <div class="project-copy">
+              <p class="eyebrow">Project 013 <span class="badge">Case study</span></p>
+              <h3>Office IT Buildout</h3>
+              <p>A physical office move with desk-by-desk readiness checks.</p>
+              <ul class="tags" aria-label="Office buildout disciplines"><li>IT Operations</li><li>Infrastructure</li><li>Readiness testing</li></ul>
+            </div>
+            <button class="feature-select" type="button" data-feature-select="office" aria-pressed="false" hidden>Highlight project</button>
           </article>
         </div>
       </section>

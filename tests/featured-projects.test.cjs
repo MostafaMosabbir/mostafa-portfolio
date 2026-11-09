@@ -5,7 +5,7 @@ const fs=require('node:fs');
 const path=require('node:path');
 const source=fs.readFileSync(path.join(__dirname,'../scripts/featured-projects.js'),'utf8');
 function setup(reduced=false){
- const keys=['portfolio','assistant','analyzer','security','columns','kev','theater','algorithm','assembly','securebank'];
+ const keys=['portfolio','assistant','analyzer','security','columns','kev','theater','algorithm','assembly','securebank','office'];
  const groups=keys.flatMap(key=>Array.from({length:4},()=>({dataset:{featureProject:key},hidden:true})));
  const buttons=keys.map(key=>({dataset:{featureSelect:key},hidden:true,attrs:{},setAttribute(k,v){this.attrs[k]=v},addEventListener(k,fn){this.click=fn}}));
  const ids={};
@@ -20,7 +20,7 @@ test('starts on Project 003 without moving focus or changing the default tab',()
  assert.equal(s.ids['tab-overview'].clicked,undefined);
  assert.equal(s.ids['featured-title'].focused,undefined);
 });
-test('all ten projects can be highlighted from Case Files and return to the analyzer',()=>{
+test('all eleven projects can be highlighted from Case Files and return to the analyzer',()=>{
  const s=setup();const original=s.groups.slice();
  for(const b of s.buttons){b.click();
   assert.equal(s.ids.featured.dataset.project,b.dataset.featureSelect);
@@ -87,6 +87,15 @@ test('Algorithm Explorer and SecureBank expose What Changed',()=>{
  assert.equal(s.ids['tab-articles'].hidden,false);
  assert.equal(s.ids['tab-what-changed'].hidden,true);
  select('assembly');
+ assert.equal(s.ids['tab-articles'].hidden,true);
+ assert.equal(s.ids['tab-what-changed'].hidden,true);
+});
+test('Office IT Buildout opens as Project 013 with the standard case study tabs',()=>{
+ const s=setup();
+ s.buttons.find(b=>b.dataset.featureSelect==='office').click();
+ assert.equal(s.ids['featured-number'].textContent,'Project 013 / Featured project');
+ assert.equal(s.ids['featured-title'].textContent,'Office IT Buildout');
+ assert.equal(s.ids['featured-badge'].textContent,'Case study');
  assert.equal(s.ids['tab-articles'].hidden,true);
  assert.equal(s.ids['tab-what-changed'].hidden,true);
 });

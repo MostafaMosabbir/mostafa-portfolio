@@ -13,7 +13,8 @@
     theater: { number: "009", title: "TheaterCorp", badge: "Learning project", meta: "Java · JavaScript browser demo" },
     algorithm: { number: "010", title: "Algorithm Explorer", badge: "Learning project", meta: "C++ · JavaScript browser demo" },
     assembly: { number: "011", title: "x86 Assembly Calculator", badge: "Class project adaptation", meta: "x86 Assembly · JavaScript browser simulation" },
-    securebank: { number: "012", title: "SecureBank Network Defense Lab", badge: "Lab plan", meta: "Cybersecurity · Packet Tracer · Fictional bank network" }
+    securebank: { number: "012", title: "SecureBank Network Defense Lab", badge: "Lab plan", meta: "Cybersecurity · Packet Tracer · Fictional bank network" },
+    office: { number: "013", title: "Office IT Buildout", badge: "Case study", meta: "IT Operations · Office relocation · Readiness testing" }
   };
   const feature = document.getElementById("featured");
   if (!feature) return;
