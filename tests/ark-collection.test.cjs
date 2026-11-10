@@ -30,6 +30,32 @@ test('the unwanted album is removed and the two Weeknd albums are separate', () 
   assert.notEqual(artwork['Music::Dawn FM'].url, artwork['Music::After Hours'].url);
 });
 
+test('updated favorites use the intended media and original release years', () => {
+  const keys = new Set(catalog.map(item => `${item.category}::${item.title}`));
+  const expected = {
+    'Movies::Harry Potter Series': 2001,
+    'TV::Westworld': 2016,
+    'Music::ANTI': 2016,
+    'Games::Destiny': 2014,
+    'Games::Destiny 2': 2017,
+    'Games::Star Wars: Battlefront (2004)': 2004
+  };
+  for (const [key, year] of Object.entries(expected)) {
+    assert.ok(keys.has(key), key);
+    assert.equal(years[key]?.year, year, key);
+    assert.ok(artwork[key]?.url, key);
+  }
+  for (const key of ['Music::Coloring Book', 'Movies::Harry Potter (Prisoner of Azkaban)']) {
+    assert.equal(keys.has(key), false, key);
+    assert.equal(artwork[key], undefined, key);
+    assert.equal(years[key], undefined, key);
+  }
+  assert.match(artwork['Music::ANTI'].label, /Rihanna/);
+  assert.match(artwork['TV::Westworld'].label, /HBO series/);
+  assert.match(years['Games::Star Wars: Battlefront (2004)'].label, /PlayStation 2/);
+  assert.notEqual(artwork['Movies::Harry Potter Series'].url, artwork['Books::Harry Potter Series'].url);
+});
+
 test('the approved book and trilogy artwork is connected to dated Ark entries', () => {
   // Books are added by the reel separately from the movies, music and games catalog.
   const keys = [

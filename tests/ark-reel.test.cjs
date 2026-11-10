@@ -5,7 +5,7 @@ const vm = require('node:vm');
 const path = require('node:path');
 
 function setup({reduced = false, observeIntersection = false, seed = 42, timelineEnabled = false} = {}) {
-  const ids = ['creative-view', 'ark-feature-title', 'ark-feature-category', 'ark-feature-image', 'ark-feature-placeholder', 'ark-feature-credit', 'ark-feature-source', 'ark-previous', 'ark-next', 'ark-progress-bar', 'ark-position', 'ark-reel', 'ark-feature-info', 'ark-play-toggle', 'ark-motion-status'];
+  const ids = ['creative-view', 'ark-feature-title', 'ark-feature-category', 'ark-feature-image', 'ark-feature-placeholder', 'ark-feature-credit', 'ark-feature-source', 'ark-previous', 'ark-next', 'ark-progress-bar', 'ark-reel', 'ark-feature-info', 'ark-play-toggle', 'ark-motion-status'];
   const nodes = Object.fromEntries(ids.map(id => [id, { hidden: false, textContent: '', attrs: {}, style: {}, handlers: {}, classList: {add(){}, remove(){}}, addEventListener(k, f) { this.handlers[k] = f; }, setAttribute(k,v) { this.attrs[k] = String(v); }, removeAttribute(k) { delete this.attrs[k]; }, getAttribute(k) { return this.attrs[k] || null; }, hasAttribute(k) { return Object.hasOwn(this.attrs, k); }, set src(v) { this.attrs.src = v; }, set href(v) { this.attrs.href = v; } }]));
   nodes['creative-view'].hidden = true;
   const catalog = [{category:'Games',title:'Halo 2 / Reach'}, {category:'Games',title:'Game Two'}, {category:'TV',title:'TV One'}, {category:'Movies',title:'Movie One'}, {category:'Music',title:'Album One'}, {category:'Movies',title:'Movie One'}];

@@ -239,12 +239,12 @@ window.ARK_ART_SOURCES = {
     "rights_status": "unverified",
     "notes": "Official Warner Bros. image for the 1999 film. Permission to reuse not established."
   },
-  "Movies::Harry Potter (Prisoner of Azkaban)": {
-    "url": "https://images.microcms-assets.io/assets/0b14285f4439472096dc5edecad7e15f/e1699fcb10eb445eaa9db1ad34495227/1500951391.jpg?fm=webp&w=1360",
-    "source": "https://www.warnerbros.co.jp/home_entertainment/jtb2zkiw1/",
-    "label": "Official artwork: Harry Potter (Prisoner of Azkaban)",
+  "Movies::Harry Potter Series": {
+    "url": "https://contentful.harrypotter.com/usf1vwtuqyxm/3FBV4l6pzx40wHhUbcjcdv/519156442a973f7479934f33c41b0929/hp1-discover-detail-page-hero.png?w=1200&fm=webp&q=82",
+    "source": "https://www.harrypotter.com/discover/films",
+    "label": "Official artwork: Harry Potter film series",
     "rights_status": "unverified",
-    "notes": "Official Warner Bros. image for the 2004 film. Permission to reuse not established."
+    "notes": "The official films guide uses artwork from the first film as its cover image."
   },
   "Movies::The Lord of the Rings (Two Towers)": {
     "url": "https://images.microcms-assets.io/assets/0b14285f4439472096dc5edecad7e15f/9efae421353f4b87bf5587ef52b45144/1000532341_j1%20%281%29.jpg?fm=webp&w=800",
@@ -471,11 +471,11 @@ window.ARK_ART_SOURCES = {
     "notes": "Official distributor artwork; Source displayed or indexed image; direct web fetch inconclusive, browser check needed"
   },
   "TV::Westworld": {
-    "url": "https://m.media-amazon.com/images/S/pv-target-images/31776250060b87427bdd3ca54edf3a3d77dbbeb44a33dcf2523e4f321287f467.jpg",
-    "source": "https://www.primevideo.com/detail/Westworld/0RQV9MXXVPW4CGKJ3JCRYE93KC",
-    "label": "Official artwork: Westworld",
+    "url": "https://is1-ssl.mzstatic.com/image/thumb/tZQcNIpqXtAcqzAVYpOidA/1200x675.jpg",
+    "source": "https://tv.apple.com/gb/show/westworld/umc.cmc.305ub24u3ci7x1lu4xyoynbar",
+    "label": "Official artwork: Westworld · HBO series",
     "rights_status": "unverified",
-    "notes": "Official distributor artwork; Source displayed or indexed image; direct web fetch inconclusive, browser check needed"
+    "notes": "Artwork from the Apple TV listing for the HBO television series."
   },
   "TV::Band of Brothers": {
     "url": "https://m.media-amazon.com/images/S/pv-target-images/295567fa9455296c3348ce7cc9c9632e8d5be7eb3617863d807f0300b574665d.png",
@@ -708,6 +708,20 @@ window.ARK_ART_SOURCES = {
     "rights_status": "unverified",
     "notes": "Official Destiny: The Taken King artwork."
   },
+  "Games::Destiny 2": {
+    "url": "https://blog.playstation.com/tachyon/2018/06/35276949685_6089120e2a_o.jpg",
+    "source": "https://blog.playstation.com/2017/06/15/destiny-2-e3-trailer-ps-exclusives-detailed/",
+    "label": "Official artwork: Destiny 2",
+    "rights_status": "unverified",
+    "notes": "PlayStation Blog artwork from Bungie's 2017 Destiny 2 announcement."
+  },
+  "Games::Star Wars: Battlefront (2004)": {
+    "url": "https://gmedia.playstation.com/is/image/SIEPDC/ps2-pack-starwarsbf-image-block-01-en-08oct24?$800px$",
+    "source": "https://www.playstation.com/en-ae/playstation-history/2000-ps2-psp/",
+    "label": "Official artwork: Star Wars: Battlefront · PlayStation 2",
+    "rights_status": "unverified",
+    "notes": "Original PlayStation 2 box art from the official PlayStation history page."
+  },
   "Games::Jak 2": {
     "url": "https://image.api.playstation.com/cdn/UP9000/CUSA07840_00/uMvSf35f3V2yvynPFKWYpeddSEAMV5Wa.png",
     "source": "https://www.playstation.com/en-us/games/jak-ii-renegade/",
@@ -883,10 +897,10 @@ window.ARK_ART_SOURCES = {
     "rights_status": "unverified",
     "notes": "Artwork displayed on cited Apple Music album page."
   },
-  "Music::Coloring Book": {
-    "url": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/0d/3f/b5/0d3fb523-1b70-b4b1-6bf7-ee94a89ab805/859717324721_cover.jpg/592x592bb.webp",
-    "source": "https://music.apple.com/us/album/coloring-book/1113239004",
-    "label": "Official artwork: Coloring Book · Chance the Rapper",
+  "Music::ANTI": {
+    "url": "https://is1-ssl.mzstatic.com/image/thumb/Music113/v4/b9/d9/2a/b9d92a2d-4c5c-bc7f-eec3-6cad3e3ae009/16UMGIM03372.rgb.jpg/592x592bb.webp",
+    "source": "https://music.apple.com/us/album/anti/1440933547",
+    "label": "Official artwork: ANTI · Rihanna",
     "rights_status": "unverified",
     "notes": "Artwork displayed on cited Apple Music album page."
   },

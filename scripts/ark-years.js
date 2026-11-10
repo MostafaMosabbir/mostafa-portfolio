@@ -70,10 +70,10 @@ window.ARK_YEARS = {
     "label": "Film release",
     "source": "https://www.rottentomatoes.com/m/the_green_knight"
   },
-  "Movies::Harry Potter (Prisoner of Azkaban)": {
-    "year": 2004,
-    "label": "Film release",
-    "source": "https://www.rottentomatoes.com/m/harry_potter_and_the_prisoner_of_azkaban"
+  "Movies::Harry Potter Series": {
+    "year": 2001,
+    "label": "First film in series",
+    "source": "https://www.harrypotter.com/discover/films/harry-potter-and-the-philosophers-stone"
   },
   "Movies::Dune 1/2": {
     "year": 2021,
@@ -330,6 +330,16 @@ window.ARK_YEARS = {
     "label": "Original game release",
     "source": "https://www.bungie.net/7/en/News/article/destiny_10_anniversary"
   },
+  "Games::Destiny 2": {
+    "year": 2017,
+    "label": "Original game release",
+    "source": "https://help.bungie.net/hc/en-us/articles/44229874536468--1-Getting-Started-with-Destiny-2"
+  },
+  "Games::Star Wars: Battlefront (2004)": {
+    "year": 2004,
+    "label": "PlayStation 2 release",
+    "source": "https://www.playstation.com/en-ae/playstation-history/2000-ps2-psp/"
+  },
   "Games::Pokémon FireRed / HeartGold": {
     "year": 2004,
     "label": "Pokémon FireRed release",
@@ -485,10 +495,10 @@ window.ARK_YEARS = {
     "label": "Album release",
     "source": "https://music.apple.com/us/album/thriller/269572838"
   },
-  "Music::Coloring Book": {
+  "Music::ANTI": {
     "year": 2016,
     "label": "Album release",
-    "source": "https://music.apple.com/us/album/coloring-book/1113239004"
+    "source": "https://www.rihannanow.com/music/anti/"
   },
   "Music::Chanel Orange": {
     "year": 2012,
@@ -642,8 +652,8 @@ window.ARK_YEARS = {
   },
   "TV::Westworld": {
     "year": 2016,
-    "label": "TV series premiere",
-    "source": "https://tv.apple.com/gb/show/westworld/umc.cmc.305ub24u3ci7x1lu4xyoynbar"
+    "label": "HBO series premiere",
+    "source": "https://news.xbox.com/en-us/2016/10/02/watch-westworld-on-hbo-now-xbox-one/"
   },
   "TV::Watchmen": {
     "year": 2019,

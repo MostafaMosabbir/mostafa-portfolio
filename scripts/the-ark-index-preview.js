@@ -12,12 +12,11 @@
   const previous = document.getElementById("ark-previous");
   const next = document.getElementById("ark-next");
   const progress = document.getElementById("ark-progress-bar");
-  const position = document.getElementById("ark-position");
   const reelContainer = document.getElementById("ark-reel");
   const featureInfo = document.getElementById("ark-feature-info");
   const playToggle = document.getElementById("ark-play-toggle");
   const motionStatus = document.getElementById("ark-motion-status");
-  if (!Array.isArray(catalog) || !creative || !title || !category || !image || !placeholder || !credit || !source || !previous || !next || !progress || !position || !reelContainer || !featureInfo || !playToggle || !motionStatus) return;
+  if (!Array.isArray(catalog) || !creative || !title || !category || !image || !placeholder || !credit || !source || !previous || !next || !progress || !reelContainer || !featureInfo || !playToggle || !motionStatus) return;
 
   // These titles come from Mostafa's favorites list. Covers can be added later.
   const books = ["Enders Game", "Harry Potter Series", "Dune", "Halo: The Fall of Reach", "Song of Ice and Fire Series"]
@@ -118,7 +117,6 @@
     const artwork = art[item.category + "::" + item.title];
     title.textContent = item.title === "Halo 2 / Reach" ? "Halo" : item.title;
     category.textContent = item.title === "Halo 2 / Reach" ? "Game series" : item.category;
-    position.textContent = (selected + 1) + " / " + reel.length;
     progress.style.width = ((selected + 1) / reel.length * 100) + "%";
     source.hidden = true;
     source.removeAttribute("href");

@@ -82,7 +82,7 @@ window.ARK_CATALOG = [
   },
   {
     "category": "Movies",
-    "title": "Harry Potter (Prisoner of Azkaban)",
+    "title": "Harry Potter Series",
     "sourceCategory": "Movies"
   },
   {
@@ -472,6 +472,16 @@ window.ARK_CATALOG = [
   },
   {
     "category": "Games",
+    "title": "Destiny 2",
+    "sourceCategory": "Video Games"
+  },
+  {
+    "category": "Games",
+    "title": "Star Wars: Battlefront (2004)",
+    "sourceCategory": "Video Games"
+  },
+  {
+    "category": "Games",
     "title": "Pokémon FireRed / HeartGold",
     "sourceCategory": "Video Games / Honorable Mentions"
   },
@@ -617,7 +627,7 @@ window.ARK_CATALOG = [
   },
   {
     "category": "Music",
-    "title": "Coloring Book",
+    "title": "ANTI",
     "sourceCategory": "Albums / Honorable Mentions"
   },
   {

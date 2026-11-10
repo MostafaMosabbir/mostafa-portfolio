@@ -37,16 +37,16 @@
   <!-- A small, decorative atmosphere for the After Hours side. -->
   <link rel="stylesheet" href="styles/after-hours-atmosphere.css?v=3">
   <!-- The Ark presents favorite works and links to their official artwork sources. -->
-  <link rel="stylesheet" href="styles/the-ark-index-preview.css?v=8">
+  <link rel="stylesheet" href="styles/the-ark-index-preview.css?v=9">
   <link rel="stylesheet" href="styles/ark-timeline.css?v=4">
 
   <!-- defer makes JavaScript wait until the HTML has been parsed. -->
   <script src="scripts/side-switch.js?v=robot-coat-2" defer></script>
-  <script src="scripts/ark-catalog.js?v=2" defer></script>
-  <script src="scripts/ark-art-sources.js?v=4" defer></script>
-  <script src="scripts/ark-years.js?v=1" defer></script>
+  <script src="scripts/ark-catalog.js?v=3" defer></script>
+  <script src="scripts/ark-art-sources.js?v=5" defer></script>
+  <script src="scripts/ark-years.js?v=2" defer></script>
   <script src="scripts/ark-timeline.js?v=2" defer></script>
-  <script src="scripts/the-ark-index-preview.js?v=6" defer></script>
+  <script src="scripts/the-ark-index-preview.js?v=7" defer></script>
   <!-- Decorative animation is separate from the creative-side interaction. -->
   <script src="scripts/matrix.js?v=perf-1" defer></script>
   <script src="scripts/geometry.js?v=after-hours-fog-2" defer></script>
@@ -1218,7 +1218,7 @@ Expected: block</pre>
             <button id="ark-play-toggle" class="ark-play-toggle" type="button" aria-pressed="false">Pause reel</button>
             <button id="ark-next" type="button" aria-label="Next favorite">→</button>
           </div>
-          <div class="ark-reel-progress"><div class="ark-reel-track"><span id="ark-progress-bar"></span></div><p id="ark-position"></p></div>
+          <div class="ark-reel-progress" aria-hidden="true"><div class="ark-reel-track"><span id="ark-progress-bar"></span></div></div>
           <p id="ark-motion-status" class="ark-motion-status" aria-live="polite"></p>
         </div>
         <!-- This timeline uses verified years and follows the featured selection. -->

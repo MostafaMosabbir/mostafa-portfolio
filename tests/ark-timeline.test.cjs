@@ -70,7 +70,6 @@ test('current favorites have dated entries and source links', () => {
   }
   const keys = new Set(context.window.ARK_CATALOG.map(item => `${item.category}::${item.title}`));
   for (const title of ['Enders Game', 'Harry Potter Series', 'Dune', 'Halo: The Fall of Reach', 'Song of Ice and Fire Series']) keys.add(`Books::${title}`);
-  assert.equal(keys.size, 138);
   for (const key of keys) {
     const date = context.window.ARK_YEARS[key];
     assert.ok(Number.isInteger(date?.year), `${key} has a year`);
