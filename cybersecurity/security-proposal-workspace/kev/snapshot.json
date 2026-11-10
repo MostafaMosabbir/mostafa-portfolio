@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "catalogVersion": "2026.11.06",
-  "catalogReleased": "2026-11-06T19:44:45.1797Z",
-  "catalogCount": 1769,
+  "catalogVersion": "2026.11.10",
+  "catalogReleased": "2026-11-10T19:03:29.8375Z",
+  "catalogCount": 1779,
   "measure": "CISA catalog additions by month, not attacks or all vulnerabilities",
   "source": "https://github.com/cisagov/kev-data",
   "months": [
@@ -17,6 +17,6 @@
     {"month":"2026-08","count":31},
     {"month":"2026-09","count":43},
     {"month":"2026-10","count":36},
-    {"month":"2026-11","count":3}
+    {"month":"2026-11","count":13}
   ]
 }
