@@ -12,6 +12,7 @@
   if (!context) return; // A decorative effect must never prevent page access.
 
   const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const phone = window.matchMedia("(max-width: 620px)");
   const SPEED = 24; // Approximate pixels per second, not pixels per frame.
   const SPACING = 22;
   const symbols = "01<>/{}[];:+=";
@@ -34,7 +35,8 @@
   function resize() {
     const bounds = canvas.getBoundingClientRect();
     if (!bounds.width || !bounds.height) return;
-    const ratio = Math.min(window.devicePixelRatio || 1, 2);
+    const ratio = Math.min(window.devicePixelRatio || 1, phone.matches ? 1.25 : 2);
+    const spacing = phone.matches ? 31 : SPACING;
     // ResizeObserver and window resize can report the same size. Avoid
     // resetting the canvas and randomizing every stream twice for one change.
     if (width === bounds.width && height === bounds.height && resolution === ratio) return;
@@ -44,8 +46,8 @@
     canvas.width = Math.round(width * ratio);
     canvas.height = Math.round(height * ratio);
     context.setTransform(ratio, 0, 0, ratio, 0, 0);
-    streams = Array.from({ length: Math.ceil(width / SPACING) }, (_, i) => ({
-      x: i * SPACING,
+    streams = Array.from({ length: Math.ceil(width / spacing) }, (_, i) => ({
+      x: i * spacing,
       y: Math.random() * (height + 300) - 100,
       speed: SPEED * (.65 + Math.random() * .7),
       length: 9 + Math.floor(Math.random() * 12),
@@ -84,8 +86,8 @@
     if (!canRun()) return;
     if (!lastTime) lastTime = time;
     const elapsed = time - lastTime;
-    // Approximately 30fps is enough for a slow decorative effect.
-    if (elapsed >= 33) {
+    // The taller phone background needs fewer repaints and fewer columns.
+    if (elapsed >= (phone.matches ? 50 : 33)) {
       const seconds = Math.min(elapsed / 1000, .1);
       for (const stream of streams) {
         stream.y += stream.speed * seconds;

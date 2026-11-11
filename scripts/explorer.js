@@ -130,6 +130,10 @@ SAMPLE-006,VPN disconnects,network,,new,`;
   // keyboard order. The count is announced without moving the visitor's focus.
   const cards = [...document.querySelectorAll("[data-technologies]")];
   const filters = [...document.querySelectorAll("[data-filter]")];
+  const topic = document.getElementById("workbench-topic");
+  const cases = document.getElementById("projects");
+  const featured = document.getElementById("featured");
+  const phone = window.matchMedia("(max-width: 620px)");
   const carousel = document.getElementById("case-carousel");
   const previous = document.getElementById("case-previous");
   const next = document.getElementById("case-next");
@@ -137,6 +141,13 @@ SAMPLE-006,VPN disconnects,network,,new,`;
   let visibleCards = cards;
   const reducedCaseMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
   const scrollTolerance = 2;
+
+  filters.forEach(button => {
+    const option = document.createElement("option");
+    option.value = button.dataset.filter;
+    option.textContent = option.value === "all" ? "All topics" : button.textContent;
+    topic.append(option);
+  });
 
   function caseScrollEnd() {
     return carousel.scrollWidth - carousel.clientWidth;
@@ -165,9 +176,11 @@ SAMPLE-006,VPN disconnects,network,,new,`;
   function filterProjects(technology) {
     visibleCards = cards.filter(card => technology === "all" || card.dataset.technologies.split(" ").includes(technology));
     cards.forEach(card => { card.hidden = !visibleCards.includes(card); });
+    carousel.classList.toggle("case-single", visibleCards.length === 1);
     carousel.scrollTo({ left: 0, behavior: "instant" });
     updateCaseArrows();
     filters.forEach(button => button.setAttribute("aria-pressed", String(button.dataset.filter === technology)));
+    topic.value = technology;
     document.getElementById("filter-status").textContent = `${visibleCards.length} project${visibleCards.length === 1 ? "" : "s"}`;
   }
   previous.addEventListener("click", () => scrollCases(-1));
@@ -207,7 +220,20 @@ SAMPLE-006,VPN disconnects,network,,new,`;
   filters.forEach(button => button.addEventListener("click", () => {
     if (button.getAttribute("aria-pressed") === "false") filterProjects(button.dataset.filter);
   }));
+  topic.addEventListener("change", () => filterProjects(topic.value));
   document.getElementById("project-toolbar").hidden = false;
+
+  document.getElementById("workbench-back").addEventListener("click", event => {
+    event.preventDefault();
+    const card = visibleCards.find(item => item.querySelector("[data-feature-select]")?.dataset.featureSelect === featured.dataset.project);
+    if (card) showCase(card);
+    const clearance = parseFloat(getComputedStyle(cases).scrollMarginTop);
+    window.scrollTo({
+      top: window.scrollY + cases.getBoundingClientRect().top - clearance,
+      behavior: reducedCaseMotion.matches ? "instant" : "smooth"
+    });
+    (card?.querySelector("[data-feature-select]") || topic).focus({ preventScroll: true });
+  });
 
   // 4. Search indexes existing headings and project tags rather than inventing
   // descriptions. textContent prevents a query from being interpreted as HTML.
@@ -231,6 +257,7 @@ SAMPLE-006,VPN disconnects,network,,new,`;
       link.append(title, detail); item.append(link); results.append(item);
       link.addEventListener("click", () => {
         filterProjects("all"); // A filtered-out project must become reachable.
+        setMenu(false);
         const destination = document.getElementById(entry.id);
         if (cards.includes(destination)) showCase(destination);
         if (!destination.hasAttribute("tabindex")) destination.tabIndex = -1;
@@ -296,11 +323,62 @@ SAMPLE-006,VPN disconnects,network,,new,`;
     railLinks.forEach(link => observer.observe(document.querySelector(link.hash)));
     rail.hidden = false;
   }
+
+  // Keep the same controls and case-file order for touch and keyboard users.
+  const menu = document.getElementById("workbench-menu");
+  const header = menu.closest("header");
+  const caseNote = cases.querySelector("[data-decode]");
+  const mobileMotion = document.getElementById("workbench-motion");
+  const matrixToggle = document.getElementById("matrix-toggle");
+  function setMenu(open) { menu.setAttribute("aria-expanded", String(open)); }
+  menu.addEventListener("click", () => setMenu(menu.getAttribute("aria-expanded") === "false"));
+  document.getElementById("professional-nav").addEventListener("click", event => {
+    if (event.target.closest("a")) setMenu(false);
+  });
+  window.addEventListener("hashchange", () => setMenu(false));
+  header.addEventListener("keydown", event => {
+    if (event.key !== "Escape" || menu.getAttribute("aria-expanded") !== "true") return;
+    setMenu(false);
+    menu.focus();
+  });
+  header.addEventListener("focusout", event => {
+    const destination = event.relatedTarget;
+    if (destination && !header.contains(destination) && !dialog.contains(destination)) setMenu(false);
+  });
+  document.addEventListener("click", event => {
+    if (event.isTrusted && !header.contains(event.target) && !dialog.contains(event.target)) setMenu(false);
+  });
+  function syncMotion() {
+    mobileMotion.hidden = matrixToggle.hidden || matrixToggle.disabled;
+    mobileMotion.textContent = matrixToggle.textContent;
+    mobileMotion.setAttribute("aria-pressed", matrixToggle.getAttribute("aria-pressed"));
+  }
+  mobileMotion.addEventListener("click", () => matrixToggle.click());
+  new MutationObserver(syncMotion).observe(matrixToggle, { attributes: true, attributeFilter: ["aria-pressed", "disabled", "hidden"] });
+  syncMotion();
+
+  function syncPhoneLayout() {
+    const showMenu = phone.matches && document.body.dataset.side !== "creative";
+    menu.hidden = !showMenu;
+    if (!showMenu) setMenu(false);
+    caseNote.setAttribute("aria-label", phone.matches ? `Case Files. ${caseNote.dataset.decode}` : caseNote.dataset.decode);
+
+    const before = phone.matches ? cases : featured;
+    const after = phone.matches ? featured : cases;
+    if (before.nextElementSibling === after) return;
+    const focused = document.activeElement;
+    // Move the rail only. Reparenting Featured can restart its embedded game.
+    if (phone.matches) featured.before(cases);
+    else featured.after(cases);
+    if (cases.contains(focused)) focused.focus({ preventScroll: true });
+  }
+  phone.addEventListener("change", syncPhoneLayout);
   function syncSide() {
     const creative = document.body.dataset.side === "creative";
     trigger.hidden = creative || typeof dialog.showModal !== "function";
     rail.hidden = creative || !("IntersectionObserver" in window);
     if (creative && dialog.open) closeSearch();
+    syncPhoneLayout();
   }
   new MutationObserver(syncSide).observe(document.body, { attributes: true, attributeFilter: ["data-side"] });
   syncSide();

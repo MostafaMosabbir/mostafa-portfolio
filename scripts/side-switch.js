@@ -188,8 +188,10 @@
       controls.forEach(control => { control.disabled = false; });
       isSwitching = false;
 
-      // Keep keyboard focus on the control the visitor just used.
-      trigger.focus({ preventScroll: true });
+      // Returning from After Hours closes the phone menu around the text button.
+      const returnsToPhone = !isCreative && trigger === button &&
+        document.getElementById("workbench-menu") && window.matchMedia("(max-width: 620px)").matches;
+      (returnsToPhone && companion ? companion : trigger).focus({ preventScroll: true });
     }
   }
   controls.forEach(control => control.addEventListener("click", switchSide));

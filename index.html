@@ -39,20 +39,21 @@
   <!-- The Ark presents favorite works and links to their official artwork sources. -->
   <link rel="stylesheet" href="styles/the-ark-index-preview.css?v=9">
   <link rel="stylesheet" href="styles/ark-timeline.css?v=4">
+  <link rel="stylesheet" href="styles/workbench-mobile.css?v=1">
 
   <!-- defer makes JavaScript wait until the HTML has been parsed. -->
-  <script src="scripts/side-switch.js?v=robot-coat-2" defer></script>
+  <script src="scripts/side-switch.js?v=workbench-phone-1" defer></script>
   <script src="scripts/ark-catalog.js?v=3" defer></script>
   <script src="scripts/ark-art-sources.js?v=5" defer></script>
   <script src="scripts/ark-years.js?v=2" defer></script>
   <script src="scripts/ark-timeline.js?v=2" defer></script>
   <script src="scripts/the-ark-index-preview.js?v=7" defer></script>
   <!-- Decorative animation is separate from the creative-side interaction. -->
-  <script src="scripts/matrix.js?v=perf-1" defer></script>
+  <script src="scripts/matrix.js?v=workbench-phone-1" defer></script>
   <script src="scripts/geometry.js?v=after-hours-fog-2" defer></script>
   <!-- Independent enhancements: navigation, project filtering, and sample analysis. -->
-  <script src="scripts/explorer.js?v=case-filmstrip-2" defer></script>
-  <script src="scripts/featured-projects.js?v=zoom-phone-1" defer></script>
+  <script src="scripts/explorer.js?v=workbench-phone-1" defer></script>
+  <script src="scripts/featured-projects.js?v=workbench-phone-1" defer></script>
   <script src="scripts/theatercorp-demo.js?v=1" defer></script>
   <script src="scripts/assembly-calculator.js?v=1" defer></script>
   <script src="projects/algorithm-explorer/demo/app.js?v=1" defer></script>
@@ -93,38 +94,35 @@
           <span class="robot-eyes" aria-hidden="true"></span>
         </span>
       </button>
-      <a class="brand" href="#main"><span>Mostafa Mosabbir</span></a>
+      <a class="brand" href="#main">
+        <span>Mostafa Mosabbir<span class="workbench-mobile-brand" aria-hidden="true">The Workbench</span></span>
+      </a>
     </div>
+    <button class="workbench-menu" id="workbench-menu" type="button" aria-expanded="false" aria-controls="workbench-header-actions" hidden>Menu <span aria-hidden="true">▾</span></button>
+    <div class="workbench-header-actions" id="workbench-header-actions">
+      <!-- These sections exist on the professional side only. -->
+      <nav id="professional-nav" aria-label="Main navigation">
+        <a href="#about">Profile</a>
+        <a href="#projects">Projects</a>
+        <a class="workbench-mobile-nav-link" href="#featured">Featured</a>
+        <a href="#articles">Articles</a>
+        <a href="#tools">Tools</a>
+        <a href="#contact">Contact</a>
+      </nav>
 
-    <!-- These sections exist on the professional side only. -->
-    <nav id="professional-nav" aria-label="Main navigation">
-      <a href="#about">Profile</a>
-      <a href="#projects">Projects</a>
-      <a href="#articles">Articles</a>
-      <a href="#tools">Tools</a>
-      <a href="#contact">Contact</a>
-    </nav>
+      <button class="search-trigger" id="search-trigger" type="button" hidden aria-haspopup="dialog" aria-controls="project-search">
+        <span aria-hidden="true">⌕</span> Find a project <kbd>Ctrl K</kbd>
+      </button>
 
-    <button class="search-trigger" id="search-trigger" type="button" hidden aria-haspopup="dialog" aria-controls="project-search">
-      <span aria-hidden="true">⌕</span> Find a project <kbd>Ctrl K</kbd>
-    </button>
-
-    <!--
-      JavaScript reveals this button when it is ready.
-      aria-pressed is true when the creative side is active.
-    -->
-    <button
-      class="side-switch"
-      id="side-switch"
-      type="button"
-      aria-pressed="false"
-      aria-controls="professional-view creative-view"
-      hidden
-    >
-      <span aria-hidden="true">✦</span>
-      <span id="switch-label">After Hours</span>
-      <span aria-hidden="true">↗</span>
-    </button>
+      <!-- JavaScript reveals this button and updates its pressed state. -->
+      <button class="side-switch" id="side-switch" type="button" aria-pressed="false"
+        aria-controls="professional-view creative-view" hidden>
+        <span aria-hidden="true">✦</span>
+        <span id="switch-label">After Hours</span>
+        <span aria-hidden="true">↗</span>
+      </button>
+      <button class="motion-toggle" id="workbench-motion" type="button" hidden>Pause background</button>
+    </div>
   </header>
 
   <!--
@@ -199,6 +197,7 @@
       <!-- Progressive enhancement: without JavaScript every panel is readable.
            The tabs and workflow buttons are revealed only after wiring events. -->
       <section class="featured wrap" id="featured" aria-labelledby="featured-title">
+        <a id="workbench-back" href="#projects">↑ Back to Case Files</a>
         <div class="feature-top">
           <div><p class="eyebrow" id="featured-number">Project 003 / Featured project</p>
             <h2 id="featured-title" tabindex="-1">Python IT Ticket Analyzer</h2>
@@ -777,11 +776,12 @@
         <div class="section-heading">
           <div>
             <h2 class="eyebrow" id="projects-title">01 / Case files</h2>
-            <button class="decode-note" type="button" data-decode="Always changing. Always improving." aria-label="Always changing. Always improving." aria-pressed="false"><span class="decode-width" aria-hidden="true">Always changing. Always improving.</span><span class="decode-text" aria-hidden="true">Always changing. Always improving.</span></button>
+            <button class="decode-note" type="button" data-decode="Always changing. Always improving." aria-label="Always changing. Always improving." aria-pressed="false"><span class="workbench-mobile-heading" aria-hidden="true">01 / CASE FILES</span><span class="decode-width" aria-hidden="true">Always changing. Always improving.</span><span class="decode-text" aria-hidden="true">Always changing. Always improving.</span></button>
           </div>
         </div>
 
         <div class="project-toolbar" id="project-toolbar" hidden>
+          <label class="workbench-mobile-filter"><span class="sr-only">Filter case files</span><select id="workbench-topic"></select></label>
           <div class="project-filters" role="group" aria-label="Filter projects by technology or discipline">
             <button type="button" data-filter="all" aria-pressed="true">All</button>
             <button type="button" data-filter="python" aria-pressed="false">Python</button>
@@ -935,11 +935,9 @@ Fictional data</pre>
           </article>
           <article class="project-card" id="project-algorithm-explorer" data-technologies="cpp javascript web" tabindex="-1">
             <div class="project-art" aria-hidden="true">
-              <div class="terminal-bar"><i></i><i></i><i></i><span>algorithms / linear search</span></div>
-              <pre>List: 4 2 7 7
-Target: 7
-First match: index 2
-Comparisons: 3</pre>
+              <div class="terminal-bar"><i></i><i></i><i></i><span>algorithms / binary search</span></div>
+              <pre>2  4  7 [7] 11 15 19 23
+Midpoint 7 &lt; target 11</pre>
             </div>
             <div class="project-copy">
               <p class="eyebrow">Project 010 <span class="badge">Learning project</span></p>
@@ -952,10 +950,9 @@ Comparisons: 3</pre>
           </article>
           <article class="project-card" id="project-assembly-calculator" data-technologies="assembly javascript web" tabindex="-1">
             <div class="project-art" aria-hidden="true">
-              <div class="terminal-bar"><i></i><i></i><i></i><span>x86 / signed division</span></div>
-              <pre>mov eax, esi   ; eax = 18
-cdq            ; edx = 0
-idiv edi       ; eax = 4, edx = 2</pre>
+              <div class="terminal-bar"><i></i><i></i><i></i><span>x86 / registers</span></div>
+              <pre>ADD EAX, EDI
+EAX 18 → 22</pre>
             </div>
             <div class="project-copy">
               <p class="eyebrow">Project 011 <span class="badge">Class project adaptation</span></p>
@@ -968,12 +965,9 @@ idiv edi       ; eax = 4, edx = 2</pre>
           </article>
           <article class="project-card" id="project-securebank" data-technologies="cybersecurity javascript" tabindex="-1">
             <div class="project-art" aria-hidden="true">
-              <div class="terminal-bar"><i></i><i></i><i></i><span>securebank / planned traffic</span></div>
-              <pre>Guest → DMZ web   HTTP
-Expected: allow
-
-Guest → Staff     ICMP
-Expected: block</pre>
+              <div class="terminal-bar"><i></i><i></i><i></i><span>securebank / v2 policy</span></div>
+              <pre>Staff VLAN → R2
+Expected block at R2</pre>
             </div>
             <div class="project-copy">
               <p class="eyebrow">Project 012 <span class="badge">Lab plan</span></p>
@@ -985,6 +979,11 @@ Expected: block</pre>
             <button class="feature-select" type="button" data-feature-select="securebank" aria-pressed="false" hidden>Highlight project</button>
           </article>
           <article class="project-card" id="project-office-it-buildout" data-technologies="it-operations" tabindex="-1">
+            <div class="project-art workbench-mobile-art" aria-hidden="true">
+              <div class="terminal-bar"><i></i><i></i><i></i><span>office / readiness</span></div>
+              <pre>Network → wired + Wi-Fi checks
+Workstations → desk-by-desk test</pre>
+            </div>
             <div class="project-copy">
               <p class="eyebrow">Project 013 <span class="badge">Case study</span></p>
               <h3>Office IT Buildout</h3>
@@ -994,6 +993,11 @@ Expected: block</pre>
             <button class="feature-select" type="button" data-feature-select="office" aria-pressed="false" hidden>Highlight project</button>
           </article>
           <article class="project-card" id="project-zoom-phone-migration" data-technologies="it-operations" tabindex="-1">
+            <div class="project-art workbench-mobile-art" aria-hidden="true">
+              <div class="terminal-bar"><i></i><i></i><i></i><span>zoom phone / cutover</span></div>
+              <pre>Existing numbers → Zoom Phone
+Calls + texts → tested both ways</pre>
+            </div>
             <div class="project-copy">
               <p class="eyebrow">Project 014 <span class="badge">Case study</span></p>
               <h3>Zoom Phone Migration</h3>

@@ -23,18 +23,48 @@
   const buttons = [...document.querySelectorAll("[data-feature-select]")];
   const groups = [...feature.querySelectorAll("[data-feature-project]")];
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const phone = document.getElementById("workbench-back") && window.matchMedia("(max-width: 620px)");
+
+  function labelButtons() {
+    buttons.forEach(button => {
+      const selected = button.dataset.featureSelect === feature.dataset.project;
+      button.setAttribute("aria-pressed", String(selected));
+      button.textContent = selected ? (phone?.matches ? "View Featured" : "Featured above") : "Highlight project";
+      button.setAttribute("aria-label", `${button.textContent}, ${projects[button.dataset.featureSelect].title}`);
+    });
+  }
+
+  function openFeatured(key, resetTab = true) {
+    if (resetTab) {
+      let tab = "tab-overview";
+      if (phone?.matches) {
+        if (key === "analyzer" || key === "security") tab = "tab-process";
+        if (key === "kev") tab = "tab-evidence";
+      }
+      document.getElementById(tab).click();
+    }
+    const project = projects[key];
+    document.getElementById("featured-status").textContent = `Project ${project.number}: ${project.title} is now featured.`;
+    title.focus({ preventScroll: true });
+    const behavior = reducedMotion.matches ? "instant" : "smooth";
+    if (phone?.matches) {
+      const clearance = parseFloat(getComputedStyle(feature).scrollMarginTop);
+      window.scrollTo({ top: window.scrollY + feature.getBoundingClientRect().top - clearance, behavior });
+    } else {
+      feature.scrollIntoView({ behavior, block: "start" });
+    }
+  }
 
   function selectProject(key, moveFocus = false) {
     const project = projects[key];
-    if (!project || key === feature.dataset.project) return;
+    if (!project) return;
+    if (key === feature.dataset.project) {
+      if (moveFocus && phone?.matches) openFeatured(key, false);
+      return;
+    }
     groups.forEach(group => { group.hidden = group.dataset.featureProject !== key; });
-    buttons.forEach(button => {
-      const selected = button.dataset.featureSelect === key;
-      button.setAttribute("aria-pressed", String(selected));
-      button.textContent = selected ? "Featured above" : "Highlight project";
-      button.setAttribute("aria-label", `${button.textContent}, ${projects[button.dataset.featureSelect].title}`);
-    });
     feature.dataset.project = key;
+    labelButtons();
     // Project switches return to Brief, so a hidden tab never remains selected.
     document.getElementById("tab-articles").hidden = !["security", "columns", "kev", "securebank"].includes(key);
     document.getElementById("tab-what-changed").hidden = !["algorithm", "securebank"].includes(key);
@@ -43,17 +73,12 @@
     document.getElementById("featured-badge").textContent = project.badge;
     document.getElementById("featured-meta").textContent = project.meta;
     document.getElementById("feature-tabs").setAttribute("aria-label", project.title);
-    // Use the existing tab controller rather than creating a second tab state.
-    if (moveFocus) {
-      document.getElementById("tab-overview").click();
-      document.getElementById("featured-status").textContent = `Project ${project.number}: ${project.title} is now featured.`;
-      title.focus({ preventScroll: true });
-      feature.scrollIntoView({ behavior: reducedMotion.matches ? "instant" : "smooth", block: "start" });
-    }
+    if (moveFocus) openFeatured(key);
   }
   buttons.forEach(button => {
     button.addEventListener("click", () => selectProject(button.dataset.featureSelect, true));
     button.hidden = false;
   });
   selectProject("analyzer");
+  phone?.addEventListener("change", labelButtons);
 })();
