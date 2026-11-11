@@ -9,7 +9,7 @@
 #workbench-back { display: none; }
 
 @media (max-width: 620px) {
-  body:not([data-side="creative"]) .site-header:has(.workbench-menu:not([hidden])) {
+  .site-header:has(.workbench-menu:not([hidden]), #side-switch[aria-pressed="true"]:not([hidden])) {
     position: sticky;
     top: 0;
     z-index: 12;
@@ -23,18 +23,22 @@
     background: #080f10;
   }
 
-  .site-header:has(.workbench-menu:not([hidden])) .brand-group { min-width: 0; }
-  .site-header:has(.workbench-menu:not([hidden])) .brand {
+  body[data-side="creative"] .site-header:has(#side-switch:not([hidden])) {
+    background: #180d13;
+    border-bottom-color: #633541;
+  }
+  .site-header:has(#side-switch:not([hidden])) .brand-group { flex: 1; min-width: 0; }
+  .site-header:has(#side-switch:not([hidden])) .brand {
     font-size: .87rem;
     line-height: 1.3;
     white-space: normal;
   }
-  .site-header:has(.workbench-menu:not([hidden])) .pixel-switch {
+  .site-header:has(#side-switch:not([hidden])) .pixel-switch {
     flex: 0 0 54px;
     width: 54px;
     height: 54px;
   }
-  .site-header:has(.workbench-menu:not([hidden])) .robot-figure { width: 50px; height: 50px; }
+  .site-header:has(#side-switch:not([hidden])) .robot-figure { width: 50px; height: 50px; }
   .site-header:has(.workbench-menu:not([hidden])) .workbench-mobile-brand {
     display: block;
     margin-top: 3px;
@@ -55,6 +59,21 @@
     cursor: pointer;
   }
   .workbench-menu[aria-expanded="true"] { border-color: var(--line); }
+  .site-header > #side-switch {
+    flex: 0 0 auto;
+    min-height: 44px;
+    margin: 0;
+    padding: 6px 9px;
+    font-size: .76rem;
+    line-height: 1.2;
+  }
+  .site-header > #side-switch > span[aria-hidden="true"] { display: none; }
+  @media (max-width: 350px) {
+    .site-header:has(#side-switch:not([hidden])) .brand { font-size: .78rem; }
+    .site-header:has(.workbench-menu:not([hidden])) .workbench-mobile-brand,
+    .workbench-menu > span { display: none; }
+    .workbench-menu { padding-inline: 5px; }
+  }
   .workbench-menu:not([hidden]) + .workbench-header-actions {
     position: absolute;
     inset: 100% 12px auto;
@@ -76,7 +95,7 @@
     margin: 0;
   }
   .workbench-menu:not([hidden]) + .workbench-header-actions .workbench-mobile-nav-link { display: inline-flex; }
-  .workbench-menu:not([hidden]) + .workbench-header-actions :is(.search-trigger, .side-switch, #workbench-motion) {
+  .workbench-menu:not([hidden]) + .workbench-header-actions :is(.search-trigger, #workbench-motion) {
     display: flex;
     order: 0;
     justify-content: flex-start;
@@ -91,7 +110,7 @@
   .workbench-menu:not([hidden]) + .workbench-header-actions kbd { display: none; }
 
   /* Anchor jumps leave the selected content below the sticky header. */
-  body:not([data-side="creative"]):has(.workbench-menu:not([hidden])) :is(main[id], section[id], article[id]) {
+  body:has(.workbench-menu:not([hidden]), #side-switch[aria-pressed="true"]:not([hidden])) :is(main[id], section[id], article[id]) {
     scroll-margin-top: 77px;
   }
 
