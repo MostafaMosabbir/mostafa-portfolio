@@ -134,6 +134,11 @@ SAMPLE-006,VPN disconnects,network,,new,`;
   const cases = document.getElementById("projects");
   const featured = document.getElementById("featured");
   const phone = window.matchMedia("(max-width: 620px)");
+  // A sideways phone still needs the compact header. The Cases and Featured
+  // order continues to follow the narrower layout breakpoint above.
+  const compactHeader = window.matchMedia(
+    "(max-width: 620px), (max-width: 950px) and (max-height: 500px) and (orientation: landscape) and (hover: none) and (pointer: coarse)"
+  );
   const carousel = document.getElementById("case-carousel");
   const previous = document.getElementById("case-previous");
   const next = document.getElementById("case-next");
@@ -358,7 +363,7 @@ SAMPLE-006,VPN disconnects,network,,new,`;
   syncMotion();
 
   function syncPhoneLayout() {
-    const showMenu = phone.matches && document.body.dataset.side !== "creative";
+    const showMenu = compactHeader.matches && document.body.dataset.side !== "creative";
     menu.hidden = !showMenu;
     if (!showMenu) setMenu(false);
     caseNote.setAttribute("aria-label", phone.matches ? `Case Files. ${caseNote.dataset.decode}` : caseNote.dataset.decode);
@@ -373,6 +378,7 @@ SAMPLE-006,VPN disconnects,network,,new,`;
     if (cases.contains(focused)) focused.focus({ preventScroll: true });
   }
   phone.addEventListener("change", syncPhoneLayout);
+  compactHeader.addEventListener("change", syncPhoneLayout);
   function syncSide() {
     const creative = document.body.dataset.side === "creative";
     trigger.hidden = creative || typeof dialog.showModal !== "function";

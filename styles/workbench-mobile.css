@@ -8,7 +8,8 @@
 #workbench-motion,
 #workbench-back { display: none; }
 
-@media (max-width: 620px) {
+/* Use the compact header on narrow screens and when a touch phone rotates. */
+@media (max-width: 620px), (max-width: 950px) and (max-height: 500px) and (orientation: landscape) and (hover: none) and (pointer: coarse) {
   .site-header:has(.workbench-menu:not([hidden]), #side-switch[aria-pressed="true"]:not([hidden])) {
     position: sticky;
     top: 0;
@@ -113,7 +114,9 @@
   body:has(.workbench-menu:not([hidden]), #side-switch[aria-pressed="true"]:not([hidden])) :is(main[id], section[id], article[id]) {
     scroll-margin-top: 77px;
   }
+}
 
+@media (max-width: 620px) {
   /* Use the existing Matrix and wireframe canvases. The code stays in the
      right lane, and geometry.js already avoids the Matrix canvas bounds. */
   #professional-view .hero { isolation: auto; }
