@@ -34,7 +34,7 @@
   <link rel="stylesheet" href="styles/assembly-calculator.css?v=2">
   <link rel="stylesheet" href="projects/algorithm-explorer/demo/style.css?v=2">
   <link rel="stylesheet" href="styles/securebank-lab.css?v=2">
-  <link rel="stylesheet" href="projects/ticket-assistant/workbench.css?v=1">
+  <link rel="stylesheet" href="projects/ticket-assistant/workbench.css?v=2">
   <!-- A small, decorative atmosphere for the After Hours side. -->
   <link rel="stylesheet" href="styles/after-hours-atmosphere.css?v=3">
   <!-- The Ark presents favorite works and links to their official artwork sources. -->
@@ -56,8 +56,9 @@
   <script src="scripts/explorer.js?v=workbench-phone-2" defer></script>
   <script src="scripts/featured-projects.js?v=assistant-1" defer></script>
   <script src="projects/ticket-assistant/triage.js?v=1" defer></script>
-  <script src="projects/ticket-assistant/workbench.js?v=1" defer></script>
-  <script src="projects/ticket-assistant/findings.js?v=1" defer></script>
+  <script src="projects/ticket-assistant/evaluation.js?v=1" defer></script>
+  <script src="projects/ticket-assistant/workbench.js?v=2" defer></script>
+  <script src="projects/ticket-assistant/findings.js?v=2" defer></script>
   <script src="scripts/theatercorp-demo.js?v=1" defer></script>
   <script src="scripts/assembly-calculator.js?v=2" defer></script>
   <script src="projects/algorithm-explorer/demo/app.js?v=1" defer></script>
@@ -239,7 +240,16 @@
                 <div class="assistant-workspace" data-assistant-workspace hidden>
                   <aside class="assistant-queue" aria-labelledby="ticket-assistant-queue-title">
                     <h4 id="ticket-assistant-queue-title">Sample queue</h4>
+                    <label data-assistant-queue-picker hidden>Ticket set
+                      <select data-assistant-queue-set>
+                        <option value="demo">Demo tickets</option>
+                        <option value="challenge">Challenge tickets</option>
+                      </select>
+                    </label>
                     <div class="assistant-queue-options" data-assistant-queue></div>
+                    <label class="assistant-challenge-picker" data-assistant-challenge-picker hidden>Evaluation ticket
+                      <select data-assistant-challenge-ticket></select>
+                    </label>
                   </aside>
                   <section class="assistant-intake" aria-labelledby="ticket-assistant-subject">
                     <p class="assistant-kicker">Incoming request</p>
@@ -615,21 +625,36 @@
             <div class="evidence-links"><a href="projects/ticket-analyzer/index.html">Open the case file ↗</a><a href="projects/ticket-analyzer/sample-summary.csv" download>Download sample summary (CSV) ↓</a><a href="projects/ticket-analyzer/sample-findings.md">Read sample findings ↗</a></div>
           </div><div data-feature-project="portfolio" hidden><p>The portfolio itself is the working example.</p><div class="evidence-links"><a href="https://github.com/MostafaMosabbir/mostafa-portfolio">Explore the source ↗</a><a href="https://github.com/MostafaMosabbir/mostafa-portfolio/tree/main/tests">View interaction tests ↗</a></div></div><div data-feature-project="assistant" hidden>
             <section id="ticket-assistant-findings" aria-labelledby="ticket-assistant-findings-title">
-              <h4 id="ticket-assistant-findings-title">How the assistant routed the sample tickets</h4>
-              <p data-assistant-evaluation>The fictional evaluation checks single, ambiguous, and unmatched requests against their expected routes.</p>
-              <div data-assistant-results hidden>
-                <dl class="evidence-stats" aria-label="Ticket triage sample results">
-                  <div><dt>One suggested category</dt><dd data-assistant-metric="matched"></dd></div>
-                  <div><dt>Routed to manual review</dt><dd data-assistant-metric="manual"></dd></div>
-                  <div><dt>Matched expected route</dt><dd data-assistant-metric="passed"></dd></div>
+              <h4 id="ticket-assistant-findings-title">How the assistant routed unfamiliar tickets</h4>
+              <p data-assistant-challenge-summary>The challenge set compares the existing rules with the route a technician would choose for each fictional request.</p>
+              <div data-assistant-challenge-results hidden>
+                <dl class="evidence-stats" aria-label="Fictional challenge results">
+                  <div><dt>Matched expected route</dt><dd data-assistant-challenge-metric="agreed"></dd></div>
+                  <div><dt>Manual review where a category was expected</dt><dd data-assistant-challenge-metric="extraReview"></dd></div>
+                  <div><dt>Suggestion missed expected route</dt><dd data-assistant-challenge-metric="unexpectedSuggestion"></dd></div>
                 </dl>
-                <p>In the sample where email works but the VPN fails, both rules match. The technician reads the context and decides where the ticket belongs.</p>
+                <p>Try <strong>Training portal keeps rejecting the code</strong>. The rules saw the word “printer” and suggested hardware, even though the printer issue was already resolved.</p>
                 <details>
-                  <summary>See the outcome for each ticket</summary>
-                  <ul data-assistant-outcomes></ul>
+                  <summary>Compare all challenge tickets</summary>
+                  <ul data-assistant-challenge-outcomes></ul>
                 </details>
+                <p class="muted">This set tests the current rules against fictional wording. It does not measure how often the rules work on real tickets.</p>
               </div>
-              <p class="muted">These results cover the examples used in the demo. Real ticket wording may produce different results.</p>
+              <details>
+                <summary>Review the original demo results</summary>
+                <p data-assistant-evaluation>The original demo covers requests that match one, several, or no categories.</p>
+                <div data-assistant-results hidden>
+                  <dl class="evidence-stats" aria-label="Ticket triage sample results">
+                    <div><dt>One suggested category</dt><dd data-assistant-metric="matched"></dd></div>
+                    <div><dt>Routed to manual review</dt><dd data-assistant-metric="manual"></dd></div>
+                    <div><dt>Matched expected route</dt><dd data-assistant-metric="passed"></dd></div>
+                  </dl>
+                  <details>
+                    <summary>See the outcome for each ticket</summary>
+                    <ul data-assistant-outcomes></ul>
+                  </details>
+                </div>
+              </details>
               <div class="evidence-links"><a href="https://github.com/MostafaMosabbir/mostafa-portfolio/tree/main/projects/ticket-assistant">Read the walkthrough and source ↗</a></div>
             </section>
           </div><div data-feature-project="security" hidden>

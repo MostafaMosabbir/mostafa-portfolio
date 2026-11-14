@@ -9,7 +9,7 @@ The Workbench demo helps a technician triage one incoming fictional request. It 
 3. Switch to the Outlook and VPN sample. Both categories match. Read the reported facts before picking a category.
 4. Edit the reply. After a category change, generate a fresh draft or confirm that the edited draft fits the selected category. Then mark it reviewed.
 5. Clear the reply or change it after review and check the status again.
-6. Open **Findings** to compare each fictional request's expected route with the result from the same rules.
+6. Open **Findings** to compare the challenge tickets with the routes a technician would choose. Select **Try ticket** on a result to work through that request in the queue.
 
 ## Questions behind the work
 
@@ -27,4 +27,10 @@ From the repository root, run:
 node --test tests/ticket-assistant-triage.test.cjs
 ```
 
-Each expected route is set in the fictional fixture. Use a fresh set of examples to evaluate generalization, especially requests with quoted text, negation, or misleading context. The browser demo holds edits in memory, and review records a local step. Replies are never sent.
+## Evaluation
+
+The eight demo tickets verify normal behavior. The 14 challenge tickets in `evaluation.js` were written with expected routes before they were checked against the existing rules. That rules file stayed the same. Each challenge ticket records the reasoning for its expected category or manual review. Manual routes count as agreement whether they came from multiple matches or no matches.
+
+The baseline matched 8 of 14 expected routes. Four tickets went to manual review where a category was expected, and two suggestions missed the expected route. The examples include unfamiliar vocabulary, words about resolved work, and an error supplied only in a structured field. If you use these cases to tune the rules, create a fresh set of fictional tickets before evaluating the changes.
+
+The browser demo holds edits in memory, and review records a local step. Replies are never sent.

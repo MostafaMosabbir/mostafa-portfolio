@@ -28,6 +28,9 @@
 }
 
 #ticket-assistant-demo .assistant-queue-options { display: grid; gap: 6px; margin-top: .7rem; }
+#ticket-assistant-demo .assistant-queue [hidden] { display: none; }
+#ticket-assistant-demo .assistant-queue label + select,
+#ticket-assistant-demo .assistant-queue label select { margin-top: .25rem; }
 #ticket-assistant-demo .assistant-queue-options button { display: grid; text-align: left; gap: 1px; }
 #ticket-assistant-demo .assistant-queue-options button[aria-pressed="true"] {
   background: var(--assistant-selected);
@@ -112,3 +115,33 @@
   border-bottom: 1px solid var(--line);
 }
 #ticket-assistant-findings [data-assistant-outcomes] span { color: var(--muted); }
+
+#ticket-assistant-findings [data-assistant-challenge-outcomes] {
+  list-style: none;
+  margin: .75rem 0 0;
+  padding: 0;
+}
+
+#ticket-assistant-findings [data-assistant-challenge-outcomes] li {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: start;
+  gap: .6rem 1.2rem;
+  padding: .8rem 0;
+  border-bottom: 1px solid var(--line);
+}
+
+#ticket-assistant-findings [data-assistant-challenge-outcomes] li > div { flex: 1 1 32ch; min-width: 0; }
+#ticket-assistant-findings [data-assistant-challenge-outcomes] p { margin: .25rem 0 0; color: var(--muted); }
+#ticket-assistant-findings [data-assistant-challenge-outcomes] button {
+  min-height: 44px;
+  color: var(--ink);
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: .25rem .7rem;
+  font: inherit;
+  cursor: pointer;
+}
+#ticket-assistant-findings [data-assistant-challenge-outcomes] button:hover { border-color: var(--accent); }

@@ -8,6 +8,10 @@
   const find = name => root.querySelector(`[data-assistant-${name}]`);
   const workspace = find("workspace");
   const queue = find("queue");
+  const queuePicker = find("queue-picker");
+  const queueSet = find("queue-set");
+  const challengePicker = find("challenge-picker");
+  const challengeTicket = find("challenge-ticket");
   const subject = root.querySelector("#ticket-assistant-subject");
   const description = find("description");
   const suggestion = find("suggestion");
@@ -30,6 +34,11 @@
   const categoryLabels = new Map(engine.categories.map(({ id, label }) => [id, label]));
   const ticketStates = new Map();
   const queueButtons = new Map();
+  const challengeCases = window.TicketTriageEvaluation?.cases ?? [];
+  const hasChallengeQueue = Boolean(queueSet && challengePicker && challengeTicket && challengeCases.length);
+  if (queuePicker) queuePicker.hidden = !hasChallengeQueue;
+  const selectedTickets = new Map([["demo", engine.samples[0].id]]);
+  if (hasChallengeQueue) selectedTickets.set("challenge", challengeCases[0].id);
   let active;
 
   for (const { id, label } of engine.categories) {
@@ -37,7 +46,7 @@
   }
 
   function createState(sample) {
-    const fields = { ...sample.fields };
+    const fields = Object.fromEntries(fieldNames.map(name => [name, sample.fields[name] ?? ""]));
     const result = engine.analyze(fields);
     const draft = engine.draftReply(result);
     return {
@@ -109,9 +118,11 @@
     renderQuestions();
   }
 
-  function selectSample(id) {
+  function selectSample(set, id) {
+    selectedTickets.set(set, id);
     active = ticketStates.get(id);
     for (const [key, button] of queueButtons) button.setAttribute("aria-pressed", String(key === id));
+    if (set === "challenge") challengeTicket.value = id;
     for (const name of fieldNames) intake.elements.namedItem(name).value = active.pending[name];
     intakeError.textContent = "";
     category.value = active.category;
@@ -120,16 +131,46 @@
     updateReview();
   }
 
+  // The queue switch changes which picker is shown. Edited requests, replies,
+  // and review state belong to their ticket and stay in memory.
+  function showQueue(set, id = selectedTickets.get(set)) {
+    if (!id) return;
+    const showingChallenge = set === "challenge";
+    queue.hidden = showingChallenge;
+    if (hasChallengeQueue) {
+      queueSet.value = set;
+      challengePicker.hidden = !showingChallenge;
+    }
+    selectSample(set, id);
+  }
+
   engine.samples.forEach((sample, index) => {
     ticketStates.set(sample.id, createState(sample));
     const button = document.createElement("button");
     button.type = "button";
     button.dataset.assistantTicket = sample.id;
     button.append(element("small", `Demo ${String(index + 1).padStart(2, "0")}`), element("span", sample.title));
-    button.addEventListener("click", () => selectSample(sample.id));
+    button.addEventListener("click", () => selectSample("demo", sample.id));
     queueButtons.set(sample.id, button);
     queue.append(button);
   });
+
+  if (hasChallengeQueue) {
+    for (const sample of challengeCases) {
+      ticketStates.set(sample.id, createState(sample));
+      challengeTicket.add(new Option(sample.title, sample.id));
+    }
+    queueSet.addEventListener("change", () => showQueue(queueSet.value));
+    challengeTicket.addEventListener("change", () => selectSample("challenge", challengeTicket.value));
+    root.addEventListener("ticket-assistant:open-case", event => {
+      if (!challengeCases.some(sample => sample.id === event.detail)) return;
+      showQueue("challenge", event.detail);
+      challengeTicket.focus();
+    });
+  } else if (queueSet) {
+    queueSet.hidden = true;
+    for (const label of queueSet.labels) label.hidden = true;
+  }
 
   intake.addEventListener("input", event => {
     const { name, value } = event.target;
@@ -204,7 +245,7 @@
     updateReview();
   });
 
-  selectSample(engine.samples[0].id);
+  showQueue("demo");
   find("loading").hidden = true;
   workspace.hidden = false;
 })();
