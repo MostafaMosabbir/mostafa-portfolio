@@ -69,8 +69,10 @@
   <script src="projects/ticket-assistant/routing-symptoms.js?v=symptom-routing-1" defer></script>
   <script src="projects/ticket-assistant/verify-cases.js?v=evidence-routing-1" defer></script>
   <script src="projects/ticket-assistant/routing-evidence.js?v=evidence-routing-1" defer></script>
-  <script src="projects/ticket-assistant/workbench.js?v=evidence-routing-1" defer></script>
-  <script src="projects/ticket-assistant/findings.js?v=evidence-routing-1" defer></script>
+  <script src="projects/ticket-assistant/holdout-cases.js?v=boot-routing-1" defer></script>
+  <script src="projects/ticket-assistant/routing-boot.js?v=boot-routing-1" defer></script>
+  <script src="projects/ticket-assistant/workbench.js?v=boot-routing-1" defer></script>
+  <script src="projects/ticket-assistant/findings.js?v=boot-routing-1" defer></script>
   <script src="scripts/theatercorp-demo.js?v=1" defer></script>
   <script src="scripts/assembly-calculator.js?v=2" defer></script>
   <script src="projects/algorithm-explorer/demo/app.js?v=1" defer></script>
@@ -261,7 +263,8 @@
                         <option value="transfer" hidden>Prior evaluation tickets</option>
                         <option value="novel" hidden>Previous evaluation tickets</option>
                         <option value="unseen" hidden>Scanner and VPN evaluation</option>
-                        <option value="verify" hidden>Fresh fictional evaluation</option>
+                        <option value="verify" hidden>Barcode reader and VPN evaluation</option>
+                        <option value="holdout" hidden>Fresh fictional evaluation</option>
                       </select>
                     </label>
                     <div class="assistant-queue-options" data-assistant-queue></div>
@@ -646,6 +649,32 @@
               <h4 id="ticket-assistant-findings-title">Ticket routing before and after</h4>
               <p>Before and After compare the previous and current rules. The Original column retains the keyword baseline. Each version is checked against the same expected route for each ticket.</p>
               <p data-assistant-comparison-loading>The comparison appears when the rules and test tickets load.</p>
+              <section class="assistant-comparison" data-assistant-comparison="verify" aria-labelledby="assistant-verify-test" hidden>
+                <h5 id="assistant-verify-test">Barcode reader and VPN evaluation</h5>
+                <p data-assistant-comparison-summary></p>
+                <table aria-labelledby="assistant-verify-test">
+                  <thead><tr><th scope="col">Routing result</th><th scope="col">Original</th><th scope="col">Before</th><th scope="col">After</th></tr></thead>
+                  <tbody data-assistant-comparison-counts></tbody>
+                </table>
+                <p class="assistant-comparison-note">The barcode reader stalls on the maker’s name with only power connected. A VPN session drops on a different computer. The rules now recognize both faults and send the ticket to manual review.</p>
+                <details>
+                  <summary>Compare all barcode reader and VPN evaluation tickets</summary>
+                  <ul data-assistant-comparison-outcomes></ul>
+                </details>
+              </section>
+              <section class="assistant-comparison" data-assistant-comparison="holdout" aria-labelledby="assistant-holdout-test" hidden>
+                <h5 id="assistant-holdout-test">Fresh fictional evaluation</h5>
+                <p data-assistant-comparison-summary></p>
+                <table aria-labelledby="assistant-holdout-test">
+                  <thead><tr><th scope="col">Routing result</th><th scope="col">Original</th><th scope="col">Before</th><th scope="col">After</th></tr></thead>
+                  <tbody data-assistant-comparison-counts></tbody>
+                </table>
+                <p class="assistant-comparison-note">We set the expected routes before testing and kept these tickets out of rule tuning. The rules still suggested Network when a separate reader startup failure was described across several sentences and the ticket also reported a VPN disconnect.</p>
+                <details>
+                  <summary>Compare all fresh fictional tickets</summary>
+                  <ul data-assistant-comparison-outcomes></ul>
+                </details>
+              </section>
               <section class="assistant-comparison" data-assistant-comparison="unseen" aria-labelledby="assistant-unseen-test" hidden>
                 <h5 id="assistant-unseen-test">Scanner and VPN evaluation</h5>
                 <p data-assistant-comparison-summary></p>
@@ -656,19 +685,6 @@
                 <p class="assistant-comparison-note">When the scanner “never gets past its opening splash screen” even after unplugging it from the computer, the assistant now recognizes a device problem alongside the separate VPN fault and leaves the ticket for manual review.</p>
                 <details>
                   <summary>Compare all scanner and VPN evaluation tickets</summary>
-                  <ul data-assistant-comparison-outcomes></ul>
-                </details>
-              </section>
-              <section class="assistant-comparison" data-assistant-comparison="verify" aria-labelledby="assistant-verify-test" hidden>
-                <h5 id="assistant-verify-test">Fresh fictional evaluation</h5>
-                <p data-assistant-comparison-summary></p>
-                <table aria-labelledby="assistant-verify-test">
-                  <thead><tr><th scope="col">Routing result</th><th scope="col">Original</th><th scope="col">Before</th><th scope="col">After</th></tr></thead>
-                  <tbody data-assistant-comparison-counts></tbody>
-                </table>
-                <p class="assistant-comparison-note">We set the expected routes before testing and kept these tickets out of rule tuning. The rules still missed a similar case where the barcode reader sat on the maker’s name and never reached its menu while the VPN failed on a different computer.</p>
-                <details>
-                  <summary>Compare all fresh fictional tickets</summary>
                   <ul data-assistant-comparison-outcomes></ul>
                 </details>
               </section>
