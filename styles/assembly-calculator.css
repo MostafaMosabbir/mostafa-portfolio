@@ -77,6 +77,8 @@
 
 #assembly-calculator .assembly-error:empty { display: none; }
 #assembly-calculator [aria-invalid="true"] { border-color: #ffb8ac; }
+#assembly-calculator .assembly-run-status { margin: 0 0 12px; color: var(--muted); }
+#assembly-calculator .assembly-run-status:empty { display: none; }
 
 #assembly-calculator .assembly-results {
   display: grid;

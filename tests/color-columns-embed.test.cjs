@@ -16,11 +16,12 @@ function element(id, dataset = {}) {
 
 function setup() {
   const ids = {};
-  for (const id of ['columns-play', 'columns-close', 'columns-frame-container', 'columns-status', 'featured', 'panel-overview']) ids[id] = element(id);
+  for (const id of ['columns-play', 'columns-close', 'columns-frame-container', 'columns-status', 'featured', 'panel-overview', 'professional-view']) ids[id] = element(id);
   ids['panel-overview'].hidden = false;
+  ids['professional-view'].hidden = false;
   const selectors = [element('select-analyzer', {featureSelect:'analyzer'}), element('select-columns', {featureSelect:'columns'})];
   const tabs = [element('tab-overview'), element('tab-process'), element('tab-evidence')];
-  const documentHandlers = {}, windowHandlers = {};
+  const documentHandlers = {}, windowHandlers = {}, observers = {};
   let created = 0, lastFrame;
   ids['columns-frame-container'].appendChild = (frame) => { frame.attached = true; lastFrame = frame; };
   const document = {
@@ -33,8 +34,12 @@ function setup() {
     },
   };
   const window = {location:{origin:'https://mostafam.com'},addEventListener:(type,cb)=>{windowHandlers[type]=cb;}};
-  vm.runInNewContext(source, {document, window});
-  return {ids, selectors, tabs, documentHandlers, windowHandlers, getFrame:()=>lastFrame, created:()=>created};
+  class MutationObserver {
+    constructor(callback) { this.callback = callback; }
+    observe(target) { observers[target.id] = this.callback; }
+  }
+  vm.runInNewContext(source, {document, window, MutationObserver});
+  return {ids, selectors, tabs, documentHandlers, windowHandlers, observers, getFrame:()=>lastFrame, created:()=>created};
 }
 
 test('does not load a game before Play and closes it with focus restored', () => {
@@ -83,4 +88,16 @@ test('keyboard tab navigation unloads the game after Brief is hidden', () => {
   s.ids['panel-overview'].hidden = true;
   s.documentHandlers.keydown({key:'ArrowRight'});
   assert.equal(frame.attached, false);
+});
+
+test('switching to After Hours unloads the game without moving focus to the hidden Workbench', () => {
+  const s = setup();
+  s.ids['columns-play'].dispatch('click');
+  const frame = s.getFrame();
+  s.ids['professional-view'].hidden = true;
+  s.observers['professional-view']();
+  assert.equal(frame.attached, false);
+  assert.equal(s.ids['columns-play'].focused, undefined);
+  assert.equal(s.ids['columns-play'].hidden, false);
+  assert.match(s.ids['columns-status'].textContent, /After Hours/);
 });

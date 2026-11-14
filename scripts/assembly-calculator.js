@@ -89,10 +89,12 @@
     [...calculator.querySelectorAll("[data-register]")].map(register => [register.dataset.register, register])
   );
   const status = calculator.querySelector("#assembly-step-status");
+  const runStatus = calculator.querySelector("#assembly-run-status");
   const error = calculator.querySelector("#assembly-error");
   const previous = calculator.querySelector("#assembly-previous");
   const next = calculator.querySelector("#assembly-next");
   let traces;
+  let lastOperands;
   let operation = "add";
   let step = 0;
 
@@ -140,6 +142,8 @@
     }
 
     error.textContent = "";
+    lastOperands = operands;
+    runStatus.textContent = "";
     traces = {};
     operationButtons.forEach(button => {
       const key = button.dataset.assemblyOperation;
@@ -151,6 +155,21 @@
     registers.edi.textContent = operands[1];
     showTrace();
   }
+
+  // Keep the existing trace available for inspection after an input changes,
+  // with its operands visible so it cannot be mistaken for a new calculation.
+  inputs.forEach(input => {
+    input.addEventListener("input", () => {
+      input.removeAttribute("aria-invalid");
+      error.textContent = "";
+      if (!lastOperands) return;
+      const changed = inputs.some((field, index) => parseOperand(field.value) !== lastOperands[index]);
+      const message = changed
+        ? `Inputs changed. Results and trace still use ${lastOperands[0]} and ${lastOperands[1]}. Run calculation to update.`
+        : "";
+      if (runStatus.textContent !== message) runStatus.textContent = message;
+    });
+  });
 
   calculator.querySelector("form").addEventListener("submit", event => {
     event.preventDefault();

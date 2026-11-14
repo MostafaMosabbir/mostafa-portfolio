@@ -7,6 +7,7 @@
   const container = document.getElementById("columns-frame-container");
   const status = document.getElementById("columns-status");
   const feature = document.getElementById("featured");
+  const professional = document.getElementById("professional-view");
   if (!play || !close || !container || !status || !feature) return;
 
   let frame = null;
@@ -63,6 +64,13 @@
       endGame(false, "Game closed because you left the Brief tab.");
     }
   });
+  // Switching sides hides the whole Workbench. The document is still visible,
+  // so the embedded game cannot rely on visibilitychange to stop its loop.
+  if (professional) {
+    new MutationObserver(() => {
+      if (professional.hidden) endGame(false, "Game closed when you opened After Hours.");
+    }).observe(professional, { attributes: true, attributeFilter: ["hidden"] });
+  }
   // Keyboard events do not bubble out of an iframe. The game may request an
   // exit by message; accept it only from our own frame and origin.
   window.addEventListener("message", event => {

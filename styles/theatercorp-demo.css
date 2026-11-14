@@ -32,4 +32,15 @@
 @media (max-width: 600px) {
   #theatercorp-demo .tc-form, #theatercorp-demo .tc-inventory { grid-template-columns: 1fr; }
   #theatercorp-demo .tc-form label { margin-top: 3px; }
+  #theatercorp-demo button { min-height: 44px; }
+  #theatercorp-demo .tc-shell, #theatercorp-demo .tc-panel { padding: 10px; }
+  #theatercorp-demo .tc-table { min-width: 0; table-layout: fixed; }
+  #theatercorp-demo .tc-table th, #theatercorp-demo .tc-table td {
+    padding: 7px 4px;
+    overflow-wrap: anywhere;
+    vertical-align: top;
+  }
+  #theatercorp-demo .tc-table th { letter-spacing: 0; text-transform: none; }
+  #theatercorp-demo .tc-table th:first-child { width: 34%; }
+  #theatercorp-demo .tc-table th:nth-child(2) { width: 26%; }
 }

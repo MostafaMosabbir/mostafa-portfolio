@@ -7,7 +7,7 @@ This is an adaptation of [Color Columns](https://github.com/rdrmic/color-columns
 1. `src/lib.rs` keeps the board, falling three-color column, movement, color cycling, matching, gravity, cascading and score in Rust. The four match directions and scoring formula follow the desktop project's rules. The code exports small functions for the browser to call.
 2. `game.wasm` is the compiled WebAssembly output of that Rust file. It is a real compiled artifact, not a placeholder. Build it with the Rust compiler and the `wasm32-unknown-unknown` target.
 3. `game.js` fetches `game.wasm`, sends input commands to those exports, and asks Rust for each board cell and score. Canvas draws the result. The game starts only after the visitor asks to play.
-4. The site creates the game frame only after a visitor presses Play. Exiting or selecting a different tab/project unloads it, so a session resets when reopened.
+4. The site creates the game frame only after a visitor presses Play. Exiting, switching to After Hours, or selecting a different tab or project unloads it, so a session resets when reopened.
 
 ## Build and test
 
