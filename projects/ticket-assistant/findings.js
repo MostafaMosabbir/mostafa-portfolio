@@ -37,8 +37,8 @@
   container.querySelector("[data-assistant-results]").hidden = false;
 
   const evaluation = window.TicketTriageEvaluation;
-  const previousRules = window.TicketTriageBoot;
-  const currentRules = window.TicketTriageContinuity;
+  const previousRules = window.TicketTriageContinuity;
+  const currentRules = window.TicketTriageSequence;
   if (!evaluation || !previousRules || !currentRules) return;
 
   const metrics = [
@@ -57,6 +57,11 @@
     return describeRoute({ status: result.status, category: result.suggestedCategory });
   }
 
+  function countCorrectPairs(rows, pairIds) {
+    const outcomes = new Map(rows.map(({ id, outcome }) => [id, outcome]));
+    return pairIds.filter(id => outcomes.get(id + "-a") === "agreed" && outcomes.get(id + "-b") === "agreed").length;
+  }
+
   // Evaluate the same locked ticket and technician expectation against all
   // versions. The queue loads the identical case when someone selects Try ticket.
   function renderComparison(set, tickets) {
@@ -66,6 +71,14 @@
     const after = evaluation.evaluateChallenge(currentRules.analyze, tickets);
     section.querySelector("[data-assistant-comparison-summary]").textContent =
       `The previous rules matched ${before.agreed} of ${before.total} expected routes. The current rules matched ${after.agreed} of ${after.total}.`;
+    const pairs = section.querySelector("[data-assistant-pair-summary]");
+    if (pairs) {
+      const ids = new Set(tickets.map(({ id }) => id));
+      const pairIds = [...ids].filter(id => id.endsWith("-a") && ids.has(id.slice(0, -2) + "-b")).map(id => id.slice(0, -2));
+      const beforePairs = countCorrectPairs(before.rows, pairIds);
+      const afterPairs = countCorrectPairs(after.rows, pairIds);
+      pairs.textContent = `Both versions of the same report had to match to count as a correct pair. The previous rules matched ${beforePairs} of ${pairIds.length} pairs. The current rules matched ${afterPairs} of ${pairIds.length}.`;
+    }
     const counts = section.querySelector("[data-assistant-comparison-counts]");
     for (const [key, label] of metrics) {
       const row = document.createElement("tr");
@@ -120,5 +133,7 @@
   if (holdout?.length) renderComparison("holdout", holdout);
   const transferReview = window.TicketTriageTransferReviewCases;
   if (transferReview?.length) renderComparison("transferReview", transferReview);
+  const sentenceOrder = window.TicketTriageSentenceOrderCases;
+  if (sentenceOrder?.length) renderComparison("sentenceOrder", sentenceOrder);
   container.querySelector("[data-assistant-comparison-loading]").hidden = true;
 })();

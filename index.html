@@ -73,8 +73,10 @@
   <script src="projects/ticket-assistant/routing-boot.js?v=boot-routing-1" defer></script>
   <script src="projects/ticket-assistant/transfer-review-cases.js?v=continuity-1" defer></script>
   <script src="projects/ticket-assistant/routing-continuity.js?v=continuity-1" defer></script>
-  <script src="projects/ticket-assistant/workbench.js?v=continuity-1" defer></script>
-  <script src="projects/ticket-assistant/findings.js?v=continuity-1" defer></script>
+  <script src="projects/ticket-assistant/sentence-order-cases.js?v=sequence-1" defer></script>
+  <script src="projects/ticket-assistant/routing-sequence.js?v=sequence-1" defer></script>
+  <script src="projects/ticket-assistant/workbench.js?v=sequence-1" defer></script>
+  <script src="projects/ticket-assistant/findings.js?v=sequence-1" defer></script>
   <script src="scripts/theatercorp-demo.js?v=1" defer></script>
   <script src="scripts/assembly-calculator.js?v=2" defer></script>
   <script src="projects/algorithm-explorer/demo/app.js?v=1" defer></script>
@@ -267,7 +269,8 @@
                         <option value="unseen" hidden>Scanner and VPN evaluation</option>
                         <option value="verify" hidden>Barcode reader and VPN evaluation</option>
                         <option value="holdout" hidden>Device startup evaluation</option>
-                        <option value="transferReview" hidden>Fresh fictional evaluation</option>
+                        <option value="transferReview" hidden>Reader symptom evaluation</option>
+                        <option value="sentenceOrder" hidden>Fresh fictional evaluation</option>
                       </select>
                     </label>
                     <div class="assistant-queue-options" data-assistant-queue></div>
@@ -652,6 +655,33 @@
               <h4 id="ticket-assistant-findings-title">Ticket routing before and after</h4>
               <p>Before and After compare the previous and current rules. The Original column retains the keyword baseline. Each version is checked against the same expected route for each ticket.</p>
               <p data-assistant-comparison-loading>The comparison appears when the rules and test tickets load.</p>
+              <section class="assistant-comparison" data-assistant-comparison="transferReview" aria-labelledby="assistant-fresh-transfer-review" hidden>
+                <h5 id="assistant-fresh-transfer-review">Reader symptom evaluation</h5>
+                <p data-assistant-comparison-summary></p>
+                <table aria-labelledby="assistant-fresh-transfer-review">
+                  <thead><tr><th scope="col">Routing result</th><th scope="col">Original</th><th scope="col">Before</th><th scope="col">After</th></tr></thead>
+                  <tbody data-assistant-comparison-counts></tbody>
+                </table>
+                <p class="assistant-comparison-note">The reader report mentions the missing menu before the logo. The rules now connect both clues to the same device and recognize that the VPN disconnect was observed separately. The ticket goes to manual review.</p>
+                <details>
+                  <summary>Compare all reader symptom evaluation tickets</summary>
+                  <ul data-assistant-comparison-outcomes></ul>
+                </details>
+              </section>
+              <section class="assistant-comparison" data-assistant-comparison="sentenceOrder" aria-labelledby="assistant-sentence-order" hidden>
+                <h5 id="assistant-sentence-order">Fresh fictional evaluation</h5>
+                <p data-assistant-comparison-summary></p>
+                <table aria-labelledby="assistant-sentence-order">
+                  <thead><tr><th scope="col">Routing result</th><th scope="col">Original</th><th scope="col">Before</th><th scope="col">After</th></tr></thead>
+                  <tbody data-assistant-comparison-counts></tbody>
+                </table>
+                <p class="assistant-comparison-note">We set the expected routes before testing and kept these tickets out of rule tuning. Some pairs describe the same facts in a different order.</p>
+                <p data-assistant-pair-summary></p>
+                <details>
+                  <summary>Compare all fresh fictional tickets</summary>
+                  <ul data-assistant-comparison-outcomes></ul>
+                </details>
+              </section>
               <section class="assistant-comparison" data-assistant-comparison="holdout" aria-labelledby="assistant-holdout-test" hidden>
                 <h5 id="assistant-holdout-test">Device startup evaluation</h5>
                 <p data-assistant-comparison-summary></p>
@@ -659,22 +689,8 @@
                   <thead><tr><th scope="col">Routing result</th><th scope="col">Original</th><th scope="col">Before</th><th scope="col">After</th></tr></thead>
                   <tbody data-assistant-comparison-counts></tbody>
                 </table>
-                <p class="assistant-comparison-note">The reader shows the supplier wordmark, then the next sentence says its home view never appears. The rules connect those clues and keep the separate VPN fault in view. The ticket goes to manual review.</p>
                 <details>
                   <summary>Compare all device startup evaluation tickets</summary>
-                  <ul data-assistant-comparison-outcomes></ul>
-                </details>
-              </section>
-              <section class="assistant-comparison" data-assistant-comparison="transferReview" aria-labelledby="assistant-fresh-transfer-review" hidden>
-                <h5 id="assistant-fresh-transfer-review">Fresh fictional evaluation</h5>
-                <p data-assistant-comparison-summary></p>
-                <table aria-labelledby="assistant-fresh-transfer-review">
-                  <thead><tr><th scope="col">Routing result</th><th scope="col">Original</th><th scope="col">Before</th><th scope="col">After</th></tr></thead>
-                  <tbody data-assistant-comparison-counts></tbody>
-                </table>
-                <p class="assistant-comparison-note">We set the expected routes before testing and kept these tickets out of rule tuning. The score stayed the same. When the report put “The menu never appears” before the detail about the reader’s maker logo, the rules still suggested Network from the separate VPN fault.</p>
-                <details>
-                  <summary>Compare all fresh fictional tickets</summary>
                   <ul data-assistant-comparison-outcomes></ul>
                 </details>
               </section>

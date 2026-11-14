@@ -17,6 +17,8 @@ const boot = require("../projects/ticket-assistant/routing-boot.js");
 const holdout = require("../projects/ticket-assistant/holdout-cases.js");
 const continuity = require("../projects/ticket-assistant/routing-continuity.js");
 const transferReview = require("../projects/ticket-assistant/transfer-review-cases.js");
+const sequence = require("../projects/ticket-assistant/routing-sequence.js");
+const sentenceOrder = require("../projects/ticket-assistant/sentence-order-cases.js");
 const { cases, evaluateChallenge } = require("../projects/ticket-assistant/evaluation.js");
 
 test("the challenge tickets have independent identifiers and documented expected routes", () => {
@@ -284,5 +286,39 @@ test("the fresh continuity evaluation uses independently documented tickets", ()
   ]) {
     const result = evaluateChallenge(analyze, transferReview);
     assert.deepEqual([result.agreed, result.extraReview, result.unexpectedSuggestion], expected);
+  }
+});
+
+test("sequence routing corrects eight prior misses and preserves all 167 known expected routes", () => {
+  const previous = evaluateChallenge(continuity.analyze, transferReview);
+  assert.equal(previous.agreed, 12);
+  const knownSets = [cases, fresh, validation, transfer, novel, unseen, verify, holdout, transferReview];
+  assert.equal(knownSets.flat().length, 167);
+  for (const tickets of knownSets) {
+    const after = evaluateChallenge(sequence.analyze, tickets);
+    assert.deepEqual(after.rows.filter(row => row.outcome !== "agreed").map(row => row.id), []);
+  }
+});
+
+test("the fresh sentence order evaluation uses distinct and independently documented tickets", () => {
+  const usedIds = new Set([...cases, ...fresh, ...validation, ...transfer, ...novel, ...unseen, ...verify, ...holdout, ...transferReview, ...triage.samples].map(ticket => ticket.id));
+  assert.equal(sentenceOrder.length, 20);
+  for (const ticket of sentenceOrder) {
+    assert.equal(usedIds.has(ticket.id), false);
+    assert.ok(ticket.rationale);
+    usedIds.add(ticket.id);
+  }
+  for (const [analyze, expected] of [
+    [triage.analyze, [10, 6, 4, 3]],
+    [continuity.analyze, [14, 5, 1, 4]],
+    [sequence.analyze, [14, 5, 1, 4]]
+  ]) {
+    const result = evaluateChallenge(analyze, sentenceOrder);
+    const outcomes = new Map(result.rows.map(({ id, outcome }) => [id, outcome]));
+    const firsts = result.rows.filter(({ id }) => id.endsWith("-a"));
+    assert.equal(firsts.length, 6);
+    const correctPairs = firsts.filter(({ id, outcome }) =>
+      outcome === "agreed" && outcomes.get(id.replace(/-a$/, "-b")) === "agreed").length;
+    assert.deepEqual([result.agreed, result.extraReview, result.unexpectedSuggestion, correctPairs], expected);
   }
 });

@@ -6,7 +6,7 @@ The Workbench demo helps a technician triage one incoming fictional request. It 
 
 1. Open the portfolio homepage, find Project 002 in Case Files, and select **Highlight project**.
 2. Choose the VPN sample and look for the terms behind its category suggestion.
-3. Try **Two faults at the returns counter** in the device startup evaluation. See how the reader and its startup symptom connect across sentences, while the separate VPN disconnect stays active.
+3. Try **Receiving can neither scan nor connect remotely** in the reader symptom evaluation. See how the missing menu and the later logo clue relate to the same device, while the VPN disconnect stays active.
 4. Edit the reply. After a category change, generate a fresh draft or confirm that the edited draft fits the selected category. Then mark it reviewed.
 5. Clear the reply or change it after review and check the status again.
 6. Open **Findings** to compare the original, previous, and current rules against the expected route. Select **Try ticket** to open that request in the queue.
@@ -19,7 +19,7 @@ The Workbench demo helps a technician triage one incoming fictional request. It 
 
 ## Read and test the code
 
-Read `triage.js` for the original keyword rules and shared draft logic. The intermediate routing versions add recovery, event order, and evidence for separate faults. `routing-continuity.js` relates a startup symptom to a nearby device mention and distinguishes a separate fault from symptoms that occur only during a known failure. `workbench.js` handles the queue and review steps. `findings.js` compares the original, previous, and current rules on the same cases.
+Read `triage.js` for the original keyword rules and shared draft logic. The intermediate routing versions add recovery, event order, and evidence for separate faults. `routing-sequence.js` connects nearby startup clues when they refer to the same device, including reports that state the missing menu first. `workbench.js` handles the queue and review steps. `findings.js` compares the original, previous, and current rules on the same cases.
 
 From the repository root, run:
 
@@ -29,11 +29,11 @@ node --test tests/ticket-assistant*.test.cjs
 
 ## Evaluation
 
-The initial demo results describe eight fixtures under the original rules. The eight earlier evaluations contain 147 regression cases. The six misses in `holdout-cases.js` guided the current revision. The tickets in `transfer-review-cases.js` and their expected routes were written independently and reserved for evaluating the current rules.
+The initial demo results describe eight fixtures under the original rules. The nine earlier evaluations contain 167 regression cases. The eight misses in `transfer-review-cases.js` guided the current revision. The tickets in `sentence-order-cases.js` and their expected routes were written independently and reserved for evaluating the current rules.
 
 Each ticket records the reason for the expected category or manual review. Any manual route counts as agreement if a reviewer was expected. A manual route where a category was expected and a category suggestion that disagrees with the expected route are counted separately. The fresh set intentionally includes difficult wording, so use it to inspect failure modes. If it guides additional changes, write another independent set before testing those changes.
 
-The Workbench Findings tab shows the expected and actual routes for every ticket. In the returns counter example, the reporter identifies the reader before describing the missing home view. The rules connect those sentences and surface the separate VPN failure. The ticket goes to manual review.
+The Workbench Findings tab shows the expected and actual routes for every ticket. In the receiving example, the reporter mentions the missing menu before the display staying on the maker logo. The rules connect both observations to the reader and surface the separate VPN fault. The ticket goes to manual review.
 
 | Expected routes matched | Original | Before | After |
 | --- | ---: | ---: | ---: |
@@ -44,9 +44,10 @@ The Workbench Findings tab shows the expected and actual routes for every ticket
 | Previous evaluation tickets | 9 of 20 | 20 of 20 | 20 of 20 |
 | Scanner and VPN evaluation | 7 of 20 | 20 of 20 | 20 of 20 |
 | Barcode reader and VPN evaluation | 11 of 20 | 20 of 20 | 20 of 20 |
-| Device startup evaluation | 12 of 20 | 14 of 20 | 20 of 20 |
-| Fresh fictional evaluation | 10 of 20 | 12 of 20 | 12 of 20 |
+| Device startup evaluation | 12 of 20 | 20 of 20 | 20 of 20 |
+| Reader symptom evaluation | 10 of 20 | 12 of 20 | 20 of 20 |
+| Fresh fictional evaluation | 10 of 20 | 14 of 20 | 14 of 20 |
 
-On the fresh set the current rules made five unexpected suggestions and sent three requests to manual review where a category was expected. In one startup report, the menu never appearing came before the description of the maker logo. The assistant missed that device fault and suggested Network based on the separate VPN fault. The expected route was manual review.
+The fresh set contains six pairs that keep the facts the same and reverse their order. The previous and current rules each matched both versions of four pairs. On the full set, five tickets went to manual review where a category was expected and one received an unexpected suggestion. Both versions of a label reader case still went to manual review even though the shipping application detected a spare reader and the original reader failed during startup.
 
 The browser demo holds edits in memory, and review records a local step. Replies are never sent.
