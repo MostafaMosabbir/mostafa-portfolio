@@ -116,13 +116,20 @@
 }
 #ticket-assistant-findings [data-assistant-outcomes] span { color: var(--muted); }
 
-#ticket-assistant-findings [data-assistant-challenge-outcomes] {
+#ticket-assistant-findings .assistant-comparison { margin-top: 1.15rem; }
+#ticket-assistant-findings .assistant-comparison h5 { margin-bottom: .35rem; font-size: 1rem; }
+#ticket-assistant-findings .assistant-comparison table { width: 100%; border-collapse: collapse; }
+#ticket-assistant-findings .assistant-comparison :is(th, td) { padding: .55rem .25rem; border-bottom: 1px solid var(--line); text-align: left; }
+#ticket-assistant-findings .assistant-comparison :is(th, td):not(:first-child) { text-align: right; padding-left: .75rem; font-variant-numeric: tabular-nums; }
+#ticket-assistant-findings .assistant-comparison-note { margin-top: .65rem; color: var(--muted); }
+
+#ticket-assistant-findings [data-assistant-comparison-outcomes] {
   list-style: none;
   margin: .75rem 0 0;
   padding: 0;
 }
 
-#ticket-assistant-findings [data-assistant-challenge-outcomes] li {
+#ticket-assistant-findings [data-assistant-comparison-outcomes] li {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
@@ -132,9 +139,9 @@
   border-bottom: 1px solid var(--line);
 }
 
-#ticket-assistant-findings [data-assistant-challenge-outcomes] li > div { flex: 1 1 32ch; min-width: 0; }
-#ticket-assistant-findings [data-assistant-challenge-outcomes] p { margin: .25rem 0 0; color: var(--muted); }
-#ticket-assistant-findings [data-assistant-challenge-outcomes] button {
+#ticket-assistant-findings [data-assistant-comparison-outcomes] li > div { flex: 1 1 32ch; min-width: 0; }
+#ticket-assistant-findings [data-assistant-comparison-outcomes] p { margin: .25rem 0 0; color: var(--muted); }
+#ticket-assistant-findings [data-assistant-comparison-outcomes] button {
   min-height: 44px;
   color: var(--ink);
   background: var(--paper);
@@ -144,4 +151,4 @@
   font: inherit;
   cursor: pointer;
 }
-#ticket-assistant-findings [data-assistant-challenge-outcomes] button:hover { border-color: var(--accent); }
+#ticket-assistant-findings [data-assistant-comparison-outcomes] button:hover { border-color: var(--accent); }

@@ -6,10 +6,10 @@ The Workbench demo helps a technician triage one incoming fictional request. It 
 
 1. Open the portfolio homepage, find Project 002 in Case Files, and select **Highlight project**.
 2. Choose the VPN sample and look for the terms behind its category suggestion.
-3. Switch to the Outlook and VPN sample. Both categories match. Read the reported facts before picking a category.
+3. Try **Training portal keeps rejecting the code** in the challenge queue. Look for which issue is current and which mention the assistant treats as background.
 4. Edit the reply. After a category change, generate a fresh draft or confirm that the edited draft fits the selected category. Then mark it reviewed.
 5. Clear the reply or change it after review and check the status again.
-6. Open **Findings** to compare the challenge tickets with the routes a technician would choose. Select **Try ticket** on a result to work through that request in the queue.
+6. Open **Findings** to compare the original and revised rules against the technician's expected route. Select **Try ticket** to open that request in the queue.
 
 ## Questions behind the work
 
@@ -19,18 +19,25 @@ The Workbench demo helps a technician triage one incoming fictional request. It 
 
 ## Read and test the code
 
-Read `triage.js` for matching, question selection, and evaluation. Read `workbench.js` to follow the draft and review state. `findings.js` uses the same rules to show the sample results.
+Read `triage.js` for the original keyword rules and shared draft logic. Read `routing-context.js` to see how the revised rules distinguish active symptoms from other mentions. `workbench.js` handles the queue and review steps. `findings.js` compares the two versions on the same data.
 
 From the repository root, run:
 
 ```powershell
-node --test tests/ticket-assistant-triage.test.cjs
+node --test tests/ticket-assistant*.test.cjs
 ```
 
 ## Evaluation
 
-The eight demo tickets verify normal behavior. The 14 challenge tickets in `evaluation.js` were written with expected routes before they were checked against the existing rules. That rules file stayed the same. Each challenge ticket records the reasoning for its expected category or manual review. Manual routes count as agreement whether they came from multiple matches or no matches.
+The initial demo results describe the eight original fixtures under the original rules. The 14 challenge tickets in `evaluation.js` guided the revised routing. The 15 fictional requests in `fresh-cases.js` were written separately. Their text and expected routes were fixed before running the revised rules and were left out of rule tuning.
 
-The baseline matched 8 of 14 expected routes. Four tickets went to manual review where a category was expected, and two suggestions missed the expected route. The examples include unfamiliar vocabulary, words about resolved work, and an error supplied only in a structured field. If you use these cases to tune the rules, create a fresh set of fictional tickets before evaluating the changes.
+Each ticket records the reason for the expected category or manual review. Any manual route counts as agreement if a reviewer was expected. A manual route where a category was expected and a category suggestion that disagrees with the expected route are counted separately. The fresh set intentionally includes difficult wording, so use it to inspect failure modes. If it guides additional changes, write another independent set before testing those changes.
+
+| Expected routes matched | Original rules | Revised rules |
+| --- | ---: | ---: |
+| Original challenge tickets | 8 of 14 | 14 of 14 |
+| Fresh test tickets | 3 of 15 | 11 of 15 |
+
+On the fresh set, three requests went to manual review where a category was expected, and one received an unexpected suggestion. The rules still struggle when a service recovers and then fails again, when a later sentence says an earlier issue has cleared, and when a closed ticket is quoted alongside a new issue. They also suggested account access for a folder permissions issue because the requester said they could sign in normally.
 
 The browser demo holds edits in memory, and review records a local step. Replies are never sent.

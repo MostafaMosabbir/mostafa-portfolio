@@ -4,6 +4,7 @@
   const root = document.getElementById("ticket-assistant-demo");
   const engine = window.TicketTriage;
   if (!root || !engine) return;
+  const analyze = window.TicketTriageContext?.analyze ?? engine.analyze;
 
   const find = name => root.querySelector(`[data-assistant-${name}]`);
   const workspace = find("workspace");
@@ -34,11 +35,9 @@
   const categoryLabels = new Map(engine.categories.map(({ id, label }) => [id, label]));
   const ticketStates = new Map();
   const queueButtons = new Map();
-  const challengeCases = window.TicketTriageEvaluation?.cases ?? [];
-  const hasChallengeQueue = Boolean(queueSet && challengePicker && challengeTicket && challengeCases.length);
-  if (queuePicker) queuePicker.hidden = !hasChallengeQueue;
+  const evaluationQueues = new Map();
+  const evaluationTicketQueues = new Map();
   const selectedTickets = new Map([["demo", engine.samples[0].id]]);
-  if (hasChallengeQueue) selectedTickets.set("challenge", challengeCases[0].id);
   let active;
 
   for (const { id, label } of engine.categories) {
@@ -47,7 +46,7 @@
 
   function createState(sample) {
     const fields = Object.fromEntries(fieldNames.map(name => [name, sample.fields[name] ?? ""]));
-    const result = engine.analyze(fields);
+    const result = analyze(fields);
     const draft = engine.draftReply(result);
     return {
       fields,
@@ -101,13 +100,17 @@
   function renderRequest() {
     subject.textContent = active.fields.subject;
     description.textContent = active.fields.description;
-    const { suggestedCategory, matches, reported: facts } = active.result;
+    const { suggestedCategory, matches, ignoredMatches = [], reported: facts } = active.result;
     suggestion.textContent = categoryLabels.get(suggestedCategory) ?? "Manual review needed";
     const explanations = matches.map(match => {
       const terms = match.terms.map(term => `“${term}”`).join(", ");
       return `${match.label} matched ${terms}.`;
     });
-    if (!explanations.length) explanations.push("No category matched the request.");
+    if (!explanations.length) explanations.push("No category matched the current issue.");
+    for (const { label, terms } of ignoredMatches) {
+      const words = terms.map(term => `“${term}”`).join(", ");
+      explanations.push(`The rules treated ${words} as background when considering ${label}.`);
+    }
     reasons.replaceChildren(...explanations.map(reason => element("li", reason)));
     reported.replaceChildren(...facts.map(({ label, value }) => {
       const fact = document.createElement("div");
@@ -122,7 +125,7 @@
     selectedTickets.set(set, id);
     active = ticketStates.get(id);
     for (const [key, button] of queueButtons) button.setAttribute("aria-pressed", String(key === id));
-    if (set === "challenge") challengeTicket.value = id;
+    if (evaluationQueues.has(set)) challengeTicket.value = id;
     for (const name of fieldNames) intake.elements.namedItem(name).value = active.pending[name];
     intakeError.textContent = "";
     category.value = active.category;
@@ -135,11 +138,14 @@
   // and review state belong to their ticket and stay in memory.
   function showQueue(set, id = selectedTickets.get(set)) {
     if (!id) return;
-    const showingChallenge = set === "challenge";
-    queue.hidden = showingChallenge;
-    if (hasChallengeQueue) {
+    const evaluation = evaluationQueues.get(set);
+    queue.hidden = Boolean(evaluation);
+    if (evaluationQueues.size) {
       queueSet.value = set;
-      challengePicker.hidden = !showingChallenge;
+      challengePicker.hidden = !evaluation;
+      if (evaluation) {
+        challengeTicket.replaceChildren(...evaluation.map(sample => new Option(sample.title, sample.id)));
+      }
     }
     selectSample(set, id);
   }
@@ -155,16 +161,35 @@
     queue.append(button);
   });
 
-  if (hasChallengeQueue) {
-    for (const sample of challengeCases) {
-      ticketStates.set(sample.id, createState(sample));
-      challengeTicket.add(new Option(sample.title, sample.id));
+  // Both evaluation sets share a picker, but each keeps its last open ticket.
+  if (queueSet && challengePicker && challengeTicket) {
+    const candidates = new Map([
+      ["challenge", window.TicketTriageEvaluation?.cases],
+      ["fresh", window.TicketTriageFreshCases]
+    ]);
+    for (const option of queueSet.options) {
+      if (!candidates.has(option.value)) continue;
+      const samples = candidates.get(option.value);
+      const available = Boolean(samples?.length);
+      option.hidden = !available;
+      option.disabled = !available;
+      if (!available) continue;
+      evaluationQueues.set(option.value, samples);
+      selectedTickets.set(option.value, samples[0].id);
+      for (const sample of samples) {
+        ticketStates.set(sample.id, createState(sample));
+        evaluationTicketQueues.set(sample.id, option.value);
+      }
     }
+  }
+  if (queuePicker) queuePicker.hidden = !evaluationQueues.size;
+  if (evaluationQueues.size) {
     queueSet.addEventListener("change", () => showQueue(queueSet.value));
-    challengeTicket.addEventListener("change", () => selectSample("challenge", challengeTicket.value));
+    challengeTicket.addEventListener("change", () => selectSample(queueSet.value, challengeTicket.value));
     root.addEventListener("ticket-assistant:open-case", event => {
-      if (!challengeCases.some(sample => sample.id === event.detail)) return;
-      showQueue("challenge", event.detail);
+      const set = evaluationTicketQueues.get(event.detail);
+      if (!set) return;
+      showQueue(set, event.detail);
       challengeTicket.focus();
     });
   } else if (queueSet) {
@@ -185,14 +210,16 @@
     if (!hasPendingChanges()) return;
     let result;
     try {
-      result = engine.analyze(active.pending);
+      result = analyze(active.pending);
     } catch (error) {
       intakeError.textContent = error.message;
       return;
     }
-    // When request wording changes, the new suggestion replaces the old route.
-    // Corrections to the structured facts keep the reviewer's chosen category.
-    if (active.fields.subject !== active.pending.subject || active.fields.description !== active.pending.description) {
+    // New request wording clears the previous route. A change to intake facts
+    // updates an automatic suggestion and preserves a reviewer's override.
+    const textChanged = active.fields.subject !== active.pending.subject || active.fields.description !== active.pending.description;
+    const followsSuggestion = active.category === (active.result.suggestedCategory ?? "");
+    if (textChanged || followsSuggestion) {
       active.category = result.suggestedCategory ?? "";
       category.value = active.category;
     }

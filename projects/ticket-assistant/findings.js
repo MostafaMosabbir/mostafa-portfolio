@@ -34,48 +34,72 @@
   container.querySelector("[data-assistant-results]").hidden = false;
 
   const evaluation = window.TicketTriageEvaluation;
-  if (!evaluation) return;
+  const revised = window.TicketTriageContext;
+  if (!evaluation || !revised) return;
 
-  const challenge = evaluation.evaluateChallenge(triage.analyze);
-  const labels = {
-    agreed: "Agrees with expected route",
-    extraReview: "Sent to manual review",
-    unexpectedSuggestion: "Suggestion misses expected route"
-  };
-  for (const metric of Object.keys(labels)) {
-    container.querySelector(`[data-assistant-challenge-metric="${metric}"]`).textContent = challenge[metric];
+  const metrics = [
+    ["agreed", "Matched expected route"],
+    ["extraReview", "Manual review when a category was expected"],
+    ["unexpectedSuggestion", "Unexpected category suggestion"]
+  ];
+
+  function node(tag, text) {
+    const element = document.createElement(tag);
+    element.textContent = text;
+    return element;
   }
-  container.querySelector("[data-assistant-challenge-summary]").textContent =
-    `The existing rules agreed with the expected route on ${challenge.agreed} of ${challenge.total} new fictional tickets. The expected routes were set before running the rules.`;
 
-  // Show actual results alongside the reviewer's reasoning, using the same
-  // ticket data that the Workbench opens when the visitor selects Try ticket.
-  const challengeOutcomes = container.querySelector("[data-assistant-challenge-outcomes]");
-  for (const { id, title, expected, actual, outcome, rationale } of challenge.rows) {
-    const item = document.createElement("li");
-    item.dataset.assistantOutcome = outcome;
-    const content = document.createElement("div");
-    const heading = document.createElement("strong");
-    const comparison = document.createElement("p");
-    const reason = document.createElement("p");
-    const open = document.createElement("button");
-    heading.textContent = title;
-    const expectedRoute = describeRoute(expected);
-    const actualRoute = describeRoute({ status: actual.status, category: actual.suggestedCategory });
-    comparison.textContent = `${labels[outcome]}. Expected ${expectedRoute}. Rules returned ${actualRoute}.`;
-    reason.textContent = rationale;
-    open.type = "button";
-    open.textContent = "Try ticket";
-    open.setAttribute("aria-label", `Try ticket, ${title}`);
-    open.addEventListener("click", () => {
-      document.getElementById("tab-overview").click();
-      document.getElementById("ticket-assistant-demo").dispatchEvent(
-        new CustomEvent("ticket-assistant:open-case", { detail: id })
+  function describeResult(result) {
+    return describeRoute({ status: result.status, category: result.suggestedCategory });
+  }
+
+  // Evaluate the same locked ticket and technician expectation against both
+  // versions. The queue loads the identical case when someone selects Try ticket.
+  function renderComparison(set, tickets) {
+    const section = container.querySelector(`[data-assistant-comparison="${set}"]`);
+    const before = evaluation.evaluateChallenge(triage.analyze, tickets);
+    const after = evaluation.evaluateChallenge(revised.analyze, tickets);
+    section.querySelector("[data-assistant-comparison-summary]").textContent =
+      `The original rules matched ${before.agreed} of ${before.total} expected routes. The revised rules matched ${after.agreed} of ${after.total}.`;
+    const counts = section.querySelector("[data-assistant-comparison-counts]");
+    for (const [key, label] of metrics) {
+      const row = document.createElement("tr");
+      const heading = node("th", label);
+      heading.scope = "row";
+      row.append(heading, node("td", before[key]), node("td", after[key]));
+      counts.append(row);
+    }
+    const list = section.querySelector("[data-assistant-comparison-outcomes]");
+    const afterById = new Map(after.rows.map(row => [row.id, row]));
+    for (const original of before.rows) {
+      const { id, title, expected, actual, rationale } = original;
+      const updated = afterById.get(id);
+      const item = document.createElement("li");
+      item.dataset.assistantOutcome = updated.outcome;
+      const content = document.createElement("div");
+      content.append(
+        node("strong", title),
+        node("p", `Expected ${describeRoute(expected)}. Before ${describeResult(actual)}. After ${describeResult(updated.actual)}.`),
+        node("p", rationale)
       );
-    });
-    content.append(heading, comparison, reason);
-    item.append(content, open);
-    challengeOutcomes.append(item);
+      if (updated.outcome !== "agreed") content.append(node("p", "Still misses the expected route."));
+      const open = node("button", "Try ticket");
+      open.type = "button";
+      open.setAttribute("aria-label", `Try ticket, ${title}`);
+      open.addEventListener("click", () => {
+        document.getElementById("tab-overview").click();
+        document.getElementById("ticket-assistant-demo").dispatchEvent(
+          new CustomEvent("ticket-assistant:open-case", { detail: id })
+        );
+      });
+      item.append(content, open);
+      list.append(item);
+    }
+    section.hidden = false;
   }
-  container.querySelector("[data-assistant-challenge-results]").hidden = false;
+
+  renderComparison("challenge", evaluation.cases);
+  const fresh = window.TicketTriageFreshCases;
+  if (fresh?.length) renderComparison("fresh", fresh);
+  container.querySelector("[data-assistant-comparison-loading]").hidden = true;
 })();

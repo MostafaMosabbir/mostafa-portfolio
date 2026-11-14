@@ -34,7 +34,7 @@
   <link rel="stylesheet" href="styles/assembly-calculator.css?v=2">
   <link rel="stylesheet" href="projects/algorithm-explorer/demo/style.css?v=2">
   <link rel="stylesheet" href="styles/securebank-lab.css?v=2">
-  <link rel="stylesheet" href="projects/ticket-assistant/workbench.css?v=2">
+  <link rel="stylesheet" href="projects/ticket-assistant/workbench.css?v=route-context-1">
   <!-- A small, decorative atmosphere for the After Hours side. -->
   <link rel="stylesheet" href="styles/after-hours-atmosphere.css?v=3">
   <!-- The Ark presents favorite works and links to their official artwork sources. -->
@@ -56,9 +56,11 @@
   <script src="scripts/explorer.js?v=workbench-phone-2" defer></script>
   <script src="scripts/featured-projects.js?v=assistant-1" defer></script>
   <script src="projects/ticket-assistant/triage.js?v=1" defer></script>
-  <script src="projects/ticket-assistant/evaluation.js?v=challenge-06800bc" defer></script>
-  <script src="projects/ticket-assistant/workbench.js?v=2" defer></script>
-  <script src="projects/ticket-assistant/findings.js?v=2" defer></script>
+  <script src="projects/ticket-assistant/evaluation.js?v=route-context-1" defer></script>
+  <script src="projects/ticket-assistant/fresh-cases.js?v=route-context-1" defer></script>
+  <script src="projects/ticket-assistant/routing-context.js?v=route-context-1" defer></script>
+  <script src="projects/ticket-assistant/workbench.js?v=route-context-1" defer></script>
+  <script src="projects/ticket-assistant/findings.js?v=route-context-1" defer></script>
   <script src="scripts/theatercorp-demo.js?v=1" defer></script>
   <script src="scripts/assembly-calculator.js?v=2" defer></script>
   <script src="projects/algorithm-explorer/demo/app.js?v=1" defer></script>
@@ -244,6 +246,7 @@
                       <select data-assistant-queue-set>
                         <option value="demo">Demo tickets</option>
                         <option value="challenge">Challenge tickets</option>
+                        <option value="fresh" hidden>Fresh test tickets</option>
                       </select>
                     </label>
                     <div class="assistant-queue-options" data-assistant-queue></div>
@@ -520,7 +523,7 @@
             <h4>From request to reviewed reply</h4>
             <ol class="feature-method">
               <li><strong>Read.</strong> Start with one fictional request and the facts the requester supplied.</li>
-              <li><strong>Route.</strong> Show the words that triggered each rule. Ask the technician to choose when multiple rules match or the request lacks detail.</li>
+              <li><strong>Route.</strong> Show the words behind the suggestion. The rules look for which service still has a problem and can set aside a service described as working or fixed. The technician chooses when multiple problems remain or the ticket lacks detail.</li>
               <li><strong>Draft.</strong> Ask for the details still missing, then edit the reply in place.</li>
               <li><strong>Review.</strong> A category change requires a fresh draft or confirmation that the current draft fits. Edits after review reopen that step.</li>
             </ol>
@@ -625,23 +628,38 @@
             <div class="evidence-links"><a href="projects/ticket-analyzer/index.html">Open the case file ↗</a><a href="projects/ticket-analyzer/sample-summary.csv" download>Download sample summary (CSV) ↓</a><a href="projects/ticket-analyzer/sample-findings.md">Read sample findings ↗</a></div>
           </div><div data-feature-project="portfolio" hidden><p>The portfolio itself is the working example.</p><div class="evidence-links"><a href="https://github.com/MostafaMosabbir/mostafa-portfolio">Explore the source ↗</a><a href="https://github.com/MostafaMosabbir/mostafa-portfolio/tree/main/tests">View interaction tests ↗</a></div></div><div data-feature-project="assistant" hidden>
             <section id="ticket-assistant-findings" aria-labelledby="ticket-assistant-findings-title">
-              <h4 id="ticket-assistant-findings-title">How the assistant routed unfamiliar tickets</h4>
-              <p data-assistant-challenge-summary>The challenge set compares the existing rules with the route a technician would choose for each fictional request.</p>
-              <div data-assistant-challenge-results hidden>
-                <dl class="evidence-stats" aria-label="Fictional challenge results">
-                  <div><dt>Matched expected route</dt><dd data-assistant-challenge-metric="agreed"></dd></div>
-                  <div><dt>Manual review where a category was expected</dt><dd data-assistant-challenge-metric="extraReview"></dd></div>
-                  <div><dt>Suggestion missed expected route</dt><dd data-assistant-challenge-metric="unexpectedSuggestion"></dd></div>
-                </dl>
-                <p>Try <strong>Training portal keeps rejecting the code</strong>. The rules saw the word “printer” and suggested hardware, even though the printer issue was already resolved.</p>
+              <h4 id="ticket-assistant-findings-title">Ticket routing before and after</h4>
+              <p>Both versions are scored against the same expected routes. The original challenge tickets guided the changes. The fresh tickets were written separately and reserved for evaluation.</p>
+              <p data-assistant-comparison-loading>The comparison appears when both versions of the rules load.</p>
+              <section class="assistant-comparison" data-assistant-comparison="challenge" aria-labelledby="assistant-original-challenge" hidden>
+                <h5 id="assistant-original-challenge">Original challenge tickets</h5>
+                <p data-assistant-comparison-summary></p>
+                <table>
+                  <thead><tr><th scope="col">Routing result</th><th scope="col">Before</th><th scope="col">After</th></tr></thead>
+                  <tbody data-assistant-comparison-counts></tbody>
+                </table>
+                <p class="assistant-comparison-note">In the training portal ticket, the original rules suggested hardware because the requester mentioned a printer. The revised rules set aside the completed printer setup and suggest account access for the expired code.</p>
                 <details>
                   <summary>Compare all challenge tickets</summary>
-                  <ul data-assistant-challenge-outcomes></ul>
+                  <ul data-assistant-comparison-outcomes></ul>
                 </details>
-                <p class="muted">This set tests the current rules against fictional wording. It does not measure how often the rules work on real tickets.</p>
-              </div>
+              </section>
+              <section class="assistant-comparison" data-assistant-comparison="fresh" aria-labelledby="assistant-fresh-test" hidden>
+                <h5 id="assistant-fresh-test">Fresh test tickets</h5>
+                <p data-assistant-comparison-summary></p>
+                <table>
+                  <thead><tr><th scope="col">Routing result</th><th scope="col">Before</th><th scope="col">After</th></tr></thead>
+                  <tbody data-assistant-comparison-counts></tbody>
+                </table>
+                <p class="assistant-comparison-note">Some cases still need judgment. For example, a ticket that says it can sign in normally but cannot open a shared folder still gets an account access suggestion.</p>
+                <details>
+                  <summary>Compare all fresh test tickets</summary>
+                  <ul data-assistant-comparison-outcomes></ul>
+                </details>
+              </section>
+              <p class="muted">These are fictional checks. The rules suggest a route for review, and a technician confirms where the request belongs.</p>
               <details>
-                <summary>Review the original demo results</summary>
+                <summary>Review the original demo results with the original rules</summary>
                 <p data-assistant-evaluation>The original demo covers requests that match one, several, or no categories.</p>
                 <div data-assistant-results hidden>
                   <dl class="evidence-stats" aria-label="Ticket triage sample results">

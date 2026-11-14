@@ -55,9 +55,9 @@
     rationale
   }));
 
-  function evaluateChallenge(analyze) {
+  function evaluateChallenge(analyze, tickets = cases) {
     const totals = { agreed: 0, extraReview: 0, unexpectedSuggestion: 0 };
-    const rows = cases.map(ticket => {
+    const rows = tickets.map(ticket => {
       const actual = analyze(ticket.fields);
       const outcome = actual.suggestedCategory === ticket.expected.category ? "agreed" :
         actual.suggestedCategory === null ? "extraReview" : "unexpectedSuggestion";
