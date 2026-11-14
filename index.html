@@ -34,7 +34,7 @@
   <link rel="stylesheet" href="styles/assembly-calculator.css?v=2">
   <link rel="stylesheet" href="projects/algorithm-explorer/demo/style.css?v=2">
   <link rel="stylesheet" href="styles/securebank-lab.css?v=2">
-  <link rel="stylesheet" href="projects/ticket-assistant/workbench.css?v=route-context-1">
+  <link rel="stylesheet" href="projects/ticket-assistant/workbench.css?v=route-context-2">
   <!-- A small, decorative atmosphere for the After Hours side. -->
   <link rel="stylesheet" href="styles/after-hours-atmosphere.css?v=3">
   <!-- The Ark presents favorite works and links to their official artwork sources. -->
@@ -59,8 +59,10 @@
   <script src="projects/ticket-assistant/evaluation.js?v=route-context-1" defer></script>
   <script src="projects/ticket-assistant/fresh-cases.js?v=route-context-1" defer></script>
   <script src="projects/ticket-assistant/routing-context.js?v=route-context-1" defer></script>
-  <script src="projects/ticket-assistant/workbench.js?v=route-context-1" defer></script>
-  <script src="projects/ticket-assistant/findings.js?v=route-context-1" defer></script>
+  <script src="projects/ticket-assistant/validation-cases.js?v=route-context-2" defer></script>
+  <script src="projects/ticket-assistant/routing-refined.js?v=route-context-2" defer></script>
+  <script src="projects/ticket-assistant/workbench.js?v=route-context-2" defer></script>
+  <script src="projects/ticket-assistant/findings.js?v=route-context-2" defer></script>
   <script src="scripts/theatercorp-demo.js?v=1" defer></script>
   <script src="scripts/assembly-calculator.js?v=2" defer></script>
   <script src="projects/algorithm-explorer/demo/app.js?v=1" defer></script>
@@ -246,7 +248,8 @@
                       <select data-assistant-queue-set>
                         <option value="demo">Demo tickets</option>
                         <option value="challenge">Challenge tickets</option>
-                        <option value="fresh" hidden>Fresh test tickets</option>
+                        <option value="fresh" hidden>Previous test tickets</option>
+                        <option value="validation" hidden>New validation tickets</option>
                       </select>
                     </label>
                     <div class="assistant-queue-options" data-assistant-queue></div>
@@ -523,7 +526,7 @@
             <h4>From request to reviewed reply</h4>
             <ol class="feature-method">
               <li><strong>Read.</strong> Start with one fictional request and the facts the requester supplied.</li>
-              <li><strong>Route.</strong> Show the words behind the suggestion. The rules look for which service still has a problem and can set aside a service described as working or fixed. The technician chooses when multiple problems remain or the ticket lacks detail.</li>
+              <li><strong>Route.</strong> Read the request in order. A confirmed recovery can clear an earlier symptom. A failure that returns stays active. The technician chooses when the rules find multiple active problems or cannot identify a supported category.</li>
               <li><strong>Draft.</strong> Ask for the details still missing, then edit the reply in place.</li>
               <li><strong>Review.</strong> A category change requires a fresh draft or confirmation that the current draft fits. Edits after review reopen that step.</li>
             </ol>
@@ -629,31 +632,43 @@
           </div><div data-feature-project="portfolio" hidden><p>The portfolio itself is the working example.</p><div class="evidence-links"><a href="https://github.com/MostafaMosabbir/mostafa-portfolio">Explore the source ↗</a><a href="https://github.com/MostafaMosabbir/mostafa-portfolio/tree/main/tests">View interaction tests ↗</a></div></div><div data-feature-project="assistant" hidden>
             <section id="ticket-assistant-findings" aria-labelledby="ticket-assistant-findings-title">
               <h4 id="ticket-assistant-findings-title">Ticket routing before and after</h4>
-              <p>Both versions are scored against the same expected routes. The original challenge tickets guided the changes. The fresh tickets were written separately and reserved for evaluation.</p>
-              <p data-assistant-comparison-loading>The comparison appears when both versions of the rules load.</p>
-              <section class="assistant-comparison" data-assistant-comparison="challenge" aria-labelledby="assistant-original-challenge" hidden>
-                <h5 id="assistant-original-challenge">Original challenge tickets</h5>
+              <p>Before and After compare the previous and current rules. The Original column retains the keyword baseline. Each version is checked against the same expected route for each ticket.</p>
+              <p data-assistant-comparison-loading>The comparison appears when the rules and test tickets load.</p>
+              <section class="assistant-comparison" data-assistant-comparison="fresh" aria-labelledby="assistant-fresh-test" hidden>
+                <h5 id="assistant-fresh-test">Previous test tickets</h5>
                 <p data-assistant-comparison-summary></p>
-                <table>
-                  <thead><tr><th scope="col">Routing result</th><th scope="col">Before</th><th scope="col">After</th></tr></thead>
+                <table aria-labelledby="assistant-fresh-test">
+                  <thead><tr><th scope="col">Routing result</th><th scope="col">Original</th><th scope="col">Before</th><th scope="col">After</th></tr></thead>
                   <tbody data-assistant-comparison-counts></tbody>
                 </table>
-                <p class="assistant-comparison-note">In the training portal ticket, the original rules suggested hardware because the requester mentioned a printer. The revised rules set aside the completed printer setup and suggest account access for the expired code.</p>
+                <p class="assistant-comparison-note">When sign in works and a shared folder is still blocked, the assistant sends the request to manual review. The demo has no dedicated folder permissions category.</p>
                 <details>
-                  <summary>Compare all challenge tickets</summary>
+                  <summary>Compare all previous test tickets</summary>
                   <ul data-assistant-comparison-outcomes></ul>
                 </details>
               </section>
-              <section class="assistant-comparison" data-assistant-comparison="fresh" aria-labelledby="assistant-fresh-test" hidden>
-                <h5 id="assistant-fresh-test">Fresh test tickets</h5>
+              <section class="assistant-comparison" data-assistant-comparison="validation" aria-labelledby="assistant-new-validation" hidden>
+                <h5 id="assistant-new-validation">New validation tickets</h5>
                 <p data-assistant-comparison-summary></p>
-                <table>
-                  <thead><tr><th scope="col">Routing result</th><th scope="col">Before</th><th scope="col">After</th></tr></thead>
+                <table aria-labelledby="assistant-new-validation">
+                  <thead><tr><th scope="col">Routing result</th><th scope="col">Original</th><th scope="col">Before</th><th scope="col">After</th></tr></thead>
                   <tbody data-assistant-comparison-counts></tbody>
                 </table>
-                <p class="assistant-comparison-note">Some cases still need judgment. For example, a ticket that says it can sign in normally but cannot open a shared folder still gets an account access suggestion.</p>
+                <p class="assistant-comparison-note">These fictional tickets were kept out of rule tuning. The assistant still suggested Network for a headset problem because the requester included generic network advice from a guide.</p>
                 <details>
-                  <summary>Compare all fresh test tickets</summary>
+                  <summary>Compare all new validation tickets</summary>
+                  <ul data-assistant-comparison-outcomes></ul>
+                </details>
+              </section>
+              <section class="assistant-comparison" data-assistant-comparison="challenge" aria-labelledby="assistant-original-challenge" hidden>
+                <h5 id="assistant-original-challenge">Original challenge tickets</h5>
+                <p data-assistant-comparison-summary></p>
+                <table aria-labelledby="assistant-original-challenge">
+                  <thead><tr><th scope="col">Routing result</th><th scope="col">Original</th><th scope="col">Before</th><th scope="col">After</th></tr></thead>
+                  <tbody data-assistant-comparison-counts></tbody>
+                </table>
+                <details>
+                  <summary>Compare all challenge tickets</summary>
                   <ul data-assistant-comparison-outcomes></ul>
                 </details>
               </section>

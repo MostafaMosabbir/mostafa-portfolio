@@ -120,7 +120,8 @@
 #ticket-assistant-findings .assistant-comparison h5 { margin-bottom: .35rem; font-size: 1rem; }
 #ticket-assistant-findings .assistant-comparison table { width: 100%; border-collapse: collapse; }
 #ticket-assistant-findings .assistant-comparison :is(th, td) { padding: .55rem .25rem; border-bottom: 1px solid var(--line); text-align: left; }
-#ticket-assistant-findings .assistant-comparison :is(th, td):not(:first-child) { text-align: right; padding-left: .75rem; font-variant-numeric: tabular-nums; }
+#ticket-assistant-findings .assistant-comparison :is(th, td):not(:first-child) { text-align: right; padding-left: .35rem; font-variant-numeric: tabular-nums; }
+#ticket-assistant-findings .assistant-comparison :is(th, td):last-child { color: var(--accent); }
 #ticket-assistant-findings .assistant-comparison-note { margin-top: .65rem; color: var(--muted); }
 
 #ticket-assistant-findings [data-assistant-comparison-outcomes] {

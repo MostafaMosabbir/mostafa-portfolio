@@ -3,6 +3,8 @@ const { test } = require("node:test");
 const triage = require("../projects/ticket-assistant/triage.js");
 const revised = require("../projects/ticket-assistant/routing-context.js");
 const fresh = require("../projects/ticket-assistant/fresh-cases.js");
+const current = require("../projects/ticket-assistant/routing-refined.js");
+const validation = require("../projects/ticket-assistant/validation-cases.js");
 const { cases, evaluateChallenge } = require("../projects/ticket-assistant/evaluation.js");
 
 test("the challenge tickets have independent identifiers and documented expected routes", () => {
@@ -58,4 +60,33 @@ test("an independently labeled test set compares both versions without hiding mi
   const after = evaluateChallenge(revised.analyze, fresh);
   assert.deepEqual([before.total, before.agreed, before.extraReview, before.unexpectedSuggestion], [15, 3, 10, 2]);
   assert.deepEqual([after.total, after.agreed, after.extraReview, after.unexpectedSuggestion], [15, 11, 3, 1]);
+});
+
+test("the current rules fix the four prior misses and preserve the other challenge routes", () => {
+  const { rows: before } = evaluateChallenge(revised.analyze, fresh);
+  const { rows: after } = evaluateChallenge(current.analyze, fresh);
+  const previouslyMissed = before.filter(row => row.outcome !== "agreed").map(row => row.id);
+  assert.deepEqual(previouslyMissed, [
+    "fresh-vpn-recurrence", "fresh-mailbox-reversal", "fresh-quoted-history", "fresh-permission-route"
+  ]);
+  assert.deepEqual(after.filter(row => row.outcome !== "agreed").map(row => row.id), []);
+  assert.equal(evaluateChallenge(current.analyze).agreed, cases.length);
+});
+
+test("the new evaluation compares all revisions on the same independent cases", () => {
+  const usedIds = new Set([...cases, ...fresh, ...triage.samples].map(ticket => ticket.id));
+  for (const ticket of validation) {
+    assert.equal(usedIds.has(ticket.id), false);
+    assert.ok(ticket.rationale);
+    usedIds.add(ticket.id);
+  }
+  for (const [analyze, expected] of [
+    [triage.analyze, [12, 5, 1]],
+    [revised.analyze, [12, 4, 2]],
+    [current.analyze, [13, 4, 1]]
+  ]) {
+    const result = evaluateChallenge(analyze, validation);
+    assert.equal(result.total, 18);
+    assert.deepEqual([result.agreed, result.extraReview, result.unexpectedSuggestion], expected);
+  }
 });
