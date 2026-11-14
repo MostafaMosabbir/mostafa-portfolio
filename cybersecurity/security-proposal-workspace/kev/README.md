@@ -10,9 +10,10 @@ month is incomplete through the displayed release date.
 
 1. `.github/workflows/refresh-cisa-kev.yml` runs daily at 17:17 UTC and can
    also be run manually. R downloads the public CISA CSV and JSON metadata.
-2. `update-kev.R` checks expected columns, unique CVE IDs, valid dates,
-   the record count, and consistent catalog metadata before and after the
-   download. These checks do not prove every record in the CSV matches the JSON.
+2. `update-kev.R` checks expected columns, unique CVE IDs, exact calendar dates,
+   UTC release timestamps, the record count, and consistent catalog metadata
+   before and after the download. These checks do not prove every record in
+   the CSV matches the JSON.
 3. R groups the records by date added and writes `snapshot.json`. It leaves
    the last good snapshot untouched if retrieval or validation fails. An
    unchanged catalog produces no new commit.
@@ -40,8 +41,18 @@ Rscript --vanilla cybersecurity/security-proposal-workspace/kev/update-kev.R --o
 Internet access is required. The generated file is public and contains no
 workplace information. To test with your own copy of the public source data,
 pass both `--csv path/to/catalog.csv` and `--metadata path/to/catalog.json`.
-From the root of the portfolio, `node --test tests/cisa-kev-chart.test.cjs`
-checks snapshot loading, validation, and fallback behavior.
+
+Two checks run from the repository root:
+
+```powershell
+Rscript --vanilla tests/cisa-kev-updater.test.R
+node --test tests/cisa-kev-chart.test.cjs
+```
+
+The R test builds a snapshot from synthetic inputs and confirms that malformed
+dates or timestamps leave the previous snapshot in place. The refresh workflow
+runs this test before downloading CISA data. The browser tests check snapshot
+loading, validation, and fallback behavior.
 
 Sources: [CISA KEV data](https://github.com/cisagov/kev-data), [GitHub Actions
 schedules](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#schedule),

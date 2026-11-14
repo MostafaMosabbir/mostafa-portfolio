@@ -17,6 +17,15 @@ tmp <- tempfile('kev-'); dir.create(tmp)
 on.exit(unlink(tmp, recursive = TRUE), add = TRUE)
 metadata_url <- 'https://raw.githubusercontent.com/cisagov/kev-data/develop/known_exploited_vulnerabilities.json'
 csv_url <- 'https://raw.githubusercontent.com/cisagov/kev-data/develop/known_exploited_vulnerabilities.csv'
+
+parse_calendar_date <- function(values, error) {
+  # R can parse a valid date prefix even when the full input is malformed.
+  if (anyNA(values) || any(!grepl('^[0-9]{4}-[0-9]{2}-[0-9]{2}$', values))) stop(error)
+  dates <- as.Date(values, format='%Y-%m-%d')
+  if (anyNA(dates) || any(format(dates, '%Y-%m-%d') != values)) stop(error)
+  dates
+}
+
 read_metadata <- function(file) {
   lines <- readLines(file, warn = FALSE, encoding = 'UTF-8')
   # Restrict extraction to the header before the vulnerabilities array. This
@@ -33,9 +42,13 @@ read_metadata <- function(file) {
   version <- gsub('"','',extract('catalogVersion','"[0-9.]+"'), fixed=TRUE)
   released <- gsub('"','',extract('dateReleased','"[0-9TZ:.-]+"'), fixed=TRUE)
   count <- as.integer(extract('count','[0-9]+'))
+  # Check the UTC clock fields before extracting the date for aggregation.
+  utc_stamp <- '^[0-9]{4}-[0-9]{2}-[0-9]{2}T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9](\\.[0-9]+)?Z$'
   if (!grepl('^[0-9]{4}\\.[0-9]{2}\\.[0-9]{2}$', version) ||
-      !grepl('^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\\.[0-9]+)?Z$',released) || is.na(count) || count < 1L) stop('Invalid catalog metadata')
-  list(version=version, released=released, count=count)
+      !grepl(utc_stamp, released) || is.na(count) || count < 1L) stop('Invalid catalog metadata')
+  parse_calendar_date(gsub('.', '-', version, fixed=TRUE), 'Invalid catalog version date')
+  release_date <- parse_calendar_date(substr(released, 1L, 10L), 'Invalid catalog release date')
+  list(version=version, released=released, release_date=release_date, count=count)
 }
 if (is.null(opts[['--csv']])) {
   download.file(metadata_url, file.path(tmp,'before.json'), mode='wb', quiet=TRUE)
@@ -49,8 +62,9 @@ if (.Platform$OS.type == 'windows' && Sys.getlocale('LC_CTYPE') == 'C') invisibl
 data <- read.csv(csv, colClasses='character', check.names=FALSE, fileEncoding='UTF-8-BOM')
 if (!all(c('cveID','dateAdded') %in% names(data)) || nrow(data) != meta$count) stop('CSV schema or record count does not match metadata')
 if (anyNA(data$cveID) || anyDuplicated(data$cveID) || any(!grepl('^CVE-[0-9]{4}-[0-9]{4,19}$',data$cveID))) stop('Missing, duplicate or malformed CVE IDs')
-dates <- as.Date(data$dateAdded, format='%Y-%m-%d'); release_date <- as.Date(substr(meta$released,1,10))
-if (anyNA(dates) || any(dates > release_date)) stop('Invalid or future catalog addition date')
+dates <- parse_calendar_date(data$dateAdded, 'Invalid catalog addition date')
+release_date <- meta$release_date
+if (any(dates > release_date)) stop('Future catalog addition date')
 end_month <- as.Date(paste0(format(release_date,'%Y-%m'),'-01'))
 months <- seq(end_month, by='-1 month', length.out=12L); months <- rev(months)
 keys <- format(months,'%Y-%m'); date_keys <- format(dates,'%Y-%m')

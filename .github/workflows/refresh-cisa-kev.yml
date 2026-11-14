@@ -29,6 +29,8 @@ jobs:
             sudo apt-get update
             sudo apt-get install -y --no-install-recommends r-base-core
           fi
+      - name: Check the updater with offline fixtures
+        run: Rscript --vanilla tests/cisa-kev-updater.test.R
       - name: Fetch and summarize the CISA catalog
         run: Rscript --vanilla cybersecurity/security-proposal-workspace/kev/update-kev.R --output cybersecurity/security-proposal-workspace/kev/snapshot.json
       - name: Commit only a changed snapshot
