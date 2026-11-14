@@ -15,6 +15,8 @@ const evidence = require("../projects/ticket-assistant/routing-evidence.js");
 const verify = require("../projects/ticket-assistant/verify-cases.js");
 const boot = require("../projects/ticket-assistant/routing-boot.js");
 const holdout = require("../projects/ticket-assistant/holdout-cases.js");
+const continuity = require("../projects/ticket-assistant/routing-continuity.js");
+const transferReview = require("../projects/ticket-assistant/transfer-review-cases.js");
 const { cases, evaluateChallenge } = require("../projects/ticket-assistant/evaluation.js");
 
 test("the challenge tickets have independent identifiers and documented expected routes", () => {
@@ -248,6 +250,39 @@ test("the extra fictional evaluation uses distinct cases with predetermined rout
     [boot.analyze, [14, 3, 3]]
   ]) {
     const result = evaluateChallenge(analyze, holdout);
+    assert.deepEqual([result.agreed, result.extraReview, result.unexpectedSuggestion], expected);
+  }
+});
+
+test("the continuity rules correct six prior misses and preserve expected routes on 147 earlier tickets", () => {
+  const previous = evaluateChallenge(boot.analyze, holdout);
+  assert.deepEqual(previous.rows.filter(row => row.outcome !== "agreed").map(row => row.id), [
+    "holdout-inventory-reader-and-remote-link", "holdout-startup-with-dependent-app",
+    "holdout-inbox-only-on-failed-link", "holdout-closed-export-current-mailbox",
+    "holdout-guide-suggestion-real-app", "holdout-unidentified-returning-fault"
+  ]);
+  const knownSets = [cases, fresh, validation, transfer, novel, unseen, verify, holdout];
+  assert.equal(knownSets.flat().length, 147);
+  for (const tickets of knownSets) {
+    const after = evaluateChallenge(continuity.analyze, tickets);
+    assert.deepEqual(after.rows.filter(row => row.outcome !== "agreed").map(row => row.id), []);
+  }
+});
+
+test("the fresh continuity evaluation uses independently documented tickets", () => {
+  const usedIds = new Set([...cases, ...fresh, ...validation, ...transfer, ...novel, ...unseen, ...verify, ...holdout, ...triage.samples].map(ticket => ticket.id));
+  assert.equal(transferReview.length, 20);
+  for (const ticket of transferReview) {
+    assert.equal(usedIds.has(ticket.id), false);
+    assert.ok(ticket.rationale);
+    usedIds.add(ticket.id);
+  }
+  for (const [analyze, expected] of [
+    [triage.analyze, [10, 4, 6]],
+    [boot.analyze, [12, 3, 5]],
+    [continuity.analyze, [12, 3, 5]]
+  ]) {
+    const result = evaluateChallenge(analyze, transferReview);
     assert.deepEqual([result.agreed, result.extraReview, result.unexpectedSuggestion], expected);
   }
 });

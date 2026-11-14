@@ -37,8 +37,8 @@
   container.querySelector("[data-assistant-results]").hidden = false;
 
   const evaluation = window.TicketTriageEvaluation;
-  const previousRules = window.TicketTriageEvidence;
-  const currentRules = window.TicketTriageBoot;
+  const previousRules = window.TicketTriageBoot;
+  const currentRules = window.TicketTriageContinuity;
   if (!evaluation || !previousRules || !currentRules) return;
 
   const metrics = [
@@ -118,5 +118,7 @@
   if (verify?.length) renderComparison("verify", verify);
   const holdout = window.TicketTriageHoldoutCases;
   if (holdout?.length) renderComparison("holdout", holdout);
+  const transferReview = window.TicketTriageTransferReviewCases;
+  if (transferReview?.length) renderComparison("transferReview", transferReview);
   container.querySelector("[data-assistant-comparison-loading]").hidden = true;
 })();
