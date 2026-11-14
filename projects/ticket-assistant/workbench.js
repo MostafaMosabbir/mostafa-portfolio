@@ -4,7 +4,8 @@
   const root = document.getElementById("ticket-assistant-demo");
   const engine = window.TicketTriage;
   if (!root || !engine) return;
-  const analyze = window.TicketTriageRefined?.analyze ?? window.TicketTriageContext?.analyze ?? engine.analyze;
+  const analyze = window.TicketTriageObserved?.analyze ?? window.TicketTriageRefined?.analyze ??
+    window.TicketTriageContext?.analyze ?? engine.analyze;
 
   const find = name => root.querySelector(`[data-assistant-${name}]`);
   const workspace = find("workspace");
@@ -166,7 +167,8 @@
     const candidates = new Map([
       ["challenge", window.TicketTriageEvaluation?.cases],
       ["fresh", window.TicketTriageFreshCases],
-      ["validation", window.TicketTriageValidationCases]
+      ["validation", window.TicketTriageValidationCases],
+      ["transfer", window.TicketTriageTransferCases]
     ]);
     for (const option of queueSet.options) {
       if (!candidates.has(option.value)) continue;
