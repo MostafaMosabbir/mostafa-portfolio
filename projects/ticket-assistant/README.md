@@ -6,7 +6,7 @@ The Workbench demo helps a technician triage one incoming fictional request. It 
 
 1. Open the portfolio homepage, find Project 002 in Case Files, and select **Highlight project**.
 2. Choose the VPN sample and look for the terms behind its category suggestion.
-3. Try **Two problems in the intake room** in the previous evaluation queue. Compare the barcode scanner's startup fault with the VPN disconnect and see why the rules leave the route to a technician.
+3. Try **Two faults at the dispatch desk** in the scanner and VPN evaluation queue. Check how the rules recognize a device that cannot get past its splash screen alongside a separate VPN fault.
 4. Edit the reply. After a category change, generate a fresh draft or confirm that the edited draft fits the selected category. Then mark it reviewed.
 5. Clear the reply or change it after review and check the status again.
 6. Open **Findings** to compare the original, previous, and current rules against the expected route. Select **Try ticket** to open that request in the queue.
@@ -19,7 +19,7 @@ The Workbench demo helps a technician triage one incoming fictional request. It 
 
 ## Read and test the code
 
-Read `triage.js` for the original keyword rules and shared draft logic. The intermediate routing versions add recovery, event order, and separate evidence for observed problems. `routing-symptoms.js` builds on those versions to recognize more ways a person might describe a failing device, a connection symptom, or an identity error. `workbench.js` handles the queue and review steps. `findings.js` compares the original, previous, and current rules on the same cases.
+Read `triage.js` for the original keyword rules and shared draft logic. The intermediate routing versions add recovery, event order, and separate evidence for observed problems. `routing-evidence.js` uses supported symptoms as evidence across clauses and preserves manual review when it detects faults in different categories. `workbench.js` handles the queue and review steps. `findings.js` compares the original, previous, and current rules on the same cases.
 
 From the repository root, run:
 
@@ -29,11 +29,11 @@ node --test tests/ticket-assistant*.test.cjs
 
 ## Evaluation
 
-The initial demo results describe eight fixtures under the original rules. The five earlier evaluation sets contain 87 regression cases. The ten misses in `novel-cases.js` guided the current changes. The 20 tickets in `unseen-cases.js` and their expected routes were written separately and reserved for evaluating the current rules.
+The initial demo results describe eight fixtures under the original rules. The six earlier evaluation sets contain 107 regression cases. The twelve misses in `unseen-cases.js` guided the current revision. The tickets in `verify-cases.js` and their expected routes were written separately and reserved for evaluating the current rules.
 
 Each ticket records the reason for the expected category or manual review. Any manual route counts as agreement if a reviewer was expected. A manual route where a category was expected and a category suggestion that disagrees with the expected route are counted separately. The fresh set intentionally includes difficult wording, so use it to inspect failure modes. If it guides additional changes, write another independent set before testing those changes.
 
-The Workbench Findings tab shows the expected and actual routes for every ticket. In the barcode scanner example, the scanner gets stuck on its startup logo even when its data cable is unplugged. The VPN also fails. The rules surface both categories and leave the ticket for manual review.
+The Workbench Findings tab shows the expected and actual routes for every ticket. In the dispatch desk example, the scanner cannot get past its splash screen even when it is unplugged from the computer, and the VPN session independently drops. The rules surface the device and network clues and leave the ticket for manual review.
 
 | Expected routes matched | Original | Before | After |
 | --- | ---: | ---: | ---: |
@@ -41,9 +41,10 @@ The Workbench Findings tab shows the expected and actual routes for every ticket
 | Earlier test tickets | 3 of 15 | 15 of 15 | 15 of 15 |
 | Previous validation tickets | 12 of 18 | 18 of 18 | 18 of 18 |
 | Prior evaluation tickets | 12 of 20 | 20 of 20 | 20 of 20 |
-| Previous evaluation tickets | 9 of 20 | 10 of 20 | 20 of 20 |
-| New fictional evaluation | 7 of 20 | 8 of 20 | 8 of 20 |
+| Previous evaluation tickets | 9 of 20 | 20 of 20 | 20 of 20 |
+| Scanner and VPN evaluation | 7 of 20 | 8 of 20 | 20 of 20 |
+| Fresh fictional evaluation | 11 of 20 | 14 of 20 | 15 of 20 |
 
-The new fictional set exposed five manual reviews where a category was expected and seven unexpected suggestions. In one ticket, the scanner “never gets past its opening splash screen” and the VPN also fails. The rules picked up the VPN but missed the scanner symptom, so they still suggested Network. The ticket should go to manual review. These examples remain available in Findings.
+On the fresh set, one ticket went to manual review where a category was expected and four received unexpected suggestions. The rules still missed a hardware clue when the reporter said the barcode reader sat on the maker’s name and never reached its menu. That ticket also reported a VPN disconnect on a different computer and should have gone to manual review.
 
 The browser demo holds edits in memory, and review records a local step. Replies are never sent.

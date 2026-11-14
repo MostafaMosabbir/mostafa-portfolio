@@ -7,7 +7,10 @@
 
   const { total, passed, matched, manual, rows } = triage.evaluateSamples();
   const categoryLabels = new Map(triage.categories.map(({ id, label }) => [id, label]));
-  const routeLabels = { ambiguous: "Multiple categories", unrecognized: "No supported category" };
+  const routeLabels = {
+    ambiguous: "Multiple categories (manual review)",
+    unrecognized: "No supported category (manual review)"
+  };
 
   function describeRoute({ status, category }) {
     return categoryLabels.get(category) || routeLabels[status] || "Needs manual review";
@@ -34,8 +37,8 @@
   container.querySelector("[data-assistant-results]").hidden = false;
 
   const evaluation = window.TicketTriageEvaluation;
-  const previousRules = window.TicketTriageIndependent;
-  const currentRules = window.TicketTriageSymptoms;
+  const previousRules = window.TicketTriageSymptoms;
+  const currentRules = window.TicketTriageEvidence;
   if (!evaluation || !previousRules || !currentRules) return;
 
   const metrics = [
@@ -111,5 +114,7 @@
   if (novel?.length) renderComparison("novel", novel);
   const unseen = window.TicketTriageUnseenCases;
   if (unseen?.length) renderComparison("unseen", unseen);
+  const verify = window.TicketTriageVerifyCases;
+  if (verify?.length) renderComparison("verify", verify);
   container.querySelector("[data-assistant-comparison-loading]").hidden = true;
 })();

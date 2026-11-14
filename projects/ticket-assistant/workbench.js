@@ -4,9 +4,9 @@
   const root = document.getElementById("ticket-assistant-demo");
   const engine = window.TicketTriage;
   if (!root || !engine) return;
-  const analyze = window.TicketTriageSymptoms?.analyze ?? window.TicketTriageIndependent?.analyze ??
-    window.TicketTriageObserved?.analyze ?? window.TicketTriageRefined?.analyze ??
-    window.TicketTriageContext?.analyze ?? engine.analyze;
+  const analyze = window.TicketTriageEvidence?.analyze ?? window.TicketTriageSymptoms?.analyze ??
+    window.TicketTriageIndependent?.analyze ?? window.TicketTriageObserved?.analyze ??
+    window.TicketTriageRefined?.analyze ?? window.TicketTriageContext?.analyze ?? engine.analyze;
 
   const find = name => root.querySelector(`[data-assistant-${name}]`);
   const workspace = find("workspace");
@@ -171,7 +171,8 @@
       ["validation", window.TicketTriageValidationCases],
       ["transfer", window.TicketTriageTransferCases],
       ["novel", window.TicketTriageNovelCases],
-      ["unseen", window.TicketTriageUnseenCases]
+      ["unseen", window.TicketTriageUnseenCases],
+      ["verify", window.TicketTriageVerifyCases]
     ]);
     for (const option of queueSet.options) {
       if (!candidates.has(option.value)) continue;
