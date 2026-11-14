@@ -4,7 +4,7 @@
   "use strict";
   const projects = {
     portfolio: { number: "001", title: "Personal portfolio", badge: "Always Improving", meta: "HTML · CSS · JavaScript" },
-    assistant: { number: "002", title: "IT Ticket Assistant", badge: "Working prototype", meta: "JavaScript · Rule-based matching · Local prototype" },
+    assistant: { number: "002", title: "IT Ticket Assistant", badge: "Playable demo", meta: "JavaScript · Ticket triage · Fictional data" },
     analyzer: { number: "003", title: "Python IT Ticket Analyzer", badge: "Working prototype", meta: "Python · CSV · JavaScript demo" },
     security: { number: "004", title: "Security Proposal Workspace", badge: "Working prototype", meta: "Cybersecurity · Python · Selected NIST CSF 2.0 outcomes" },
     // Project numbers are identifiers, not a count; Project 005 is still planned.
