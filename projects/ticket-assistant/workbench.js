@@ -4,11 +4,11 @@
   const root = document.getElementById("ticket-assistant-demo");
   const engine = window.TicketTriage;
   if (!root || !engine) return;
-  const analyze = window.TicketTriageSequence?.analyze ?? window.TicketTriageContinuity?.analyze ??
-    window.TicketTriageBoot?.analyze ?? window.TicketTriageEvidence?.analyze ??
-    window.TicketTriageSymptoms?.analyze ?? window.TicketTriageIndependent?.analyze ??
-    window.TicketTriageObserved?.analyze ?? window.TicketTriageRefined?.analyze ??
-    window.TicketTriageContext?.analyze ?? engine.analyze;
+  const analyze = window.TicketTriageSubstitution?.analyze ?? window.TicketTriageSequence?.analyze ??
+    window.TicketTriageContinuity?.analyze ?? window.TicketTriageBoot?.analyze ??
+    window.TicketTriageEvidence?.analyze ?? window.TicketTriageSymptoms?.analyze ??
+    window.TicketTriageIndependent?.analyze ?? window.TicketTriageObserved?.analyze ??
+    window.TicketTriageRefined?.analyze ?? window.TicketTriageContext?.analyze ?? engine.analyze;
 
   const find = name => root.querySelector(`[data-assistant-${name}]`);
   const workspace = find("workspace");
@@ -177,7 +177,8 @@
       ["verify", window.TicketTriageVerifyCases],
       ["holdout", window.TicketTriageHoldoutCases],
       ["transferReview", window.TicketTriageTransferReviewCases],
-      ["sentenceOrder", window.TicketTriageSentenceOrderCases]
+      ["sentenceOrder", window.TicketTriageSentenceOrderCases],
+      ["substitution", window.TicketTriageSubstitutionCases]
     ]);
     for (const option of queueSet.options) {
       if (!candidates.has(option.value)) continue;

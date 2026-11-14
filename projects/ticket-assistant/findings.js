@@ -37,8 +37,8 @@
   container.querySelector("[data-assistant-results]").hidden = false;
 
   const evaluation = window.TicketTriageEvaluation;
-  const previousRules = window.TicketTriageContinuity;
-  const currentRules = window.TicketTriageSequence;
+  const previousRules = window.TicketTriageSequence;
+  const currentRules = window.TicketTriageSubstitution;
   if (!evaluation || !previousRules || !currentRules) return;
 
   const metrics = [
@@ -135,5 +135,7 @@
   if (transferReview?.length) renderComparison("transferReview", transferReview);
   const sentenceOrder = window.TicketTriageSentenceOrderCases;
   if (sentenceOrder?.length) renderComparison("sentenceOrder", sentenceOrder);
+  const substitution = window.TicketTriageSubstitutionCases;
+  if (substitution?.length) renderComparison("substitution", substitution);
   container.querySelector("[data-assistant-comparison-loading]").hidden = true;
 })();

@@ -19,6 +19,8 @@ const continuity = require("../projects/ticket-assistant/routing-continuity.js")
 const transferReview = require("../projects/ticket-assistant/transfer-review-cases.js");
 const sequence = require("../projects/ticket-assistant/routing-sequence.js");
 const sentenceOrder = require("../projects/ticket-assistant/sentence-order-cases.js");
+const substitutionRules = require("../projects/ticket-assistant/routing-substitution.js");
+const substitution = require("../projects/ticket-assistant/substitution-cases.js");
 const { cases, evaluateChallenge } = require("../projects/ticket-assistant/evaluation.js");
 
 test("the challenge tickets have independent identifiers and documented expected routes", () => {
@@ -317,6 +319,40 @@ test("the fresh sentence order evaluation uses distinct and independently docume
     const outcomes = new Map(result.rows.map(({ id, outcome }) => [id, outcome]));
     const firsts = result.rows.filter(({ id }) => id.endsWith("-a"));
     assert.equal(firsts.length, 6);
+    const correctPairs = firsts.filter(({ id, outcome }) =>
+      outcome === "agreed" && outcomes.get(id.replace(/-a$/, "-b")) === "agreed").length;
+    assert.deepEqual([result.agreed, result.extraReview, result.unexpectedSuggestion, correctPairs], expected);
+  }
+});
+
+test("substitution routing corrects six prior misses and preserves all 187 known expected routes", () => {
+  const previous = evaluateChallenge(sequence.analyze, sentenceOrder);
+  assert.equal(previous.agreed, 14);
+  const knownSets = [cases, fresh, validation, transfer, novel, unseen, verify, holdout, transferReview, sentenceOrder];
+  assert.equal(knownSets.flat().length, 187);
+  for (const tickets of knownSets) {
+    const after = evaluateChallenge(substitutionRules.analyze, tickets);
+    assert.deepEqual(after.rows.filter(row => row.outcome !== "agreed").map(row => row.id), []);
+  }
+});
+
+test("the new substitution evaluation contains distinct tickets with independently documented routes", () => {
+  const usedIds = new Set([...cases, ...fresh, ...validation, ...transfer, ...novel, ...unseen, ...verify, ...holdout, ...transferReview, ...sentenceOrder, ...triage.samples].map(ticket => ticket.id));
+  assert.equal(substitution.length, 20);
+  for (const ticket of substitution) {
+    assert.equal(usedIds.has(ticket.id), false);
+    assert.ok(ticket.rationale);
+    usedIds.add(ticket.id);
+  }
+  for (const [analyze, expected] of [
+    [triage.analyze, [12, 6, 2, 3]],
+    [sequence.analyze, [13, 2, 5, 2]],
+    [substitutionRules.analyze, [13, 2, 5, 2]]
+  ]) {
+    const result = evaluateChallenge(analyze, substitution);
+    const outcomes = new Map(result.rows.map(({ id, outcome }) => [id, outcome]));
+    const firsts = result.rows.filter(({ id }) => id.endsWith("-a"));
+    assert.equal(firsts.length, 5);
     const correctPairs = firsts.filter(({ id, outcome }) =>
       outcome === "agreed" && outcomes.get(id.replace(/-a$/, "-b")) === "agreed").length;
     assert.deepEqual([result.agreed, result.extraReview, result.unexpectedSuggestion, correctPairs], expected);
