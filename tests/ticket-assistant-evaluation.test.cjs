@@ -9,6 +9,8 @@ const observed = require("../projects/ticket-assistant/routing-observed.js");
 const transfer = require("../projects/ticket-assistant/transfer-cases.js");
 const independent = require("../projects/ticket-assistant/routing-independent.js");
 const novel = require("../projects/ticket-assistant/novel-cases.js");
+const symptoms = require("../projects/ticket-assistant/routing-symptoms.js");
+const unseen = require("../projects/ticket-assistant/unseen-cases.js");
 const { cases, evaluateChallenge } = require("../projects/ticket-assistant/evaluation.js");
 
 test("the challenge tickets have independent identifiers and documented expected routes", () => {
@@ -151,6 +153,35 @@ test("the independent fictional set has distinct cases and keeps the observed co
   ]) {
     const result = evaluateChallenge(analyze, novel);
     assert.equal(result.total, 20);
+    assert.deepEqual([result.agreed, result.extraReview, result.unexpectedSuggestion], expected);
+  }
+});
+
+test("the latest rules resolve the ten previous misses and preserve expected outcomes on 87 earlier tickets", () => {
+  const previous = evaluateChallenge(independent.analyze, novel);
+  assert.equal(previous.agreed, 10);
+  const historicalSets = [cases, fresh, validation, transfer, novel];
+  assert.equal(historicalSets.flat().length, 87);
+  for (const tickets of historicalSets) {
+    const after = evaluateChallenge(symptoms.analyze, tickets);
+    assert.deepEqual(after.rows.filter(row => row.outcome !== "agreed").map(row => row.id), []);
+  }
+});
+
+test("the new fictional test set contains 20 distinct documented cases", () => {
+  const usedIds = new Set([...cases, ...fresh, ...validation, ...transfer, ...novel, ...triage.samples].map(ticket => ticket.id));
+  assert.equal(unseen.length, 20);
+  for (const ticket of unseen) {
+    assert.equal(usedIds.has(ticket.id), false);
+    assert.ok(ticket.rationale);
+    usedIds.add(ticket.id);
+  }
+  for (const [analyze, expected] of [
+    [triage.analyze, [7, 4, 9]],
+    [independent.analyze, [8, 5, 7]],
+    [symptoms.analyze, [8, 5, 7]]
+  ]) {
+    const result = evaluateChallenge(analyze, unseen);
     assert.deepEqual([result.agreed, result.extraReview, result.unexpectedSuggestion], expected);
   }
 });
