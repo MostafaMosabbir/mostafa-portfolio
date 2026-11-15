@@ -20,7 +20,7 @@
 
   <!-- These paths must match your folders and filenames exactly. -->
   <link rel="stylesheet" href="styles/main.css">
-  <link rel="stylesheet" href="styles/refined.css?v=zoom-phone-1">
+  <link rel="stylesheet" href="styles/refined.css?v=migration-1">
   <link rel="stylesheet" href="styles/security-workspace.css?v=2">
   <!-- Articles and Tools each have their own section on this page. -->
   <link rel="stylesheet" href="styles/homepage-sections.css?v=1">
@@ -55,7 +55,7 @@
   <script src="scripts/geometry.js?v=after-hours-fog-2" defer></script>
   <!-- Independent enhancements: navigation, project filtering, and sample analysis. -->
   <script src="scripts/explorer.js?v=workbench-phone-2" defer></script>
-  <script src="scripts/featured-projects.js?v=assistant-1" defer></script>
+  <script src="scripts/featured-projects.js?v=migration-1" defer></script>
   <script src="projects/ticket-assistant/triage.js?v=1" defer></script>
   <script src="projects/ticket-assistant/evaluation.js?v=route-context-1" defer></script>
   <script src="projects/ticket-assistant/fresh-cases.js?v=route-context-1" defer></script>
@@ -496,6 +496,10 @@
                 </div>
               </div>
             </div>
+            <div data-feature-project="migration" hidden>
+              <p>Email was hosted on IONOS and staff used Zoom for meetings. To find a time, they had to ask coworkers when they were free.</p>
+              <p>I moved existing mail to Exchange Online so staff could see calendar availability. The Zoom scheduler integration followed the mailbox move.</p>
+            </div>
             <div data-feature-project="securebank" hidden>
               <div id="securebank-lab" hidden>
                 <figure class="sb-panel" aria-labelledby="sb-topology-title" aria-describedby="sb-topology-description">
@@ -638,6 +642,14 @@
                   </dl>
                 </section>
               </div>
+            </div>
+            <div data-feature-project="migration" hidden>
+              <ol class="migration-steps">
+                <li><strong>Inventory</strong><p>I used Excel and worked with both HR teams to identify active accounts, plan licenses, and map forwarding.</p></li>
+                <li><strong>Mail distribution</strong><p>I set up a general support distribution group so messages reached assigned team members.</p></li>
+                <li><strong>Mailbox transfer</strong><p>I used an IMAP migration batch in Exchange to move existing mail from IONOS.</p></li>
+                <li><strong>Mail cutover</strong><p>I changed the MX record to direct new incoming mail to Exchange Online.</p></li>
+              </ol>
             </div>
             <div data-feature-project="securebank" hidden>
               <h4>From topology to test</h4>
@@ -911,6 +923,27 @@
               <h4>What I’d do next time</h4>
               <p>I’d start 10DLC registration earlier and test calls and texts both ways before calling the switch done.</p>
             </div>
+            <div data-feature-project="migration" hidden>
+              <div class="migration-findings">
+                <section aria-labelledby="migration-verified-title">
+                  <h4 id="migration-verified-title">Verified</h4>
+                  <dl class="case-study-findings">
+                    <div><dt>Mailbox history</dt><dd>I checked the migration status in Exchange and confirmed older messages and folders appeared in Outlook.</dd></div>
+                    <div><dt>Mail flow</dt><dd>I checked incoming and outgoing messages in Exchange Message Trace after the MX change.</dd></div>
+                    <div><dt>Scheduling</dt><dd>I confirmed coworkers’ availability in Outlook and Zoom, then reviewed the changes at a staff meeting.</dd></div>
+                  </dl>
+                </section>
+                <aside class="migration-pending" aria-labelledby="migration-pending-title">
+                  <h4 id="migration-pending-title">Pending checks</h4>
+                  <ul>
+                    <li>Confirm Business Standard and Business Basic assignments.</li>
+                    <li>Verify forwarding reaches the intended recipients.</li>
+                  </ul>
+                </aside>
+              </div>
+              <h4>What I’d do differently</h4>
+              <p>I’d confirm the user list with both HR teams earlier and settle licenses and forwarding before moving mailboxes.</p>
+            </div>
             <div id="securebank-findings" data-feature-project="securebank" hidden>
               <h4>The Questions Behind the Work</h4>
               <ol>
@@ -1079,6 +1112,7 @@
           <p data-feature-project="securebank" hidden>The browser trace illustrates the planned policy. Packet Tracer will supply the observed results.</p>
           <p data-feature-project="office" hidden>I coordinated the service transfer, set up the router and Wi-Fi, and verified basic internet access on both connection types. The cost comparison uses the previous monthly internet bill as its baseline.</p>
           <p data-feature-project="zoom-phone" hidden>I used my cell as the external endpoint so the checks exercised calls and texts between Zoom Phone and a separate mobile line.</p>
+          <p data-feature-project="migration" hidden>I checked migration status and older folders to verify historical mail. I used Message Trace after changing the MX record to verify new mail flow.</p>
           <p data-feature-project="analyzer">The full tool runs locally in Python. This browser demonstration analyzes a separate six-ticket sample using JavaScript. It checks required fields, groups repeated subject wording, and flags resolved or closed tickets without notes. Repeated wording is a review candidate, not proof of the same root cause.</p>
         <p data-feature-project="portfolio" hidden>Built with HTML, CSS, and JavaScript. Published with GitHub Pages. The visual effects and project interactions run in the browser.</p><p data-feature-project="assistant" hidden>The JavaScript rules and sample tickets run in the browser. The demo keeps draft edits in memory and clears them when you reload. Replies stay in the demo.</p><p data-feature-project="security" hidden>The assessment engine runs locally in Python using the standard library. The published report is a fixed fictional example, not a live assessment service or a compliance determination.</p><p data-feature-project="columns" hidden>The original desktop game uses Rust and ggez. This browser adaptation reimplements the game rules in Rust compiled to WebAssembly; JavaScript handles the browser display and controls. Closing the game resets the current session.</p><p data-feature-project="kev" hidden>R validates the public CISA catalog and generates a monthly JSON snapshot. GitHub Actions checks daily; JavaScript displays the latest available snapshot and a bundled fallback when needed.</p><p data-feature-project="theater" hidden>The Java source adapts a 2019 class project and saves locally. The independent browser demo uses JavaScript, does not run the Java application, and resets when the page refreshes.</p></details>
       </section>
@@ -1110,7 +1144,7 @@
             <button type="button" data-filter="rust" aria-pressed="false">Rust</button>
             <button type="button" data-filter="r" aria-pressed="false">R</button>
           </div>
-          <p class="small-label" id="filter-status" role="status">12 projects</p>
+          <p class="small-label" id="filter-status" role="status">13 projects</p>
         </div>
         <div class="case-navigation" id="case-navigation" hidden>
           <p>Scroll or swipe to browse</p>
@@ -1320,6 +1354,21 @@ Calls + texts → tested both ways</pre>
               <ul class="tags" aria-label="Zoom Phone migration disciplines"><li>IT Operations</li><li>VoIP</li><li>Business texting</li></ul>
             </div>
             <button class="feature-select" type="button" data-feature-select="zoom-phone" aria-pressed="false" hidden>Highlight project</button>
+          </article>
+          <article class="project-card" id="project-microsoft-365-migration" data-technologies="it-operations" tabindex="-1">
+            <div class="project-art workbench-mobile-art" aria-hidden="true">
+              <div class="terminal-bar"><i></i><i></i><i></i><span>microsoft 365 / cutover</span></div>
+              <pre>Mail history → Outlook
+Mail flow → Message Trace
+Calendar availability → Outlook and Zoom</pre>
+            </div>
+            <div class="project-copy">
+              <p class="eyebrow">Project 017 <span class="badge">Final checks pending</span></p>
+              <h3>Microsoft 365 Migration</h3>
+              <p>Mail moved to Exchange Online. Scheduling verified in Outlook and Zoom.</p>
+              <ul class="tags" aria-label="Microsoft 365 migration disciplines"><li>IT Operations</li><li>Microsoft 365</li><li>Exchange Online</li></ul>
+            </div>
+            <button class="feature-select" type="button" data-feature-select="migration" aria-pressed="false" hidden>Highlight project</button>
           </article>
         </div>
       </section>

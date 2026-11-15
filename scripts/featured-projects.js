@@ -15,7 +15,8 @@
     assembly: { number: "011", title: "x86 Assembly Calculator", badge: "Class project adaptation", meta: "x86 Assembly · JavaScript browser simulation" },
     securebank: { number: "012", title: "SecureBank Network Defense Lab", badge: "Lab plan", meta: "Cybersecurity · Packet Tracer · Fictional bank network" },
     office: { number: "013", title: "Office IT Buildout", badge: "Case study", meta: "IT Operations · Office relocation · Readiness testing" },
-    "zoom-phone": { number: "014", title: "Zoom Phone Migration", badge: "Case study", meta: "IT Operations · Phone migration · Business continuity" }
+    "zoom-phone": { number: "014", title: "Zoom Phone Migration", badge: "Case study", meta: "IT Operations · Phone migration · Business continuity" },
+    migration: { number: "017", title: "Microsoft 365 Migration", badge: "Final checks pending", meta: "Exchange Online · IMAP migration · Mail routing · Calendar availability" }
   };
   const feature = document.getElementById("featured");
   if (!feature) return;
@@ -36,7 +37,7 @@
 
   function openFeatured(key, resetTab = true) {
     if (resetTab) {
-      let tab = "tab-overview";
+      let tab = key === "migration" ? "tab-evidence" : "tab-overview";
       if (phone?.matches) {
         if (key === "analyzer" || key === "security") tab = "tab-process";
         if (key === "kev") tab = "tab-evidence";
@@ -65,7 +66,7 @@
     groups.forEach(group => { group.hidden = group.dataset.featureProject !== key; });
     feature.dataset.project = key;
     labelButtons();
-    // Project switches return to Brief, so a hidden tab never remains selected.
+    // Opening the new project selects a visible tab after updating availability.
     document.getElementById("tab-articles").hidden = !["security", "columns", "kev", "securebank"].includes(key);
     document.getElementById("tab-what-changed").hidden = !["algorithm", "securebank"].includes(key);
     title.textContent = project.title;
