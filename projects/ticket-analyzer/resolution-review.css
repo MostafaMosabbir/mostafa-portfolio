@@ -1,0 +1,42 @@
+/* The Workbench and the case file share the same fictional Findings panel. */
+.case-study #evidence-title { margin-bottom: .75rem; }
+.analyzer-summary { color: var(--muted); max-width: 72ch; }
+.resolution-breakdown { margin: 1.25rem 0; }
+.resolution-breakdown figcaption { font-weight: 600; }
+.resolution-bar {
+  display: grid;
+  /* The three segments represent 3, 8, and 20 of the 31 completed tickets. */
+  grid-template-columns: 3fr 8fr 20fr;
+  gap: 3px;
+  height: 10px;
+  margin: .6rem 0 .8rem;
+  overflow: hidden;
+  border-radius: 5px;
+}
+.resolution-bar span:nth-child(1) { background: #e4a59b; }
+.resolution-bar span:nth-child(2) { background: #dbbd80; }
+.resolution-bar span:nth-child(3) { background: #94e1b8; }
+.resolution-legend { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .7rem; margin: 0; }
+.resolution-legend > div { border: 1px solid var(--line); border-radius: 6px; background: var(--soft); padding: .75rem; }
+.resolution-legend dt { color: var(--muted); font-size: .88rem; }
+.resolution-legend dd { margin: .2rem 0 0; font: 600 1.5rem/1.2 ui-monospace, monospace; }
+.resolution-legend > div:nth-child(1) dd { color: #e4a59b; }
+.resolution-legend > div:nth-child(2) dd { color: #dbbd80; }
+.resolution-legend > div:nth-child(3) dd { color: #94e1b8; }
+
+.analyzer-ticket { padding: clamp(.85rem, 2vw, 1.25rem); border: 1px solid var(--line); border-radius: 8px; background: var(--soft); }
+.analyzer-ticket p { margin: 0; }
+.analyzer-ticket-id { color: #dbbd80; font: .84rem/1.5 ui-monospace, monospace; }
+.analyzer-ticket .analyzer-ticket-title { margin-top: .25rem; font-size: 1.18rem; }
+.analyzer-ticket-details { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; margin-top: 1rem; }
+.analyzer-ticket-details > div { min-width: 0; }
+.analyzer-ticket-details p + p, .analyzer-ticket blockquote { margin: .35rem 0 0; color: var(--muted); }
+.analyzer-ticket blockquote { border-inline-start: 2px solid var(--accent); padding-inline-start: .75rem; }
+.analyzer-ticket code { color: #dbbd80; overflow-wrap: anywhere; }
+.analyzer-context { color: var(--muted); font-size: .9rem; margin-top: .9rem; }
+
+@media (max-width: 560px) {
+  .analyzer-ticket-details, .resolution-legend { grid-template-columns: minmax(0, 1fr); }
+  .resolution-legend > div { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; }
+  .resolution-legend dd { margin: 0; }
+}

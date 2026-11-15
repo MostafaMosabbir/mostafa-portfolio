@@ -11,6 +11,36 @@ Excluded rows requiring review: 0
 
 A populated note is not proof that a fix was verified.
 
+## Resolution notes to review for labels
+
+These completed tickets have a note but do not contain all three
+literal labels: Investigation:, Fix:, and Verification:.
+A missing label does not mean the work was omitted.
+
+- DEMO-001: Investigation, Fix, Verification
+- DEMO-003: Investigation, Fix, Verification
+- DEMO-006: Investigation, Fix, Verification
+- DEMO-007: Investigation, Fix, Verification
+- DEMO-011: Investigation, Fix, Verification
+- DEMO-013: Investigation, Fix, Verification
+- DEMO-015: Investigation, Fix, Verification
+- DEMO-016: Investigation, Fix, Verification
+
+## Resolution sections without text
+
+These headings are present, but no text follows them before the next heading or the end of the note.
+
+None found.
+
+## Resolution documentation counts
+
+- Resolved or closed tickets: 31
+- No resolution note: 3
+- Missing a heading or section text: 8
+- All three sections contain text: 20
+
+The presence of text describes note structure. A person reviews the accuracy and adequacy of each note.
+
 ## Repeated subject wording
 
 These are review candidates, not confirmed duplicate incidents.
