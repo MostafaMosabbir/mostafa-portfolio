@@ -10,12 +10,14 @@ import csv
 from datetime import date
 import hashlib
 import html
+from ipaddress import IPv6Address
 import json
 from pathlib import Path
 import re
 import tempfile
 import os
 import io
+from urllib.parse import unquote, urlsplit
 
 SCHEMAS = {
     "requirements": ["requirement_id", "domain", "requirement", "priority", "control_ids", "coverage_review", "reviewer", "reviewed_on", "framework", "framework_version", "source_ref", "source_url"],
@@ -24,6 +26,7 @@ SCHEMAS = {
 }
 STATUSES = {"implemented", "partial", "planned", "not_implemented", "unknown"}
 PRIORITIES = {"low", "medium", "high", "critical"}
+MULTILINE_FIELDS = {"requirement", "statement"}
 
 
 class InputError(ValueError):
@@ -49,6 +52,31 @@ def references(value: str) -> list[str]:
     return ids
 
 
+def valid_source_url(value: str) -> bool:
+    """Check an absolute HTTPS URL without resolving the host or opening it."""
+    if not re.match(r"^https://[^/?#]", value, re.I) or re.search(r"[\x00-\x20\x7f\s\\]", value):
+        return False
+    try:
+        address = urlsplit(value)
+        host = unquote(address.hostname or "", errors="strict")
+        address.port  # Accessing the port validates its syntax and range.
+        authority = address.netloc.rsplit("@", 1)[-1]
+        if authority.startswith("["):
+            if not re.fullmatch(r"\[[^\]%]+\](?::[0-9]*)?", authority):
+                return False
+            IPv6Address(host)
+            return True
+        return bool(host) and not re.search(r"[\x00-\x20\x7f\s%#/<>?@\[\]^|:\\]", host)
+    except ValueError:
+        return False
+
+
+def validate_record_lines(row: dict[str, str]) -> None:
+    for field, value in row.items():
+        if field not in MULTILINE_FIELDS and ("\r" in value or "\n" in value):
+            raise InputError(f"{field} must be a single line")
+
+
 def read_csv(path: Path, kind: str, raw: bytes | None = None) -> list[dict[str, str]]:
     # utf-8-sig accepts both ordinary UTF-8 and Excel's UTF-8 BOM.
     with io.StringIO((path.read_bytes() if raw is None else raw).decode("utf-8-sig"), newline="") as stream:
@@ -59,6 +87,10 @@ def read_csv(path: Path, kind: str, raw: bytes | None = None) -> list[dict[str, 
         for number, row in enumerate(reader, start=2):
             if None in row or any(value is None for value in row.values()):
                 raise InputError(f"{path.name}, row {number}: wrong number of CSV fields")
+            try:
+                validate_record_lines(row)
+            except InputError as exc:
+                raise InputError(f"{path.name}, row {number}: {exc}") from exc
             rows.append({key: value.strip() for key, value in row.items()})
         return rows
 
@@ -74,6 +106,7 @@ def validate(data: dict) -> None:
         for row in data[kind]:
             if set(row) != set(fields) or any(not isinstance(v, str) for v in row.values()):
                 raise InputError(f"{kind}: invalid record shape")
+            validate_record_lines(row)
             identity = row[id_key]
             if not re.fullmatch(r"[A-Z][A-Z0-9-]{1,39}", identity):
                 raise InputError(f"{kind}: IDs must be uppercase letters, digits or hyphens")
@@ -85,8 +118,8 @@ def validate(data: dict) -> None:
     if not data["requirements"]:
         raise InputError("At least one requirement is needed")
     for row in data["requirements"]:
-        if not row["source_url"].startswith("https://"):
-            raise InputError(f"{row['requirement_id']}: source_url must use HTTPS")
+        if not valid_source_url(row["source_url"]):
+            raise InputError(f"{row['requirement_id']}: source_url must be a valid HTTPS URL")
         if row["priority"] not in PRIORITIES or row["coverage_review"] not in {"pending", "approved", "rejected"}:
             raise InputError(f"{row['requirement_id']}: invalid priority or coverage_review")
         parse_date(row["reviewed_on"], row["requirement_id"])
@@ -213,7 +246,9 @@ def render_review(rows: list[dict], summary: dict, actions=None, portfolio_nav=F
                   '<a href="../../../#projects">Projects</a><a href="../../../index.html#articles">Articles</a>'
                   '<a href="../../../index.html#tools">Tools</a><a href="../../../#contact">Contact</a></nav></header>'
                   '<p><a href="../../../#projects">← Back to portfolio</a> · '
-                  '<a href="../reassessment-demo/index.html">Follow the MFA reassessment</a></p>'
+                  '<a href="../reassessment-demo/index.html">Follow the MFA reassessment</a> · '
+                  '<a href="../backup-reassessment-demo/index.html">Follow the backup reassessment</a> · '
+                  '<a href="../../../projects/security-proposal-workspace/practice.html">Practice labs</a></p>'
                   if portfolio_nav else '')
     evidence_example = ('<p><a href="../evidence-examples/mfa-coverage.html">Read the fictional MFA evidence example</a></p>'
                         if portfolio_nav else '')

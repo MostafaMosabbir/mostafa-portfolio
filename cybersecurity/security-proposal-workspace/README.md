@@ -102,13 +102,14 @@ ISO or SOC 2 catalog is bundled in this release.
 Keep edited practice data elsewhere. Read the comments in `proposal.py` to
 follow input validation, evaluation, escaping and report generation.
 
-## Project status and next milestone
+## Project scope
 
-The fictional assessment, matrix, remediation register, and MFA reassessment
-walkthrough are published. The next milestone is to review and understand the
-named scenarios, improve the report, and test the completed project. An editable
-dashboard and fictional evidence artifacts remain possible future work. The tool
-has no accounts, uploads, AI service, external connectors, or automatic certification.
+The workspace demonstrates a complete review cycle for the selected fictional
+requirements. The offline report shows the crosswalk, findings, and follow-up
+actions. The [browser workspace](../../tools/security-proposal-workspace/README.md)
+lets you enter and review a separate set of records. The reassessments show how
+changing records after review affects the next assessment. Practice the same
+judgment with the [project labs](../../projects/security-proposal-workspace/practice.html).
 
 ## Matrix and remediation register
 
@@ -163,3 +164,59 @@ fictional runs. Open `my-reassessment/index.html` to compare them.
 The example demonstrates 4, 4, then 5 supported drafts. Marking an action ready
 does not clear a finding; adding the existing synthetic evidence mapping does.
 The original input files remain unchanged. No real evidence is inspected.
+
+## Backup restoration walkthrough
+
+Read the [backup evidence example](evidence-examples/backup-restore.html) and
+compare the [prebuilt backup reassessment](backup-reassessment-demo/index.html).
+The example keeps the same assessment date as the MFA exercise.
+
+1. Start at `REQ-010`. `CTL-010` is **partial** even though it already links
+   to the reviewed fictional record `EV-010`.
+2. Mark `ACT-008` ready for review in the practice copy. The backup finding
+   persists because the recorded implementation and supporting review are unchanged.
+3. In the simulated after state, record the completed control and a new
+   fictional restore review. The review records the backup scope and the
+   restore test. `REQ-010` becomes a supported draft. The separate
+   pre-restoration integrity requirement, `REQ-015`, retains its own finding.
+
+Generate the three runs and their full reports in a new folder:
+
+```powershell
+python -B demo_backup_reassessment.py --output my-backup-review
+```
+
+Then run the account-free restore lab:
+
+```powershell
+python -B practice_restore.py --output my-restore-practice
+```
+
+Read `my-restore-practice/restore-results.json`. Compare the recorded original
+SHA-256 hash, the hash checked before copying, and the restored copy's hash.
+The deliberately modified backup is rejected before a destination is created.
+This checks a single generated file and is separate from the fictional records
+in the assessment. The [project labs](../../projects/security-proposal-workspace/practice.html)
+connect these checks to identity, recovery, and governance practice.
+
+## Walk through the workspace
+
+1. Read `data/requirements.csv`, `data/controls.csv`, and `data/evidence.csv`.
+   Trace a requirement, its owner through the control, and its review record.
+2. In `proposal.py`, follow `validate`, `evaluate`, and `generate`. Validation
+   catches malformed records and unknown IDs. Evaluation gathers reasons per
+   requirement. Generation adds summaries, reports, and exports.
+3. Read `remediation.py` and `data/actions.csv`. The action register assigns a
+   next step and verification criteria. Compare the two action-only runs to the
+   corresponding baselines before comparing either final state.
+4. Follow the findings chart from `reports/crosswalk.csv` and `reports/gaps.csv`
+   through `analysis/summarize_findings.R` and the generated data to the homepage.
+   The chart displays the fixed fictional baseline. It does not update when you
+   run a local reassessment.
+5. Try a fresh example in the browser workspace and trace it through
+   `workspace-ui.js` and `security-engine.js` in `tools/security-proposal-workspace`.
+   Review, download, and reopen a fictional workspace. Explain the difference
+   between a browser JSON workspace and the Python CSV inputs.
+6. For each lab, record the claim, owner, evidence examined, outcome, and
+   remaining uncertainty. Use those notes to answer The Questions Behind the
+   Work and write your own reflection.

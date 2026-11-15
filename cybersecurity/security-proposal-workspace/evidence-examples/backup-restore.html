@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Backup Restoration Testing | Security Proposal Workspace</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #091311; color: #eaf3ee; font: 16px/1.7 system-ui, sans-serif; }
+    main { max-width: 850px; margin: auto; padding: 36px 20px; }
+    nav { display: flex; flex-wrap: wrap; gap: .35rem 1.15rem; }
+    a { color: #86e4bf; }
+    a:focus-visible { outline: 3px solid #86e4bf; outline-offset: 4px; }
+    h1 { line-height: 1.15; font-size: clamp(2rem, 5vw, 3rem); }
+    h2 { margin-top: 2rem; font-size: 1.2rem; }
+    .eyebrow { color: #86e4bf; font: .8rem/1.5 monospace; letter-spacing: .08em; }
+    .note { border-left: 3px solid #86e4bf; padding: 12px 20px; background: #10211a; }
+    .facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 24px; }
+    .facts div { border-bottom: 1px solid #365449; padding: 8px 0; }
+    dt { color: #b5c8bd; }
+    dd { margin: 0; overflow-wrap: anywhere; }
+    li { margin: 8px 0; }
+    @media (max-width: 560px) { main { padding: 24px 16px; } .facts { grid-template-columns: 1fr; } }
+    @media print { body { background: white; color: black; } a { color: black; } dt { color: #333; } .note { background: white; } }
+  </style>
+</head>
+<body>
+<main>
+  <nav aria-label="Project navigation">
+    <a href="../reports/review.html#finding-REQ-010">Back to assessment</a>
+    <a href="../backup-reassessment-demo/index.html">Backup reassessment walkthrough</a>
+    <a href="../../../projects/security-proposal-workspace/practice.html">Practice labs</a>
+  </nav>
+  <p class="eyebrow">PROJECT 004 / FICTIONAL EVIDENCE EXAMPLE</p>
+  <h1>Backup Restoration Testing</h1>
+  <p>The assessment asks whether the fictional agency protects its campaign-file backups and can show a successful restore test. A reviewer needs evidence of both the backup coverage and the recovery result.</p>
+  <dl class="facts">
+    <div><dt>Requirement</dt><dd>REQ-010</dd></div>
+    <div><dt>Control</dt><dd>CTL-010</dd></div>
+    <div><dt>Control owner</dt><dd>Demo IT owner</dd></div>
+    <div><dt>Assessment date</dt><dd>October 28, 2026</dd></div>
+  </dl>
+
+  <h2>Evidence record in the reassessment</h2>
+  <dl class="facts">
+    <div><dt>Evidence ID</dt><dd>EV-010</dd></div>
+    <div><dt>Original record</dt><dd>SYNTHETIC-REFERENCE-010</dd></div>
+    <div><dt>Original review date</dt><dd>October 20, 2026</dd></div>
+    <div><dt>Updated reference</dt><dd>DEMO-RESTORE-REVIEW-010</dd></div>
+    <div><dt>Updated review status</dt><dd>Reviewed</dd></div>
+    <div><dt>Updated review date</dt><dd>October 27, 2026</dd></div>
+  </dl>
+  <p class="note">These references identify fictional records. The reassessment models a reviewer accepting a restore test record. The scenario includes no production or cloud restore job.</p>
+
+  <h2>What a reviewer checks</h2>
+  <ol>
+    <li><strong>Scope and protection.</strong> Check which campaign files and systems are backed up, which are excluded, and whether access to the backups is restricted.</li>
+    <li><strong>Restore point and destination.</strong> Identify the backup copy and when it was taken. Restore to an isolated test location so the exercise leaves the source files intact.</li>
+    <li><strong>Job outcome.</strong> Record when the restore started and finished, the job result, and any errors. Compare the chosen restore point and elapsed recovery time with agreed recovery objectives where they exist.</li>
+    <li><strong>Restored content.</strong> Open the restored file to verify it is usable. Compare its SHA-256 fingerprint with the expected version from the same restore point if available. A matching sample confirms the compared bytes for that file.</li>
+    <li><strong>Ownership and review.</strong> Identify who ran the exercise, who owns follow-up work, and who reviewed the evidence and accepted or rejected the claim.</li>
+  </ol>
+  <p>REQ-015 tracks a separate check of backup integrity <em>before</em> restoration. A post-restore comparison supports the recovery exercise for REQ-010. REQ-015 still needs its own evidence.</p>
+
+  <h2>Assessment progression</h2>
+  <ol>
+    <li><strong>Original assessment.</strong> EV-010 is already linked and reviewed. CTL-010 is recorded as partial, so REQ-010 needs work.</li>
+    <li><strong>Action ready.</strong> ACT-008 moves from planned to ready for review. The requirement still needs work because the control remains partial.</li>
+    <li><strong>Reassessment.</strong> The scenario records CTL-010 as implemented and updates the synthetic evidence reference and review date. REQ-010 becomes a supported draft when the recorded inputs pass the assessment checks.</li>
+  </ol>
+  <p class="note">The workspace evaluates control and evidence metadata. A human reviewer examines the restore record and decides whether it supports the claim for the stated scope.</p>
+</main>
+</body>
+</html>

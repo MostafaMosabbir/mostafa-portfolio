@@ -6,9 +6,9 @@ incomplete **recorded information**. A person must review the actual work and
 supporting evidence. The tool does not open evidence references, verify that a
 safeguard operates, or determine compliance.
 
-The interface is a prototype. The browser engine was compared with the Python
-evaluator across 42 fictional cases; browser integration and real-world use
-need further review. Start with fictional information and keep
+The interface is a prototype. Browser checks cover loading the fictional
+assessment, reassessing it, and reopening downloaded records. Start with
+fictional information and keep
 passwords, access tokens, and other secrets out of the form and exports.
 
 ## Open the workspace
@@ -18,11 +18,33 @@ in the header, then select **Open workspace here**. JavaScript must be
 enabled. A separate workspace page may also be opened from the Tools section.
 
 For local development, serve the portfolio folder using a local HTTP server and
-open its Tools section. The workspace consists of `index.html`, `workspace.css`,
-`workspace-ui.js`, `security-engine.js`, and `workspace-geometry.js`; keep these
-files together.
+open its Tools section. The workspace uses `index.html`, `workspace.css`,
+`workspace-ui.js`, `security-engine.js`, `fictional-sample.js`, and
+`workspace-geometry.js`. Keep these files together.
 
 ## Follow one fictional requirement
+
+Select **Load fictional sample** to reproduce the Python report's starting
+point in the editor. The sample uses October 28, 2026 and a 180-day review
+window. It includes 15 requirements and starts with four supported drafts.
+The Python report has the separate follow-up action register.
+
+1. Select **Edit MFA control** and enter `EV-007` in **Linked evidence IDs**
+   for `CTL-007`.
+2. Select **Back to comparison**, then **Review assessment again**. Look at
+   `REQ-007` and the reason on each side. The review has five supported drafts.
+3. Reload the fictional sample to try **Edit backup control** and
+   **Edit backup evidence**. Use the
+   [backup walkthrough](../../cybersecurity/security-proposal-workspace/backup-reassessment-demo/index.html)
+   to update `CTL-010` and `EV-010` for the simulated after state.
+
+For a workspace you enter or import, run a review and select **Use review as
+baseline** before editing. The comparison uses requirement IDs. An added or
+removed ID appears as its own change. Both reviews must use the same date
+and freshness window to compare individual findings. Workspaces download
+as JSON. The baseline and comparison live in the current session.
+
+### Start from a blank workspace
 
 1. Choose an **assessment date** and review freshness window. The default window
    of 180 days is a configurable project rule, not a NIST requirement. The
@@ -68,9 +90,12 @@ environment. Do not assume that an exported file is encrypted.
 
 - `index.html` defines the page and its privacy and scope notices.
 - `workspace.css` styles the form for desktop and smaller screens.
-- `workspace-ui.js` creates editable records, handles local files, and displays
-  the findings returned by the engine.
+- `workspace-ui.js` creates editable records, handles local files, and
+  compares the current findings with the saved baseline.
 - `security-engine.js` validates the records and checks their recorded metadata.
+- `fictional-sample.js` contains the report's fictional records. Run
+  `python -B build_fictional_sample.py --check` from this folder to check the
+  generated sample, or omit `--check` to rebuild it from the sample CSVs.
 - `workspace-geometry.js` draws the optional background shape; it does not read
   or transmit assessment information.
 - `test_security_parity.py` compares the browser engine with the Python evaluator
@@ -80,12 +105,12 @@ environment. Do not assume that an exported file is encrypted.
 The browser engine is JavaScript. The existing local `proposal.py` tool is a
 separate Python implementation that reads CSV files. Browser workspace JSON is
 not a Python CSV input, and Python CSV files are not browser workspace JSON.
-The 42 comparison cases provide evidence about the checked scenarios, not a
-guarantee that the implementations behave identically for every possible input.
+The parity tests compare the 42 fictional cases and every row of the full
+sample at two different review windows.
 
 ## If something needs attention
 
-- **The form does not appear:** Check that JavaScript is enabled and all four
+- **The form does not appear:** Check that JavaScript is enabled and the
   workspace files are present.
 - **An ID is rejected:** Check its format and whether another record of that
   type uses the same ID.

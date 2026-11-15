@@ -1,0 +1,210 @@
+{
+  "scenario": "Fictional backup restoration reassessment",
+  "as_of": "2026-10-28",
+  "stages": [
+    {
+      "folder": "before",
+      "title": "Original assessment",
+      "summary": {
+        "schema_version": 1,
+        "as_of": "2026-10-28",
+        "max_age_days": 180,
+        "requirements": 15,
+        "supported_drafts": 4,
+        "needs_work": 11,
+        "gap_items": 12,
+        "evidence_validation": "Recorded human-review metadata only; evidence files are not inspected.",
+        "scope": "Selected project-defined requirements only; mappings indicate relevance, not complete framework outcome coverage.",
+        "inputs": {
+          "requirements.csv": "01f6471ce02b766bd7e3ebed4953167dcbf761286352858a4c61784dcceb6e65",
+          "controls.csv": "f2d70b4b2dffb480e7d367c36fe28fa985e8ce31a075c45b153633dfb782367f",
+          "evidence.csv": "54fe99e580aae3b77e5fcd99a750935e48da75d5cdcc68f00c5cf83cf574aa65",
+          "actions.csv": "442cd07a2d814db206fba912567c443b9882385f8019eef953cc134d1e918866"
+        },
+        "remediation_actions": 11
+      },
+      "requirement": {
+        "requirement_id": "REQ-010",
+        "domain": "Protect",
+        "requirement": "Record protected campaign-file backups and a restore test.",
+        "priority": "high",
+        "control_ids": "CTL-010",
+        "coverage_review": "approved",
+        "reviewer": "Demo reviewer",
+        "reviewed_on": "2026-10-20",
+        "framework": "NIST CSF",
+        "framework_version": "2.0",
+        "source_ref": "PR.DS-11",
+        "source_url": "https://doi.org/10.6028/NIST.CSWP.29",
+        "state": "needs_work",
+        "gaps": [
+          "CTL-010: status is partial; do not claim implementation."
+        ],
+        "claims": [
+          {
+            "control_id": "CTL-010",
+            "status": "partial",
+            "owner": "Demo IT owner",
+            "statement": "Fictional scenario: campaign backup and restore exercise is incomplete; coverage and verification work remain.",
+            "target_date": "2026-11-10",
+            "evidence_ids": [
+              "EV-010"
+            ]
+          }
+        ]
+      },
+      "action": {
+        "action_id": "ACT-008",
+        "requirement_id": "REQ-010",
+        "action": "Complete protected backup coverage and perform a restore test.",
+        "owner": "Demo IT owner",
+        "due_date": "2026-11-15",
+        "status": "planned",
+        "verification_criteria": "Review backup scope, protection settings and a documented successful restore test."
+      },
+      "evidence": {
+        "evidence_id": "EV-010",
+        "title": "Fictional record: Campaign backup and restore exercise",
+        "reference": "SYNTHETIC-REFERENCE-010",
+        "review_status": "reviewed",
+        "reviewed_on": "2026-10-20"
+      }
+    },
+    {
+      "folder": "action-ready",
+      "title": "Action ready for review",
+      "summary": {
+        "schema_version": 1,
+        "as_of": "2026-10-28",
+        "max_age_days": 180,
+        "requirements": 15,
+        "supported_drafts": 4,
+        "needs_work": 11,
+        "gap_items": 12,
+        "evidence_validation": "Recorded human-review metadata only; evidence files are not inspected.",
+        "scope": "Selected project-defined requirements only; mappings indicate relevance, not complete framework outcome coverage.",
+        "inputs": {
+          "requirements.csv": "01f6471ce02b766bd7e3ebed4953167dcbf761286352858a4c61784dcceb6e65",
+          "controls.csv": "f2d70b4b2dffb480e7d367c36fe28fa985e8ce31a075c45b153633dfb782367f",
+          "evidence.csv": "54fe99e580aae3b77e5fcd99a750935e48da75d5cdcc68f00c5cf83cf574aa65",
+          "actions.csv": "1b2da5a41f2d01c1719310d47cf5f4c8cce628525070d59d9f045b64d5182e27"
+        },
+        "remediation_actions": 11
+      },
+      "requirement": {
+        "requirement_id": "REQ-010",
+        "domain": "Protect",
+        "requirement": "Record protected campaign-file backups and a restore test.",
+        "priority": "high",
+        "control_ids": "CTL-010",
+        "coverage_review": "approved",
+        "reviewer": "Demo reviewer",
+        "reviewed_on": "2026-10-20",
+        "framework": "NIST CSF",
+        "framework_version": "2.0",
+        "source_ref": "PR.DS-11",
+        "source_url": "https://doi.org/10.6028/NIST.CSWP.29",
+        "state": "needs_work",
+        "gaps": [
+          "CTL-010: status is partial; do not claim implementation."
+        ],
+        "claims": [
+          {
+            "control_id": "CTL-010",
+            "status": "partial",
+            "owner": "Demo IT owner",
+            "statement": "Fictional scenario: campaign backup and restore exercise is incomplete; coverage and verification work remain.",
+            "target_date": "2026-11-10",
+            "evidence_ids": [
+              "EV-010"
+            ]
+          }
+        ]
+      },
+      "action": {
+        "action_id": "ACT-008",
+        "requirement_id": "REQ-010",
+        "action": "Complete protected backup coverage and perform a restore test.",
+        "owner": "Demo IT owner",
+        "due_date": "2026-11-15",
+        "status": "ready_for_review",
+        "verification_criteria": "Review backup scope, protection settings and a documented successful restore test."
+      },
+      "evidence": {
+        "evidence_id": "EV-010",
+        "title": "Fictional record: Campaign backup and restore exercise",
+        "reference": "SYNTHETIC-REFERENCE-010",
+        "review_status": "reviewed",
+        "reviewed_on": "2026-10-20"
+      }
+    },
+    {
+      "folder": "after",
+      "title": "Control and evidence updated",
+      "summary": {
+        "schema_version": 1,
+        "as_of": "2026-10-28",
+        "max_age_days": 180,
+        "requirements": 15,
+        "supported_drafts": 5,
+        "needs_work": 10,
+        "gap_items": 11,
+        "evidence_validation": "Recorded human-review metadata only; evidence files are not inspected.",
+        "scope": "Selected project-defined requirements only; mappings indicate relevance, not complete framework outcome coverage.",
+        "inputs": {
+          "requirements.csv": "01f6471ce02b766bd7e3ebed4953167dcbf761286352858a4c61784dcceb6e65",
+          "controls.csv": "003715618ffc3f1beca985049f7703561240c98906f672d5338fe4fac0fb1042",
+          "evidence.csv": "0c47f5638697629f2c12daeef23d22e3340e4de86af56712b644bd9c42a6735d",
+          "actions.csv": "1b2da5a41f2d01c1719310d47cf5f4c8cce628525070d59d9f045b64d5182e27"
+        },
+        "remediation_actions": 11
+      },
+      "requirement": {
+        "requirement_id": "REQ-010",
+        "domain": "Protect",
+        "requirement": "Record protected campaign-file backups and a restore test.",
+        "priority": "high",
+        "control_ids": "CTL-010",
+        "coverage_review": "approved",
+        "reviewer": "Demo reviewer",
+        "reviewed_on": "2026-10-20",
+        "framework": "NIST CSF",
+        "framework_version": "2.0",
+        "source_ref": "PR.DS-11",
+        "source_url": "https://doi.org/10.6028/NIST.CSWP.29",
+        "state": "supported_draft",
+        "gaps": [],
+        "claims": [
+          {
+            "control_id": "CTL-010",
+            "status": "implemented",
+            "owner": "Demo IT owner",
+            "statement": "Fictional scenario: protected backups cover the in-scope campaign files, and a documented restore to a separate destination was reviewed.",
+            "target_date": "",
+            "evidence_ids": [
+              "EV-010"
+            ]
+          }
+        ]
+      },
+      "action": {
+        "action_id": "ACT-008",
+        "requirement_id": "REQ-010",
+        "action": "Complete protected backup coverage and perform a restore test.",
+        "owner": "Demo IT owner",
+        "due_date": "2026-11-15",
+        "status": "ready_for_review",
+        "verification_criteria": "Review backup scope, protection settings and a documented successful restore test."
+      },
+      "evidence": {
+        "evidence_id": "EV-010",
+        "title": "Fictional record: Campaign backup and restore exercise",
+        "reference": "DEMO-RESTORE-REVIEW-010",
+        "review_status": "reviewed",
+        "reviewed_on": "2026-10-27"
+      }
+    }
+  ],
+  "other_requirements_unchanged": true,
+  "scope": "Synthetic records only. No backup configuration, cloud resource, or restore log was inspected."
+}

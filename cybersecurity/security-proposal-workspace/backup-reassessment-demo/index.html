@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Backup Restoration Testing | Security Proposal Workspace</title>
+  <style>
+    body { margin: 0; background: #091311; color: #eaf3ee; font: 1rem/1.65 system-ui, sans-serif; }
+    main { max-width: 57rem; margin: auto; padding: 2rem 1.125rem 3rem; }
+    h1, h2 { line-height: 1.2; }
+    h2 { margin-top: 2rem; }
+    a, code { color: #95e8bb; }
+    :focus-visible { outline: 2px solid #95e8bb; outline-offset: 3px; }
+    .eyebrow { color: #a4cdba; font: .8rem/1.5 ui-monospace, monospace; letter-spacing: .08em; }
+    .table { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; }
+    caption { text-align: left; margin: 0 0 .75rem; }
+    th, td { padding: .75rem; text-align: left; border-bottom: 1px solid #365449; vertical-align: top; }
+    li + li { margin-top: .5rem; }
+    .note { padding: .75rem 1rem; background: #10211a; border-left: .2rem solid #95e8bb; }
+  </style>
+</head>
+<body>
+<main>
+  <nav aria-label="Project navigation"><a href="../reports/review.html#finding-REQ-010">Open the baseline finding</a> · <a href="../evidence-examples/backup-restore.html">Read the evidence example</a> · <a href="../../../projects/security-proposal-workspace/practice.html">Practice labs</a></nav>
+  <p class="eyebrow">PROJECT 004 / REQ-010</p>
+  <h1>Backup Restoration Testing</h1>
+  <p>Follow a fictional marketing agency’s backup control from incomplete coverage to a
+     recorded restore review. Each assessment uses October 28, 2026 as its reference date.</p>
+  <div class="table" tabindex="0" aria-label="Reassessment results">
+    <table>
+      <caption>Three runs of the Python assessor</caption>
+      <thead><tr><th scope="col">Run</th><th scope="col">REQ-010 finding</th>
+        <th scope="col">Supported drafts</th><th scope="col">Need work</th></tr></thead>
+      <tbody><tr><th scope="row">Original assessment</th><td>Needs work. CTL-010: status is partial; do not claim implementation.</td><td>4</td><td>11</td></tr><tr><th scope="row">Action ready for review</th><td>Needs work. CTL-010: status is partial; do not claim implementation.</td><td>4</td><td>11</td></tr><tr><th scope="row">Control and evidence updated</th><td>Supported draft</td><td>5</td><td>10</td></tr></tbody>
+    </table>
+  </div>
+  <h2>What changed</h2>
+  <ol>
+    <li><strong>Original assessment.</strong> REQ-010 maps to CTL-010. The control already
+    points to EV-010, with a recorded review dated October 20. Its implementation status is
+    <code>partial</code>, so the assessor reports <strong>Needs work</strong>.</li>
+    <li><strong>Action ready for review.</strong> ACT-008 changes to <code>ready_for_review</code>.
+    The implementation status and evidence record stay the same, so the finding stays open.</li>
+    <li><strong>Control and evidence updated.</strong> The sample records the protected scope
+    and restore as implemented and updates EV-010 with the fictional review reference
+    <code>DEMO-RESTORE-REVIEW-010</code> dated October 27. The assessor can now produce a
+    <strong>Supported draft</strong> for REQ-010.</li>
+  </ol>
+  <p class="note">The assessment reads the recorded review metadata. Its supported draft
+  calls for a person to confirm the protected scope and inspect the restore record. REQ-015,
+  the separate check for backup integrity before restoration, keeps its original finding.</p>
+  <h2>Reproduce the three runs</h2>
+  <p>From the Project 004 folder, run <code>python demo_backup_reassessment.py --output my-backup-reassessment</code>
+  and open <code>my-backup-reassessment/index.html</code>. Each stage in the local output has its own
+  input copy and report.</p>
+  <p><a href="comparison.json">Inspect the comparison data</a></p>
+</main>
+</body>
+</html>

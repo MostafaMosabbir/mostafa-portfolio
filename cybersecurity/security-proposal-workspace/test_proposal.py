@@ -70,6 +70,40 @@ class AssessmentTests(unittest.TestCase):
                 self.data[kind][0][key] = value
                 with self.assertRaises(app.InputError): self.first()
 
+    def test_source_requires_a_well_formed_https_url(self):
+        requirement = self.data['requirements'][0]
+        for url in ('https://', 'https:///example.test', 'https://?query',
+                    'https://example.test:99999/report', 'https://example.test:word/report',
+                    'https://exa mple.test/report'):
+            with self.subTest(url=url):
+                requirement['source_url'] = url
+                with self.assertRaisesRegex(app.InputError, 'valid HTTPS URL'):
+                    self.first()
+        requirement['source_url'] = 'HTTPS://example.test:443/report?q=control#section'
+        self.assertEqual(self.first()['state'], 'supported_draft')
+
+    def test_single_line_fields_reject_line_breaks_and_long_text_accepts_them(self):
+        control = self.data['controls'][0]
+        title = control['title']
+        control['title'] = title + '\n'
+        with self.assertRaisesRegex(app.InputError, 'title must be a single line'):
+            self.first()
+        path = self.root / 'controls.csv'
+        with path.open('w', encoding='utf-8', newline='') as stream:
+            writer = csv.DictWriter(stream, fieldnames=app.SCHEMAS['controls'])
+            writer.writeheader()
+            writer.writerow(control)
+        with self.assertRaisesRegex(app.InputError, 'title must be a single line'):
+            app.read_csv(path, 'controls')
+
+        control['title'] = title
+        control['statement'] = 'First line\nSecond line'
+        self.data['requirements'][0]['requirement'] = 'First part\nSecond part'
+        result = self.first()
+        self.assertEqual(result['state'], 'supported_draft')
+        self.assertEqual(result['requirement'], 'First part\nSecond part')
+        self.assertEqual(result['claims'][0]['statement'], 'First line\nSecond line')
+
     def test_duplicate_ids_and_mappings_rejected(self):
         self.data['controls'].append(copy.deepcopy(self.data['controls'][0]))
         with self.assertRaises(app.InputError): self.first()

@@ -30,10 +30,12 @@
     scheduleHeight();
   }
 
+  // HTML patterns use the RegExp v flag, which requires escaping literal hyphens.
+  const idPattern = String.raw`[A-Z][A-Z0-9\-]{1,39}`;
   // Each field is a string to match the Python tool's CSV input model.
   const fields = {
     requirements: [
-      { key:'requirement_id', label:'Requirement ID', required:true, placeholder:'REQ-001', pattern:'[A-Z][A-Z0-9-]{1,39}' },
+      { key:'requirement_id', label:'Requirement ID', required:true, placeholder:'REQ-001', pattern:idPattern },
       { key:'domain', label:'Domain', required:true, placeholder:'Protect' },
       { key:'priority', label:'Priority', options:['low','medium','high','critical'], required:true },
       { key:'requirement', label:'Requirement', required:true, type:'textarea', full:true },
@@ -47,7 +49,7 @@
       { key:'source_url', label:'Source URL (HTTPS)', required:true, type:'url', full:true, help:'Record the source location. The workspace will not open it.' }
     ],
     controls: [
-      { key:'control_id', label:'Control ID', required:true, placeholder:'CTL-001', pattern:'[A-Z][A-Z0-9-]{1,39}' },
+      { key:'control_id', label:'Control ID', required:true, placeholder:'CTL-001', pattern:idPattern },
       { key:'title', label:'Control title', required:true },
       { key:'status', label:'Implementation status', options:['unknown','planned','partial','implemented','not_implemented'], required:true },
       { key:'owner', label:'Control owner' },
@@ -56,7 +58,7 @@
       { key:'statement', label:'Recorded control statement', type:'textarea', full:true }
     ],
     evidence: [
-      { key:'evidence_id', label:'Evidence ID', required:true, placeholder:'EV-001', pattern:'[A-Z][A-Z0-9-]{1,39}' },
+      { key:'evidence_id', label:'Evidence ID', required:true, placeholder:'EV-001', pattern:idPattern },
       { key:'title', label:'Evidence title', required:true },
       { key:'review_status', label:'Evidence review status', options:['pending','reviewed','rejected'], required:true },
       { key:'reference', label:'Evidence location or reference', full:true, help:'Text only. The workspace does not open this reference.' },
@@ -66,6 +68,11 @@
   const kinds = ['requirements', 'controls', 'evidence'];
   const labels = {requirements:'Requirement', controls:'Control', evidence:'Evidence'};
   const prefixes = {requirements:'REQ', controls:'CTL', evidence:'EV'};
+  const sampleGuides = {
+    'CTL-007': 'Fictional MFA exercise: enter EV-007 in Linked evidence IDs.',
+    'CTL-010': 'Fictional backup exercise: set the status to implemented, clear the target date, and record the reviewed restore.',
+    'EV-010': 'Fictional backup exercise: enter DEMO-RESTORE-REVIEW-010 and set the review date to October 27, 2026.'
+  };
   // The editor and importer share limits so a downloaded workspace can be reopened.
   const MAX_RECORDS = 500;
   const MAX_WORKSPACE_BYTES = 2 * 1024 * 1024;
@@ -78,8 +85,20 @@
   const results = document.getElementById('results');
   const reportButton = document.getElementById('download-report');
   const picker = document.getElementById('open-workspace');
+  const sampleButton = document.getElementById('load-fictional-sample');
+  const sampleJumps = document.getElementById('sample-jumps');
+  const sampleStatus = document.getElementById('sample-status');
+  const comparison = document.getElementById('comparison');
+  const comparisonStatus = document.getElementById('comparison-status');
+  const comparisonTotals = document.getElementById('comparison-totals');
+  const comparisonRows = document.getElementById('comparison-rows');
+  const saveBaseline = document.getElementById('save-baseline');
+  const clearBaseline = document.getElementById('clear-baseline');
+  const compareReview = document.getElementById('compare-review');
   let data = {requirements:[], controls:[], evidence:[]};
   let lastReview = null;
+  let baseline = null;
+  let hasLoadedWorkspace = false;
   let unsaved = false;
 
   function today() {
@@ -94,6 +113,7 @@
     results.hidden = true;
     reportButton.hidden = true;
     errorBox.hidden = true;
+    renderComparison();
   }
 
   // The browser warns before navigation or refresh when edits haven't been exported.
@@ -182,7 +202,23 @@
         const grid = document.createElement('div');
         grid.className = 'fields';
         fields[kind].forEach(field => grid.append(makeField(kind, index, field, record[field.key])));
-        card.append(heading, grid);
+        card.append(heading);
+        const recordId = record[fields[kind][0].key];
+        const guide = !sampleJumps.hidden && Object.hasOwn(sampleGuides, recordId) ? sampleGuides[recordId] : '';
+        if (guide) addText(card, 'p', guide).className = 'record-guide';
+        card.append(grid);
+        if (guide) {
+          const review = document.createElement('a');
+          review.className = 'record-review-link';
+          review.href = '#comparison';
+          review.textContent = 'Back to comparison';
+          review.addEventListener('click', event => {
+            event.preventDefault();
+            comparison.focus();
+            comparison.scrollIntoView({block:'center'});
+          });
+          card.append(review);
+        }
         list.append(card);
       });
     });
@@ -303,10 +339,16 @@
             keys.some(key => typeof record[key] !== 'string' || record[key].length > 10000)) {
           throw new Error(`Invalid ${kind} record.`);
         }
-        // Keep blank fields available for drafts. Reject values the date and
-        // select controls would otherwise display as blank after import.
+        // Keep blank fields available for drafts. Reject values the editor
+        // would drop or cannot review before replacing the open workspace.
         for (const field of fields[kind]) {
           const fieldValue = record[field.key];
+          if (field.type !== 'textarea' && /[\r\n]/.test(fieldValue)) {
+            throw new Error(`${field.label} must be a single line.`);
+          }
+          if (fieldValue && field.type === 'url' && !engine.validSourceUrl(fieldValue)) {
+            throw new Error(`${field.label} must be a valid HTTPS URL.`);
+          }
           if (fieldValue && field.type === 'date' && !validCalendarDate(fieldValue)) {
             throw new Error(`${field.label} must be a valid date in YYYY-MM-DD format.`);
           }
@@ -314,10 +356,27 @@
             throw new Error(`${field.label} has an unrecognized value.`);
           }
         }
-        return Object.fromEntries(keys.map(key => [key, record[key]]));
+        // Textarea controls normalize CR and CRLF to LF when rendering.
+        return Object.fromEntries(fields[kind].map(({ key, type }) => [
+          key, type === 'textarea' ? record[key].replace(/\r\n?/g, '\n') : record[key]
+        ]));
       });
     }
     return {data:replacement, asOf:value.as_of, maxAge:value.max_age_days};
+  }
+
+  function replaceWorkspace(replacement, isSample) {
+    data = replacement.data;
+    asOf.value = replacement.asOf;
+    maxAge.value = String(replacement.maxAge);
+    unsaved = false;
+    hasLoadedWorkspace = true;
+    baseline = null;
+    sampleJumps.hidden = !isSample;
+    sampleStatus.textContent = '';
+    renderRecords();
+    invalidateReview();
+    status.textContent = '';
   }
 
   picker.addEventListener('change', async () => {
@@ -331,12 +390,7 @@
     try {
       const replacement = parseWorkspace(JSON.parse(await file.text()));
       if (!window.confirm('Replace the information currently on this page with the selected file?')) return;
-      data = replacement.data;
-      asOf.value = replacement.asOf;
-      maxAge.value = String(replacement.maxAge);
-      unsaved = false;
-      renderRecords();
-      invalidateReview();
+      replaceWorkspace(replacement, false);
       fileStatus.textContent = 'Workspace opened on this device.';
     } catch (error) {
       fileStatus.textContent = `Could not open workspace: ${error.message}`;
@@ -351,6 +405,177 @@
     parent.append(element);
     return element;
   }
+
+  function evaluateWorkspace(records, assessmentDate, freshnessDays) {
+    // A review owns a new set of records. Replacing or editing the form
+    // afterward cannot change a review that was saved as the baseline.
+    const cleaned = Object.fromEntries(kinds.map(kind => [
+      kind,
+      records[kind].map(record => Object.fromEntries(
+        fields[kind].map(({key}) => [key, record[key].trim()])
+      ))
+    ]));
+    return {
+      review: engine.evaluate(cleaned, assessmentDate, freshnessDays),
+      data: cleaned,
+      asOf: assessmentDate,
+      maxAge: freshnessDays,
+    };
+  }
+
+  function reviewedRows(snapshot) {
+    const evidence = new Map(snapshot.data.evidence.map(record => [record.evidence_id, record]));
+    return new Map(snapshot.review.rows.map(({control_ids, ...row}) => [
+      row.requirement_id,
+      {
+        // The mapped controls are already represented in claims. Ignore
+        // formatting differences in the raw list of control IDs.
+        row,
+        // The engine reports the evidence IDs. Include the linked records so
+        // the comparison also catches a changed review with the same ID.
+        evidence: row.claims.flatMap(claim => claim.evidence_ids.map(id => evidence.get(id))),
+      }
+    ]));
+  }
+
+  function renderTotals(label, snapshot) {
+    const panel = document.createElement('div');
+    const summary = snapshot.review.summary;
+    addText(panel, 'h3', label);
+    addText(panel, 'p', `${summary.supported_drafts} supported drafts · ${summary.needs_work} need work`);
+    addText(panel, 'p', `${summary.requirements} requirements · ${snapshot.asOf} · ${snapshot.maxAge} days`).className = 'muted';
+    comparisonTotals.append(panel);
+  }
+
+  function renderSide(sides, label, item) {
+    const panel = document.createElement('div');
+    addText(panel, 'h4', label);
+    sides.append(panel);
+    if (!item) {
+      addText(panel, 'p', 'Requirement absent');
+      return;
+    }
+    const {row, evidence} = item;
+    const byId = new Map(evidence.map(record => [record.evidence_id, record]));
+    addText(panel, 'p', row.state === 'supported_draft' ? 'Supported draft' : 'Needs work').className = row.state;
+    addText(panel, 'p', row.requirement);
+    addText(panel, 'p', `${row.domain} · ${row.priority} priority · ${row.framework} ${row.framework_version} / ${row.source_ref}`).className = 'muted';
+    addText(panel, 'p', row.source_url).className = 'muted';
+    addText(panel, 'p', `Coverage review: ${row.coverage_review} · ${row.reviewer || 'Reviewer missing'} · ${row.reviewed_on || 'Date missing'}`).className = 'muted';
+    // Keep evidence under its mapped control so relinking an ID is visible.
+    for (const claim of row.claims) {
+      const control = document.createElement('section');
+      control.className = 'comparison-control';
+      addText(control, 'h5', claim.control_id);
+      addText(control, 'p', `${claim.status.replaceAll('_', ' ')} · ${claim.owner || 'Owner missing'}`);
+      if (claim.statement) addText(control, 'p', claim.statement).className = 'muted';
+      if (claim.target_date) addText(control, 'p', `Target date: ${claim.target_date}`).className = 'muted';
+      if (!claim.evidence_ids.length) addText(control, 'p', 'No evidence linked').className = 'muted';
+      for (const id of claim.evidence_ids) {
+        const record = byId.get(id);
+        addText(control, 'p', `${id} · ${record.title} · ${record.review_status} · ${record.reviewed_on || 'Date missing'}`);
+        if (record.reference) addText(control, 'p', record.reference).className = 'muted';
+      }
+      panel.append(control);
+    }
+    if (row.gaps.length) {
+      const gaps = document.createElement('ul');
+      row.gaps.forEach(gap => addText(gaps, 'li', gap));
+      panel.append(gaps);
+    }
+  }
+
+  function renderComparison() {
+    saveBaseline.hidden = !lastReview || Boolean(baseline);
+    clearBaseline.hidden = !baseline;
+    compareReview.hidden = !baseline;
+    comparisonTotals.replaceChildren();
+    comparisonTotals.hidden = !baseline;
+    comparisonRows.replaceChildren();
+    if (!baseline) {
+      comparisonStatus.textContent = lastReview ? 'Use this review as the baseline before editing.' : 'Load the fictional sample or run a review to start.';
+      return;
+    }
+    renderTotals('Baseline', baseline);
+    if (!lastReview) {
+      comparisonStatus.textContent = 'Baseline kept. Review again to compare the current records.';
+      return;
+    }
+    renderTotals('Current review', lastReview);
+    if (baseline.asOf !== lastReview.asOf || baseline.maxAge !== lastReview.maxAge) {
+      comparisonStatus.textContent = 'Assessment settings differ. Match the baseline date and review window to compare individual findings.';
+      return;
+    }
+    const before = reviewedRows(baseline);
+    const after = reviewedRows(lastReview);
+    let edits = 0;
+    // IDs align the same requirement even if visitors reorder or remove rows.
+    for (const id of new Set([...before.keys(), ...after.keys()])) {
+      const old = before.get(id);
+      const current = after.get(id);
+      if (JSON.stringify(old) === JSON.stringify(current)) continue;
+      const change = document.createElement('article');
+      change.className = 'comparison-change';
+      const label = !old ? 'Added' : !current ? 'Removed' : 'Changed';
+      change.dataset.requirementId = id;
+      change.dataset.change = label.toLowerCase();
+      addText(change, 'h3', `${id} · ${label}`);
+      const sides = document.createElement('div');
+      sides.className = 'comparison-sides';
+      renderSide(sides, 'Baseline', old);
+      renderSide(sides, 'Current review', current);
+      change.append(sides);
+      comparisonRows.append(change);
+      edits += 1;
+    }
+    comparisonStatus.textContent = edits
+      ? `Findings changed for ${edits} requirement${edits === 1 ? '' : 's'} since the baseline.`
+      : 'No findings changed since the baseline.';
+  }
+
+  saveBaseline.addEventListener('click', () => {
+    if (!lastReview) return;
+    baseline = lastReview;
+    renderComparison();
+    clearBaseline.focus();
+  });
+  clearBaseline.addEventListener('click', () => {
+    baseline = null;
+    renderComparison();
+    if (lastReview) saveBaseline.focus();
+    else comparison.focus();
+  });
+
+  sampleButton.addEventListener('click', () => {
+    try {
+      const replacement = parseWorkspace(window.SecurityWorkspaceSample);
+      const reviewed = evaluateWorkspace(replacement.data, replacement.asOf, replacement.maxAge);
+      if ((unsaved || hasLoadedWorkspace || baseline) &&
+          !window.confirm('Replace the current records and baseline with the fictional sample? Download your workspace first if you want to keep a copy.')) return;
+      replaceWorkspace(replacement, true);
+      baseline = reviewed;
+      showReview(reviewed);
+      sampleStatus.textContent = 'Fictional records reviewed and saved as the baseline. Choose an exercise below.';
+      document.getElementById('sample-mfa').focus({preventScroll:true});
+    } catch (error) {
+      sampleStatus.textContent = `Could not load the fictional sample: ${error.message}`;
+    }
+  });
+
+  sampleJumps.addEventListener('click', event => {
+    const trigger = event.target.closest('button[data-kind]');
+    if (!trigger) return;
+    const {kind, id, field} = trigger.dataset;
+    const idKey = fields[kind][0].key;
+    const index = data[kind].findIndex(record => record[idKey] === id);
+    const input = form.elements.namedItem(`${kind}-${index}-${field}`);
+    if (!input) {
+      sampleStatus.textContent = `${id} is no longer in the current records. Reload the fictional sample to start again.`;
+      return;
+    }
+    input.focus({preventScroll:true});
+    input.scrollIntoView({block:'center'});
+  });
 
   function renderReview(review) {
     results.replaceChildren();
@@ -373,26 +598,34 @@
     results.hidden = false;
   }
 
+  function showReview(snapshot) {
+    lastReview = snapshot;
+    renderReview(snapshot.review);
+    renderComparison();
+    reportButton.hidden = false;
+    status.textContent = 'Review complete. Results require human review.';
+  }
+
   form.addEventListener('submit', event => {
     event.preventDefault();
-    errorBox.hidden = true;
     status.textContent = '';
-    if (!form.reportValidity()) return;
+    invalidateReview();
+    status.textContent = '';
+    if (!form.reportValidity()) {
+      if (event.submitter === compareReview) comparisonStatus.textContent = 'Baseline kept. Fix the highlighted field, then review again.';
+      return;
+    }
     try {
-      // CSV inputs are trimmed by the Python version; apply the same treatment.
-      const cleaned = Object.fromEntries(kinds.map(kind => [kind,
-        data[kind].map(record => Object.fromEntries(Object.entries(record).map(([key, value]) => [key, value.trim()]))) ]));
-      const review = engine.evaluate(cleaned, asOf.value, Number(maxAge.value));
-      lastReview = {review, data:cleaned, asOf:asOf.value, maxAge:Number(maxAge.value)};
-      renderReview(review);
-      reportButton.hidden = false;
-      status.textContent = 'Review complete. Results require human review.';
+      showReview(evaluateWorkspace(data, asOf.value, Number(maxAge.value)));
     } catch (error) {
       results.hidden = true;
       reportButton.hidden = true;
       lastReview = null;
       errorBox.textContent = `Unable to review: ${error.message}`;
       errorBox.hidden = false;
+      if (event.submitter === compareReview) {
+        comparisonStatus.textContent = `Baseline kept. ${errorBox.textContent}`;
+      }
     }
   });
 
@@ -418,6 +651,7 @@
   asOf.value = today();
   data.requirements.push(blankRecord('requirements'));
   renderRecords();
+  renderComparison();
   document.getElementById('initial-status').hidden = true;
   root.hidden = false;
 })();

@@ -160,7 +160,85 @@ process.stdout.write(JSON.stringify(output));
     return json.loads(proc.stdout)
 
 
+def browser_sample():
+    """Read the same bundle that the browser page loads."""
+    script = """
+const fs = require('node:fs');
+const vm = require('node:vm');
+const scope = {window: {}};
+vm.runInNewContext(fs.readFileSync(process.argv[1], 'utf8'), scope);
+process.stdout.write(JSON.stringify(scope.window.SecurityWorkspaceSample));
+"""
+    proc = subprocess.run([str(NODE), '-e', script, str(HERE / 'fictional-sample.js')],
+                          text=True, encoding='utf-8', capture_output=True,
+                          check=True, timeout=30)
+    return json.loads(proc.stdout)
+
+
 class SecurityEngineParity(unittest.TestCase):
+    def test_invalid_sources_and_single_line_fields_are_rejected_in_both_engines(self):
+        fixtures = []
+        for key, value, error in [
+            ('source_url', 'https://', 'valid HTTPS URL'),
+            ('source_url', 'https:///example.test', 'valid HTTPS URL'),
+            ('source_url', 'https://[::1]word', 'valid HTTPS URL'),
+            ('source_url', 'https://example.test:99999/report', 'valid HTTPS URL'),
+            ('source_url', 'https://example.test:word/report', 'valid HTTPS URL'),
+            ('source_url', 'https://exa mple.test/report', 'valid HTTPS URL'),
+            ('reviewer', 'First\r\nSecond', 'reviewer must be a single line'),
+        ]:
+            data = sample_data()
+            data['requirements'][0][key] = value
+            fixtures.append(({'data': data, 'as_of': '2026-10-28', 'max_age': 180}, error))
+        for (item, error), actual in zip(fixtures, browser_results([item for item, _ in fixtures])):
+            with self.subTest(error=error, requirement=item['data']['requirements'][0]):
+                with self.assertRaisesRegex(proposal.InputError, error):
+                    proposal.evaluate(item['data'], date.fromisoformat(item['as_of']), item['max_age'])
+                self.assertFalse(actual['ok'])
+                self.assertIn(error, actual['error'])
+                self.assertTrue(actual['unchanged'])
+
+        data = sample_data()
+        data['requirements'][0].update(
+            source_url='HTTPS://[::1]:443/reference?q=review#finding',
+            requirement='Review the fictional control.\nRecord the result.',
+        )
+        data['controls'][0]['statement'] = 'First line.\nSecond line.'
+        item = {'data': data, 'as_of': '2026-10-28', 'max_age': 180}
+        actual = browser_results([item])[0]
+        self.assertTrue(actual['ok'], actual.get('error', ''))
+        rows = proposal.evaluate(data, date.fromisoformat(item['as_of']), item['max_age'])
+        self.assertEqual(rows[0]['state'], 'supported_draft')
+        self.assertEqual(rows[0]['requirement'], 'Review the fictional control.\nRecord the result.')
+        self.assertEqual(rows[0]['claims'][0]['statement'], 'First line.\nSecond line.')
+        self.assertEqual(actual['result']['rows'], rows)
+
+    def test_bundled_sample_matches_python_baseline_and_freshness(self):
+        sample = browser_sample()
+        self.assertEqual(sample['format'], 'security-proposal-workspace')
+        self.assertEqual(sample['version'], 1)
+        self.assertEqual(sample['data'], sample_data())
+        self.assertEqual(sample['as_of'], '2026-10-28')
+        self.assertEqual(sample['max_age_days'], 180)
+        items = [
+            {'data': sample['data'], 'as_of': sample['as_of'], 'max_age': sample['max_age_days']},
+            {'data': sample['data'], 'as_of': sample['as_of'], 'max_age': 7},
+        ]
+        for item, actual, expected_supported in zip(items, browser_results(items), (4, 0)):
+            with self.subTest(max_age=item['max_age']):
+                self.assertTrue(actual['ok'], actual.get('error', ''))
+                self.assertTrue(actual['unchanged'])
+                expected_rows = proposal.evaluate(
+                    sample['data'], date.fromisoformat(item['as_of']), item['max_age']
+                )
+                self.assertEqual(actual['result']['rows'], expected_rows)
+                summary = actual['result']['summary']
+                self.assertEqual(summary['as_of'], item['as_of'])
+                self.assertEqual(summary['max_age_days'], item['max_age'])
+                self.assertEqual(summary['requirements'], 15)
+                self.assertEqual(summary['supported_drafts'], expected_supported)
+                self.assertEqual(summary['needs_work'], 15 - expected_supported)
+
     def test_same_results_as_python_for_fictional_cases(self):
         items = cases()
         actuals = browser_results(items)

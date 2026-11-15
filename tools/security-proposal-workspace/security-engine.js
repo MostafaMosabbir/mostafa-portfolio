@@ -27,6 +27,7 @@
   const PRIORITIES = new Set(['low', 'medium', 'high', 'critical']);
   const COVERAGE_STATUSES = new Set(['pending', 'approved', 'rejected']);
   const EVIDENCE_STATUSES = new Set(['reviewed', 'pending', 'rejected']);
+  const MULTILINE_FIELDS = new Set(['requirement', 'statement']);
   const DAY_MS = 86400000;
 
   // Parsing dates explicitly avoids local-time differences and JS's automatic
@@ -59,6 +60,17 @@
     return ids;
   }
 
+  function validSourceUrl(value) {
+    // Check syntax only. The workspace never opens or verifies the source.
+    if (!/^https:\/\/[^/?#]/i.test(value) || /[\x00-\x20\x7f\s\\]/u.test(value)) return false;
+    try {
+      const address = new URL(value);
+      return address.protocol === 'https:' && Boolean(address.hostname);
+    } catch {
+      return false;
+    }
+  }
+
   function validate(data) {
     if (!data || typeof data !== 'object' || Array.isArray(data)) throw new Error('Assessment data must be an object');
     const indexes = {};
@@ -72,6 +84,11 @@
             fields.some(field => !Object.hasOwn(row, field) || typeof row[field] !== 'string')) {
           throw new Error(`${kind}: invalid record shape`);
         }
+        for (const field of fields) {
+          if (!MULTILINE_FIELDS.has(field) && /[\r\n]/.test(row[field])) {
+            throw new Error(`${field} must be a single line`);
+          }
+        }
         const id = row[idKey];
         if (!/^[A-Z][A-Z0-9-]{1,39}$/.test(id)) throw new Error(`${kind}: IDs must be uppercase letters, digits or hyphens`);
         if (indexes[kind].has(id)) throw new Error(`${kind}: duplicate ID ${id}`);
@@ -82,7 +99,7 @@
     if (!data.requirements.length) throw new Error('At least one requirement is needed');
     for (const row of data.requirements) {
       const id = row.requirement_id;
-      if (!row.source_url.startsWith('https://')) throw new Error(`${id}: source_url must use HTTPS`);
+      if (!validSourceUrl(row.source_url)) throw new Error(`${id}: source_url must be a valid HTTPS URL`);
       if (!PRIORITIES.has(row.priority) || !COVERAGE_STATUSES.has(row.coverage_review)) throw new Error(`${id}: invalid priority or coverage_review`);
       parseDate(row.reviewed_on, id);
       for (const ref of references(row.control_ids)) if (!indexes.controls.has(ref)) throw new Error(`${id}: unknown control ${ref}`);
@@ -151,5 +168,5 @@
       as_of: asOf, max_age_days: maxAgeDays}};
   }
 
-  return Object.freeze({SCHEMAS, evaluate});
+  return Object.freeze({SCHEMAS, evaluate, validSourceUrl});
 });

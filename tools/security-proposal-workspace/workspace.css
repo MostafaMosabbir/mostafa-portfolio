@@ -7,7 +7,7 @@ body { margin: 0; background: #091310; color: #eaf3ee; font: 16px/1.6 system-ui,
 @media (max-width: 600px) { .workspace-geometry { width: 105vw; right: -35vw; } }
 @media print { .workspace-geometry { display: none; } }
 a { color: #9be5ba; text-underline-offset: 4px; }
-a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, .file-label:focus-within { outline: 3px solid #9be5ba; outline-offset: 3px; }
+a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, summary:focus-visible, .file-label:focus-within { outline: 3px solid #9be5ba; outline-offset: 3px; }
 .skip { position: absolute; left: 1rem; top: -8rem; padding: .7rem 1rem; background: #9be5ba; color: #0b1a11; z-index: 5; }
 .skip:focus { top: 1rem; }
 .wrap { width: min(1120px, calc(100% - 40px)); margin-inline: auto; }
@@ -32,6 +32,30 @@ p { margin: 0 0 1rem; }
 .muted { color: #b5c8bd; font-size: .9rem; }
 .workspace-actions, .section-title, .record-heading { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .8rem; align-items: center; }
 .workspace-actions { justify-content: flex-start; margin-top: 2rem; }
+.sample-tools, .comparison { border: 1px solid #315443; background: #10231b; border-radius: 8px; padding: 1.1rem; margin-block: 1.4rem; }
+#sample-status:empty, #comparison-status:empty, #comparison-rows:empty { display: none; }
+.sample-tools #sample-status:not(:empty), #comparison-status:not(:empty) { margin: .8rem 0 0; }
+.sample-actions, .comparison-actions { display: flex; flex-wrap: wrap; gap: .6rem; }
+.sample-jumps { display: grid; gap: .7rem; margin-top: .75rem; }
+.sample-jumps > p:last-child { margin: 0; }
+.sample-exercise { border: 1px solid #315443; border-radius: 5px; background: #0a1912; padding: .75rem; }
+.sample-exercise p, .sample-exercise ol { margin: .55rem 0; }
+.sample-exercise p:last-child { margin-bottom: 0; }
+.sample-exercise summary { cursor: pointer; font-weight: 600; margin: -.75rem; padding: .75rem; }
+.sample-exercise[open] summary { margin-bottom: .45rem; }
+.sample-exercise ol { padding-inline-start: 1.4em; }
+.sample-exercise li + li { margin-top: .35rem; }
+.comparison-totals, .comparison-sides { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .65rem; margin-top: .75rem; }
+.comparison-totals > div, .comparison-sides > div { min-width: 0; background: #0a1912; border: 1px solid #315443; border-radius: 5px; padding: .7rem; overflow-wrap: anywhere; }
+.comparison-totals p, .comparison-sides p { margin: .3rem 0 0; }
+.comparison-control { border-top: 1px solid #315443; margin-top: .65rem; padding-top: .65rem; }
+.comparison-control h5 { margin: 0; font: 600 .9rem ui-monospace, monospace; color: #9be5ba; }
+.comparison-change { border-top: 1px solid #315443; padding-top: .75rem; margin-top: .9rem; }
+.comparison-sides ul { padding-inline-start: 1.2rem; margin: .4rem 0 0; }
+.comparison-sides .needs_work { color: #f4ca91; }
+.comparison-sides .supported_draft { color: #9be5ba; }
+.record-review-link { display: inline-block; margin-top: .75rem; }
+.record-guide { background: #0a1912; border-left: 2px solid #8edeb0; padding: .45rem .65rem; }
 button, .file-label { display: inline-block; font: inherit; color: #eaf3ee; background: #173125; border: 1px solid #507462; border-radius: 5px; padding: .6rem .9rem; cursor: pointer; }
 button:hover, .file-label:hover { background: #214534; }
 button.primary { background: #9be5ba; color: #0b1a11; border-color: #9be5ba; font-weight: 600; }
@@ -57,4 +81,4 @@ small { display: block; color: #bacfc1; margin-top: .25rem; }
 footer { border-top: 1px solid #2a4639; margin-top: 3rem; padding-block: 1.5rem; color: #b5c8bd; }
 [hidden] { display: none !important; }
 @media (max-width: 700px) { .header { align-items: flex-start; flex-direction: column; } .fields { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (max-width: 480px) { .fields, .fields.two { grid-template-columns: 1fr; } label.full { grid-column: auto; } .section-title { align-items: flex-start; flex-direction: column; } }
+@media (max-width: 480px) { .fields, .fields.two, .comparison-totals, .comparison-sides { grid-template-columns: 1fr; } label.full { grid-column: auto; } .section-title { align-items: flex-start; flex-direction: column; } }
