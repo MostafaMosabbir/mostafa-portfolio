@@ -13,27 +13,32 @@ passwords, access tokens, and other secrets out of the form and exports.
 
 ## Open the workspace
 
-When the website version is available, open the portfolio and select **Tools**
-in the header, then select **Open workspace here**. JavaScript must be
-enabled. A separate workspace page may also be opened from the Tools section.
+From **Tools** on the Workbench or from the **Project 004 case file**, choose
+**Try a sample** or **Build an assessment**. The Workbench opens the workspace
+on the same page and keeps your edits when you switch views. The case file
+opens the standalone workspace. Both views require JavaScript.
 
 For local development, serve the portfolio folder using a local HTTP server and
 open its Tools section. The workspace uses `index.html`, `workspace.css`,
-`workspace-ui.js`, `security-engine.js`, `fictional-sample.js`, and
-`workspace-geometry.js`. Keep these files together.
+`workspace-ui.js`, `security-engine.js`, `fictional-sample.js`,
+`guided-sample.js`, and `workspace-geometry.js`. Keep these files together.
 
 ## Follow one fictional requirement
 
-Select **Load fictional sample** to reproduce the Python report's starting
-point in the editor. The sample uses October 28, 2026 and a 180-day review
-window. It includes 15 requirements and starts with four supported drafts.
-The Python report has the separate follow-up action register.
+In **Try a sample**, select **Account protection** or **Backup recovery** and
+apply the proposed change. Both examples use the assessment engine. Each
+starts with four supported drafts out of 15 requirements and moves to five.
+Open **See the technical trail** to see the framework reference and record IDs.
+
+Select **Open full sample in editor** to work through the same changes by hand.
+The editor loads the original records with October 28, 2026 and a 180 day
+review window. The Python report includes a separate action register.
 
 1. Select **Edit MFA control** and enter `EV-007` in **Linked evidence IDs**
    for `CTL-007`.
 2. Select **Back to comparison**, then **Review assessment again**. Look at
    `REQ-007` and the reason on each side. The review has five supported drafts.
-3. Reload the fictional sample to try **Edit backup control** and
+3. Select **Load fictional sample** to reset, then try **Edit backup control** and
    **Edit backup evidence**. Use the
    [backup walkthrough](../../cybersecurity/security-proposal-workspace/backup-reassessment-demo/index.html)
    to update `CTL-010` and `EV-010` for the simulated after state.
@@ -46,7 +51,7 @@ as JSON. The baseline and comparison live in the current session.
 
 ### Start from a blank workspace
 
-1. Choose an **assessment date** and review freshness window. The default window
+1. Under **Assessment settings**, choose an assessment date and review freshness window. The default window
    of 180 days is a configurable project rule, not a NIST requirement. The
    selected date determines whether review dates are future or stale.
 2. Complete the requirement record, including its ID, description, priority,

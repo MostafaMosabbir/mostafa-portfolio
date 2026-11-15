@@ -3,18 +3,35 @@
 (() => {
   'use strict';
   const frame = document.getElementById('home-workspace-frame');
-  const open = document.getElementById('home-workspace-open');
-  if (!frame || !open) return;
+  if (!frame || !['https:', 'http:'].includes(location.protocol)) return;
+  const launchers = document.querySelectorAll('[data-workspace-mode]');
+  let requestedMode;
 
-  // Opening is deliberate: the tool and its background do not consume
-  // resources before the visitor asks for them. Do not unload on scrolling.
-  open.addEventListener('click', () => {
-    if (!frame.getAttribute('src')) frame.src = frame.dataset.workspaceSrc;
-    frame.hidden = false;
-    open.hidden = true;
-    frame.focus();
+  function showRequestedMode() {
+    if (!requestedMode) return;
+    frame.contentWindow.postMessage({ type: 'security-workspace-mode', mode: requestedMode }, location.origin);
+  }
+
+  // A second selection may arrive while the first view is still loading.
+  frame.addEventListener('load', showRequestedMode);
+  launchers.forEach(launcher => {
+    launcher.addEventListener('click', event => {
+      if (event.defaultPrevented || event.button !== 0 || event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return;
+      const destination = new URL(launcher.href);
+      if (destination.origin !== location.origin) return;
+
+      event.preventDefault();
+      requestedMode = launcher.dataset.workspaceMode;
+      if (frame.getAttribute('src')) {
+        showRequestedMode();
+      } else {
+        destination.searchParams.set('embed', '1');
+        frame.hidden = false;
+        frame.src = destination.href;
+      }
+      frame.focus();
+    });
   });
-  open.hidden = false;
 
   window.addEventListener('message', event => {
     // Do not let unrelated pages or other windows resize this frame.

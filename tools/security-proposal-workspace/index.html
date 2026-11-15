@@ -7,11 +7,12 @@
   <meta name="description" content="Organize security requirements, controls, and evidence for human review.">
   <title>Security Proposal Workspace | Mostafa Mosabbir</title>
   <link rel="icon" type="image/png" sizes="64x64" href="../../assets/robot/favicon.png?v=2">
-  <link rel="stylesheet" href="workspace.css?v=practice-1">
+  <link rel="stylesheet" href="workspace.css?v=guided-1">
   <!-- The assessment engine handles the rules; the interface handles the form. -->
   <script src="security-engine.js?v=validation-1" defer></script>
   <script src="fictional-sample.js?v=1" defer></script>
-  <script src="workspace-ui.js?v=practice-1" defer></script>
+  <script src="workspace-ui.js?v=guided-1" defer></script>
+  <script src="guided-sample.js?v=guided-1" defer></script>
   <script src="workspace-geometry.js" defer></script>
 </head>
 <body>
@@ -30,103 +31,160 @@
   </header>
   <main id="main" class="wrap">
     <p class="back"><a href="../../index.html#tools">← Back to Tools</a></p>
-    <p class="eyebrow">Tools / Security Proposal Workspace</p>
-    <h1>Build an assessment</h1>
-    <p><strong>Prototype:</strong> Organize requirements, controls, and evidence records for human review.</p>
-    <aside class="notice" aria-label="Privacy and assessment boundaries">
-      <p><strong>On this device:</strong> This page is designed to process information in your browser. It does not upload your assessment, open evidence references, or inspect evidence files. Do not enter passwords, secrets, or access tokens.</p>
-      <p><strong>Save your work:</strong> This workspace does not save entries automatically. Download a workspace file before refreshing or leaving, then open it here to continue. This tool does not verify safeguards or certify compliance.</p>
-    </aside>
-    <p class="workspace-example-link"><a href="../../cybersecurity/security-proposal-workspace/reports/review.html">Explore the fictional example →</a></p>
+    <div class="workspace-intro">
+      <h1>Security Proposal Workspace</h1>
+      <p>See whether your records support what you plan to say in a security proposal.</p>
+    </div>
     <p id="initial-status">This workspace needs JavaScript to load in your browser.</p>
     <div id="workspace" hidden>
-      <section class="sample-tools" aria-labelledby="sample-title">
-        <h2 id="sample-title">Practice with the fictional assessment</h2>
-        <p>Loading the 15 fictional requirements sets the baseline automatically. Follow one finding from the control to its evidence.</p>
-        <button type="button" id="load-fictional-sample" class="primary">Load fictional sample</button>
-        <p id="sample-status" role="status"></p>
-        <div id="sample-jumps" class="sample-jumps" aria-label="Fictional exercises" hidden>
-          <section class="sample-exercise" aria-labelledby="sample-mfa">
-            <h3 id="sample-mfa" tabindex="-1">MFA coverage / REQ-007</h3>
-            <p>Open <code>CTL-007</code> and enter <code>EV-007</code> in <strong>Linked evidence IDs</strong>. Select <strong>Back to comparison</strong>, then <strong>Review assessment again</strong>.</p>
-            <button type="button" data-kind="controls" data-id="CTL-007" data-field="evidence_ids">Edit MFA control</button>
-            <p class="muted">Expected from a fresh baseline: 4 to 5 supported drafts. <a href="../../cybersecurity/security-proposal-workspace/evidence-examples/mfa-coverage.html">Read the fictional MFA evidence</a>.</p>
-          </section>
-          <details class="sample-exercise">
-            <summary>Backup restoration / REQ-010</summary>
-            <p>Reload the fictional sample to run this exercise on its own.</p>
-            <ol>
-              <li>In <code>CTL-010</code>, set <strong>Implementation status</strong> to <strong>implemented</strong>, clear the <strong>Target date</strong>, and record that the fictional files were restored to a separate destination and the restore was reviewed.</li>
-              <li>In <code>EV-010</code>, set the <strong>Evidence location or reference</strong> to <code>DEMO-RESTORE-REVIEW-010</code> and the <strong>Evidence review date</strong> to <time datetime="2026-10-27">October 27, 2026</time>.</li>
-              <li>Return to the comparison and review again. <code>REQ-010</code> should become a supported draft. The separate integrity finding in <code>REQ-015</code> remains open.</li>
-            </ol>
-            <div class="sample-actions">
-              <button type="button" data-kind="controls" data-id="CTL-010" data-field="status">Edit backup control</button>
-              <button type="button" data-kind="evidence" data-id="EV-010" data-field="reference">Edit backup evidence</button>
-            </div>
-            <p class="muted"><a href="../../cybersecurity/security-proposal-workspace/backup-reassessment-demo/index.html">See the full backup comparison</a>.</p>
-          </details>
-          <p class="muted"><a href="../../projects/security-proposal-workspace/practice.html">Continue to Practice Labs</a></p>
-        </div>
-      </section>
-      <section id="comparison" class="comparison" aria-labelledby="comparison-title" tabindex="-1">
-        <h2 id="comparison-title">Findings comparison</h2>
-        <p class="muted">Compare reviewed findings against a baseline. Workspace downloads save your records. The comparison stays in this session.</p>
-        <div class="comparison-actions">
-          <button type="button" id="save-baseline" hidden>Use review as baseline</button>
-          <button type="button" id="clear-baseline" hidden>Clear baseline</button>
-          <button type="submit" form="assessment-form" id="compare-review" hidden>Review assessment again</button>
-        </div>
-        <p id="comparison-status" role="status"></p>
-        <div id="comparison-totals" class="comparison-totals" hidden></div>
-        <div id="comparison-rows"></div>
-      </section>
-      <div class="workspace-actions" aria-label="Workspace files">
-        <button type="button" id="save-workspace">Download workspace</button>
-        <label for="open-workspace" class="file-label">Open workspace file</label>
-        <input type="file" id="open-workspace" accept=".json,application/json">
+      <div class="workspace-views" role="group" aria-label="Workspace view">
+        <button type="button" data-workspace-mode="sample" aria-pressed="true" aria-controls="guided-sample">Try a sample</button>
+        <button type="button" data-workspace-mode="build" aria-pressed="false" aria-controls="assessment-editor">Build an assessment</button>
       </div>
-      <p class="muted">Workspace files can contain sensitive information. Store them appropriately.</p>
-      <p id="file-status" role="status" aria-live="polite"></p>
+      <section class="guided-sample" id="guided-sample" data-workspace-view="sample" aria-labelledby="guided-sample-title" hidden>
+        <h2 id="guided-sample-title">Try the fictional sample</h2>
+        <p>Help a fictional marketing agency decide which security claims it can support. Choose an example and see how one change affects the findings.</p>
+        <p data-guided-fallback role="status">The guided sample needs JavaScript. You can still read about the assessment in the case file.</p>
 
-      <form id="assessment-form" novalidate autocomplete="off" spellcheck="false">
-        <section class="settings" aria-labelledby="settings-title">
-          <h2 id="settings-title">Assessment settings</h2>
-          <div class="fields two">
-            <label>Assessment date <span aria-hidden="true">*</span><input id="as-of" type="date" required></label>
-            <label>Review freshness in days <span aria-hidden="true">*</span><input id="max-age" type="number" min="1" step="1" max="36500" value="180" required></label>
+        <div data-guided-content hidden>
+          <div class="guided-choices" role="group" aria-label="Choose a sample">
+            <button class="button" type="button" data-guided-choice="account" aria-pressed="true">Account protection</button>
+            <button class="button" type="button" data-guided-choice="backup" aria-pressed="false">Backup recovery</button>
           </div>
-          <p class="muted">The freshness window is a configurable project rule, not a framework requirement.</p>
-        </section>
 
-        <section class="record-section" aria-labelledby="requirements-title">
-          <div class="section-title"><div><p class="eyebrow">01 / Requirement</p><h2 id="requirements-title">What needs to be addressed?</h2></div><button type="button" data-add="requirements">Add requirement</button></div>
-          <p>Record the requirement, its source, and the person who reviewed whether the mapped controls cover it.</p>
-          <div id="requirements-list" class="record-list"></div>
-        </section>
+          <h3 data-guided-field="question"></h3>
+          <dl class="guided-facts">
+            <div><dt>Requirement</dt><dd data-guided-field="requirement"></dd></div>
+            <div><dt>Safeguard</dt><dd data-guided-field="safeguard"></dd></div>
+            <div><dt>Evidence</dt><dd data-guided-field="evidence"></dd></div>
+          </dl>
 
-        <section class="record-section" aria-labelledby="controls-title">
-          <div class="section-title"><div><p class="eyebrow">02 / Control and owner</p><h2 id="controls-title">What safeguard is recorded?</h2></div><button type="button" data-add="controls">Add control</button></div>
-          <p>Link controls to requirements using their IDs. Separate multiple IDs with semicolons.</p>
-          <div id="controls-list" class="record-list"></div>
-        </section>
+          <section class="guided-result" aria-labelledby="guided-result-title">
+            <h4 id="guided-result-title">Review finding</h4>
+            <div aria-live="polite" aria-atomic="true">
+              <p><strong data-guided-field="state"></strong></p>
+              <p data-guided-field="finding"></p>
+              <p data-guided-field="summary"></p>
+              <p data-guided-field="comparison" hidden></p>
+              <p data-guided-field="separateFinding" hidden></p>
+            </div>
+            <button class="button" type="button" data-guided-field="action"></button>
+          </section>
 
-        <section class="record-section" aria-labelledby="evidence-title">
-          <div class="section-title"><div><p class="eyebrow">03 / Evidence and review</p><h2 id="evidence-title">What evidence is recorded?</h2></div><button type="button" data-add="evidence">Add evidence record</button></div>
-          <p>Link evidence records to controls using their IDs. The reference is recorded as text and is not opened.</p>
-          <div id="evidence-list" class="record-list"></div>
-        </section>
+          <details class="guided-details">
+            <summary>See the technical trail</summary>
+            <dl>
+              <div><dt>Framework reference</dt><dd data-guided-field="framework"></dd></div>
+              <div><dt>Assessment records</dt><dd data-guided-field="records"></dd></div>
+              <div><dt>Assessment date and evidence freshness</dt><dd data-guided-field="settings"></dd></div>
+            </dl>
+            <ul data-guided-field="gaps"></ul>
+            <p data-guided-field="noGaps" hidden>No gaps flagged for this requirement.</p>
+          </details>
 
-        <section class="record-section" aria-labelledby="review-title">
-          <p class="eyebrow">04 / Findings</p><h2 id="review-title">Review the recorded information</h2>
-          <p>Checks apply to all mapped controls and evidence. A supported draft still needs human review.</p>
-          <button class="primary" type="submit">Review assessment</button>
-          <p id="review-status" role="status" aria-live="polite"></p>
-          <div id="review-error" role="alert" hidden></div>
-          <div id="results" hidden></div>
-          <button type="button" id="download-report" hidden>Download review draft</button>
+          <button class="button" type="button" data-guided-field="editor">Open full sample in editor</button>
+        </div>
+      </section>
+      <section id="assessment-editor" data-workspace-view="build" aria-labelledby="editor-title" hidden>
+        <div class="editor-intro">
+          <h2 id="editor-title" tabindex="-1">Build an assessment</h2>
+          <p>Start with one requirement. Record what’s in place and what you can show, then check for gaps.</p>
+          <p class="muted">Entries stay in this browser session. Download a workspace file to keep them. Leave out passwords and secrets.</p>
+        </div>
+        <details class="sample-tools" id="full-fictional-sample">
+          <summary>Work with the full fictional sample</summary>
+          <p>Loading the 15 fictional requirements sets the baseline automatically. Follow one finding from the control to its evidence.</p>
+          <button type="button" id="load-fictional-sample" class="primary">Load fictional sample</button>
+          <p id="sample-status" role="status"></p>
+          <div id="sample-jumps" class="sample-jumps" aria-label="Fictional exercises" hidden>
+            <section class="sample-exercise" aria-labelledby="sample-mfa">
+              <h3 id="sample-mfa" tabindex="-1">MFA coverage / REQ-007</h3>
+              <p>Open <code>CTL-007</code> and enter <code>EV-007</code> in <strong>Linked evidence IDs</strong>. Select <strong>Back to comparison</strong>, then <strong>Review assessment again</strong>.</p>
+              <button type="button" data-kind="controls" data-id="CTL-007" data-field="evidence_ids">Edit MFA control</button>
+              <p class="muted">Expected from a fresh baseline: 4 to 5 supported drafts. <a href="../../cybersecurity/security-proposal-workspace/evidence-examples/mfa-coverage.html">Read the fictional MFA evidence</a>.</p>
+            </section>
+            <details class="sample-exercise">
+              <summary>Backup restoration / REQ-010</summary>
+              <p>Reload the fictional sample to run this exercise on its own.</p>
+              <ol>
+                <li>In <code>CTL-010</code>, set <strong>Implementation status</strong> to <strong>implemented</strong>, clear the <strong>Target date</strong>, and record that the fictional files were restored to a separate destination and the restore was reviewed.</li>
+                <li>In <code>EV-010</code>, set the <strong>Evidence location or reference</strong> to <code>DEMO-RESTORE-REVIEW-010</code> and the <strong>Evidence review date</strong> to <time datetime="2026-10-27">October 27, 2026</time>.</li>
+                <li>Return to the comparison and review again. <code>REQ-010</code> should become a supported draft. The separate integrity finding in <code>REQ-015</code> remains open.</li>
+              </ol>
+              <div class="sample-actions">
+                <button type="button" data-kind="controls" data-id="CTL-010" data-field="status">Edit backup control</button>
+                <button type="button" data-kind="evidence" data-id="EV-010" data-field="reference">Edit backup evidence</button>
+              </div>
+              <p class="muted"><a href="../../cybersecurity/security-proposal-workspace/backup-reassessment-demo/index.html">See the full backup comparison</a>.</p>
+            </details>
+            <p class="muted"><a href="../../projects/security-proposal-workspace/practice.html">Continue to Practice Labs</a></p>
+          </div>
+        </details>
+        <details class="workspace-step workspace-files">
+          <summary>Open or save a workspace</summary>
+          <div class="workspace-actions" aria-label="Workspace files">
+            <button type="button" id="save-workspace">Download workspace</button>
+            <label for="open-workspace" class="file-label">Open workspace file</label>
+            <input type="file" id="open-workspace" accept=".json,application/json">
+          </div>
+          <p class="muted">Workspace files may contain sensitive information. Store them appropriately.</p>
+          <p id="file-status" role="status" aria-live="polite"></p>
+        </details>
+
+        <form id="assessment-form" novalidate autocomplete="off" spellcheck="false">
+          <details class="record-section workspace-step" open>
+            <summary><span class="step-number">1 /</span> What do you need to show?</summary>
+            <p>Add a requirement from a framework or policy. You can leave coverage pending while you gather evidence.</p>
+            <div id="requirements-list" class="record-list"></div>
+            <button type="button" data-add="requirements">Add requirement</button>
+          </details>
+
+          <details class="record-section workspace-step">
+            <summary><span class="step-number">2 /</span> What safeguard is in place?</summary>
+            <p>Record the safeguard, its owner, and its status. Copy its ID into the requirement’s Mapped control IDs field.</p>
+            <div id="controls-list" class="record-list"></div>
+            <button type="button" data-add="controls">Add control</button>
+          </details>
+
+          <details class="record-section workspace-step">
+            <summary><span class="step-number">3 /</span> What evidence backs it up?</summary>
+            <p>Record where the evidence is kept and when it was reviewed. Copy its ID into the safeguard’s Linked evidence IDs field.</p>
+            <div id="evidence-list" class="record-list"></div>
+            <button type="button" data-add="evidence">Add evidence record</button>
+          </details>
+
+          <details class="workspace-step settings">
+            <summary>Assessment settings</summary>
+            <div class="fields two">
+              <label>Assessment date <span aria-hidden="true">*</span><input id="as-of" type="date" required></label>
+              <label>Review freshness in days <span aria-hidden="true">*</span><input id="max-age" type="number" min="1" step="1" max="36500" value="180" required></label>
+            </div>
+            <p class="muted">This setting controls how old an evidence review can be before the tool flags it.</p>
+          </details>
+
+          <section class="record-section" aria-labelledby="review-title">
+            <h2 id="review-title">Review findings</h2>
+            <p>The tool checks your records for gaps. A person still needs to verify the safeguards and evidence.</p>
+            <button class="primary" id="review-assessment" type="submit">Review assessment</button>
+            <p id="review-status" role="status" aria-live="polite"></p>
+            <div id="review-error" role="alert" tabindex="-1" hidden></div>
+            <div id="results" tabindex="-1" hidden></div>
+            <button type="button" id="download-report" hidden>Download review draft</button>
+          </section>
+        </form>
+        <section id="comparison" class="comparison" aria-labelledby="comparison-title" tabindex="-1" hidden>
+          <h2 id="comparison-title">Findings comparison</h2>
+          <p class="muted">Compare findings with an earlier review. The comparison stays in this session.</p>
+          <div class="comparison-actions">
+            <button type="button" id="save-baseline" hidden>Use review as baseline</button>
+            <button type="button" id="clear-baseline" hidden>Clear baseline</button>
+            <button type="submit" form="assessment-form" id="compare-review" hidden>Review assessment again</button>
+          </div>
+          <p id="comparison-status" role="status"></p>
+          <div id="comparison-totals" class="comparison-totals" hidden></div>
+          <div id="comparison-rows"></div>
         </section>
-      </form>
+      </section>
     </div>
   </main>
   <footer class="wrap"><p>Mostafa Mosabbir</p><a href="#main">Back to top ↑</a></footer>

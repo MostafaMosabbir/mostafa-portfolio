@@ -46,7 +46,11 @@
     .questions { padding-left: 1.5rem; }
     .questions li { padding: .25rem 0 .25rem .35rem; }
     .questions li::marker { color: #8edeb0; }
-    .button { display: inline-block; background: #9be5ba; color: #0b1a11; padding: .65rem 1rem; border-radius: 5px; font-weight: 600; text-decoration: none; margin: .3rem 0 1rem; }
+    .workspace-actions { display: flex; flex-wrap: wrap; gap: .65rem; }
+    .button { display: inline-block; background: #9be5ba; color: #0b1a11; padding: .65rem 1rem; border: 1px solid transparent; border-radius: 5px; font-weight: 600; text-decoration: none; }
+    .button:hover { background: #baefd0; }
+    .button.secondary { background: transparent; color: #9be5ba; border-color: #497062; }
+    .button.secondary:hover { background: #172920; color: #e9f2eb; }
     /* The diagram is a conceptual illustration, with a full-size link for detail. */
     .architecture-figure { margin: 1.25rem 0; }
     .architecture-figure img { display: block; width: 100%; height: auto; border: 1px solid #355647; border-radius: 6px; }
@@ -82,7 +86,11 @@
       <div>
         <p class="eyebrow">Case file / Project 004</p>
         <h1 id="project-title">Security Proposal Workspace</h1>
-        <p class="intro">A fictional security assessment that brings requirements, controls, evidence, and follow-up actions together.</p>
+        <p class="intro">See what evidence is missing, which security gaps need attention, and what to do next.</p>
+        <div class="workspace-actions">
+          <a class="button" href="../../tools/security-proposal-workspace/index.html?view=sample">Try a sample</a>
+          <a class="button secondary" href="../../tools/security-proposal-workspace/index.html?view=build">Build an assessment</a>
+        </div>
         <ul class="tags" aria-label="Project topics"><li>Python</li><li>Cybersecurity</li><li>NIST CSF 2.0</li></ul>
       </div>
       <aside class="record" aria-label="Project overview">
@@ -116,7 +124,6 @@
           <h2 id="approach-title">From requirements to safeguards</h2>
           <p>The Security Proposal Workspace grew from my experience working on the technical side of a security proposal. I wanted a way to bring requirements, safeguards, evidence, and follow-up actions together so that gaps are easier to identify and discuss.</p>
           <p>The project uses a fictional marketing company to demonstrate that process. For example, it can flag an MFA control that is marked as implemented but has no evidence linked to it.</p>
-          <p><a href="../../cybersecurity/security-proposal-workspace/reports/review.html">Explore the assessment →</a></p>
         </section>
 
         <section class="block" id="architecture" aria-labelledby="architecture-title">
@@ -141,9 +148,9 @@
       <aside aria-label="Project resources">
         <section class="block explore" aria-labelledby="explore-title">
           <p class="eyebrow">Explore the project</p>
-          <h2 id="explore-title">Review the fictional assessment</h2>
-          <p>Open the full report or follow the MFA and backup scenarios through reassessment.</p>
-          <a class="button" href="../../cybersecurity/security-proposal-workspace/reports/review.html">Open assessment →</a>
+          <h2 id="explore-title">Report and practice labs</h2>
+          <p>Read the detailed findings or follow the MFA and backup examples through reassessment.</p>
+          <p><a href="../../cybersecurity/security-proposal-workspace/reports/review.html">Read the full fictional report →</a></p>
           <p><a href="practice.html">Practice labs and walkthrough →</a></p>
           <p><a href="../../index.html#tools">Go to workspace on homepage →</a></p>
           <p><a href="https://github.com/MostafaMosabbir/mostafa-portfolio/tree/main/cybersecurity/security-proposal-workspace">View source on GitHub ↗</a></p>

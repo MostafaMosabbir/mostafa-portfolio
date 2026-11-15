@@ -23,7 +23,7 @@
   <link rel="stylesheet" href="styles/refined.css?v=migration-closeout-1">
   <link rel="stylesheet" href="styles/security-workspace.css?v=2">
   <!-- Articles and Tools each have their own section on this page. -->
-  <link rel="stylesheet" href="styles/homepage-sections.css?v=1">
+  <link rel="stylesheet" href="styles/homepage-sections.css?v=2">
   <!-- Keep the optional game player separate so the game only loads on demand. -->
   <link rel="stylesheet" href="styles/color-columns-embed.css?v=1">
   <!-- A lightweight chart for the fictional Project 004 assessment. -->
@@ -93,8 +93,8 @@
   <script src="scripts/cisa-kev-chart.js?v=1" defer></script>
   <script src="scripts/security-sample-data.js?v=1" defer></script>
   <script src="scripts/security-workspace.js?v=1" defer></script>
-  <!-- Only the workspace's height is received, never its assessment data. -->
-  <script src="scripts/homepage-sections.js?v=1" defer></script>
+  <!-- The workspace and homepage exchange only the active view and frame height. -->
+  <script src="scripts/homepage-sections.js?v=2" defer></script>
   <script src="scripts/baseline.js?v=2" defer></script>
   <!-- A plain welcome remains readable without JavaScript or with reduced motion. -->
   <script src="scripts/welcome.js?v=1" defer></script>
@@ -1514,19 +1514,21 @@ Calendar availability → Outlook and Zoom</pre>
         </article>
       </section>
 
-      <!-- The workspace is displayed within this page. The separate link is a
-           fallback for browsers that cannot display the embedded experience. -->
+      <!-- Visitors can launch either workspace view here or follow a direct link. -->
       <section class="section wrap home-tools" id="tools" aria-labelledby="home-tools-title">
         <div class="section-heading"><div><h2 class="eyebrow" id="home-tools-title">05 / Tools</h2><button class="decode-note" type="button" data-decode="Build what comes next" aria-label="Build what comes next" aria-pressed="false"><span class="decode-width" aria-hidden="true">Build what comes next</span><span class="decode-text" aria-hidden="true">Build what comes next</span></button></div></div>
-        <p class="home-section-note">Placeholder text: Your introduction to your tools goes here.</p>
-        <div class="home-workspace-heading"><div><p class="home-placeholder-label">Security / Project 004</p><h3>Security Proposal Workspace</h3></div><div><a class="text-link" href="projects/security-proposal-workspace/index.html">View project ↗</a> · <a class="text-link" href="cybersecurity/security-proposal-workspace/reports/review.html">View fictional example ↗</a></div></div>
-        <!-- Load the workspace only when requested; keep it mounted afterward
-             so scrolling away does not discard an unfinished assessment. -->
-        <button class="button home-workspace-open" id="home-workspace-open" type="button" aria-controls="home-workspace-frame" hidden>Open workspace here</button>
-        <iframe class="home-workspace-frame" id="home-workspace-frame" title="Security Proposal Workspace" data-workspace-src="tools/security-proposal-workspace/index.html?embed=1" loading="lazy" sandbox="allow-scripts allow-downloads allow-same-origin allow-modals allow-forms" hidden>
-          <p>Your browser could not display the workspace. <a href="tools/security-proposal-workspace/index.html">Open the Security Proposal Workspace</a>.</p>
-        </iframe>
-        <p class="home-section-note"><a class="text-link" href="tools/security-proposal-workspace/index.html">Open the workspace on its own ↗</a></p>
+        <div class="home-workspace-heading">
+          <div><p class="home-placeholder-label">Security / Project 004</p><h3>Security Proposal Workspace</h3></div>
+          <a class="text-link" href="projects/security-proposal-workspace/index.html">View the case file ↗</a>
+        </div>
+        <p class="home-section-note">See how a fictional company prioritizes security fixes, or review your own controls and evidence.</p>
+        <div class="home-workspace-actions">
+          <a class="button" href="tools/security-proposal-workspace/index.html?view=sample" data-workspace-mode="sample" aria-controls="home-workspace-frame">Try a sample</a>
+          <a class="button home-workspace-secondary" href="tools/security-proposal-workspace/index.html?view=build" data-workspace-mode="build" aria-controls="home-workspace-frame">Build an assessment</a>
+          <a class="text-link" href="tools/security-proposal-workspace/index.html">Open on its own ↗</a>
+        </div>
+        <!-- Load on demand and keep the frame mounted to preserve unfinished work. -->
+        <iframe class="home-workspace-frame" id="home-workspace-frame" title="Security Proposal Workspace" loading="lazy" sandbox="allow-scripts allow-downloads allow-same-origin allow-modals allow-forms" hidden></iframe>
       </section>
 
     </div>

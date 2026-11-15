@@ -7,10 +7,25 @@
   const form = document.getElementById('assessment-form');
   if (!engine || !root || !form) return;
 
+  const viewButtons = [...root.querySelectorAll('[data-workspace-mode]')];
+  const views = [...root.querySelectorAll('[data-workspace-view]')];
+  function showMode(mode) {
+    if (mode !== 'sample' && mode !== 'build') return;
+    for (const button of viewButtons) button.setAttribute('aria-pressed', String(button.dataset.workspaceMode === mode));
+    for (const view of views) view.hidden = view.dataset.workspaceView !== mode;
+  }
+  for (const button of viewButtons) {
+    button.addEventListener('click', () => showMode(button.dataset.workspaceMode));
+  }
+
   // Embedded views use the surrounding portfolio navigation. The only
   // information sent to the parent is the number of pixels needed for height.
   if (window.self !== window.top) {
     document.body.classList.add('workspace-embedded');
+    window.addEventListener('message', event => {
+      if (event.source !== window.parent || event.origin !== location.origin) return;
+      if (event.data?.type === 'security-workspace-mode') showMode(event.data.mode);
+    });
     const main = document.getElementById('main');
     let pendingResize = 0;
     function announceHeight() {
@@ -38,7 +53,7 @@
       { key:'requirement_id', label:'Requirement ID', required:true, placeholder:'REQ-001', pattern:idPattern },
       { key:'domain', label:'Domain', required:true, placeholder:'Protect' },
       { key:'priority', label:'Priority', options:['low','medium','high','critical'], required:true },
-      { key:'requirement', label:'Requirement', required:true, type:'textarea', full:true },
+      { key:'requirement', label:'Requirement', required:true, type:'textarea', full:true, placeholder:'Staff verify their identity a second way when they sign in.' },
       { key:'control_ids', label:'Mapped control IDs', placeholder:'CTL-001; CTL-002', full:true, help:'Separate multiple IDs with semicolons. Leave blank if no control is mapped.' },
       { key:'coverage_review', label:'Coverage review status', options:['pending','approved','rejected'], required:true },
       { key:'reviewer', label:'Coverage reviewer' },
@@ -85,6 +100,7 @@
   const results = document.getElementById('results');
   const reportButton = document.getElementById('download-report');
   const picker = document.getElementById('open-workspace');
+  const fullSample = document.getElementById('full-fictional-sample');
   const sampleButton = document.getElementById('load-fictional-sample');
   const sampleJumps = document.getElementById('sample-jumps');
   const sampleStatus = document.getElementById('sample-status');
@@ -486,6 +502,7 @@
   }
 
   function renderComparison() {
+    comparison.hidden = !lastReview && !baseline;
     saveBaseline.hidden = !lastReview || Boolean(baseline);
     clearBaseline.hidden = !baseline;
     compareReview.hidden = !baseline;
@@ -543,24 +560,41 @@
     baseline = null;
     renderComparison();
     if (lastReview) saveBaseline.focus();
-    else comparison.focus();
+    else document.getElementById('review-assessment').focus();
   });
 
-  sampleButton.addEventListener('click', () => {
+  function loadFictionalSample() {
     try {
       const replacement = parseWorkspace(window.SecurityWorkspaceSample);
       const reviewed = evaluateWorkspace(replacement.data, replacement.asOf, replacement.maxAge);
       if ((unsaved || hasLoadedWorkspace || baseline) &&
-          !window.confirm('Replace the current records and baseline with the fictional sample? Download your workspace first if you want to keep a copy.')) return;
+          !window.confirm('Replace the current records and baseline with the fictional sample? Download your workspace first if you want to keep a copy.')) return false;
       replaceWorkspace(replacement, true);
+      for (const list of Object.values(lists)) list.closest('details').open = false;
       baseline = reviewed;
       showReview(reviewed);
       sampleStatus.textContent = 'Fictional records reviewed and saved as the baseline. Choose an exercise below.';
-      document.getElementById('sample-mfa').focus({preventScroll:true});
     } catch (error) {
       sampleStatus.textContent = `Could not load the fictional sample: ${error.message}`;
     }
+    return true;
+  }
+
+  sampleButton.addEventListener('click', () => {
+    if (loadFictionalSample() && !sampleJumps.hidden) document.getElementById('sample-mfa').focus();
   });
+  document.addEventListener('security-workspace:load-sample', () => {
+    if (!loadFictionalSample()) return;
+    showMode('build');
+    fullSample.open = true;
+    (sampleJumps.hidden ? sampleButton : document.getElementById('sample-mfa')).focus();
+  });
+
+  function revealField(field) {
+    for (let panel = field?.closest('details:not([open])'); panel; panel = panel.parentElement.closest('details:not([open])')) {
+      panel.open = true;
+    }
+  }
 
   sampleJumps.addEventListener('click', event => {
     const trigger = event.target.closest('button[data-kind]');
@@ -573,6 +607,7 @@
       sampleStatus.textContent = `${id} is no longer in the current records. Reload the fictional sample to start again.`;
       return;
     }
+    revealField(input);
     input.focus({preventScroll:true});
     input.scrollIntoView({block:'center'});
   });
@@ -581,6 +616,13 @@
     results.replaceChildren();
     const summary = review.summary;
     addText(results, 'p', `${summary.requirements} requirements: ${summary.supported_drafts} supported drafts; ${summary.needs_work} need work.`);
+    let findings = results;
+    if (review.rows.length > 4) {
+      findings = document.createElement('details');
+      findings.className = 'review-details';
+      addText(findings, 'summary', `See all ${review.rows.length} findings`);
+      results.append(findings);
+    }
     review.rows.forEach(row => {
       const card = document.createElement('article');
       card.className = `result ${row.state}`;
@@ -593,7 +635,7 @@
       } else {
         addText(card, 'p', 'The recorded information passed these metadata checks. Evidence was not inspected.');
       }
-      results.append(card);
+      findings.append(card);
     });
     results.hidden = false;
   }
@@ -611,12 +653,15 @@
     status.textContent = '';
     invalidateReview();
     status.textContent = '';
+    const invalid = [...form.elements].find(field => field.willValidate && !field.validity.valid);
+    revealField(invalid);
     if (!form.reportValidity()) {
       if (event.submitter === compareReview) comparisonStatus.textContent = 'Baseline kept. Fix the highlighted field, then review again.';
       return;
     }
     try {
       showReview(evaluateWorkspace(data, asOf.value, Number(maxAge.value)));
+      (event.submitter === compareReview ? comparison : results).focus();
     } catch (error) {
       results.hidden = true;
       reportButton.hidden = true;
@@ -625,6 +670,9 @@
       errorBox.hidden = false;
       if (event.submitter === compareReview) {
         comparisonStatus.textContent = `Baseline kept. ${errorBox.textContent}`;
+        comparison.focus();
+      } else {
+        errorBox.focus();
       }
     }
   });
@@ -652,6 +700,7 @@
   data.requirements.push(blankRecord('requirements'));
   renderRecords();
   renderComparison();
+  showMode(new URLSearchParams(location.search).get('view') === 'build' ? 'build' : 'sample');
   document.getElementById('initial-status').hidden = true;
   root.hidden = false;
 })();
