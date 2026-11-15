@@ -16,7 +16,7 @@
     securebank: { number: "012", title: "SecureBank Network Defense Lab", badge: "Lab plan", meta: "Cybersecurity · Packet Tracer · Fictional bank network" },
     office: { number: "013", title: "Office IT Buildout", badge: "Case study", meta: "IT Operations · Office relocation · Readiness testing" },
     "zoom-phone": { number: "014", title: "Zoom Phone Migration", badge: "Case study", meta: "IT Operations · Phone migration · Business continuity" },
-    migration: { number: "017", title: "Microsoft 365 Migration", badge: "Final checks pending", meta: "Exchange Online · IMAP migration · Mail routing · Calendar availability" }
+    migration: { number: "017", title: "Microsoft 365 Migration", badge: "Complete", meta: "Exchange Online · IMAP migration · Mail routing · Calendar availability" }
   };
   const feature = document.getElementById("featured");
   if (!feature) return;

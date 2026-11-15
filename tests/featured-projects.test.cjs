@@ -110,12 +110,12 @@ test('Zoom Phone Migration opens as a separate Project 014 case study',()=>{
  assert.equal(s.ids['tab-what-changed'].hidden,true);
 });
 
-test('Microsoft 365 Migration opens Project 017 on Findings with pending checks', () => {
+test('Microsoft 365 Migration opens completed Project 017 on Findings', () => {
   const s = setup();
   s.buttons.find(button => button.dataset.featureSelect === 'migration').click();
   assert.equal(s.ids['featured-number'].textContent, 'Project 017 / Featured project');
   assert.equal(s.ids['featured-title'].textContent, 'Microsoft 365 Migration');
-  assert.equal(s.ids['featured-badge'].textContent, 'Final checks pending');
+  assert.equal(s.ids['featured-badge'].textContent, 'Complete');
   assert.equal(s.ids['tab-evidence'].clicked, true);
   assert.equal(s.ids['tab-overview'].clicked, undefined);
   assert.equal(s.ids['tab-articles'].hidden, true);

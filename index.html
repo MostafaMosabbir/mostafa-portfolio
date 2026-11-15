@@ -20,7 +20,7 @@
 
   <!-- These paths must match your folders and filenames exactly. -->
   <link rel="stylesheet" href="styles/main.css">
-  <link rel="stylesheet" href="styles/refined.css?v=migration-1">
+  <link rel="stylesheet" href="styles/refined.css?v=migration-closeout-1">
   <link rel="stylesheet" href="styles/security-workspace.css?v=2">
   <!-- Articles and Tools each have their own section on this page. -->
   <link rel="stylesheet" href="styles/homepage-sections.css?v=1">
@@ -55,7 +55,7 @@
   <script src="scripts/geometry.js?v=after-hours-fog-2" defer></script>
   <!-- Independent enhancements: navigation, project filtering, and sample analysis. -->
   <script src="scripts/explorer.js?v=workbench-phone-2" defer></script>
-  <script src="scripts/featured-projects.js?v=migration-1" defer></script>
+  <script src="scripts/featured-projects.js?v=migration-closeout-1" defer></script>
   <script src="projects/ticket-assistant/triage.js?v=1" defer></script>
   <script src="projects/ticket-assistant/evaluation.js?v=route-context-1" defer></script>
   <script src="projects/ticket-assistant/fresh-cases.js?v=route-context-1" defer></script>
@@ -925,23 +925,16 @@
               <p>I’d start 10DLC registration earlier and test calls and texts both ways before calling the switch done.</p>
             </div>
             <div data-feature-project="migration" hidden>
-              <div class="migration-findings">
-                <section aria-labelledby="migration-verified-title">
-                  <h4 id="migration-verified-title">Verified</h4>
-                  <dl class="case-study-findings">
-                    <div><dt>Mailbox history</dt><dd>I checked the migration status in Exchange and confirmed older messages and folders appeared in Outlook.</dd></div>
-                    <div><dt>Mail flow</dt><dd>I checked incoming and outgoing messages in Exchange Message Trace after the MX change.</dd></div>
-                    <div><dt>Scheduling</dt><dd>I confirmed coworkers’ availability in Outlook and Zoom, then reviewed the changes at a staff meeting.</dd></div>
-                  </dl>
-                </section>
-                <aside class="migration-pending" aria-labelledby="migration-pending-title">
-                  <h4 id="migration-pending-title">Pending checks</h4>
-                  <ul>
-                    <li>Confirm Business Standard and Business Basic assignments.</li>
-                    <li>Verify forwarding reaches the intended recipients.</li>
-                  </ul>
-                </aside>
-              </div>
+              <section class="migration-findings" aria-labelledby="migration-verified-title">
+                <h4 id="migration-verified-title">Verified</h4>
+                <dl class="case-study-findings">
+                  <div><dt>Mailbox history</dt><dd>I checked the migration status in Exchange and confirmed older messages and folders appeared in Outlook.</dd></div>
+                  <div><dt>Mail flow</dt><dd>I checked incoming and outgoing messages in Exchange Message Trace after the MX change.</dd></div>
+                  <div><dt>Scheduling</dt><dd>I confirmed coworkers’ availability in Outlook and Zoom, then reviewed the changes at a staff meeting.</dd></div>
+                  <div><dt>License assignments</dt><dd>I checked each active account against the migration roster and confirmed that it had the planned Microsoft 365 Business Basic or Business Standard license.</dd></div>
+                  <div><dt>Mail forwarding</dt><dd>I verified that every forwarding route delivered mail to the intended recipients.</dd></div>
+                </dl>
+              </section>
               <h4>What I’d do differently</h4>
               <p>I’d confirm the user list with both HR teams earlier and settle licenses and forwarding before moving mailboxes.</p>
             </div>
@@ -1364,9 +1357,9 @@ Mail flow → Message Trace
 Calendar availability → Outlook and Zoom</pre>
             </div>
             <div class="project-copy">
-              <p class="eyebrow">Project 017 <span class="badge">Final checks pending</span></p>
+              <p class="eyebrow">Project 017 <span class="badge">Complete</span></p>
               <h3>Microsoft 365 Migration</h3>
-              <p>Mail moved to Exchange Online. Scheduling verified in Outlook and Zoom.</p>
+              <p>Mail moved to Exchange Online. Scheduling, license assignments, and forwarding verified.</p>
               <ul class="tags" aria-label="Microsoft 365 migration disciplines"><li>IT Operations</li><li>Microsoft 365</li><li>Exchange Online</li></ul>
             </div>
             <button class="feature-select" type="button" data-feature-select="migration" aria-pressed="false" hidden>Highlight project</button>

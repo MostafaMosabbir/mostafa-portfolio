@@ -377,30 +377,11 @@ body { isolation: isolate; }
 .zoom-phone-validation dt { color: var(--accent); font: .76rem/1.5 monospace; }
 .zoom-phone-validation dd p { margin: 3px 0 0; color: var(--muted); font-size: .86rem; }
 
-.migration-findings {
-  display: grid;
-  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
-  gap: 14px 20px;
-  align-items: start;
-}
-.migration-findings h4 { margin: 0 0 4px; }
-.migration-findings section h4 { color: var(--accent); }
-.migration-findings .case-study-findings > div { display: block; }
+.migration-findings h4 { margin: 0 0 4px; color: var(--accent); }
 .migration-findings + h4 { margin: 14px 0 4px; }
-.migration-pending { padding: 12px 14px; border-radius: 7px; }
-.migration-pending,
-#featured[data-project="migration"] #featured-badge,
-#project-microsoft-365-migration .badge {
-  border: 1px solid #786243;
-  background: #272218;
-  color: #efcb8c;
-}
-.migration-pending ul { margin: 6px 0 0; padding-inline-start: 18px; }
-.migration-pending li { color: var(--ink); }
-.migration-pending li + li { margin-block-start: 5px; }
 
 @media (max-width: 640px) {
-  .office-buildout-steps, .zoom-phone-validation, .migration-findings, .migration-steps { grid-template-columns: minmax(0, 1fr); }
+  .office-buildout-steps, .zoom-phone-validation, .migration-steps { grid-template-columns: minmax(0, 1fr); }
 }
 @media (max-width: 480px) {
   .case-study-findings div { grid-template-columns: minmax(0, 1fr); }
