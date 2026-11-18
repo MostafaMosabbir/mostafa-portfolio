@@ -65,6 +65,12 @@
   background: #091310;
 }
 .home-workspace-frame[hidden] { display: none; }
+.home-ai-tool {
+  margin-top: 2rem;
+  padding-top: .7rem;
+  border-top: 1px solid #315044;
+  scroll-margin-top: 115px;
+}
 @media (max-width: 680px) {
   .home-article-card { grid-template-columns: 1fr; padding: 18px; }
   .home-article-image { min-height: 120px; }

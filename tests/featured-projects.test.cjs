@@ -5,7 +5,7 @@ const fs=require('node:fs');
 const path=require('node:path');
 const source=fs.readFileSync(path.join(__dirname,'../scripts/featured-projects.js'),'utf8');
 function setup(reduced=false){
- const keys=['portfolio','assistant','analyzer','security','columns','kev','theater','algorithm','assembly','securebank','office','zoom-phone','migration'];
+ const keys=['portfolio','assistant','analyzer','security','columns','kev','theater','algorithm','assembly','securebank','office','zoom-phone','migration','ai-release'];
  const groups=keys.flatMap(key=>Array.from({length:4},()=>({dataset:{featureProject:key},hidden:true})));
  const buttons=keys.map(key=>({dataset:{featureSelect:key},hidden:true,attrs:{},setAttribute(k,v){this.attrs[k]=v},addEventListener(k,fn){this.click=fn}}));
  const ids={};

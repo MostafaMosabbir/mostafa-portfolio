@@ -23,7 +23,7 @@
   <link rel="stylesheet" href="styles/refined.css?v=migration-closeout-1">
   <link rel="stylesheet" href="styles/security-workspace.css?v=2">
   <!-- Articles and Tools each have their own section on this page. -->
-  <link rel="stylesheet" href="styles/homepage-sections.css?v=2">
+  <link rel="stylesheet" href="styles/homepage-sections.css?v=ai-release-1">
   <!-- Keep the optional game player separate so the game only loads on demand. -->
   <link rel="stylesheet" href="styles/color-columns-embed.css?v=1">
   <!-- A lightweight chart for the fictional Project 004 assessment. -->
@@ -55,7 +55,7 @@
   <script src="scripts/geometry.js?v=after-hours-fog-2" defer></script>
   <!-- Independent enhancements: navigation, project filtering, and sample analysis. -->
   <script src="scripts/explorer.js?v=workbench-phone-2" defer></script>
-  <script src="scripts/featured-projects.js?v=kev-feature-1" defer></script>
+  <script src="scripts/featured-projects.js?v=ai-release-1" defer></script>
   <script src="projects/ticket-assistant/triage.js?v=1" defer></script>
   <script src="projects/ticket-assistant/evaluation.js?v=route-context-1" defer></script>
   <script src="projects/ticket-assistant/fresh-cases.js?v=route-context-1" defer></script>
@@ -95,6 +95,7 @@
   <script src="scripts/security-workspace.js?v=1" defer></script>
   <!-- The workspace and homepage exchange only the active view and frame height. -->
   <script src="scripts/homepage-sections.js?v=2" defer></script>
+  <script src="scripts/ai-release-embed.js?v=1" defer></script>
   <script src="scripts/baseline.js?v=2" defer></script>
   <!-- A plain welcome remains readable without JavaScript or with reduced motion. -->
   <script src="scripts/welcome.js?v=1" defer></script>
@@ -500,6 +501,22 @@
               <p>Email was hosted on IONOS and staff used Zoom for meetings. To find a time, they had to ask coworkers when they were free.</p>
               <p>I moved existing mail to Exchange Online so staff could see calendar availability. The Zoom scheduler integration followed the mailbox move.</p>
             </div>
+            <div data-feature-project="ai-release" hidden>
+              <div class="overview-grid">
+                <div class="brief-summary">
+                  <p>Review a fictional IT support assistant and decide what needs to change before launch. Use the same seven checks on your own feature and download the review.</p>
+                  <a class="text-link" href="#ai-release-tool">Open AI Release Check in Tools →</a>
+                </div>
+                <div class="brief-evidence">
+                  <h4 class="brief-sample-label" id="ai-release-sample-title">Fictional launch</h4>
+                  <dl class="evidence-stats" aria-labelledby="ai-release-sample-title">
+                    <div><dt>Release blockers</dt><dd>3</dd></div>
+                    <div><dt>Checks needing evidence</dt><dd>3</dd></div>
+                    <div><dt>Check met</dt><dd>1</dd></div>
+                  </dl>
+                </div>
+              </div>
+            </div>
             <div data-feature-project="securebank" hidden>
               <div id="securebank-lab" hidden>
                 <figure class="sb-panel" aria-labelledby="sb-topology-title" aria-describedby="sb-topology-description">
@@ -650,6 +667,14 @@
                 <li><strong>Mailbox transfer</strong><p>I used an IMAP migration batch in Exchange to move existing mail from IONOS.</p></li>
                 <li><strong>Mail cutover</strong><p>I changed the MX record to direct new incoming mail to Exchange Online.</p></li>
               </ol>
+            </div>
+            <div data-feature-project="ai-release" hidden>
+              <ol>
+                <li><strong>Gather evidence.</strong> Inspect the deployment files, data flow, example replies, approval rules, and API limits.</li>
+                <li><strong>Record the result.</strong> Each answer explains why a check is met, needs evidence, or blocks the launch.</li>
+                <li><strong>Repeat the review.</strong> Update the answers after evidence is collected and share the downloaded results with the release owner.</li>
+              </ol>
+              <p>The review covers seven checks, including how the application handles outside instructions and who can approve consequential actions.</p>
             </div>
             <div data-feature-project="securebank" hidden>
               <h4>From topology to test</h4>
@@ -938,6 +963,18 @@
               <h4>What I’d do differently</h4>
               <p>I’d confirm the user list with both HR teams earlier and settle licenses and forwarding before moving mailboxes.</p>
             </div>
+            <div data-feature-project="ai-release" hidden>
+              <dl class="case-study-findings" aria-label="Fictional AI release outcomes">
+                <div><dt>Fictional launch</dt><dd>A browser credential, automatic sending, and spending alerts without enforcement block release.</dd></div>
+                <div><dt>After fixes</dt><dd>Server credentials, enforced limits, and approval before sending address the blockers. Documented checks support human signoff.</dd></div>
+              </dl>
+              <h4>The Questions Behind the Work</h4>
+              <ol>
+                <li>Which risks should stop a release?</li>
+                <li>What evidence shows the safeguards work?</li>
+                <li>Who can approve or pause the release?</li>
+              </ol>
+            </div>
             <div id="securebank-findings" data-feature-project="securebank" hidden>
               <h4>The Questions Behind the Work</h4>
               <ol>
@@ -1107,6 +1144,7 @@
           <p data-feature-project="office" hidden>I coordinated the service transfer, set up the router and Wi-Fi, and verified basic internet access on both connection types. The cost comparison uses the previous monthly internet bill as its baseline.</p>
           <p data-feature-project="zoom-phone" hidden>I used my cell as the external endpoint so the checks exercised calls and texts between Zoom Phone and a separate mobile line.</p>
           <p data-feature-project="migration" hidden>I checked migration status and older folders to verify historical mail. I used Message Trace after changing the MX record to verify new mail flow.</p>
+          <p data-feature-project="ai-release" hidden>JavaScript evaluates the recorded answers in the browser. The tool generates the review file locally and uses no model or API connection.</p>
           <p data-feature-project="analyzer" hidden>The full tool runs locally in Python. This browser demonstration analyzes a separate six-ticket sample using JavaScript. It checks required fields, groups repeated subject wording, and flags resolved or closed tickets without notes. Repeated wording is a review candidate, not proof of the same root cause.</p>
         <p data-feature-project="portfolio" hidden>Built with HTML, CSS, and JavaScript. Published with GitHub Pages. The visual effects and project interactions run in the browser.</p><p data-feature-project="assistant" hidden>The JavaScript rules and sample tickets run in the browser. The demo keeps draft edits in memory and clears them when you reload. Replies stay in the demo.</p><p data-feature-project="security" hidden>The assessment engine runs locally in Python using the standard library. The published report is a fixed fictional example, not a live assessment service or a compliance determination.</p><p data-feature-project="columns" hidden>The original desktop game uses Rust and ggez. This browser adaptation reimplements the game rules in Rust compiled to WebAssembly; JavaScript handles the browser display and controls. Closing the game resets the current session.</p><p data-feature-project="kev">R validates the public CISA catalog and generates a monthly JSON snapshot. GitHub Actions checks daily; JavaScript displays the latest available snapshot and a bundled fallback when needed.</p><p data-feature-project="theater" hidden>The Java source adapts a 2019 class project and saves locally. The independent browser demo uses JavaScript, does not run the Java application, and resets when the page refreshes.</p></details>
       </section>
@@ -1364,6 +1402,20 @@ Calendar availability → Outlook and Zoom</pre>
             </div>
             <button class="feature-select" type="button" data-feature-select="migration" aria-pressed="false" hidden>Highlight project</button>
           </article>
+          <article class="project-card" id="project-ai-release-check" data-technologies="cybersecurity javascript web" tabindex="-1">
+            <div class="project-art workbench-mobile-art" aria-hidden="true">
+              <div class="terminal-bar"><i></i><i></i><i></i><span>ai release / review</span></div>
+              <pre>Fictional launch → Hold release
+After fixes → Ready for human signoff</pre>
+            </div>
+            <div class="project-copy">
+              <p class="eyebrow">Project 018 <span class="badge">Working prototype</span></p>
+              <h3>AI Release Check</h3>
+              <p>Review an AI feature before launch. Identify blockers, record the evidence you have, and download the results.</p>
+              <ul class="tags" aria-label="AI Release Check disciplines"><li>Cybersecurity</li><li>AI safety</li><li>JavaScript</li></ul>
+            </div>
+            <button class="feature-select" type="button" data-feature-select="ai-release" aria-pressed="false" hidden>Highlight project</button>
+          </article>
         </div>
       </section>
 
@@ -1529,6 +1581,17 @@ Calendar availability → Outlook and Zoom</pre>
         </div>
         <!-- Load on demand and keep the frame mounted to preserve unfinished work. -->
         <iframe class="home-workspace-frame" id="home-workspace-frame" title="Security Proposal Workspace" loading="lazy" sandbox="allow-scripts allow-downloads allow-same-origin allow-modals allow-forms" hidden></iframe>
+        <article id="ai-release-tool" class="home-ai-tool" aria-labelledby="ai-release-tool-title">
+          <div class="home-workspace-heading">
+            <div><p class="home-placeholder-label">AI safety / Project 018</p><h3 id="ai-release-tool-title">AI Release Check</h3></div>
+          </div>
+          <p class="home-section-note">Try the fictional launch, compare the fixes, or run your own review and download the results.</p>
+          <div class="home-workspace-actions">
+            <a class="button" id="ai-release-launch" href="tools/ai-release-check/index.html" aria-controls="ai-release-frame">Open AI Release Check</a>
+            <a class="text-link" href="tools/ai-release-check/index.html">Open on its own ↗</a>
+          </div>
+          <iframe class="home-workspace-frame" id="ai-release-frame" title="AI Release Check" loading="lazy" sandbox="allow-scripts allow-downloads allow-same-origin" hidden></iframe>
+        </article>
       </section>
 
     </div>

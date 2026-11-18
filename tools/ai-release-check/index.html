@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'">
+  <meta name="color-scheme" content="dark">
+  <title>AI Release Check</title>
+  <link rel="stylesheet" href="review.css">
+  <script src="release-rules.js" defer></script>
+  <script src="review.js" defer></script>
+</head>
+<body>
+  <main class="wrap">
+    <header class="intro">
+      <h1>AI Release Check</h1>
+      <p>Review an AI feature before it goes live. See which findings block the release and what evidence a reviewer still needs.</p>
+    </header>
+
+    <section id="workspace" hidden aria-labelledby="scenario-title">
+      <div class="scenario-picker" role="group" aria-label="Choose a review">
+        <button type="button" data-mode="sample" aria-pressed="true">Fictional launch</button>
+        <button type="button" data-mode="revised" aria-pressed="false">After fixes</button>
+        <button type="button" data-mode="blank" aria-pressed="false">My review</button>
+      </div>
+
+      <header class="scenario">
+        <h2 id="scenario-title">Support reply assistant</h2>
+        <p id="scenario-description"></p>
+      </header>
+
+      <div class="layout">
+        <section class="decision" aria-labelledby="decision-title">
+          <div class="decision-body" aria-live="polite" aria-atomic="true">
+            <p class="eyebrow">Release decision</p>
+            <h2 id="decision-title"></h2>
+            <p id="decision-description"></p>
+          </div>
+          <div id="status-meter" class="meter" aria-hidden="true"></div>
+          <ul id="counts" class="totals" aria-label="Review totals"></ul>
+          <div class="next">
+            <h3>Next steps</h3>
+            <ul id="next-steps"></ul>
+            <p id="signoff-note" hidden>Share the review with your release owner and confirm who can pause the feature if a problem is found after launch.</p>
+          </div>
+          <button type="button" id="download">Download review</button>
+        </section>
+
+        <section class="checks" aria-labelledby="checks-title">
+          <h2 id="checks-title">Checks</h2>
+          <div id="check-list"></div>
+        </section>
+      </div>
+      <footer class="review-footer">
+        <p>This tool evaluates the answers you record. Use human review to verify evidence and approve the release.</p>
+        <p>Answers stay on this page unless you download a copy.</p>
+      </footer>
+    </section>
+    <p id="load-error" role="status">Enable JavaScript to use the review.</p>
+  </main>
+</body>
+</html>
