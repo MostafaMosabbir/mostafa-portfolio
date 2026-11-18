@@ -13,9 +13,9 @@ passwords, access tokens, and other secrets out of the form and exports.
 
 ## Open the workspace
 
-From **Tools** on the Workbench or from the **Project 004 case file**, choose
+From **Tools** on the Workbench or from the **Project 004 Dossier**, choose
 **Try a sample** or **Build an assessment**. The Workbench opens the workspace
-on the same page and keeps your edits when you switch views. The case file
+on the same page and keeps your edits when you switch views. The Dossier
 opens the standalone workspace. Both views require JavaScript.
 
 For local development, serve the portfolio folder using a local HTTP server and
@@ -32,7 +32,7 @@ Open **See the technical trail** to see the framework reference and record IDs.
 
 Select **Open full sample in editor** to work through the same changes by hand.
 The editor loads the original records with October 28, 2026 and a 180 day
-review window. The case file also links directly to the fictional action plan.
+review window. The Dossier also links directly to the fictional action plan.
 
 1. Select **Edit MFA control** and enter `EV-007` in **Linked evidence IDs**
    for `CTL-007`.

@@ -207,7 +207,7 @@ SAMPLE-006,VPN disconnects,network,,new,`;
     carousel.scrollTo({ left: cardOffset(card), behavior: "instant" });
     updateCaseArrows();
   }
-  // Direct links and search results must reveal the requested hidden card.
+  // A direct link must reveal its card even if it was filtered out.
   function revealHash() {
     // Preserve previously shared links to the former security project entry.
     const id = location.hash === "#project-security" ? "project-security-case" : location.hash.slice(1);
@@ -240,16 +240,18 @@ SAMPLE-006,VPN disconnects,network,,new,`;
     (card?.querySelector("[data-feature-select]") || topic).focus({ preventScroll: true });
   });
 
-  // 4. Search indexes existing headings and project tags rather than inventing
-  // descriptions. textContent prevents a query from being interpreted as HTML.
+  // 4. Only cards with a dedicated Dossier are included in search.
   const dialog = document.getElementById("project-search");
   const trigger = document.getElementById("search-trigger");
   const input = document.getElementById("search-input");
   const results = document.getElementById("search-results");
-  const entries = cards.map(card => ({ title: card.querySelector("h3").textContent, detail: [...card.querySelectorAll(".tags li")].map(tag => tag.textContent).join(" / "), id: card.id }));
-  // Index these homepage sections, so visitors can use search to reach
-  // Articles and Tools just as they can reach Profile and Contact.
-  entries.push(...["about", "contact", "articles", "tools"].map(id => ({ title: document.querySelector(`#${id} h2`).textContent.replace(/\s+/g, " ").trim(), detail: id, id })));
+  const entries = cards.flatMap(card => {
+    const dossier = card.querySelector("a[data-dossier-link]");
+    if (!dossier) return [];
+    const project = card.querySelector(".eyebrow").textContent.match(/Project \d+/)?.[0];
+    const tags = [...card.querySelectorAll(".tags li")].map(tag => tag.textContent);
+    return [{ title: card.querySelector("h3").textContent, detail: [project, ...tags].filter(Boolean).join(" · "), href: dossier.href }];
+  });
   let returnFocus;
   function closeSearch() { dialog.close(); }
   function renderSearch() {
@@ -258,23 +260,11 @@ SAMPLE-006,VPN disconnects,network,,new,`;
     results.replaceChildren();
     for (const entry of matches) {
       const item = document.createElement("li"), link = document.createElement("a"), title = document.createElement("strong"), detail = document.createElement("span");
-      link.href = `#${entry.id}`; title.textContent = entry.title; detail.textContent = entry.detail;
+      link.href = entry.href; title.textContent = entry.title; detail.textContent = entry.detail;
       link.append(title, detail); item.append(link); results.append(item);
-      link.addEventListener("click", () => {
-        filterProjects("all"); // A filtered-out project must become reachable.
-        setMenu(false);
-        const destination = document.getElementById(entry.id);
-        if (cards.includes(destination)) showCase(destination);
-        if (!destination.hasAttribute("tabindex")) destination.tabIndex = -1;
-        // The dialog's asynchronous close event must not steal focus back
-        // from the project the visitor chose.
-        returnFocus = destination;
-        closeSearch();
-        // Keep native anchor navigation: it updates history and moves focus
-        // to this tabindex-enabled destination after closing the dialog.
-      });
+      link.addEventListener("click", closeSearch);
     }
-    document.getElementById("search-status").textContent = matches.length ? `${matches.length} ${matches.length === 1 ? "result" : "results"}` : "No matches. Try Python, JavaScript, or cybersecurity.";
+    document.getElementById("search-status").textContent = matches.length ? `${matches.length} ${matches.length === 1 ? "dossier" : "dossiers"}` : "No dossiers found.";
   }
   function openSearch() {
     if (document.body.dataset.side === "creative" || dialog.open) return;
@@ -286,7 +276,7 @@ SAMPLE-006,VPN disconnects,network,,new,`;
     trigger.addEventListener("click", openSearch);
     document.getElementById("search-close").addEventListener("click", closeSearch);
     dialog.addEventListener("close", () => {
-      // Let the native modal restore its state first, then choose our target.
+      // Restore focus after the native dialog closes.
       const target = returnFocus;
       requestAnimationFrame(() => { if (target?.isConnected) target.focus({ preventScroll: true }); });
     });

@@ -40,6 +40,7 @@
   const mount = document.getElementById('kev-output');
   if (!mount) return;
   const fallback = window.KEV_FALLBACK_DATA;
+  const showMonthPicker = mount.dataset.monthPicker === 'true';
   function make(tag, cls, text) {
     const el = document.createElement(tag);
     if (cls) el.className = cls;
@@ -59,6 +60,7 @@
 
   function render(data) {
     const focusedMonth = chart.contains(document.activeElement) && document.activeElement.dataset ? document.activeElement.dataset.month : null;
+    const pickerHadFocus = showMonthPicker && chart.querySelector('.kev-month-select') === document.activeElement;
     chart.replaceChildren(); details.replaceChildren();
     if (!valid(data)) { chart.append(make('p', 'kev-status', 'No valid data is available.')); return; }
     displayed = data;
@@ -68,6 +70,7 @@
     labels.setAttribute('aria-hidden', 'true');
     const scale = Math.max(1, ...data.months.map(item => item.count));
     const buttons = [];
+    const picker = showMonthPicker ? make('select', 'kev-month-select') : null;
     const dateLabel = (row, options) => {
       const [y, m] = row.month.split('-').map(Number);
       return new Date(Date.UTC(y, m - 1, 1)).toLocaleDateString('en-US', {...options, timeZone:'UTC'});
@@ -75,7 +78,8 @@
     function select(row, current) {
       selectedMonth = row.month;
       buttons.forEach(button => button.setAttribute('aria-pressed', String(button === current)));
-      details.replaceChildren(make('p', 'kev-eyebrow', 'Selected month'), make('h5', '', dateLabel(row,{month:'long',year:'numeric'})), make('strong', '', String(row.count)), make('p', 'kev-note', 'entries added to the catalog'), make('p', 'kev-note', `Catalog version ${data.catalogVersion} · released ${data.catalogReleased.replace('T',' ').replace('Z',' UTC')}`));
+      if (picker) picker.value = row.month;
+      details.replaceChildren(make('p', 'kev-eyebrow', 'Selected month'), make(showMonthPicker ? 'h3' : 'h5', '', dateLabel(row,{month:'long',year:'numeric'})), make('strong', '', String(row.count)), make('p', 'kev-note', 'entries added to the catalog'), make('p', 'kev-note', `Catalog version ${data.catalogVersion} · released ${data.catalogReleased.replace('T',' ').replace('Z',' UTC')}`));
       if (row.month === data.catalogReleased.slice(0,7)) details.append(make('p', 'kev-note', 'This month is incomplete through the catalog release date.'));
     }
     for (const row of data.months) {
@@ -87,8 +91,23 @@
       button.append(make('span', 'kev-count', String(row.count)), bar);
       button.addEventListener('click', () => select(row, button)); buttons.push(button); bars.append(button);
       labels.append(make('span', '', dateLabel(row,{month:'short',year:'2-digit'})));
+      if (picker) {
+        const option = make('option', '', dateLabel(row, {month:'long', year:'numeric'}));
+        option.value = row.month;
+        picker.append(option);
+      }
     }
     scroller.append(bars, labels); chart.append(scroller);
+    if (picker) {
+      picker.setAttribute('aria-label', 'Select a month');
+      const label = make('label', 'kev-month-picker', 'Select a month');
+      label.append(picker);
+      picker.addEventListener('change', () => {
+        const index = picker.selectedIndex;
+        if (index >= 0) select(data.months[index], buttons[index]);
+      });
+      chart.append(label);
+    }
     const selectedIndex = data.months.findIndex(row => row.month === selectedMonth);
     const index = selectedIndex >= 0 ? selectedIndex : data.months.length - 1;
     select(data.months[index], buttons[index]);
@@ -97,6 +116,7 @@
       const focusIndex = data.months.findIndex(row => row.month === focusedMonth);
       buttons[focusIndex >= 0 ? focusIndex : index].focus();
     }
+    if (pickerHadFocus) picker.focus({preventScroll:true});
   }
   render(fallback);
   let started = false;
