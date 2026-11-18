@@ -9,16 +9,19 @@ function setup(reduced=false){
  const groups=keys.flatMap(key=>Array.from({length:4},()=>({dataset:{featureProject:key},hidden:true})));
  const buttons=keys.map(key=>({dataset:{featureSelect:key},hidden:true,attrs:{},setAttribute(k,v){this.attrs[k]=v},addEventListener(k,fn){this.click=fn}}));
  const ids={};
- for(const id of ['featured','featured-title','featured-number','featured-badge','featured-meta','feature-tabs','tab-overview','tab-evidence','tab-articles','tab-what-changed','featured-status']) ids[id]={dataset:{},attrs:{},setAttribute(k,v){this.attrs[k]=v},focus(){this.focused=true},click(){this.clicked=true},scrollIntoView(o){this.scrolled=o}};
+ const tabClicks=[];
+ for(const id of ['featured','featured-title','featured-number','featured-badge','featured-meta','feature-tabs','tab-overview','tab-evidence','tab-articles','tab-what-changed','featured-status']) ids[id]={dataset:{},attrs:{},setAttribute(k,v){this.attrs[k]=v},focus(){this.focused=true},click(){tabClicks.push(id)},scrollIntoView(o){this.scrolled=o}};
  ids.featured.querySelectorAll=()=>groups;
  vm.runInNewContext(source,{document:{getElementById:id=>ids[id],querySelectorAll:()=>buttons},window:{matchMedia:()=>({matches:reduced})}});
- return {groups,buttons,ids};
+ return {groups,buttons,ids,tabClicks};
 }
-test('starts on Project 003 without moving focus or changing the default tab',()=>{
- const s=setup();assert.equal(s.ids.featured.dataset.project,'analyzer');
+test('starts on Project 007 Findings without moving focus or scrolling',()=>{
+ const s=setup();assert.equal(s.ids.featured.dataset.project,'kev');
  assert.equal(s.groups.filter(g=>!g.hidden).length,4);
- assert.equal(s.ids['tab-overview'].clicked,undefined);
+ assert.deepEqual(s.tabClicks,['tab-evidence']);
+ assert.equal(s.ids['featured-title'].textContent,'CISA Vulnerability Explorer');
  assert.equal(s.ids['featured-title'].focused,undefined);
+ assert.equal(s.ids.featured.scrolled,undefined);
 });
 test('all projects can be highlighted from Case Files and return to the analyzer',()=>{
  const s=setup();const original=s.groups.slice();
@@ -27,8 +30,8 @@ test('all projects can be highlighted from Case Files and return to the analyzer
   assert.ok(s.groups.every(g=>g.hidden===(g.dataset.featureProject!==b.dataset.featureSelect)));
   assert.equal(s.buttons.filter(b=>b.attrs['aria-pressed']==='true').length,1);
   assert.equal(b.attrs['aria-label'],`Featured above, ${s.ids['featured-title'].textContent}`);
-  const tab = b.dataset.featureSelect === 'migration' ? 'tab-evidence' : 'tab-overview';
-  assert.equal(s.ids[tab].clicked,true);
+  const tab = ['kev','migration'].includes(b.dataset.featureSelect) ? 'tab-evidence' : 'tab-overview';
+  assert.equal(s.tabClicks.at(-1),tab);
  }
  s.buttons.find(b=>b.dataset.featureSelect==='analyzer').click();
  assert.ok(s.groups.every((g,i)=>g===original[i]));
@@ -36,8 +39,8 @@ test('all projects can be highlighted from Case Files and return to the analyzer
 });
 test('activating the already featured card leaves the current tab and focus alone',()=>{
  const s=setup();
- s.buttons.find(b=>b.dataset.featureSelect==='analyzer').click();
- assert.equal(s.ids['tab-overview'].clicked,undefined);
+ s.buttons.find(b=>b.dataset.featureSelect==='kev').click();
+ assert.deepEqual(s.tabClicks,['tab-evidence']);
  assert.equal(s.ids['featured-title'].focused,undefined);
 });
 test('Project 009 selects TheaterCorp and does not show an article placeholder',()=>{
@@ -50,11 +53,13 @@ test('Project 009 selects TheaterCorp and does not show an article placeholder',
 });
 test('Project 007 shows explorer metadata and its article placeholder',()=>{
  const s=setup();
+ s.buttons.find(b=>b.dataset.featureSelect==='analyzer').click();
  s.buttons.find(b=>b.dataset.featureSelect==='kev').click();
  assert.equal(s.ids['featured-number'].textContent,'Project 007 / Featured project');
  assert.equal(s.ids['featured-title'].textContent,'CISA Vulnerability Explorer');
  assert.match(s.ids['featured-meta'].textContent,/Cybersecurity.*R.*CISA/);
  assert.equal(s.ids['tab-articles'].hidden,false);
+ assert.equal(s.tabClicks.at(-1),'tab-evidence');
 });
 test('Project 006 shows browser adaptation details and its article placeholder',()=>{
  const s=setup();
@@ -116,8 +121,7 @@ test('Microsoft 365 Migration opens completed Project 017 on Findings', () => {
   assert.equal(s.ids['featured-number'].textContent, 'Project 017 / Featured project');
   assert.equal(s.ids['featured-title'].textContent, 'Microsoft 365 Migration');
   assert.equal(s.ids['featured-badge'].textContent, 'Complete');
-  assert.equal(s.ids['tab-evidence'].clicked, true);
-  assert.equal(s.ids['tab-overview'].clicked, undefined);
+  assert.deepEqual(s.tabClicks, ['tab-evidence', 'tab-evidence']);
   assert.equal(s.ids['tab-articles'].hidden, true);
   assert.equal(s.ids['tab-what-changed'].hidden, true);
 });

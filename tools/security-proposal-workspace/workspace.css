@@ -108,6 +108,17 @@ textarea { resize: vertical; min-height: 5rem; }
 small { display: block; color: #bacfc1; margin-top: .25rem; }
 #review-error { color: #ffe5d6; background: #42291f; border-left: 3px solid #f1b18d; padding: .8rem 1rem; margin: 1rem 0; }
 .review-details { margin-bottom: 1rem; }
+.review-downloads { margin-block: .85rem; }
+.result-filter { display: flex; align-items: center; gap: .55rem; margin-block: .7rem; width: fit-content; cursor: pointer; }
+.result-filter input[type="checkbox"] { margin: 0; width: 1.1rem; height: 1.1rem; accent-color: #9be5ba; }
+.finding-records { border-top: 1px solid #315443; padding-top: .6rem; margin-top: .8rem; }
+.finding-records summary { color: #a8dcbc; }
+.finding-record-actions { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .6rem; }
+.finding-record-actions button { overflow-wrap: anywhere; text-align: left; }
+.record-return { margin-top: .85rem; }
+.record:has(> .record-return) > .record-review-link { display: none; }
+.filter-status { margin-bottom: .7rem; }
+.filter-status:empty { margin: 0; }
 .result { border-left: 3px solid #edb767; background: #10231b; padding: 1rem 1.2rem; margin: 1rem 0; }
 .result.supported_draft { border-left-color: #8edeb0; }
 .result p { margin: .5rem 0; }

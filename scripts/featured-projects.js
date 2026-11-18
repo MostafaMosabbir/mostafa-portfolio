@@ -35,15 +35,7 @@
     });
   }
 
-  function openFeatured(key, resetTab = true) {
-    if (resetTab) {
-      let tab = key === "migration" ? "tab-evidence" : "tab-overview";
-      if (phone?.matches) {
-        if (key === "analyzer" || key === "security") tab = "tab-process";
-        if (key === "kev") tab = "tab-evidence";
-      }
-      document.getElementById(tab).click();
-    }
+  function openFeatured(key) {
     const project = projects[key];
     document.getElementById("featured-status").textContent = `Project ${project.number}: ${project.title} is now featured.`;
     title.focus({ preventScroll: true });
@@ -60,7 +52,7 @@
     const project = projects[key];
     if (!project) return;
     if (key === feature.dataset.project) {
-      if (moveFocus && phone?.matches) openFeatured(key, false);
+      if (moveFocus && phone?.matches) openFeatured(key);
       return;
     }
     groups.forEach(group => { group.hidden = group.dataset.featureProject !== key; });
@@ -74,12 +66,15 @@
     document.getElementById("featured-badge").textContent = project.badge;
     document.getElementById("featured-meta").textContent = project.meta;
     document.getElementById("feature-tabs").setAttribute("aria-label", project.title);
+    let tab = key === "kev" || key === "migration" ? "tab-evidence" : "tab-overview";
+    if (phone?.matches && (key === "analyzer" || key === "security")) tab = "tab-process";
+    document.getElementById(tab).click();
     if (moveFocus) openFeatured(key);
   }
   buttons.forEach(button => {
     button.addEventListener("click", () => selectProject(button.dataset.featureSelect, true));
     button.hidden = false;
   });
-  selectProject("analyzer");
+  selectProject("kev");
   phone?.addEventListener("change", labelButtons);
 })();

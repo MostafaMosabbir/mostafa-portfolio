@@ -49,6 +49,11 @@ removed ID appears as its own change. Both reviews must use the same date
 and freshness window to compare individual findings. Workspaces download
 as JSON. The baseline and comparison live in the current session.
 
+In **Review findings**, select **Show only findings that need work** to focus
+on open items. Expand **Go to records** on a finding or the current side of a
+comparison to open its requirement, safeguards, or linked evidence. Use
+**Review changes** on the record to run the assessment again after an edit.
+
 ### Check that backup status and notes agree
 
 From the fresh fictional sample, change only `CTL-010` to **implemented** and
@@ -92,6 +97,12 @@ their record type. Separate multiple mapped IDs with semicolons, for example
 evidence records must pass the checks; a missing mapping is reported as a gap.
 
 ## Keep and reopen your work
+
+Use **Download open findings CSV** to take the current open gaps into a
+follow up review. It contains one row per gap with the requirement ID,
+priority, domain, and finding, ordered from critical to low priority.
+It becomes available again after you review any changes that still have
+open gaps.
 
 Entries stay in the current page's memory and are not automatically saved.
 Select **Download workspace** to request a JSON file and confirm that the file

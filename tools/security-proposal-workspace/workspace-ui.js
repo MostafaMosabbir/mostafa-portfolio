@@ -94,11 +94,14 @@
   const lists = Object.fromEntries(kinds.map(kind => [kind, document.getElementById(`${kind}-list`)]));
   const asOf = document.getElementById('as-of');
   const maxAge = document.getElementById('max-age');
+  const reviewButton = document.getElementById('review-assessment');
   const status = document.getElementById('review-status');
   const fileStatus = document.getElementById('file-status');
   const errorBox = document.getElementById('review-error');
   const results = document.getElementById('results');
+  const reviewDownloads = document.getElementById('review-downloads');
   const reportButton = document.getElementById('download-report');
+  const openFindingsButton = document.getElementById('download-open-findings');
   const picker = document.getElementById('open-workspace');
   const fullSample = document.getElementById('full-fictional-sample');
   const sampleButton = document.getElementById('load-fictional-sample');
@@ -116,6 +119,8 @@
   let baseline = null;
   let hasLoadedWorkspace = false;
   let unsaved = false;
+  let needsWorkOnly = false;
+  let recordReturn = null;
 
   function today() {
     const d = new Date();
@@ -124,11 +129,13 @@
   }
 
   function invalidateReview() {
-    if (lastReview) status.textContent = 'Information changed. Review the assessment again before downloading a report.';
+    if (lastReview) status.textContent = 'Information changed. Review the assessment again to download updated findings.';
     lastReview = null;
     results.hidden = true;
     reportButton.hidden = true;
+    openFindingsButton.hidden = true;
     errorBox.hidden = true;
+    if (recordReturn) recordReturn.textContent = 'Review changes';
     renderComparison();
   }
 
@@ -191,6 +198,7 @@
   }
 
   function renderRecords() {
+    clearRecordJump();
     kinds.forEach(kind => {
       const list = lists[kind];
       list.replaceChildren();
@@ -241,22 +249,19 @@
   }
 
   // Event delegation keeps editing logic small as visitors add and remove rows.
-  form.addEventListener('input', event => {
+  function trackEdit(event) {
     const input = event.target;
-    if (input.dataset.kind && data[input.dataset.kind]?.[Number(input.dataset.index)]) {
-      data[input.dataset.kind][Number(input.dataset.index)][input.dataset.field] = input.value;
+    const {kind, index, field} = input.dataset;
+    if (input !== asOf && input !== maxAge) {
+      const record = data[kind]?.[Number(index)];
+      if (!record || !Object.hasOwn(record, field)) return;
+      record[field] = input.value;
     }
     unsaved = true;
     invalidateReview();
-  });
-  form.addEventListener('change', event => {
-    const input = event.target;
-    if (input.dataset.kind && data[input.dataset.kind]?.[Number(input.dataset.index)]) {
-      data[input.dataset.kind][Number(input.dataset.index)][input.dataset.field] = input.value;
-    }
-    unsaved = true;
-    invalidateReview();
-  });
+  }
+  form.addEventListener('input', trackEdit);
+  form.addEventListener('change', trackEdit);
   form.addEventListener('click', event => {
     const add = event.target.closest('[data-add]');
     if (add && kinds.includes(add.dataset.add)) {
@@ -463,7 +468,7 @@
     comparisonTotals.append(panel);
   }
 
-  function renderSide(sides, label, item) {
+  function renderSide(sides, label, item, editable = false) {
     const panel = document.createElement('div');
     addText(panel, 'h4', label);
     sides.append(panel);
@@ -499,6 +504,7 @@
       row.gaps.forEach(gap => addText(gaps, 'li', gap));
       panel.append(gaps);
     }
+    if (editable) addRecordLinks(panel, row, comparison);
   }
 
   function renderComparison() {
@@ -540,7 +546,7 @@
       const sides = document.createElement('div');
       sides.className = 'comparison-sides';
       renderSide(sides, 'Baseline', old);
-      renderSide(sides, 'Current review', current);
+      renderSide(sides, 'Current review', current, true);
       change.append(sides);
       comparisonRows.append(change);
       edits += 1;
@@ -560,7 +566,7 @@
     baseline = null;
     renderComparison();
     if (lastReview) saveBaseline.focus();
-    else document.getElementById('review-assessment').focus();
+    else reviewButton.focus();
   });
 
   function loadFictionalSample() {
@@ -596,26 +602,101 @@
     }
   }
 
+  function recordField(kind, id, field) {
+    const idKey = fields[kind][0].key;
+    const index = data[kind].findIndex(record => record[idKey].trim() === id);
+    return form.elements.namedItem(`${kind}-${index}-${field}`);
+  }
+
+  function focusRecordField(input) {
+    revealField(input);
+    input.focus({preventScroll:true});
+    input.scrollIntoView({block:'center'});
+  }
+
   sampleJumps.addEventListener('click', event => {
     const trigger = event.target.closest('button[data-kind]');
     if (!trigger) return;
     const {kind, id, field} = trigger.dataset;
-    const idKey = fields[kind][0].key;
-    const index = data[kind].findIndex(record => record[idKey] === id);
-    const input = form.elements.namedItem(`${kind}-${index}-${field}`);
+    const input = recordField(kind, id, field);
     if (!input) {
       sampleStatus.textContent = `${id} is no longer in the current records. Reload the fictional sample to start again.`;
       return;
     }
-    revealField(input);
-    input.focus({preventScroll:true});
-    input.scrollIntoView({block:'center'});
+    clearRecordJump();
+    focusRecordField(input);
   });
+
+  function clearRecordJump() {
+    recordReturn?.remove();
+    recordReturn = null;
+  }
+
+  function openRecord(input, trigger, source) {
+    clearRecordJump();
+    const fromComparison = source === comparison;
+    const button = addText(input.closest('.record'), 'button',
+      fromComparison ? 'Back to comparison' : 'Back to findings');
+    button.type = 'button';
+    button.className = 'record-return';
+    recordReturn = button;
+    button.addEventListener('click', () => {
+      if (!lastReview) {
+        form.requestSubmit(fromComparison && baseline ? compareReview : reviewButton);
+        return;
+      }
+      clearRecordJump();
+      if (trigger.isConnected && !trigger.closest('[hidden], details:not([open])')) trigger.focus();
+      else source.focus();
+    });
+    focusRecordField(input);
+  }
+
+  function addRecordLinks(parent, row, source) {
+    const details = document.createElement('details');
+    details.className = 'finding-records';
+    addText(details, 'summary', 'Go to records');
+    const actions = document.createElement('div');
+    actions.className = 'finding-record-actions';
+    details.append(actions);
+    parent.append(details);
+    // A finding can map to many records. Build the buttons only when opened.
+    details.addEventListener('toggle', () => {
+      if (!details.open || actions.hasChildNodes()) return;
+      function link(kind, id, field) {
+        if (!recordField(kind, id, field)) return;
+        const button = addText(actions, 'button', `Edit ${labels[kind].toLowerCase()} ${id}`);
+        button.type = 'button';
+        button.addEventListener('click', () => {
+          const input = recordField(kind, id, field);
+          if (input) openRecord(input, button, source);
+        });
+      }
+      link('requirements', row.requirement_id, row.claims.length ? 'requirement' : 'control_ids');
+      for (const claim of row.claims) {
+        link('controls', claim.control_id, claim.evidence_ids.length ? 'statement' : 'evidence_ids');
+      }
+      for (const id of new Set(row.claims.flatMap(claim => claim.evidence_ids))) {
+        link('evidence', id, 'reference');
+      }
+    });
+  }
 
   function renderReview(review) {
     results.replaceChildren();
     const summary = review.summary;
     addText(results, 'p', `${summary.requirements} requirements: ${summary.supported_drafts} supported drafts; ${summary.needs_work} need work.`);
+    results.append(reviewDownloads);
+    const label = document.createElement('label');
+    label.className = 'result-filter';
+    const filter = document.createElement('input');
+    filter.type = 'checkbox';
+    filter.checked = needsWorkOnly;
+    label.append(filter, 'Show only findings that need work');
+    results.append(label);
+    const filterStatus = addText(results, 'div', '');
+    filterStatus.className = 'muted filter-status';
+    filterStatus.setAttribute('aria-live', 'polite');
     let findings = results;
     if (review.rows.length > 4) {
       findings = document.createElement('details');
@@ -623,7 +704,7 @@
       addText(findings, 'summary', `See all ${review.rows.length} findings`);
       results.append(findings);
     }
-    review.rows.forEach(row => {
+    const cards = review.rows.map(row => {
       const card = document.createElement('article');
       card.className = `result ${row.state}`;
       addText(card, 'h3', `${row.requirement_id} / ${row.requirement}`);
@@ -635,16 +716,38 @@
       } else {
         addText(card, 'p', 'The recorded information passed these metadata checks. Evidence was not inspected.');
       }
+      addRecordLinks(card, row, results);
       findings.append(card);
+      return card;
     });
+    function applyFilter() {
+      needsWorkOnly = filter.checked;
+      cards.forEach((card, index) => {
+        card.hidden = needsWorkOnly && !review.rows[index].gaps.length;
+      });
+      filterStatus.textContent = needsWorkOnly
+        ? (summary.needs_work ? `Showing ${summary.needs_work} of ${summary.requirements} findings.` : 'No findings need work.')
+        : '';
+      if (findings !== results) {
+        findings.hidden = needsWorkOnly && !summary.needs_work;
+        if (needsWorkOnly) findings.open = true;
+        findings.querySelector('summary').textContent = needsWorkOnly
+          ? `Findings that need work (${summary.needs_work})`
+          : `See all ${summary.requirements} findings`;
+      }
+    }
+    filter.addEventListener('change', applyFilter);
+    applyFilter();
     results.hidden = false;
   }
 
   function showReview(snapshot) {
+    clearRecordJump();
     lastReview = snapshot;
     renderReview(snapshot.review);
     renderComparison();
     reportButton.hidden = false;
+    openFindingsButton.hidden = snapshot.review.summary.gap_items === 0;
     status.textContent = 'Review complete. Results require human review.';
   }
 
@@ -665,6 +768,7 @@
     } catch (error) {
       results.hidden = true;
       reportButton.hidden = true;
+      openFindingsButton.hidden = true;
       lastReview = null;
       errorBox.textContent = `Unable to review: ${error.message}`;
       errorBox.hidden = false;
@@ -694,6 +798,28 @@
       lines.push('');
     }
     download('security-review-draft.txt', lines.join('\n'), 'text/plain;charset=utf-8');
+  });
+
+  function csvCell(value) {
+    // Spreadsheet apps can interpret a text value as a formula on import.
+    const plainText = /^[\t\r\n]/.test(value) || /^[=+@-]/.test(value.trimStart())
+      ? "'" + value
+      : value;
+    return '"' + plainText.replaceAll('"', '""') + '"';
+  }
+
+  openFindingsButton.addEventListener('click', () => {
+    if (!lastReview?.review.summary.gap_items) return;
+    const priorities = ['critical', 'high', 'medium', 'low'];
+    const findings = lastReview.review.rows.filter(row => row.gaps.length).sort((a, b) =>
+      priorities.indexOf(a.priority) - priorities.indexOf(b.priority) ||
+      a.requirement_id.localeCompare(b.requirement_id, 'en'));
+    const rows = [
+      ['requirement_id', 'priority', 'domain', 'gap'],
+      ...findings.flatMap(row => row.gaps.map(gap => [row.requirement_id, row.priority, row.domain, gap])),
+    ];
+    const csv = rows.map(row => row.map(csvCell).join(',')).join('\r\n') + '\r\n';
+    download(`security-open-findings-${lastReview.asOf}.csv`, '\uFEFF' + csv, 'text/csv;charset=utf-8');
   });
 
   asOf.value = today();
