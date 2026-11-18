@@ -38,3 +38,36 @@ test('stacking columns eventually ends the game and ignores later input', async 
   }
   assert.equal(g.game_over(),1); const drops=g.game_dropped(); g.game_input(5); assert.equal(g.game_dropped(),drops);
 });
+
+test('release captures exact pre-clear cells on both hard drop and gravity', async () => {
+  const g = await load('game.wasm');
+  assert.equal(g.game_clear_count(), 0);
+  for (const drop of [5, 0]) {
+    // This seed starts with a column of three matching colors in column 2.
+    g.game_start(56);
+    assert.equal(g.game_clear_count(), 0);
+    assert.equal(g.game_clear_stage_cell(0, 2, 17), 0);
+    for (let i = 0; i < 30 && g.game_dropped() === 0; i++) g.game_input(drop);
+
+    assert.equal(g.game_dropped(), 1);
+    assert.equal(g.game_score(), 3);
+    assert.equal(g.game_clear_count(), 3);
+    const cleared = Array.from({ length: g.game_clear_count() }, (_, index) => [
+      g.game_clear_x(index), g.game_clear_y(index), g.game_clear_color(index), g.game_clear_wave(index),
+    ]);
+    assert.deepEqual(cleared, [[2, 15, 6, 0], [2, 16, 6, 0], [2, 17, 6, 0]]);
+    for (const [x, y, color, wave] of cleared) {
+      assert.equal(g.game_clear_stage_cell(wave, x, y), color);
+      assert.equal(g.game_cell(x, y), 0);
+    }
+    assert.equal(g.game_clear_color(3), 0);
+    assert.equal(g.game_clear_stage_cell(1, 2, 17), 0);
+    assert.equal(g.game_clear_stage_cell(0, 9, 17), 0);
+    assert.equal(g.game_clear_stage_cell(0, 2, 18), 0);
+
+    g.game_input(3);
+    assert.equal(g.game_clear_count(), 0);
+    assert.equal(g.game_clear_stage_cell(0, 2, 17), 0);
+    assert.equal(g.game_score(), 3);
+  }
+});

@@ -6,6 +6,14 @@ const W: usize = 9;
 const H: usize = 18;
 const EMPTY: u8 = 0;
 
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+struct ClearedCell {
+    x: u8,
+    y: u8,
+    color: u8,
+    wave: u32,
+}
+
 #[derive(Clone)]
 struct Game {
     board: [[u8; W]; H],
@@ -17,6 +25,8 @@ struct Game {
     score: u32,
     dropped: u32,
     over: bool,
+    cleared_cells: Vec<ClearedCell>,
+    clear_stages: Vec<[[u8; W]; H]>,
 }
 
 impl Game {
@@ -24,6 +34,7 @@ impl Game {
         let mut g = Self {
             board: [[EMPTY; W]; H], x: 4, y: -3, piece: [1; 3], next: [1; 3],
             rng: if seed == 0 { 0x7135_9ac1 } else { seed }, score: 0, dropped: 0, over: false,
+            cleared_cells: Vec::new(), clear_stages: Vec::new(),
         };
         g.piece = g.random_piece();
         g.next = g.random_piece();
@@ -50,6 +61,8 @@ impl Game {
         })
     }
     fn input(&mut self, command: u32) {
+        self.cleared_cells.clear();
+        self.clear_stages.clear();
         if self.over { return; }
         match command {
             0 => { if self.fits(self.x, self.y + 1) { self.y += 1; } else { self.lock(); } }
@@ -115,6 +128,18 @@ impl Game {
             let base: u32 = lengths.into_iter().map(|n| 3 + (2..=(n - 2)).sum::<u32>()).sum();
             let multiplier = if chain > 1 { chain + 1 } else { 1 };
             self.score += base * line_count * multiplier;
+            // Record each marked tile before compaction changes its position.
+            // The browser can paint each wave over its exact pre-clear board.
+            self.clear_stages.push(self.board);
+            for (y, row) in marked.iter().enumerate() {
+                for (x, &is_marked) in row.iter().enumerate() {
+                    if is_marked {
+                        self.cleared_cells.push(ClearedCell {
+                            x: x as u8, y: y as u8, color: self.board[y][x], wave: chain - 1,
+                        });
+                    }
+                }
+            }
             for x in 0..W {
                 let mut destination = H as i32 - 1;
                 for y in (0..H).rev() {
@@ -149,6 +174,40 @@ thread_local! { static GAME: RefCell<Option<Game>> = const { RefCell::new(None) 
 #[no_mangle] pub extern "C" fn game_dropped() -> u32 { GAME.with(|c| c.borrow().as_ref().map_or(0, |g| g.dropped)) }
 #[no_mangle] pub extern "C" fn game_over() -> u32 { GAME.with(|c| c.borrow().as_ref().map_or(0, |g| u32::from(g.over))) }
 
+// A clear replay belongs to the most recent input. Wave 0 resolves first.
+#[no_mangle] pub extern "C" fn game_clear_count() -> u32 {
+    GAME.with(|c| c.borrow().as_ref().map_or(0, |g| g.cleared_cells.len() as u32))
+}
+
+fn clear_cell(index: u32) -> Option<ClearedCell> {
+    GAME.with(|c| c.borrow().as_ref().and_then(|g| g.cleared_cells.get(index as usize)).copied())
+}
+
+#[no_mangle] pub extern "C" fn game_clear_x(index: u32) -> u32 {
+    clear_cell(index).map_or(0, |cell| u32::from(cell.x))
+}
+
+#[no_mangle] pub extern "C" fn game_clear_y(index: u32) -> u32 {
+    clear_cell(index).map_or(0, |cell| u32::from(cell.y))
+}
+
+#[no_mangle] pub extern "C" fn game_clear_color(index: u32) -> u32 {
+    clear_cell(index).map_or(0, |cell| u32::from(cell.color))
+}
+
+#[no_mangle] pub extern "C" fn game_clear_wave(index: u32) -> u32 {
+    clear_cell(index).map_or(0, |cell| cell.wave)
+}
+
+#[no_mangle] pub extern "C" fn game_clear_stage_cell(wave: u32, x: u32, y: u32) -> u32 {
+    if x >= W as u32 || y >= H as u32 { return 0; }
+    GAME.with(|c| {
+        let borrowed = c.borrow();
+        borrowed.as_ref().and_then(|g| g.clear_stages.get(wave as usize))
+            .map_or(0, |board| u32::from(board[y as usize][x as usize]))
+    })
+}
+
 #[cfg(any(test, test_exports))]
 mod tests {
     use super::*;
@@ -166,6 +225,47 @@ mod tests {
         g.board[17][0]=2; g.board[17][1]=1; g.board[17][2]=2;
         g.board[16][1]=1; g.board[15][1]=1; g.board[14][1]=2;
         g.resolve_matches(); assert_eq!(g.score,12); assert!(g.board.iter().flatten().all(|&v|v==0));
+    }
+    #[cfg_attr(test, test)] fn captures_each_cascade_before_removal_and_gravity() {
+        let mut g = Game::new(1);
+        g.board[17][0] = 2;
+        g.board[17][1] = 1;
+        g.board[17][2] = 2;
+        g.board[16][1] = 1;
+        g.board[15][1] = 1;
+        g.board[14][1] = 2;
+        let first_stage = g.board;
+        g.resolve_matches();
+
+        assert_eq!(g.cleared_cells, [
+            ClearedCell { x: 1, y: 15, color: 1, wave: 0 },
+            ClearedCell { x: 1, y: 16, color: 1, wave: 0 },
+            ClearedCell { x: 1, y: 17, color: 1, wave: 0 },
+            ClearedCell { x: 0, y: 17, color: 2, wave: 1 },
+            ClearedCell { x: 1, y: 17, color: 2, wave: 1 },
+            ClearedCell { x: 2, y: 17, color: 2, wave: 1 },
+        ]);
+        assert_eq!(g.clear_stages.len(), 2);
+        assert_eq!(g.clear_stages[0], first_stage);
+        assert_eq!(g.clear_stages[1][14][1], EMPTY);
+        assert_eq!(&g.clear_stages[1][17][..3], &[2, 2, 2]);
+
+        g.input(3);
+        assert!(g.cleared_cells.is_empty());
+        assert!(g.clear_stages.is_empty());
+        assert_eq!(g.score, 12);
+    }
+    #[cfg_attr(test, test)] fn records_overlapping_matches_once_per_tile() {
+        let mut g = Game::new(1);
+        for (x, y) in [(1, 15), (1, 16), (0, 17), (1, 17), (2, 17)] {
+            g.board[y][x] = 4;
+        }
+        g.resolve_matches();
+
+        assert_eq!(g.score, 12);
+        assert_eq!(g.cleared_cells.len(), 5);
+        assert_eq!(g.clear_stages.len(), 1);
+        assert_eq!(g.cleared_cells.iter().filter(|cell| cell.x == 1 && cell.y == 17).count(), 1);
     }
     #[cfg_attr(test, test)] fn horizontal_movement_cannot_leave_the_board() {
         let mut g=Game::new(1); for _ in 0..20 {g.input(1)} assert_eq!(g.x,0);
@@ -191,6 +291,8 @@ mod tests {
         starts_empty_with_three_colors_and_no_score();
         vertical_horizontal_and_diagonal_matches_clear();
         gravity_creates_and_scores_a_cascade();
+        captures_each_cascade_before_removal_and_gravity();
+        records_overlapping_matches_once_per_tile();
         horizontal_movement_cannot_leave_the_board();
         exact_full_column_ends_game_without_a_match();
         match_can_clear_top_before_game_over();
