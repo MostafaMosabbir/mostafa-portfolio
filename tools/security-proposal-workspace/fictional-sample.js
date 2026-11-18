@@ -461,5 +461,106 @@ window.SecurityWorkspaceSample = {
         "reviewed_on": "2026-11-01"
       }
     ]
-  }
+  },
+  "action_plan": [
+    {
+      "requirement_index": 1,
+      "action_id": "ACT-001",
+      "title": "Review the client file policy",
+      "verification_criteria": "Record a dated coverage decision and its rationale.",
+      "priority": "medium",
+      "owner": "Demo security reviewer",
+      "due_date": "2026-12-02"
+    },
+    {
+      "requirement_index": 2,
+      "action_id": "ACT-002",
+      "title": "Complete and prioritize the supplier inventory",
+      "verification_criteria": "Review an inventory covering all in-scope campaign platforms and freelancers.",
+      "priority": "medium",
+      "owner": "Demo operations lead",
+      "due_date": "2026-12-04"
+    },
+    {
+      "requirement_index": 4,
+      "action_id": "ACT-003",
+      "title": "Reconcile and review the software inventory",
+      "verification_criteria": "Review a current inventory export against managed software; record the actual review date.",
+      "priority": "medium",
+      "owner": "Demo IT owner",
+      "due_date": "2026-12-04"
+    },
+    {
+      "requirement_index": 5,
+      "action_id": "ACT-004",
+      "title": "Address shared advertising account risk",
+      "verification_criteria": "Document the chosen treatment, demonstrate its operation, and record reviewer acceptance.",
+      "priority": "high",
+      "owner": "Demo IT owner",
+      "due_date": "2026-11-23"
+    },
+    {
+      "requirement_index": 6,
+      "action_id": "ACT-005",
+      "title": "Collect and link MFA coverage evidence",
+      "verification_criteria": "Review in-scope login coverage and exceptions before linking the evidence record to CTL-007.",
+      "priority": "high",
+      "owner": "Demo identity administrator",
+      "due_date": "2026-11-20"
+    },
+    {
+      "requirement_index": 7,
+      "action_id": "ACT-006",
+      "title": "Assign an owner for freelancer access reviews",
+      "verification_criteria": "Confirm the owner accepts responsibility and review the latest permissions review record.",
+      "priority": "high",
+      "owner": "Demo operations lead",
+      "due_date": "2026-11-24"
+    },
+    {
+      "requirement_index": 8,
+      "action_id": "ACT-007",
+      "title": "Review staff training evidence",
+      "verification_criteria": "Check attendance and exercise results for the in-scope staff; record review outcome.",
+      "priority": "medium",
+      "owner": "Demo training lead",
+      "due_date": "2026-12-08"
+    },
+    {
+      "requirement_index": 9,
+      "action_id": "ACT-008",
+      "title": "Complete backup coverage and test a restore",
+      "verification_criteria": "Review backup scope, protection settings and a documented successful restore test.",
+      "priority": "high",
+      "owner": "Demo IT owner",
+      "due_date": "2026-11-25"
+    },
+    {
+      "requirement_index": 11,
+      "action_id": "ACT-009",
+      "title": "Define a control for correlating alerts",
+      "verification_criteria": "Test a fictional alert scenario; record ownership, implementation and reviewed evidence before mapping the control.",
+      "priority": "high",
+      "owner": "Demo security lead",
+      "due_date": "2026-11-30"
+    },
+    {
+      "requirement_index": 13,
+      "action_id": "ACT-010",
+      "title": "Resubmit the incident investigation record",
+      "verification_criteria": "Resolve reviewer objections and submit a replacement record for a new human review.",
+      "priority": "medium",
+      "owner": "Demo incident lead",
+      "due_date": "2026-12-01"
+    },
+    {
+      "requirement_index": 14,
+      "action_id": "ACT-011",
+      "title": "Verify the backup integrity review date",
+      "verification_criteria": "Verify the actual review date and supporting record, or perform a new review; do not merely backdate the entry.",
+      "priority": "high",
+      "owner": "Demo recovery lead",
+      "due_date": "2026-11-27"
+    }
+  ]
 };

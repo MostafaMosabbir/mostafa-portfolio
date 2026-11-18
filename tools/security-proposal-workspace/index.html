@@ -7,11 +7,12 @@
   <meta name="description" content="Organize security requirements, controls, and evidence for human review.">
   <title>Security Proposal Workspace | Mostafa Mosabbir</title>
   <link rel="icon" type="image/png" sizes="64x64" href="../../assets/robot/favicon.png?v=2">
-  <link rel="stylesheet" href="workspace.css?v=findings-2">
+  <link rel="stylesheet" href="workspace.css?v=action-plan-1">
   <!-- The assessment engine handles the rules; the interface handles the form. -->
   <script src="security-engine.js?v=backup-notes-1" defer></script>
-  <script src="fictional-sample.js?v=1" defer></script>
-  <script src="workspace-ui.js?v=findings-2" defer></script>
+  <script src="fictional-sample.js?v=action-plan-1" defer></script>
+  <script src="action-plan-ui.js?v=action-plan-1" defer></script>
+  <script src="workspace-ui.js?v=action-plan-1" defer></script>
   <script src="guided-sample.js?v=guided-1" defer></script>
   <script src="workspace-geometry.js" defer></script>
 </head>
@@ -177,6 +178,7 @@
             </div>
           </section>
         </form>
+        <section id="action-plan" class="action-plan" tabindex="-1" hidden></section>
         <section id="comparison" class="comparison" aria-labelledby="comparison-title" tabindex="-1" hidden>
           <h2 id="comparison-title">Findings comparison</h2>
           <p class="muted">Compare findings with an earlier review. The comparison stays in this session.</p>

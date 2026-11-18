@@ -20,7 +20,7 @@ opens the standalone workspace. Both views require JavaScript.
 
 For local development, serve the portfolio folder using a local HTTP server and
 open its Tools section. The workspace uses `index.html`, `workspace.css`,
-`workspace-ui.js`, `security-engine.js`, `fictional-sample.js`,
+`workspace-ui.js`, `action-plan-ui.js`, `security-engine.js`, `fictional-sample.js`,
 `guided-sample.js`, and `workspace-geometry.js`. Keep these files together.
 
 ## Follow one fictional requirement
@@ -32,7 +32,7 @@ Open **See the technical trail** to see the framework reference and record IDs.
 
 Select **Open full sample in editor** to work through the same changes by hand.
 The editor loads the original records with October 28, 2026 and a 180 day
-review window. The Python report includes a separate action register.
+review window. The case file also links directly to the fictional action plan.
 
 1. Select **Edit MFA control** and enter `EV-007` in **Linked evidence IDs**
    for `CTL-007`.
@@ -53,6 +53,18 @@ In **Review findings**, select **Show only findings that need work** to focus
 on open items. Expand **Go to records** on a finding or the current side of a
 comparison to open its requirement, safeguards, or linked evidence. Use
 **Review changes** on the record to run the assessment again after an edit.
+
+### Assign work in Findings
+
+The action plan lists one action per open requirement, sorted by priority and
+due date. Open an action to see the gaps and the evidence to review. Set the
+priority, owner and due date, then select **Apply changes**. The fictional
+sample starts with proposed assignments and deadlines. New workspaces start
+with the requirement's priority and blank owner and date fields.
+
+Plan edits schedule the work. To clear a finding, update the requirement,
+safeguard or evidence as needed and run the review again. If the same
+requirement becomes open again, its assignment returns to the plan.
 
 ### Check that backup status and notes agree
 
@@ -106,8 +118,9 @@ open gaps.
 
 Entries stay in the current page's memory and are not automatically saved.
 Select **Download workspace** to request a JSON file and confirm that the file
-was saved before leaving or refreshing. Use **Open workspace file** to reopen a
-previously downloaded JSON workspace. Opening one replaces the current form
+was saved before leaving or refreshing. The workspace file includes action plan
+edits. Use **Open workspace file** to reopen it. Earlier workspace files also
+open and build the plan when reviewed. Opening a file replaces the current form
 after confirmation. Downloaded files can contain sensitive information; the
 person using the workspace is responsible for storing them appropriately.
 
@@ -126,6 +139,7 @@ environment. Do not assume that an exported file is encrypted.
 - `workspace.css` styles the form for desktop and smaller screens.
 - `workspace-ui.js` creates editable records, handles local files, and
   compares the current findings with the saved baseline.
+- `action-plan-ui.js` displays open findings as editable assignments.
 - `security-engine.js` validates the records and checks their recorded metadata.
 - `fictional-sample.js` contains the report's fictional records. Run
   `python -B build_fictional_sample.py --check` from this folder to check the

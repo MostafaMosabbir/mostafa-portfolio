@@ -3,9 +3,10 @@
 (() => {
   'use strict';
   const engine = window.SecurityEngine;
+  const actionPlan = window.SecurityActionPlan;
   const root = document.getElementById('workspace');
   const form = document.getElementById('assessment-form');
-  if (!engine || !root || !form) return;
+  if (!engine || !actionPlan || !root || !form) return;
 
   const viewButtons = [...root.querySelectorAll('[data-workspace-mode]')];
   const views = [...root.querySelectorAll('[data-workspace-view]')];
@@ -30,7 +31,7 @@
     let pendingResize = 0;
     function announceHeight() {
       pendingResize = 0;
-      const height = Math.ceil(main.getBoundingClientRect().bottom + 8);
+      const height = Math.ceil(main.getBoundingClientRect().bottom + window.scrollY + 8);
       if (location.origin !== 'null' && Number.isFinite(height) && height > 0) {
         window.parent.postMessage({type:'security-workspace-height', height}, location.origin);
       }
@@ -91,6 +92,8 @@
   // The editor and importer share limits so a downloaded workspace can be reopened.
   const MAX_RECORDS = 500;
   const MAX_WORKSPACE_BYTES = 2 * 1024 * 1024;
+  const ACTION_PRIORITIES = ['critical', 'high', 'medium', 'low'];
+  const actionTextLimits = {action_id:40, title:2000, verification_criteria:2000, priority:8, owner:80, due_date:10};
   const lists = Object.fromEntries(kinds.map(kind => [kind, document.getElementById(`${kind}-list`)]));
   const asOf = document.getElementById('as-of');
   const maxAge = document.getElementById('max-age');
@@ -99,6 +102,7 @@
   const fileStatus = document.getElementById('file-status');
   const errorBox = document.getElementById('review-error');
   const results = document.getElementById('results');
+  const actionPlanPanel = document.getElementById('action-plan');
   const reviewDownloads = document.getElementById('review-downloads');
   const reportButton = document.getElementById('download-report');
   const openFindingsButton = document.getElementById('download-open-findings');
@@ -115,6 +119,8 @@
   const clearBaseline = document.getElementById('clear-baseline');
   const compareReview = document.getElementById('compare-review');
   let data = {requirements:[], controls:[], evidence:[]};
+  // Use each requirement record's identity so a removed ID cannot pass its plan to a new record.
+  let actionsByRequirement = new WeakMap();
   let lastReview = null;
   let baseline = null;
   let hasLoadedWorkspace = false;
@@ -132,6 +138,7 @@
     if (lastReview) status.textContent = 'Information changed. Review the assessment again to download updated findings.';
     lastReview = null;
     results.hidden = true;
+    actionPlanPanel.hidden = true;
     reportButton.hidden = true;
     openFindingsButton.hidden = true;
     errorBox.hidden = true;
@@ -307,8 +314,14 @@
   }
 
   function snapshot() {
-    return { format:'security-proposal-workspace', version:1,
+    const workspace = { format:'security-proposal-workspace', version:1,
       as_of:asOf.value, max_age_days:Number(maxAge.value), data };
+    const actions = data.requirements.flatMap((record, index) => {
+      const action = actionsByRequirement.get(record);
+      return action ? [{requirement_index:index, ...action}] : [];
+    });
+    if (actions.length) workspace.action_plan = actions;
+    return workspace;
   }
 
   document.getElementById('save-workspace').addEventListener('click', () => {
@@ -334,6 +347,29 @@
     if (!/^\d{4}-\d{2}-\d{2}$/.test(value) || value.startsWith('0000')) return false;
     const date = new Date(`${value}T00:00:00Z`);
     return !Number.isNaN(date.getTime()) && date.toISOString().slice(0, 10) === value;
+  }
+
+  function validAction(action) {
+    return Object.entries(actionTextLimits).every(([key, limit]) =>
+      typeof action[key] === 'string' && action[key].length <= limit && !/[\r\n]/.test(action[key])) &&
+      ACTION_PRIORITIES.includes(action.priority) &&
+      (!action.due_date || validCalendarDate(action.due_date));
+  }
+
+  function parseActions(records, requirementCount) {
+    if (records === undefined) return [];
+    if (!Array.isArray(records) || records.length > requirementCount) throw new Error('Invalid action plan.');
+    const indexes = new Set();
+    for (const record of records) {
+      if (!record || typeof record !== 'object' || Array.isArray(record)) throw new Error('Invalid action plan record.');
+      const {requirement_index:index, ...action} = record;
+      if (!Number.isInteger(index) || index < 0 || index >= requirementCount || indexes.has(index) ||
+          Object.keys(action).length !== Object.keys(actionTextLimits).length || !validAction(action)) {
+        throw new Error('Invalid action plan record.');
+      }
+      indexes.add(index);
+    }
+    return records;
   }
 
   // Check the entire imported shape before replacing anything in the form.
@@ -383,11 +419,14 @@
         ]));
       });
     }
-    return {data:replacement, asOf:value.as_of, maxAge:value.max_age_days};
+    return {data:replacement, asOf:value.as_of, maxAge:value.max_age_days,
+      actions:parseActions(value.action_plan, replacement.requirements.length)};
   }
 
   function replaceWorkspace(replacement, isSample) {
     data = replacement.data;
+    actionsByRequirement = new WeakMap(replacement.actions.map(({requirement_index:index, ...action}) =>
+      [data.requirements[index], action]));
     asOf.value = replacement.asOf;
     maxAge.value = String(replacement.maxAge);
     unsaved = false;
@@ -745,10 +784,29 @@
     clearRecordJump();
     lastReview = snapshot;
     renderReview(snapshot.review);
+    renderActionPlan(snapshot.review);
     renderComparison();
     reportButton.hidden = false;
     openFindingsButton.hidden = snapshot.review.summary.gap_items === 0;
     status.textContent = 'Review complete. Results require human review.';
+  }
+
+  function renderActionPlan(review) {
+    const requirements = new Map(data.requirements.map(record => [record.requirement_id.trim(), record]));
+    const items = review.rows.filter(row => row.gaps.length).map(row => {
+      const current = actionsByRequirement.get(requirements.get(row.requirement_id));
+      return {...row, action_id:'', title:'', verification_criteria:'', owner:'', due_date:'', ...current};
+    });
+    actionPlan.render(actionPlanPanel, items, (id, edits) => {
+      const requirement = requirements.get(id);
+      const current = actionsByRequirement.get(requirement);
+      const updated = {action_id:'', title:'', verification_criteria:'', ...current, ...edits};
+      if (!validAction(updated)) return false;
+      actionsByRequirement.set(requirement, updated);
+      unsaved = true;
+      return true;
+    });
+    actionPlanPanel.hidden = false;
   }
 
   form.addEventListener('submit', event => {
@@ -767,6 +825,7 @@
       (event.submitter === compareReview ? comparison : results).focus();
     } catch (error) {
       results.hidden = true;
+      actionPlanPanel.hidden = true;
       reportButton.hidden = true;
       openFindingsButton.hidden = true;
       lastReview = null;
@@ -810,9 +869,8 @@
 
   openFindingsButton.addEventListener('click', () => {
     if (!lastReview?.review.summary.gap_items) return;
-    const priorities = ['critical', 'high', 'medium', 'low'];
     const findings = lastReview.review.rows.filter(row => row.gaps.length).sort((a, b) =>
-      priorities.indexOf(a.priority) - priorities.indexOf(b.priority) ||
+      ACTION_PRIORITIES.indexOf(a.priority) - ACTION_PRIORITIES.indexOf(b.priority) ||
       a.requirement_id.localeCompare(b.requirement_id, 'en'));
     const rows = [
       ['requirement_id', 'priority', 'domain', 'gap'],
@@ -826,7 +884,13 @@
   data.requirements.push(blankRecord('requirements'));
   renderRecords();
   renderComparison();
-  showMode(new URLSearchParams(location.search).get('view') === 'build' ? 'build' : 'sample');
+  const params = new URLSearchParams(location.search);
+  const initialMode = params.get('view') === 'build' ? 'build' : 'sample';
+  showMode(initialMode);
   document.getElementById('initial-status').hidden = true;
   root.hidden = false;
+  if (initialMode === 'build' && params.get('sample') === 'action-plan') {
+    loadFictionalSample();
+    if (!actionPlanPanel.hidden) actionPlanPanel.focus();
+  }
 })();
