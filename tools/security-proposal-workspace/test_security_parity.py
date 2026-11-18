@@ -213,6 +213,54 @@ class SecurityEngineParity(unittest.TestCase):
         self.assertEqual(rows[0]['claims'][0]['statement'], 'First line.\nSecond line.')
         self.assertEqual(actual['result']['rows'], rows)
 
+    def test_backup_status_cannot_override_current_incomplete_notes(self):
+        statements = [
+            ('status only', None, 'needs_work'),
+            ('unfinished exercise', 'The restore exercise remains incomplete.', 'needs_work'),
+            ('not completed', 'The restoration test has not yet been completed.', 'needs_work'),
+            ('contraction', 'The restore test hasn’t been completed.', 'needs_work'),
+            ('opening apostrophe', 'The restore test isn‘t complete.', 'needs_work'),
+            ('open verification', 'Restore completed, but verification remains incomplete.', 'needs_work'),
+            ('line break', 'The RESTORE test\nis still incomplete.', 'needs_work'),
+            ('completed restore', 'Protected campaign files were restored to a separate destination and the restore was reviewed.', 'supported_draft'),
+            ('no longer incomplete', 'The restore is no longer incomplete.', 'supported_draft'),
+            ('not incomplete', 'The restore is not incomplete.', 'supported_draft'),
+            ('historical issue', 'The restore was incomplete, but is now complete.', 'supported_draft'),
+            ('unrelated incomplete files', 'Incomplete files were excluded; restore completed.', 'supported_draft'),
+        ]
+        fixtures = []
+        baseline = sample_data()
+        original_integrity = next(row for row in proposal.evaluate(baseline, date(2026, 10, 28))
+                                  if row['requirement_id'] == 'REQ-015')
+        for name, statement, expected in statements:
+            data = copy.deepcopy(baseline)
+            control = record(data, 'controls', 'control_id', 'CTL-010')
+            control['status'] = 'implemented'
+            if statement is not None:
+                control['statement'] = statement
+            fixtures.append(({
+                'name': name, 'data': data, 'as_of': '2026-10-28', 'max_age': 180,
+            }, expected))
+        actuals = browser_results([item for item, _ in fixtures])
+        for (item, expected), actual in zip(fixtures, actuals):
+            with self.subTest(case=item['name']):
+                self.assertTrue(actual['ok'], actual.get('error'))
+                self.assertTrue(actual['unchanged'])
+                python_rows = proposal.evaluate(item['data'], date(2026, 10, 28))
+                self.assertEqual(actual['result']['rows'], python_rows)
+                row = next(row for row in python_rows if row['requirement_id'] == 'REQ-010')
+                self.assertEqual(row['state'], expected)
+                if expected == 'needs_work':
+                    self.assertEqual(row['gaps'], [
+                        'CTL-010: restore notes describe unfinished work despite an implemented status. Reconcile the status and notes.',
+                    ])
+                else:
+                    self.assertEqual(row['gaps'], [])
+                expected_total = 5 if expected == 'supported_draft' else 4
+                self.assertEqual(actual['result']['summary']['supported_drafts'], expected_total)
+                integrity = next(row for row in python_rows if row['requirement_id'] == 'REQ-015')
+                self.assertEqual(integrity, original_integrity)
+
     def test_bundled_sample_matches_python_baseline_and_freshness(self):
         sample = browser_sample()
         self.assertEqual(sample['format'], 'security-proposal-workspace')

@@ -49,6 +49,24 @@ removed ID appears as its own change. Both reviews must use the same date
 and freshness window to compare individual findings. Workspaces download
 as JSON. The baseline and comparison live in the current session.
 
+### Check that backup status and notes agree
+
+From the fresh fictional sample, change only `CTL-010` to **implemented** and
+review again. Its original notes still say the restore exercise is incomplete,
+so the finding stays **Needs work** and the total stays at 4 supported drafts.
+The finding asks the reviewer to reconcile the status and notes.
+
+Complete the exercise by recording the simulated reviewed restore and updating
+`EV-010` as described above. The total then reaches 5 supported drafts.
+The separate `REQ-015` integrity finding keeps its future review date gap.
+
+Both the browser and Python assessor check explicit current unfinished restore
+wording, including incomplete restore tests and a completed restore with
+unfinished verification. Historical and negated statements such as
+“the restore was incomplete, but is now complete” and “no longer incomplete”
+pass this check. This rule recognizes specific wording. A person still reviews
+the complete notes and the actual supporting evidence.
+
 ### Start from a blank workspace
 
 1. Under **Assessment settings**, choose an assessment date and review freshness window. The default window

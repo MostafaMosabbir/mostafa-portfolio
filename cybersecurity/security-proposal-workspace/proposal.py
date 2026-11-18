@@ -27,10 +27,31 @@ SCHEMAS = {
 STATUSES = {"implemented", "partial", "planned", "not_implemented", "unknown"}
 PRIORITIES = {"low", "medium", "high", "critical"}
 MULTILINE_FIELDS = {"requirement", "statement"}
+RESTORE_SUBJECT = r"\b(?:restore|restoration|recovery)(?:\s+(?:test|exercise|testing|verification))?\b"
+UNFINISHED_RESTORE = (
+    r"(?:(?:is|remains)\s+(?:still\s+)?(?:incomplete|unfinished|pending|untested|unverified)"
+    r"|(?:is\s+)?(?:still\s+)?not\s+(?:yet\s+)?(?:complete|completed|tested|verified)"
+    r"|(?:has|have)\s+not\s+(?:yet\s+)?been\s+(?:completed|tested|verified))\b"
+)
 
 
 class InputError(ValueError):
     """An input defect stops generation instead of silently dropping records."""
+
+
+def unfinished_restore_notes(statement: str) -> bool:
+    """Recognize explicit current gaps without inferring a restore succeeded."""
+    notes = statement.lower().replace("\u2019", "'").replace("\u2018", "'")
+    notes = re.sub(r"\b(is|has|have)n't\b", r"\1 not", notes)
+    notes = re.sub(r"\s+", " ", notes)
+    unfinished = RESTORE_SUBJECT + r"\s+" + UNFINISHED_RESTORE
+    verification_pending = (
+        RESTORE_SUBJECT
+        + r"\s+(?:(?:is|was|has\s+been)\s+)?(?:complete|completed|tested|verified)\b"
+        + r"\s*,?\s*(?:but|however)\s+(?:the\s+)?(?:restore\s+)?verification\s+"
+        + UNFINISHED_RESTORE
+    )
+    return bool(re.search(unfinished, notes) or re.search(verification_pending, notes))
 
 
 def parse_date(value: str, field: str) -> date | None:
@@ -177,6 +198,11 @@ def evaluate(data: dict, as_of: date, max_age_days: int = 180) -> list[dict]:
                 gaps.append(f"{control_id}: owner is missing.")
             if not control["statement"].strip():
                 gaps.append(f"{control_id}: response statement is missing.")
+            if control["status"] == "implemented" and unfinished_restore_notes(control["statement"]):
+                gaps.append(
+                    f"{control_id}: restore notes describe unfinished work despite an implemented status. "
+                    "Reconcile the status and notes."
+                )
             target = parse_date(control["target_date"], control_id)
             if control["status"] != "implemented":
                 if not target:

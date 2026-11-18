@@ -29,6 +29,21 @@
   const EVIDENCE_STATUSES = new Set(['reviewed', 'pending', 'rejected']);
   const MULTILINE_FIELDS = new Set(['requirement', 'statement']);
   const DAY_MS = 86400000;
+  // Match explicit current contradictions in restore notes. A human still
+  // reviews the record and the actual restore. These checks never inspect files.
+  const RESTORE_SUBJECT = "\\b(?:restore|restoration|recovery)(?:\\s+(?:test|exercise|testing|verification))?\\b";
+  const UNFINISHED_WORK = "(?:(?:is|remains)\\s+(?:still\\s+)?(?:incomplete|unfinished|pending|untested|unverified)|(?:is\\s+)?(?:still\\s+)?not\\s+(?:yet\\s+)?(?:complete|completed|tested|verified)|(?:has|have)\\s+not\\s+(?:yet\\s+)?been\\s+(?:completed|tested|verified))\\b";
+  const UNFINISHED_RESTORE = new RegExp(RESTORE_SUBJECT + "\\s+" + UNFINISHED_WORK);
+  const RESTORE_WITH_OPEN_VERIFICATION = new RegExp(RESTORE_SUBJECT +
+    "\\s+(?:(?:is|was|has\\s+been)\\s+)?(?:complete|completed|tested|verified)\\b\\s*,?\\s*(?:but|however)\\s+(?:the\\s+)?(?:restore\\s+)?verification\\s+" + UNFINISHED_WORK);
+
+  function restoreNotesDescribeUnfinishedWork(statement) {
+    const normalized = statement.toLowerCase()
+      .replace(/[’‘]/g, "'")
+      .replace(/\b(is|has|have)n't\b/g, '$1 not')
+      .replace(/\s+/g, ' ');
+    return UNFINISHED_RESTORE.test(normalized) || RESTORE_WITH_OPEN_VERIFICATION.test(normalized);
+  }
 
   // Parsing dates explicitly avoids local-time differences and JS's automatic
   // rollover, for example treating an invalid February date as a March date.
@@ -141,6 +156,9 @@
         if (control.status !== 'implemented') gaps.push(`${controlId}: status is ${control.status}; do not claim implementation.`);
         if (!control.owner.trim()) gaps.push(`${controlId}: owner is missing.`);
         if (!control.statement.trim()) gaps.push(`${controlId}: response statement is missing.`);
+        if (control.status === 'implemented' && restoreNotesDescribeUnfinishedWork(control.statement)) {
+          gaps.push(`${controlId}: restore notes describe unfinished work despite an implemented status. Reconcile the status and notes.`);
+        }
         const target = parseDate(control.target_date, controlId);
         if (control.status !== 'implemented') {
           if (target === null) gaps.push(`${controlId}: target date is missing.`);

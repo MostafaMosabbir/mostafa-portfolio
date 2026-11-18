@@ -9,7 +9,7 @@
   <link rel="icon" type="image/png" sizes="64x64" href="../../assets/robot/favicon.png?v=2">
   <link rel="stylesheet" href="workspace.css?v=guided-1">
   <!-- The assessment engine handles the rules; the interface handles the form. -->
-  <script src="security-engine.js?v=validation-1" defer></script>
+  <script src="security-engine.js?v=backup-notes-1" defer></script>
   <script src="fictional-sample.js?v=1" defer></script>
   <script src="workspace-ui.js?v=guided-1" defer></script>
   <script src="guided-sample.js?v=guided-1" defer></script>
@@ -111,6 +111,7 @@
                 <li>In <code>EV-010</code>, set the <strong>Evidence location or reference</strong> to <code>DEMO-RESTORE-REVIEW-010</code> and the <strong>Evidence review date</strong> to <time datetime="2026-10-27">October 27, 2026</time>.</li>
                 <li>Return to the comparison and review again. <code>REQ-010</code> should become a supported draft. The separate integrity finding in <code>REQ-015</code> remains open.</li>
               </ol>
+              <p class="muted">An implemented status with notes that still describe an incomplete restore keeps the finding open. Review the notes and evidence together.</p>
               <div class="sample-actions">
                 <button type="button" data-kind="controls" data-id="CTL-010" data-field="status">Edit backup control</button>
                 <button type="button" data-kind="evidence" data-id="EV-010" data-field="reference">Edit backup evidence</button>
