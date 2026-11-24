@@ -1,0 +1,46 @@
+name: Verify direct CISA.gov feeds
+
+on:
+  push:
+    branches: [verify-cisa-gov-feeds-20261124]
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - name: Ensure base R is available
+        run: |
+          if ! command -v Rscript >/dev/null; then
+            sudo apt-get update
+            sudo apt-get install -y --no-install-recommends r-base-core
+          fi
+      - name: Check the updater with offline fixtures
+        run: Rscript --vanilla tests/cisa-kev-updater.test.R
+      - name: Build an isolated snapshot from both direct CISA.gov feeds
+        run: Rscript --vanilla cybersecurity/security-proposal-workspace/kev/update-kev.R --output "$RUNNER_TEMP/direct-cisa-snapshot.json"
+      - name: Validate the snapshot against the chart and release baseline
+        run: |
+          node <<'NODE'
+          const assert = require('node:assert/strict');
+          const {readFileSync} = require('node:fs');
+          const {join} = require('node:path');
+          const {valid} = require('./scripts/cisa-kev-chart.js');
+          const snapshot = JSON.parse(readFileSync(join(process.env.RUNNER_TEMP,'direct-cisa-snapshot.json'),'utf8'));
+          const baseline = JSON.parse(readFileSync('cybersecurity/security-proposal-workspace/kev/snapshot.json','utf8'));
+          assert.ok(valid(snapshot), 'The portfolio chart must accept the direct snapshot');
+          assert.equal(snapshot.source,'https://www.cisa.gov/known-exploited-vulnerabilities-catalog');
+          assert.ok(Date.parse(snapshot.catalogReleased) >= Date.parse(baseline.catalogReleased), 'The direct snapshot must not regress the published release date');
+          if (snapshot.catalogReleased === baseline.catalogReleased) {
+            assert.equal(snapshot.catalogVersion,baseline.catalogVersion);
+            assert.equal(snapshot.catalogCount,baseline.catalogCount);
+            assert.deepEqual(snapshot.months,baseline.months);
+          }
+          console.log(`Verified CISA.gov release ${snapshot.catalogVersion}, ${snapshot.catalogCount} catalog entries and ${snapshot.months.length} monthly totals.`);
+          NODE
