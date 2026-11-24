@@ -2,7 +2,6 @@
    without running R. */
 (() => {
   'use strict';
-  const url = 'https://raw.githubusercontent.com/MostafaMosabbir/mostafa-portfolio/main/cybersecurity/security-proposal-workspace/kev/snapshot.json';
 
   // A failed or malformed update must never replace the last known snapshot.
   function valid(data) {
@@ -21,7 +20,7 @@
     }
     return data.months[11].month === data.catalogReleased.slice(0, 7) && total <= data.catalogCount;
   }
-  async function load(fetcher, fallback) {
+  async function load(fetcher, fallback, url) {
     const controller = new AbortController();
     let timeout;
     try {
@@ -30,7 +29,7 @@
       if (!response.ok) throw new Error('Snapshot unavailable');
       const latest = await Promise.race([response.json(), deadline]);
       if (!valid(latest) || (valid(fallback) && Date.parse(latest.catalogReleased) < Date.parse(fallback.catalogReleased))) throw new Error('Invalid or older snapshot');
-      return {data: latest, status: 'Loaded the latest available snapshot from GitHub. The source release date is shown below.'};
+      return {data: latest, status: 'Loaded the latest published snapshot. The source release date is shown below.'};
     } catch (_) {
       return valid(fallback) ? {data: fallback, status: 'The current snapshot was unavailable. Showing the bundled backup; it may be out of date.'} : {data: null, status: 'The data is unavailable. Please try again later.'};
     } finally { clearTimeout(timeout); }
@@ -39,6 +38,7 @@
   if (typeof document === 'undefined') return;
   const mount = document.getElementById('kev-output');
   if (!mount) return;
+  const snapshotUrl = new URL('../cybersecurity/security-proposal-workspace/kev/snapshot.json', document.currentScript.src).href;
   const fallback = window.KEV_FALLBACK_DATA;
   const showMonthPicker = mount.dataset.monthPicker === 'true';
   function make(tag, cls, text) {
@@ -123,7 +123,7 @@
   async function refresh() {
     if (started) return;
     started = true; status.textContent = 'Checking the latest public snapshot…';
-    const result = await load(window.fetch.bind(window), fallback);
+    const result = await load(window.fetch.bind(window), fallback, snapshotUrl);
     status.textContent = result.status;
     if (result.data) {
       const age = Date.now() - Date.parse(result.data.catalogReleased);

@@ -1,6 +1,5 @@
 # Public CISA data only. No workplace data or personal credentials are used.
-# The site reads the refreshed JSON from GitHub directly: commits made with
-# GITHUB_TOKEN do not trigger the site's separate branch-based Pages build.
+# Changed snapshots are sent through the same Pages deployment gate as the website.
 name: Refresh CISA KEV snapshot
 on:
   workflow_dispatch:
@@ -34,6 +33,7 @@ jobs:
       - name: Fetch and summarize the CISA catalog
         run: Rscript --vanilla cybersecurity/security-proposal-workspace/kev/update-kev.R --output cybersecurity/security-proposal-workspace/kev/snapshot.json
       - name: Commit only a changed snapshot
+        id: snapshot
         run: |
           file=cybersecurity/security-proposal-workspace/kev/snapshot.json
           if git diff --quiet -- "$file"; then
@@ -46,3 +46,9 @@ jobs:
           git commit -m 'Refresh CISA KEV snapshot'
           # No force: if main changed concurrently, the run fails safely.
           git push origin HEAD:main
+          echo 'changed=true' >> "$GITHUB_OUTPUT"
+      - name: Queue the Pages deployment gate
+        if: steps.snapshot.outputs.changed == 'true' || github.event_name == 'workflow_dispatch'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api --method POST "repos/${GITHUB_REPOSITORY}/dispatches" -f event_type=cisa-catalog-updated

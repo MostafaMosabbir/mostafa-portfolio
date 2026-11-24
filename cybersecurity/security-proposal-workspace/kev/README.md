@@ -17,11 +17,13 @@ month is incomplete through the displayed release date.
 3. R groups the records by date added and writes `snapshot.json`. It leaves
    the last good snapshot untouched if retrieval or validation fails. An
    unchanged catalog produces no new commit.
-4. The page reads the public JSON directly from the repository when the
-   chart comes into view, because commits made by a GitHub Actions token do
-   not trigger the existing branch-based GitHub Pages build. If the request
-   fails, it uses `fallback.js`, the bundled last-known snapshot, and says
-   that it may be out of date. GitHub's cache can delay an update.
+4. A changed snapshot queues the Pages deployment workflow, which includes
+   it in the approved file package and scans that package before publishing.
+   A manual refresh also queues this workflow so the current snapshot can
+   be republished after a failed deployment.
+5. The chart requests the published JSON from the portfolio when the chart
+   comes into view. If that request fails, it uses `fallback.js`, the bundled
+   last known snapshot, and says that it may be out of date.
 
 The displayed timestamp is **CISA's catalog release time**, not the last
 successful scheduled check. GitHub schedules can be delayed or disabled after
