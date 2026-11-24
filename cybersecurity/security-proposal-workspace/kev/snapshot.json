@@ -4,7 +4,7 @@
   "catalogReleased": "2026-11-23T19:43:55.7979Z",
   "catalogCount": 1792,
   "measure": "CISA catalog additions by month, not attacks or all vulnerabilities",
-  "source": "https://github.com/cisagov/kev-data",
+  "source": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
   "months": [
     {"month":"2025-12","count":20},
     {"month":"2026-01","count":17},
