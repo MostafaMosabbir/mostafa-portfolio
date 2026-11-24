@@ -9,7 +9,7 @@ month is incomplete through the displayed release date.
 ## How the update works
 
 1. `.github/workflows/refresh-cisa-kev.yml` runs daily at 17:17 UTC and can
-   also be run manually. R downloads the public CISA CSV and JSON metadata.
+   also be run manually. R downloads the public CSV and JSON directly from CISA.gov.
 2. `update-kev.R` checks expected columns, unique CVE IDs, exact calendar dates,
    UTC release timestamps, the record count, and consistent catalog metadata
    before and after the download. These checks do not prove every record in
@@ -56,6 +56,6 @@ dates or timestamps leave the previous snapshot in place. The refresh workflow
 runs this test before downloading CISA data. The browser tests check snapshot
 loading, validation, and fallback behavior.
 
-Sources: [CISA KEV data](https://github.com/cisagov/kev-data), [GitHub Actions
+Sources include the [CISA KEV catalog](https://www.cisa.gov/known-exploited-vulnerabilities-catalog), [GitHub Actions
 schedules](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#schedule),
 and [GitHub token workflow behavior](https://docs.github.com/en/actions/concepts/security/github_token).

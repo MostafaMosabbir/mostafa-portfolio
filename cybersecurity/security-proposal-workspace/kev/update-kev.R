@@ -15,8 +15,9 @@ output <- if (is.null(opts[['--output']])) 'snapshot.json' else opts[['--output'
 if (!dir.exists(dirname(output))) stop('Output folder does not exist')
 tmp <- tempfile('kev-'); dir.create(tmp)
 on.exit(unlink(tmp, recursive = TRUE), add = TRUE)
-metadata_url <- 'https://raw.githubusercontent.com/cisagov/kev-data/develop/known_exploited_vulnerabilities.json'
-csv_url <- 'https://raw.githubusercontent.com/cisagov/kev-data/develop/known_exploited_vulnerabilities.csv'
+catalog_url <- 'https://www.cisa.gov/known-exploited-vulnerabilities-catalog'
+metadata_url <- 'https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json'
+csv_url <- 'https://www.cisa.gov/sites/default/files/csv/known_exploited_vulnerabilities.csv'
 
 parse_calendar_date <- function(values, error) {
   # R can parse a valid date prefix even when the full input is malformed.
@@ -75,7 +76,7 @@ result <- c('{','  "schemaVersion": 1,',
   sprintf('  "catalogReleased": "%s",',meta$released),
   sprintf('  "catalogCount": %d,',meta$count),
   '  "measure": "CISA catalog additions by month, not attacks or all vulnerabilities",',
-  '  "source": "https://github.com/cisagov/kev-data",',
+  sprintf('  "source": "%s",',catalog_url),
   '  "months": [', paste0(rows,ifelse(seq_along(rows)<length(rows),',','')), '  ]','}')
 text <- paste0(paste(result,collapse='\n'),'\n')
 # Never replace either input; preserve the previous output if a refresh fails.
