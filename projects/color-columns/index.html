@@ -20,10 +20,6 @@
     .wrap { width: min(1120px, calc(100% - 40px)); margin-inline: auto; }
     .site-header { display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding-block: 1.5rem; border-bottom: 1px solid #2a4639; }
     .brand { color: #f0f8f2; font-size: 1.1rem; font-weight: 600; text-decoration: none; }
-    .site-nav { display: flex; flex-wrap: wrap; gap: 1.25rem; }
-    .site-nav a { color: #c2d3c8; text-decoration: none; }
-    .site-nav a:hover { color: #9be5ba; }
-    .back { margin: 2rem 0 1.5rem; }
     .hero { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(230px, 1fr); gap: 2rem; align-items: end; padding-bottom: 2rem; border-bottom: 1px solid #2a4639; }
     .eyebrow { color: #8edeb0; font: .8rem/1.5 ui-monospace, monospace; letter-spacing: .1em; text-transform: uppercase; margin: 0 0 .6rem; }
     h1 { font-size: clamp(2rem, 5vw, 3.5rem); line-height: 1.12; font-weight: 600; margin: 0 0 1rem; }
@@ -39,7 +35,6 @@
     .record dl div:last-child { border: 0; }
     .record dt { color: #b5c8bd; }
     .record dd { margin: 0; text-align: right; }
-    .body-grid { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(230px, 1fr); gap: 2.5rem; padding-top: 2rem; }
     .block { margin-bottom: 2rem; }
     .block + .block { border-top: 1px solid #2a4639; padding-top: 1.6rem; }
     .block p, .explore p { color: #c2d2c7; }
@@ -54,25 +49,28 @@
     .article-placeholder .placeholder-copy { color: #c2d2c7; }
     .muted { color: #b5c8bd; }
     footer { border-top: 1px solid #2a4639; padding-block: 1.5rem; margin-top: 1rem; color: #b5c8bd; }
-    @media (max-width: 680px) { .site-header { align-items: flex-start; flex-direction: column; } .hero, .body-grid { grid-template-columns: 1fr; gap: 1.5rem; } }
+    @media (max-width: 680px) { .hero { grid-template-columns: 1fr; gap: 1.5rem; } }
     @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
   </style>
+  <link rel="stylesheet" href="../../styles/split-dossier.css?v=1">
+  <link rel="stylesheet" href="../../styles/dossier-background.css?v=1">
 </head>
-<body>
+<body class="split-dossier dossier-atmosphere">
+  <div class="dossier-scene" aria-hidden="true">
+    <span class="dossier-wire dossier-wire--cube"><span class="dossier-wire-solid">
+      <i></i><i></i><i></i><i></i><i></i><i></i>
+    </span></span>
+    <span class="dossier-wire dossier-wire--prism"><span class="dossier-wire-solid">
+      <i></i><i></i><i></i><i></i><i></i><i></i>
+    </span></span>
+  </div>
   <a class="skip" href="#main">Skip to dossier</a>
-  <header class="site-header wrap">
+  <header class="site-header wrap dossier-header">
+    <a class="back" href="../../index.html#project-color-columns">← Back to Case Files</a>
     <a class="brand" href="../../index.html#main">Mostafa Mosabbir</a>
-    <nav class="site-nav" aria-label="Main navigation">
-      <a href="../../index.html#about">Profile</a>
-      <a href="../../index.html#projects">Case Files</a>
-      <a href="../../index.html#articles">Articles</a>
-      <a href="../../index.html#tools">Tools</a>
-      <a href="../../index.html#contact">Contact</a>
-    </nav>
   </header>
   <main id="main" class="wrap">
-    <p class="back"><a href="../../index.html#project-color-columns">← Back to Case Files</a></p>
-    <section class="hero" aria-labelledby="project-title">
+    <section class="hero dossier-hero" aria-labelledby="project-title">
       <div>
         <p class="eyebrow">Dossier / Project 006</p>
         <h1 id="project-title">Color Columns</h1>
@@ -88,9 +86,18 @@
         </dl>
       </aside>
     </section>
-    <div class="body-grid">
-      <div>
-        <section class="block" aria-labelledby="purpose-title">
+    <div class="dossier-layout">
+      <nav class="dossier-nav" aria-label="Dossier sections">
+        <ul>
+          <li><a href="#brief">Brief</a></li>
+          <li><a href="#method">Method</a></li>
+          <li><a href="#reflection">Reflection</a></li>
+          <li><a href="#play-and-source">Play and source</a></li>
+          <li><a href="#articles">Articles</a></li>
+        </ul>
+      </nav>
+      <div class="dossier-content">
+        <section class="block" id="brief" aria-labelledby="purpose-title">
           <p class="eyebrow">The purpose</p>
           <h2 id="purpose-title">Why this project</h2>
           <p>I used Color Columns as a way to learn Rust. The original game was created by Rade Drmić and is shared under the MIT license.</p>
@@ -107,20 +114,18 @@
             <li>How can a noir visual style fit the game while keeping it clear to play?</li>
           </ol>
         </section>
-        <section class="block" aria-labelledby="approach-title">
+        <section class="block" id="method" aria-labelledby="approach-title">
           <p class="eyebrow">The process</p>
           <h2 id="approach-title">From desktop game to browser</h2>
           <p>The original uses Rust and ggez for a desktop window. This browser prototype reimplements the game rules in Rust and compiles them to WebAssembly. JavaScript draws the board and handles browser input.</p>
-          <p>Matching and scoring follow the original game's rules, but this version uses a simplified interface. It does not save high scores or include all desktop animations and menus. The original creator and MIT license remain credited.</p>
+          <p>Matching and scoring follow the original game's rules. The browser version saves its top five scores in the current browser. Its interface is simpler, with fewer animations and menus. The original creator and MIT license remain credited.</p>
         </section>
-        <section class="block" aria-labelledby="reflection-title">
+        <section class="block" id="reflection" aria-labelledby="reflection-title">
           <p class="eyebrow">Reflection</p>
           <h2 id="reflection-title">Returning to the questions</h2>
           <p>Findings, lessons, and future improvements will be added after the hands-on work and testing.</p>
         </section>
-      </div>
-      <aside aria-label="Project resources">
-        <section class="block explore" aria-labelledby="explore-title">
+        <section class="block explore" id="play-and-source" aria-labelledby="explore-title">
           <p class="eyebrow">Explore the project</p>
           <h2 id="explore-title">View the Rust source</h2>
           <p>Play the browser adaptation, or explore its source and the original game.</p>
@@ -143,7 +148,7 @@
           </div>
           <p><a href="../../index.html#articles">View Articles</a></p>
         </section>
-      </aside>
+      </div>
     </div>
   </main>
   <footer class="wrap"><p>Mostafa Mosabbir</p><a href="#main">Back to top ↑</a></footer>

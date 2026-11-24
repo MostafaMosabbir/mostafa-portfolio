@@ -1,0 +1,81 @@
+.dossier-atmosphere { isolation: isolate; }
+
+.dossier-scene {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 94% 12%, rgb(49 137 99 / .12), transparent 48%),
+    radial-gradient(ellipse at 0% 74%, rgb(37 108 81 / .08), transparent 39%);
+}
+
+.dossier-wire {
+  position: absolute;
+  inline-size: var(--wire-size);
+  block-size: var(--wire-size);
+  perspective: 600px;
+  color: rgb(93 196 147 / .20);
+}
+
+.dossier-wire--cube {
+  --wire-size: clamp(98px, 11vw, 168px);
+  --wire-pitch: -21deg;
+  --wire-yaw: 31deg;
+  --wire-roll: 8deg;
+  inset-block-start: clamp(84px, 14vh, 156px);
+  inset-inline-end: clamp(-32px, -1.4vw, -16px);
+}
+
+.dossier-wire--prism {
+  --wire-size: clamp(57px, 6vw, 96px);
+  --wire-pitch: 25deg;
+  --wire-yaw: -32deg;
+  --wire-roll: -18deg;
+  inset-block-start: 62%;
+  inset-inline-start: -23px;
+  color: rgb(93 196 147 / .14);
+}
+
+.dossier-wire-solid {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  transform-style: preserve-3d;
+  transform: rotateX(var(--wire-pitch)) rotateY(var(--wire-yaw)) rotateZ(var(--wire-roll));
+}
+
+.dossier-wire-solid > i {
+  position: absolute;
+  inset: 0;
+  border: 1px solid currentColor;
+  transform: rotateY(var(--face-y, 0deg)) rotateX(var(--face-x, 0deg)) translateZ(calc(var(--wire-size) / 2));
+}
+
+.dossier-wire-solid > i:nth-child(2) { --face-y: 90deg; }
+.dossier-wire-solid > i:nth-child(3) { --face-y: 180deg; }
+.dossier-wire-solid > i:nth-child(4) { --face-y: -90deg; }
+.dossier-wire-solid > i:nth-child(5) { --face-x: 90deg; }
+.dossier-wire-solid > i:nth-child(6) { --face-x: -90deg; }
+
+@media (min-width: 701px) and (prefers-reduced-motion: no-preference) {
+  .dossier-wire-solid { animation: dossier-settle 4.2s ease-out; }
+}
+
+@keyframes dossier-settle {
+  from {
+    transform: rotateX(calc(var(--wire-pitch) + 10deg)) rotateY(calc(var(--wire-yaw) - 15deg)) rotateZ(var(--wire-roll));
+  }
+}
+
+@media (max-width: 700px) {
+  .dossier-wire--cube {
+    --wire-size: 72px;
+    inset-block-start: 62px;
+    inset-inline-end: -20px;
+    color: rgb(93 196 147 / .10);
+  }
+
+  .dossier-wire--prism { display: none; }
+}
