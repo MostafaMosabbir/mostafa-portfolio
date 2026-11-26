@@ -143,6 +143,10 @@ SAMPLE-006,VPN disconnects,network,,new,`;
   const previous = document.getElementById("case-previous");
   const next = document.getElementById("case-next");
   const caseNavigation = document.getElementById("case-navigation");
+  const caseViewToggle = document.getElementById("case-view-toggle");
+  const desktopCases = window.matchMedia("(min-width: 951px) and (hover: hover) and (pointer: fine)");
+  let previousFilmstripScroll = 0;
+  let caseListOpen = false;
   let visibleCards = cards;
   const reducedCaseMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
   const scrollTolerance = 2;
@@ -178,7 +182,31 @@ SAMPLE-006,VPN disconnects,network,,new,`;
     carousel.scrollTo({ left: target, behavior: reducedCaseMotion.matches ? "instant" : "smooth" });
     updateCaseArrows();
   }
+  function setCaseList(open) {
+    if (!caseViewToggle || open === caseListOpen || (open && !desktopCases.matches)) return;
+    if (open) previousFilmstripScroll = carousel.scrollLeft;
+    caseListOpen = open;
+    carousel.classList.toggle("case-list", open);
+    caseNavigation.hidden = open;
+    caseViewToggle.textContent = open ? "View filmstrip" : "View all as a list";
+    if (!open) {
+      carousel.scrollTo({ left: previousFilmstripScroll, behavior: "instant" });
+      updateCaseArrows();
+    }
+  }
+
+  if (caseViewToggle) {
+    const syncCaseView = () => {
+      if (!desktopCases.matches) setCaseList(false);
+      caseViewToggle.hidden = !desktopCases.matches;
+    };
+    caseViewToggle.addEventListener("click", () => setCaseList(!caseListOpen));
+    desktopCases.addEventListener("change", syncCaseView);
+    syncCaseView();
+  }
+
   function filterProjects(technology) {
+    previousFilmstripScroll = 0;
     visibleCards = cards.filter(card => technology === "all" || card.dataset.technologies.split(" ").includes(technology));
     cards.forEach(card => { card.hidden = !visibleCards.includes(card); });
     carousel.classList.toggle("case-single", visibleCards.length === 1);
@@ -275,6 +303,13 @@ SAMPLE-006,VPN disconnects,network,,new,`;
     trigger.hidden = false;
     trigger.addEventListener("click", openSearch);
     document.getElementById("search-close").addEventListener("click", closeSearch);
+    document.getElementById("search-browse-cases")?.addEventListener("click", event => {
+      if (event.defaultPrevented || event.button !== 0 || event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return;
+      filterProjects("all");
+      setCaseList(true);
+      returnFocus = document.getElementById("projects-title");
+      closeSearch();
+    });
     dialog.addEventListener("close", () => {
       // Restore focus after the native dialog closes.
       const target = returnFocus;
