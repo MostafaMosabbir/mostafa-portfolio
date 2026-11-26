@@ -76,3 +76,34 @@
   .home-article-image { min-height: 120px; }
   .home-workspace-frame { height: 1200px; }
 }
+
+/* Keep both choices visible, then show the active tool below them. */
+.home-tool-catalog { display: grid; gap: 14px; }
+.home-tool-card { padding: 18px 20px; border: 1px solid #315044; border-radius: 8px; background: #10231b; }
+.home-tool-card .home-workspace-heading { padding: 0; }
+.home-tool-card .home-workspace-actions { margin-bottom: 0; }
+.home-tool-panel { margin-top: 22px; scroll-margin-top: 145px; }
+.home-tool-panel[hidden], .case-view-toggle[hidden] { display: none; }
+.home-tool-panel-heading { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px 16px; margin-bottom: 8px; }
+.home-tool-panel-heading h3 { margin: 0; }
+.home-tool-close, .case-view-toggle {
+  min-height: 44px;
+  padding: 6px 14px;
+  border: 1px solid #497062;
+  border-radius: 6px;
+  background: #10231b;
+  color: var(--accent);
+  font: inherit;
+  cursor: pointer;
+}
+.home-tool-close:hover, .case-view-toggle:hover { background: #172920; }
+
+@media (min-width: 951px) and (hover: hover) and (pointer: fine) {
+  .home-tool-catalog { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .home-tool-card { display: flex; flex-direction: column; align-items: flex-start; }
+  .home-tool-card .home-workspace-actions { margin-top: auto; }
+  #case-carousel.case-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); overflow: visible; scroll-snap-type: none; }
+  #case-carousel.case-list .project-copy { padding: 12px 14px 6px; }
+  #case-carousel.case-list .project-copy > p { margin-bottom: .35rem; }
+  #case-carousel.case-list .feature-select { margin: 0 14px 10px; align-self: flex-start; }
+}
