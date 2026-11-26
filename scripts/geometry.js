@@ -10,6 +10,7 @@
   if (!ctx || !pause) return;
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const pointer = matchMedia('(hover: hover) and (pointer: fine)');
+  const desktopWorkbench = matchMedia('(min-width: 951px) and (hover: hover) and (pointer: fine)');
   const SPEED = .12; // Radians per second: a full turn takes roughly a minute.
   let width = 0, height = 0, frameId = null, scrollFrame = null, last = 0, phase = 0;
   let mouse = null, mouseAge = 3;
@@ -187,7 +188,9 @@
       Boolean(mouse && mouseAge <= 1.8 && !paused() && pointer.matches);
     const red = document.body.dataset.side === 'creative';
     const color = red ? '255,95,105' : '77,191,145';
-    // Low opacity under content avoids competing with text and project cards.
+    // Lift just the wires where the brighter Emerald Lift surface is active.
+    const edgeOpacity = desktopWorkbench.matches &&
+      document.body.dataset.workbenchPalette === 'emerald' ? .24 : .16;
     models.forEach((model,index) => {
       if (width < 700 && ![0,2,4,6,8].includes(index)) return;
       const [px,py,size] = placements[index];
@@ -226,7 +229,7 @@
       ctx.lineWidth = .8;
       for (const [a,b] of model.edges) {
         const depth = (vertices[a][2]+vertices[b][2])/2;
-        ctx.strokeStyle = `rgba(${color},${.16 + (depth+1.7)*.055})`;
+        ctx.strokeStyle = `rgba(${color},${edgeOpacity + (depth+1.7)*.055})`;
         ctx.beginPath();ctx.moveTo(...points[a]);ctx.lineTo(...points[b]);ctx.stroke();
       }
     });
