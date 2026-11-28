@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "catalogVersion": "2026.11.25",
-  "catalogReleased": "2026-11-25T19:48:12.4344Z",
-  "catalogCount": 1805,
+  "catalogVersion": "2026.11.27",
+  "catalogReleased": "2026-11-27T18:03:12.5733Z",
+  "catalogCount": 1808,
   "measure": "CISA catalog additions by month, not attacks or all vulnerabilities",
   "source": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
   "months": [
@@ -17,6 +17,6 @@
     {"month":"2026-08","count":31},
     {"month":"2026-09","count":43},
     {"month":"2026-10","count":36},
-    {"month":"2026-11","count":39}
+    {"month":"2026-11","count":42}
   ]
 }
